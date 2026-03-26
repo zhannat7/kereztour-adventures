@@ -1,4 +1,5 @@
 import { CalendarDays, Mountain, Landmark, UtensilsCrossed } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const items = [
   { icon: CalendarDays, title: "10 Tage Gruppenreise", desc: "Komplett organisiert und begleitet" },
@@ -7,28 +8,41 @@ const items = [
   { icon: UtensilsCrossed, title: "Verpflegung inklusive", desc: "Traditionelle und moderne Küche" },
 ];
 
-const Highlights = () => (
-  <section className="py-20 bg-card">
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-14">
-        Reise-Highlights
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {items.map((item) => (
-          <div
-            key={item.title}
-            className="flex flex-col items-center text-center rounded-xl border border-border bg-background p-8 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <item.icon className="h-8 w-8 text-primary" />
+const Highlights = () => {
+  const ref = useScrollReveal();
+
+  return (
+    <section className="py-24 md:py-32 bg-background relative overflow-hidden">
+      {/* Subtle background accent */}
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-secondary/5 blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+      <div ref={ref} className="section-reveal container mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
+            Was dich erwartet
+          </span>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground">
+            Reise-<span className="italic text-primary">Highlights</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map((item) => (
+            <div
+              key={item.title}
+              className="stagger-child group relative rounded-2xl bg-card border border-border p-8 hover:border-secondary/40 hover:shadow-xl hover:shadow-secondary/5 transition-all duration-500 hover:-translate-y-1"
+            >
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-500 group-hover:scale-110">
+                <item.icon className="h-7 w-7" />
+              </div>
+              <h3 className="font-display text-xl text-foreground mb-2">{item.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
-            <h3 className="font-display text-lg font-semibold text-foreground mb-2">{item.title}</h3>
-            <p className="text-sm text-muted-foreground">{item.desc}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Highlights;
