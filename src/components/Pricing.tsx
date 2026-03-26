@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const plans = [
   {
@@ -44,16 +45,16 @@ const Pricing = () => (
                 </li>
               ))}
             </ul>
-            <a
-              href="#kontakt"
-              className={`mt-auto inline-block w-full rounded-lg py-3 font-semibold transition-opacity hover:opacity-90 ${
+            <Link
+              to="/buchen"
+              className={`mt-auto inline-block w-full rounded-lg py-3 font-semibold transition-opacity hover:opacity-90 text-center ${
                 plan.featured
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-foreground"
               }`}
             >
               Jetzt buchen
-            </a>
+            </Link>
           </div>
         ))}
       </div>
