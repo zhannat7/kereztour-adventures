@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,42 +6,37 @@
 
 @layer base {
   :root {
-    --background: 40 33% 95%;
-    --foreground: 150 48% 15%;
+    --background: 30 25% 97%;
+    --foreground: 160 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 150 48% 15%;
+    --card-foreground: 160 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 150 48% 15%;
+    --popover-foreground: 160 30% 10%;
 
-    --primary: 150 48% 20%;
-    --primary-foreground: 40 33% 95%;
+    --primary: 160 40% 22%;
+    --primary-foreground: 40 40% 96%;
 
-    --secondary: 200 55% 54%;
+    --secondary: 32 80% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 40 20% 88%;
-    --muted-foreground: 150 20% 35%;
+    --muted: 30 15% 90%;
+    --muted-foreground: 160 15% 40%;
 
-    --accent: 200 55% 54%;
+    --accent: 32 80% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 40 20% 82%;
-    --input: 40 20% 82%;
-    --ring: 150 48% 20%;
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 160 40% 22%;
 
     --radius: 0.75rem;
 
-    --sand: 36 33% 85%;
-    --sand-light: 40 33% 95%;
-    --forest: 150 48% 20%;
-    --forest-deep: 150 48% 15%;
-    --sky: 200 55% 54%;
-    --sky-light: 200 55% 90%;
+    --hero-overlay: linear-gradient(135deg, hsla(160, 40%, 12%, 0.85) 0%, hsla(160, 30%, 18%, 0.6) 50%, hsla(32, 60%, 40%, 0.3) 100%);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -54,25 +49,25 @@
   }
 
   .dark {
-    --background: 150 48% 5%;
-    --foreground: 40 33% 95%;
-    --card: 150 48% 8%;
-    --card-foreground: 40 33% 95%;
-    --popover: 150 48% 8%;
-    --popover-foreground: 40 33% 95%;
-    --primary: 40 33% 85%;
-    --primary-foreground: 150 48% 10%;
-    --secondary: 200 55% 54%;
+    --background: 160 30% 5%;
+    --foreground: 30 25% 95%;
+    --card: 160 30% 8%;
+    --card-foreground: 30 25% 95%;
+    --popover: 160 30% 8%;
+    --popover-foreground: 30 25% 95%;
+    --primary: 32 80% 60%;
+    --primary-foreground: 160 40% 10%;
+    --secondary: 160 40% 30%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 150 30% 15%;
-    --muted-foreground: 40 20% 65%;
-    --accent: 200 55% 54%;
+    --muted: 160 20% 15%;
+    --muted-foreground: 30 15% 65%;
+    --accent: 32 80% 55%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 150 20% 18%;
-    --input: 150 20% 18%;
-    --ring: 40 33% 85%;
+    --border: 160 15% 18%;
+    --input: 160 15% 18%;
+    --ring: 32 80% 60%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,4 +95,39 @@
   html {
     scroll-behavior: smooth;
   }
+}
+
+@layer components {
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-child {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section-reveal.revealed .stagger-child {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-reveal.revealed .stagger-child:nth-child(1) { transition-delay: 0.05s; }
+  .section-reveal.revealed .stagger-child:nth-child(2) { transition-delay: 0.1s; }
+  .section-reveal.revealed .stagger-child:nth-child(3) { transition-delay: 0.15s; }
+  .section-reveal.revealed .stagger-child:nth-child(4) { transition-delay: 0.2s; }
+  .section-reveal.revealed .stagger-child:nth-child(5) { transition-delay: 0.25s; }
+  .section-reveal.revealed .stagger-child:nth-child(6) { transition-delay: 0.3s; }
+  .section-reveal.revealed .stagger-child:nth-child(7) { transition-delay: 0.35s; }
+  .section-reveal.revealed .stagger-child:nth-child(8) { transition-delay: 0.4s; }
+  .section-reveal.revealed .stagger-child:nth-child(9) { transition-delay: 0.45s; }
+  .section-reveal.revealed .stagger-child:nth-child(10) { transition-delay: 0.5s; }
 }
