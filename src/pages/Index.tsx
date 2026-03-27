@@ -1,8 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Highlights from "@/components/Highlights";
-import Pricing from "@/components/Pricing";
-import Itinerary from "@/components/Itinerary";
+import Tours from "@/components/Tours";
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -10,8 +9,7 @@ const Index = () => (
     <Navbar />
     <Hero />
     <Highlights />
-    <Itinerary />
-    <Pricing />
+    <Tours />
     <Footer />
   </>
 );
