@@ -16,7 +16,7 @@ const Nomaden = () => (
         </Link>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-8">
-          🐎 Weltspiele der Nomaden 2026
+          Weltspiele der Nomaden 2026
           <span className="block text-2xl md:text-3xl italic text-primary mt-2">
             Ein unvergessliches Abenteuer
           </span>
@@ -50,24 +50,18 @@ const Nomaden = () => (
             Diese Reise ist mehr als nur ein Urlaub – sie ist eine Reise in eine
             andere Welt.
           </p>
-          <p className="text-primary font-bold text-lg">
-            👉 Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden
+          <Link
+            to="/buchen"
+            className="text-primary font-bold text-lg hover:underline transition-colors"
+          >
+            Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden
             2026!
-          </p>
+          </Link>
         </div>
 
         {/* ADD PHOTOS HERE */}
         <div className="mt-12 rounded-2xl bg-muted/60 border border-border p-12 text-center">
           <p className="text-muted-foreground text-sm">Bildergalerie – demnächst verfügbar</p>
-        </div>
-
-        <div className="mt-10 text-center">
-          <Link
-            to="/buchen"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-semibold text-primary-foreground shadow-lg shadow-primary/15 hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
-          >
-            Jetzt buchen <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
     </main>
