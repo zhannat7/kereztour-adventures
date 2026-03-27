@@ -50,13 +50,15 @@ const Nomaden = () => (
             Diese Reise ist mehr als nur ein Urlaub – sie ist eine Reise in eine
             andere Welt.
           </p>
-          <Link
-            to="/buchen"
-            className="text-primary font-bold text-lg hover:underline transition-colors"
-          >
-            Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden
-            2026!
-          </Link>
+          <div className="mt-10 pt-8 border-t border-border text-center">
+            <Link
+              to="/buchen"
+              className="inline-flex items-center gap-2 text-primary font-bold text-lg md:text-xl hover:underline underline-offset-4 decoration-2 transition-all duration-300 hover:gap-3"
+            >
+              Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden
+              2026! <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
         </div>
 
         {/* ADD PHOTOS HERE */}
