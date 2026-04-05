@@ -20,27 +20,47 @@ import img17 from "@/assets/gallery/IMG_3299.jpg";
 import img18 from "@/assets/gallery/IMG_3310.jpg";
 import img19 from "@/assets/gallery/IMG_3369.jpg";
 import img20 from "@/assets/gallery/IMG_3432.jpg";
+import img21 from "@/assets/gallery/IMG_3466.jpg";
+import img22 from "@/assets/gallery/IMG_3541.jpg";
+import img23 from "@/assets/gallery/IMG_3600.jpg";
+import img24 from "@/assets/gallery/IMG_3858.jpg";
+import img25 from "@/assets/gallery/IMG_3925.jpg";
+import img26 from "@/assets/gallery/IMG_3952.jpg";
+import img27 from "@/assets/gallery/IMG_4561.jpg";
+import img28 from "@/assets/gallery/IMG_4663.jpg";
+import img29 from "@/assets/gallery/IMG_4672.jpg";
+import img30 from "@/assets/gallery/IMG_4725.jpg";
 
 const images = [
   { src: img1, alt: "Kirgisistan Landschaft" },
   { src: img2, alt: "Kirgisistan Berge" },
   { src: img11, alt: "Kirgisistan Panorama" },
   { src: img3, alt: "Kirgisistan Natur" },
+  { src: img21, alt: "Kirgisistan Hochebene" },
   { src: img4, alt: "Kirgisistan Kultur" },
   { src: img12, alt: "Kirgisistan Dorf" },
+  { src: img22, alt: "Kirgisistan Fluss" },
   { src: img5, alt: "Kirgisistan Reise" },
   { src: img6, alt: "Kirgisistan Abenteuer" },
+  { src: img23, alt: "Kirgisistan Aussicht" },
   { src: img13, alt: "Kirgisistan Gebirge" },
   { src: img7, alt: "Kirgisistan Begegnungen" },
+  { src: img24, alt: "Kirgisistan Steppe" },
   { src: img14, alt: "Kirgisistan Weite" },
   { src: img8, alt: "Kirgisistan Erlebnis" },
+  { src: img25, alt: "Kirgisistan Nomaden" },
   { src: img15, alt: "Kirgisistan Wanderung" },
   { src: img9, alt: "Kirgisistan Tradition" },
+  { src: img26, alt: "Kirgisistan Markt" },
   { src: img16, alt: "Kirgisistan See" },
   { src: img10, alt: "Kirgisistan Pferde" },
+  { src: img27, alt: "Kirgisistan Gipfel" },
   { src: img17, alt: "Kirgisistan Jurten" },
+  { src: img28, alt: "Kirgisistan Abend" },
   { src: img18, alt: "Kirgisistan Sonnenuntergang" },
+  { src: img29, alt: "Kirgisistan Wildnis" },
   { src: img19, alt: "Kirgisistan Tal" },
+  { src: img30, alt: "Kirgisistan Freiheit" },
   { src: img20, alt: "Kirgisistan Horizont" },
 ];
 
