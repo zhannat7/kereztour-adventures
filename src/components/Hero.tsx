@@ -1,45 +1,80 @@
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Star } from "lucide-react";
 
-const Hero = () => {
-  return (
-    <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      /* ADD YOUR OWN IMAGE HERE */
-      style={{
-        backgroundColor: "#1a3a2a",
-        backgroundImage: "var(--hero-overlay)",
-      }}
-    >
-      {/* Decorative elements */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-      }} />
+import hero1 from "@/assets/hero/hero1.jpg";
+import hero2 from "@/assets/hero/hero2.jpg";
+import hero3 from "@/assets/hero/hero3.jpg";
 
+const images = [hero1, hero2, hero3];
+const INTERVAL = 5000;
+const FADE_DURATION = 2000;
+
+const Hero = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const advance = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(advance, INTERVAL);
+    return () => clearInterval(id);
+  }, [advance]);
+
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Slideshow background – NO overlay, bright & clear */}
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          alt={`Kirgisistan Landschaft ${i + 1}`}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            opacity: i === currentIndex ? 1 : 0,
+            transition: `opacity ${FADE_DURATION}ms ease-in-out`,
+            zIndex: 1,
+          }}
+        />
+      ))}
+
+      {/* Subtle bottom-only scrim so text stays readable */}
+      <div
+        className="absolute inset-0 z-[2]"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.35) 100%)",
+        }}
+      />
+
+      {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-5 py-2 mb-8 opacity-0 animate-fade-in"
+            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-5 py-2 mb-8 opacity-0 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
             <MapPin className="h-4 w-4 text-secondary" />
-            <span className="text-white/90 text-sm font-medium tracking-wide">Zentralasien · Kirgisistan</span>
+            <span className="text-white text-sm font-medium tracking-wide drop-shadow-sm">
+              Zentralasien · Kirgisistan
+            </span>
           </div>
 
           {/* Title */}
           <h1
-            className="font-display text-5xl md:text-7xl lg:text-8xl text-white leading-[1.05] mb-6 opacity-0 animate-slide-up"
+            className="font-display text-5xl md:text-7xl lg:text-8xl text-white leading-[1.05] mb-6 opacity-0 animate-slide-up drop-shadow-lg"
             style={{ animationDelay: "0.3s" }}
           >
             Kereztour
             <br />
-            <span className="italic text-secondary">Kirgisistan</span>
+            <span className="italic text-secondary drop-shadow-md">Kirgisistan</span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-4 font-light opacity-0 animate-fade-in-up"
+            className="text-lg md:text-xl text-white max-w-2xl mx-auto mb-4 font-light opacity-0 animate-fade-in-up drop-shadow-sm"
             style={{ animationDelay: "0.6s" }}
           >
             10 Tage unvergessliches Abenteuer durch Berge, Seen und
@@ -54,7 +89,9 @@ const Hero = () => {
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="h-4 w-4 fill-secondary text-secondary" />
             ))}
-            <span className="text-white/60 text-sm ml-2">Gruppenreise · Natur, Kultur & Tradition</span>
+            <span className="text-white/80 text-sm ml-2 drop-shadow-sm">
+              Gruppenreise · Natur, Kultur & Tradition
+            </span>
           </div>
 
           {/* CTA */}
@@ -70,7 +107,7 @@ const Hero = () => {
             </Link>
             <a
               href="#reiseplan"
-              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-8 py-4 text-white/90 text-lg font-medium hover:bg-white/10 transition-all duration-300"
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 backdrop-blur-sm px-8 py-4 text-white text-lg font-medium hover:bg-white/20 transition-all duration-300"
             >
               Reiseplan ansehen
             </a>
@@ -87,19 +124,30 @@ const Hero = () => {
               { value: "100%", label: "Unvergesslich" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-display text-white">{s.value}</div>
-                <div className="text-sm text-white/50 mt-1">{s.label}</div>
+                <div className="text-3xl md:text-4xl font-display text-white drop-shadow-md">
+                  {s.value}
+                </div>
+                <div className="text-sm text-white/70 mt-1 drop-shadow-sm">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in" style={{ animationDelay: "1.5s" }}>
-        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2">
-          <div className="w-1 h-3 rounded-full bg-white/60 animate-bounce" />
-        </div>
+      {/* Slide indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2 opacity-0 animate-fade-in" style={{ animationDelay: "1.5s" }}>
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentIndex(i)}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
+              i === currentIndex
+                ? "bg-white scale-110"
+                : "bg-white/40 hover:bg-white/60"
+            }`}
+            aria-label={`Bild ${i + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
