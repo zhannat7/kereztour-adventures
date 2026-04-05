@@ -121,6 +121,13 @@ const Buchen = () => {
       <Navbar />
       <main className="pt-24 pb-20 bg-background min-h-screen">
         <div className="container mx-auto px-4 max-w-2xl">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="mb-6 text-muted-foreground hover:text-primary"
+          >
+            ← Zurück
+          </Button>
           <h1 className="text-3xl md:text-4xl font-bold text-primary text-center mb-2">
             Reise buchen
           </h1>
