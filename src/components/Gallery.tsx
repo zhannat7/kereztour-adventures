@@ -41,6 +41,14 @@ import img37 from "@/assets/gallery/IMG_4831.jpg";
 import img38 from "@/assets/gallery/IMG_4846.jpg";
 import img39 from "@/assets/gallery/IMG_4851.jpg";
 import img40 from "@/assets/gallery/IMG_4858.jpg";
+import img41 from "@/assets/gallery/IMG_4871.jpg";
+import img42 from "@/assets/gallery/IMG_4919.jpg";
+import img43 from "@/assets/gallery/IMG_4920.jpg";
+import img44 from "@/assets/gallery/IMG_4930.jpg";
+import img45 from "@/assets/gallery/IMG_4933.jpg";
+import img46 from "@/assets/gallery/IMG_4992.jpg";
+import img47 from "@/assets/gallery/IMG_5006.jpg";
+import img48 from "@/assets/gallery/IMG_5010.jpg";
 
 const images = [
   { src: img1, alt: "Kirgisistan Landschaft" },
@@ -50,28 +58,36 @@ const images = [
   { src: img21, alt: "Kirgisistan Hochebene" },
   { src: img4, alt: "Kirgisistan Kultur" },
   { src: img31, alt: "Kirgisistan Wasser" },
+  { src: img41, alt: "Kirgisistan Felsen" },
   { src: img12, alt: "Kirgisistan Dorf" },
   { src: img22, alt: "Kirgisistan Fluss" },
   { src: img5, alt: "Kirgisistan Reise" },
   { src: img32, alt: "Kirgisistan Bergpfad" },
+  { src: img42, alt: "Kirgisistan Grünland" },
   { src: img6, alt: "Kirgisistan Abenteuer" },
   { src: img23, alt: "Kirgisistan Aussicht" },
   { src: img33, alt: "Kirgisistan Almen" },
+  { src: img43, alt: "Kirgisistan Wald" },
   { src: img13, alt: "Kirgisistan Gebirge" },
   { src: img7, alt: "Kirgisistan Begegnungen" },
   { src: img34, alt: "Kirgisistan Hochland" },
+  { src: img44, alt: "Kirgisistan Wolken" },
   { src: img24, alt: "Kirgisistan Steppe" },
   { src: img14, alt: "Kirgisistan Weite" },
   { src: img35, alt: "Kirgisistan Lager" },
+  { src: img45, alt: "Kirgisistan Pfade" },
   { src: img8, alt: "Kirgisistan Erlebnis" },
   { src: img25, alt: "Kirgisistan Nomaden" },
   { src: img36, alt: "Kirgisistan Schlucht" },
+  { src: img46, alt: "Kirgisistan Landweg" },
   { src: img15, alt: "Kirgisistan Wanderung" },
   { src: img9, alt: "Kirgisistan Tradition" },
   { src: img37, alt: "Kirgisistan Wiesen" },
+  { src: img47, alt: "Kirgisistan Aussichtspunkt" },
   { src: img26, alt: "Kirgisistan Markt" },
   { src: img16, alt: "Kirgisistan See" },
   { src: img38, alt: "Kirgisistan Sonnenaufgang" },
+  { src: img48, alt: "Kirgisistan Morgenrot" },
   { src: img10, alt: "Kirgisistan Pferde" },
   { src: img27, alt: "Kirgisistan Gipfel" },
   { src: img39, alt: "Kirgisistan Gletscher" },
