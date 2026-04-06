@@ -83,7 +83,7 @@ const Hero = () => {
 
           {/* Rating */}
           <div
-            className="flex items-center justify-center gap-1 mb-10 opacity-0 animate-fade-in"
+            className="flex items-center justify-center gap-1 mb-6 opacity-0 animate-fade-in"
             style={{ animationDelay: "0.8s" }}
           >
             {[...Array(5)].map((_, i) => (
