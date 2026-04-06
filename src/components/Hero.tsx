@@ -74,7 +74,7 @@ const Hero = () => {
 
           {/* Subtitle */}
           <p
-            className="text-lg md:text-xl text-white max-w-2xl mx-auto mb-4 font-light opacity-0 animate-fade-in-up drop-shadow-sm"
+            className="text-base md:text-lg text-white max-w-2xl mx-auto mb-3 font-light opacity-0 animate-fade-in-up drop-shadow-sm"
             style={{ animationDelay: "0.6s" }}
           >
             10 Tage unvergessliches Abenteuer durch Berge, Seen und
