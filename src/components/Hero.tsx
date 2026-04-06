@@ -30,7 +30,7 @@ const Hero = () => {
           key={i}
           src={src}
           alt={`Kirgisistan Landschaft ${i + 1}`}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           style={{
             opacity: i === currentIndex ? 1 : 0,
             transition: `opacity ${FADE_DURATION}ms ease-in-out`,
