@@ -53,7 +53,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-5 py-2 mb-8 opacity-0 animate-fade-in"
+            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-5 py-2 mb-5 opacity-0 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
             <MapPin className="h-4 w-4 text-secondary" />
