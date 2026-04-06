@@ -23,7 +23,7 @@ const Hero = () => {
   }, [advance]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-[70vh] md:h-[75vh] flex items-center justify-center overflow-hidden">
       {/* Slideshow background – NO overlay, bright & clear */}
       {images.map((src, i) => (
         <img
@@ -53,7 +53,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-5 py-2 mb-8 opacity-0 animate-fade-in"
+            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-5 py-2 mb-5 opacity-0 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
             <MapPin className="h-4 w-4 text-secondary" />
@@ -64,7 +64,7 @@ const Hero = () => {
 
           {/* Title */}
           <h1
-            className="font-display text-5xl md:text-7xl lg:text-8xl text-white leading-[1.05] mb-6 opacity-0 animate-slide-up drop-shadow-lg"
+            className="font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-4 opacity-0 animate-slide-up drop-shadow-lg"
             style={{ animationDelay: "0.3s" }}
           >
             Kereztour
@@ -74,7 +74,7 @@ const Hero = () => {
 
           {/* Subtitle */}
           <p
-            className="text-lg md:text-xl text-white max-w-2xl mx-auto mb-4 font-light opacity-0 animate-fade-in-up drop-shadow-sm"
+            className="text-base md:text-lg text-white max-w-2xl mx-auto mb-3 font-light opacity-0 animate-fade-in-up drop-shadow-sm"
             style={{ animationDelay: "0.6s" }}
           >
             10 Tage unvergessliches Abenteuer durch Berge, Seen und
@@ -83,7 +83,7 @@ const Hero = () => {
 
           {/* Rating */}
           <div
-            className="flex items-center justify-center gap-1 mb-10 opacity-0 animate-fade-in"
+            className="flex items-center justify-center gap-1 mb-6 opacity-0 animate-fade-in"
             style={{ animationDelay: "0.8s" }}
           >
             {[...Array(5)].map((_, i) => (
@@ -115,7 +115,7 @@ const Hero = () => {
 
           {/* Stats */}
           <div
-            className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto opacity-0 animate-fade-in"
+            className="mt-8 grid grid-cols-3 gap-6 max-w-lg mx-auto opacity-0 animate-fade-in"
             style={{ animationDelay: "1.2s" }}
           >
             {[
