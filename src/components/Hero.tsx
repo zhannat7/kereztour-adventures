@@ -115,7 +115,7 @@ const Hero = () => {
 
           {/* Stats */}
           <div
-            className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto opacity-0 animate-fade-in"
+            className="mt-8 grid grid-cols-3 gap-6 max-w-lg mx-auto opacity-0 animate-fade-in"
             style={{ animationDelay: "1.2s" }}
           >
             {[
