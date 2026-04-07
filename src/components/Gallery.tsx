@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -102,22 +102,24 @@ const images = [
   { src: img20, alt: "Kirgisistan Horizont" },
 ];
 
-const INITIAL_COUNT = 12;
-
-/* ── Lightbox ── */
+/* ── Lightbox with Thumbnail Strip ── */
 const Lightbox = ({
   images,
   index,
   onClose,
   onPrev,
   onNext,
+  onSelect,
 }: {
   images: { src: string; alt: string }[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  onSelect: (i: number) => void;
 }) => {
+  const thumbRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -132,15 +134,25 @@ const Lightbox = ({
     };
   }, [onClose, onPrev, onNext]);
 
+  // Scroll active thumbnail into view
+  useEffect(() => {
+    const container = thumbRef.current;
+    if (!container) return;
+    const active = container.children[index] as HTMLElement;
+    if (active) {
+      active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [index]);
+
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95"
       onClick={onClose}
     >
       {/* Close */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
+        className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white/80 transition hover:bg-white/20 hover:text-white"
       >
         <X className="h-6 w-6" />
       </button>
@@ -148,32 +160,60 @@ const Lightbox = ({
       {/* Prev */}
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-3 md:left-6 z-10 rounded-full bg-white/10 p-2.5 text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
+        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
 
-      {/* Image */}
-      <img
-        key={index}
-        src={images[index].src}
-        alt={images[index].alt}
-        onClick={(e) => e.stopPropagation()}
-        className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain shadow-2xl animate-fade-in"
-      />
+      {/* Main Image */}
+      <div className="flex-1 flex items-center justify-center min-h-0 w-full px-12 md:px-20 pb-4" onClick={(e) => e.stopPropagation()}>
+        <img
+          key={index}
+          src={images[index].src}
+          alt={images[index].alt}
+          className="max-h-[70vh] max-w-full rounded-lg object-contain animate-fade-in"
+        />
+      </div>
 
       {/* Next */}
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-3 md:right-6 z-10 rounded-full bg-white/10 p-2.5 text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
+        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
 
       {/* Counter */}
-      <span className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/70 backdrop-blur-sm">
-        {index + 1} / {images.length}
+      <span className="text-white/60 text-sm mb-2">
+        {index + 1} von {images.length}
       </span>
+
+      {/* Thumbnail Strip */}
+      <div
+        ref={thumbRef}
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-4xl flex gap-1.5 overflow-x-auto px-4 pb-4 pt-1 scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {images.map((img, i) => (
+          <button
+            key={i}
+            onClick={() => onSelect(i)}
+            className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded overflow-hidden transition-all duration-200 ${
+              i === index
+                ? "ring-2 ring-white opacity-100 scale-105"
+                : "opacity-40 hover:opacity-70"
+            }`}
+          >
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
@@ -181,12 +221,9 @@ const Lightbox = ({
 /* ── Gallery ── */
 const Gallery = () => {
   const ref = useScrollReveal();
-  const [showAll, setShowAll] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
-  const visible = showAll ? images : images.slice(0, INITIAL_COUNT);
-
-  const openLightbox = useCallback((globalIdx: number) => setLightboxIdx(globalIdx), []);
+  const openLightbox = useCallback((i: number) => setLightboxIdx(i), []);
   const closeLightbox = useCallback(() => setLightboxIdx(null), []);
   const prev = useCallback(
     () => setLightboxIdx((i) => (i !== null ? (i - 1 + images.length) % images.length : null)),
@@ -197,60 +234,37 @@ const Gallery = () => {
     []
   );
 
-  // Map visible images back to their global index
-  const globalIndex = (visibleIdx: number) => images.indexOf(visible[visibleIdx]);
-
   return (
     <>
-      <section id="galerie" className="py-24 md:py-32 bg-background relative overflow-hidden">
+      <section id="galerie" className="py-20 md:py-28 bg-background relative overflow-hidden">
         <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-7xl">
           {/* Header */}
-          <div className="text-center mb-16">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-              Impressionen
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground">
-              Einblicke aus <span className="italic text-primary">Kirgisistan</span>
+          <div className="text-center mb-10">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground">
+              Fotos unserer zufriedenen Kunden
             </h2>
-            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-              Authentische Momente eingefangen von unseren Reisenden
+            <p className="mt-3 text-primary font-medium tracking-wide">
+              #kereztour
             </p>
           </div>
 
-          {/* Masonry Grid */}
-          <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 md:gap-4">
-            {visible.map((img, i) => (
-              <div
+          {/* Mosaic Grid */}
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-[3px]">
+            {images.map((img, i) => (
+              <button
                 key={i}
-                onClick={() => openLightbox(globalIndex(i))}
-                className="stagger-child mb-3 md:mb-4 break-inside-avoid cursor-pointer group relative overflow-hidden rounded-xl"
+                onClick={() => openLightbox(i)}
+                className="aspect-square overflow-hidden rounded-[4px] focus:outline-none focus:ring-2 focus:ring-primary"
               >
-                {/* Hover overlay */}
-                <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <img
                   src={img.src}
                   alt={img.alt}
                   loading="lazy"
-                  className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                 />
-              </div>
+              </button>
             ))}
           </div>
-
-          {/* Show more */}
-          {!showAll && images.length > INITIAL_COUNT && (
-            <div className="text-center mt-14">
-              <button
-                onClick={() => setShowAll(true)}
-                className="group inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/5 px-8 py-3.5 text-foreground font-medium transition-all duration-300 hover:bg-primary/10 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
-              >
-                <span>Alle {images.length} Fotos entdecken</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 group-hover:translate-x-0.5">
-                  +
-                </span>
-              </button>
-            </div>
-          )}
         </div>
       </section>
 
@@ -262,6 +276,7 @@ const Gallery = () => {
           onClose={closeLightbox}
           onPrev={prev}
           onNext={next}
+          onSelect={openLightbox}
         />
       )}
     </>
