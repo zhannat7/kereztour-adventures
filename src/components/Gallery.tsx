@@ -219,6 +219,8 @@ const Lightbox = ({
 };
 
 /* ── Gallery ── */
+const VISIBLE_COUNT = 20;
+
 const Gallery = () => {
   const ref = useScrollReveal();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -234,12 +236,14 @@ const Gallery = () => {
     []
   );
 
+  const visibleImages = images.slice(0, VISIBLE_COUNT);
+
   return (
     <>
-      <section id="galerie" className="py-20 md:py-28 bg-background relative overflow-hidden">
-        <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-7xl">
+      <section id="galerie" className="py-16 md:py-24 bg-background relative overflow-hidden">
+        <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-5xl">
           {/* Header */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground">
               Fotos unserer zufriedenen Kunden
             </h2>
@@ -248,9 +252,9 @@ const Gallery = () => {
             </p>
           </div>
 
-          {/* Mosaic Grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-[3px]">
-            {images.map((img, i) => (
+          {/* Compact Mosaic Grid — 20 images */}
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5 gap-[2px]">
+            {visibleImages.map((img, i) => (
               <button
                 key={i}
                 onClick={() => openLightbox(i)}
