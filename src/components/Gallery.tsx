@@ -166,12 +166,12 @@ const Lightbox = ({
       </button>
 
       {/* Main Image */}
-      <div className="flex-1 flex items-center justify-center min-h-0 w-full px-12 md:px-20 pb-4" onClick={(e) => e.stopPropagation()}>
+      <div className="flex-1 flex items-center justify-center min-h-0 w-full px-10 md:px-16 pb-2" onClick={(e) => e.stopPropagation()}>
         <img
           key={index}
           src={images[index].src}
           alt={images[index].alt}
-          className="max-h-[70vh] max-w-full rounded-lg object-contain animate-fade-in"
+          className="max-h-[82vh] max-w-[90vw] object-contain animate-fade-in"
         />
       </div>
 
