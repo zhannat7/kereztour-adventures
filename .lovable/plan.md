@@ -1,15 +1,36 @@
 
-## Plan: Hero-Sektion verkleinern
 
-Das Problem ist klar: `min-h-screen` macht den Hero 100vh hoch, sodass die zweite Sektion (Highlights) beim Laden nicht sichtbar ist. Wie im Referenzbild soll der Hero ca. 65-70% der Viewport-Höhe einnehmen, damit der Besucher sofort einen Teaser der nächsten Sektion sieht.
+## Plan: Galerie-Redesign — Enges Mosaik-Grid mit Thumbnail-Lightbox
 
-### Änderungen in `src/components/Hero.tsx`
+Inspiriert vom Fussballtour-Referenzbild: kompaktes Grid mit vielen kleinen Bildern, keine Overlays, und eine Lightbox mit Thumbnail-Streifen.
 
-1. **Höhe reduzieren**: `min-h-screen` → `h-[70vh] md:h-[75vh]` — damit bleibt ca. 25-30% des Viewports für den Anfang der Highlights sichtbar
-2. **Content kompakter machen**: 
-   - Stats-Bereich (`mt-16`) auf `mt-8` reduzieren
-   - Abstände zwischen Elementen leicht verringern (mb-8 → mb-5, mb-10 → mb-6)
-3. **Alles andere bleibt**: Text, Crossfade, Farben, Animationen — alles unverändert
+### Änderungen in `src/components/Gallery.tsx`
 
-### Ergebnis
-Beim Öffnen der Seite sieht der User den Hero mit den Bildern UND bereits die Überschrift + obere Hälfte der Highlights-Sektion — genau wie im Referenzbeispiel.
+**1. Section-Header**
+- Titel: "Fotos unserer zufriedenen Kunden" mit Hashtag `#kereztour` (im Primary-Farbton)
+- Zentriert, passend zum bestehenden Design-System (Instrument Serif)
+
+**2. Grid-Layout (ersetzt Masonry)**
+- Enges, gleichmässiges Grid: 4 Spalten mobile, 6-8 Spalten tablet, 10 Spalten desktop
+- Alle Bilder quadratisch zugeschnitten (`aspect-square object-cover`)
+- Kleiner Gap (2-3px) zwischen Bildern
+- Abgerundete Ecken (rounded, ~4px)
+- Keine dunklen Overlays, keine Hover-Effekte mit Gradient
+- Alle 48 Bilder direkt sichtbar (kein "Mehr laden" Button)
+
+**3. Neue Lightbox (ersetzt aktuelle)**
+- Dunkler Hintergrund (bg-black/95)
+- Grosses Bild zentriert in Originalgrösse
+- X-Button oben rechts zum Schliessen
+- Navigationspfeile links/rechts
+- Zähler unten (z.B. "5 von 48")
+- **Thumbnail-Streifen** am unteren Rand: horizontal scrollbare kleine Vorschaubilder, aktives Bild hervorgehoben mit hellem Rahmen
+- Keyboard-Navigation (Escape, Pfeiltasten)
+- Mobile-freundlich: Touch-fähiger Thumbnail-Streifen
+
+### Technische Details
+- Nur `Gallery.tsx` wird geändert
+- Alle 48 bestehenden Bild-Imports bleiben erhalten
+- Lightbox-Komponente wird inline neu geschrieben mit Thumbnail-Leiste
+- Scroll-into-view für aktives Thumbnail im Streifen
+
