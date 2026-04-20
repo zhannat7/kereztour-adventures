@@ -87,14 +87,16 @@ const Buchen = () => {
       const tierValue = tour?.hasTiers ? data.tier! : "standard";
 
       const { error } = await supabase.from("bookings").insert({
-        name: `${data.vorname} ${data.nachname}`,
-        email: data.email,
-        phone: data.phone,
-        persons: data.persons,
-        travel_date: format(data.travelDate, "yyyy-MM-dd"),
-        tier: tierValue,
-        notes: data.notes || null,
-        total_price: total,
+  name: `${data.vorname} ${data.nachname}`,
+  email: data.email,
+  phone: data.phone,
+  persons: data.persons,
+  travel_date: format(data.travelDate, "yyyy-MM-dd"),
+  tour: tour?.label,
+  tier: tierValue,
+  notes: data.notes || null,
+  total_price: total,
+});
       });
 
       if (error) throw error;
