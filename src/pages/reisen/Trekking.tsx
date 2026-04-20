@@ -31,8 +31,8 @@ const days = [
   {
     day: 5,
     title: "Abstieg → Issyk-Kul See",
-    desc: "Abstieg über den „33 Papageien"-Pass (ca. 3–4 Std.). Fahrt entlang der Südküste des Issyk-Kul bis nach Bokonbayevo.",
-    stay: "Jurtencamp „Bel-Tam" direkt am Strand",
+    desc: "Abstieg über den '33 Papageien'-Pass (ca. 3–4 Std.). Fahrt entlang der Südküste des Issyk-Kul bis nach Bokonbayevo.",
+    stay: "Jurtencamp 'Bel-Tam' direkt am Strand",
   },
   {
     day: 6,
@@ -99,14 +99,12 @@ const Trekking = () => (
         {/* Header */}
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
           🥾 Intensiv-Trekking
-          <span className="block text-2xl md:text-3xl italic text-primary mt-2">
-            Bergseen Kirgistans – 10 Tage
-          </span>
+          <span className="block text-2xl md:text-3xl italic text-primary mt-2">Bergseen Kirgistans – 10 Tage</span>
         </h1>
         <p className="text-muted-foreground text-lg mb-4 max-w-3xl">
-          Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die Herausforderung
-          der Höhe suchen. Die Route führt zu den spektakulärsten Highlights Zentralasiens:
-          dem Hochgebirgssee Song-Köl und dem türkisfarbenen Ala-Köl.
+          Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die Herausforderung der Höhe suchen. Die
+          Route führt zu den spektakulärsten Highlights Zentralasiens: dem Hochgebirgssee Song-Köl und dem
+          türkisfarbenen Ala-Köl.
         </p>
         <p className="text-muted-foreground mb-12 max-w-3xl">
           Übernachtungen finden authentisch in Jurten, Berghütten und Gästehäusern statt.
@@ -145,9 +143,7 @@ const Trekking = () => (
                 </p>
                 <h3 className="font-display text-lg text-foreground mb-1">{d.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
-                {d.stay && (
-                  <p className="text-xs text-primary mt-2 font-medium">🏕️ {d.stay}</p>
-                )}
+                {d.stay && <p className="text-xs text-primary mt-2 font-medium">🏕️ {d.stay}</p>}
               </div>
             </div>
           ))}
@@ -159,10 +155,7 @@ const Trekking = () => (
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {tips.map((tip) => (
-            <div
-              key={tip.title}
-              className="rounded-2xl bg-card border border-border p-6 flex flex-col gap-4"
-            >
+            <div key={tip.title} className="rounded-2xl bg-card border border-border p-6 flex flex-col gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <tip.icon className="h-6 w-6" />
               </div>
@@ -174,9 +167,7 @@ const Trekking = () => (
 
         {/* CTA */}
         <div className="rounded-2xl bg-muted/60 border border-border p-10 text-center">
-          <p className="font-display text-2xl text-foreground mb-6">
-            Bereit für das Abenteuer deines Lebens?
-          </p>
+          <p className="font-display text-2xl text-foreground mb-6">Bereit für das Abenteuer deines Lebens?</p>
           <Link
             to="/buchen?tour=trekking"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-semibold text-primary-foreground shadow-lg hover:scale-105 transition-all duration-300"
