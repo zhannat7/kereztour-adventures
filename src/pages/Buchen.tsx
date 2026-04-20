@@ -34,7 +34,10 @@ const bookingSchema = z.object({
   nachname: z.string().trim().min(1, "Nachname ist erforderlich").max(100),
   email: z.string().trim().email("Bitte gib eine gültige E-Mail-Adresse ein").max(255),
   phone: z.string().trim().min(1, "Telefonnummer ist erforderlich").max(30),
-  persons: z.number({ required_error: "Anzahl ist erforderlich" }).min(1, "Mindestens 1 Person").max(20, "Maximal 20 Personen"),
+  persons: z
+    .number({ required_error: "Anzahl ist erforderlich" })
+    .min(1, "Mindestens 1 Person")
+    .max(20, "Maximal 20 Personen"),
   travelDate: z.date({ required_error: "Reisedatum ist erforderlich" }),
   tour: z.string().min(1, "Bitte wähle eine Reise"),
   tier: z.string().optional(),
@@ -92,6 +95,7 @@ const Buchen = () => {
         phone: data.phone,
         persons: data.persons,
         travel_date: format(data.travelDate, "yyyy-MM-dd"),
+        tour: tour?.label,
         tier: tierValue,
         notes: data.notes || null,
         total_price: total,
@@ -128,14 +132,13 @@ const Buchen = () => {
           >
             ← Zurück
           </Button>
-          <h1 className="text-3xl md:text-4xl font-bold text-primary text-center mb-2">
-            Reise buchen
-          </h1>
-          <p className="text-center text-muted-foreground mb-10">
-            Fülle das Formular aus und sichere dir deinen Platz
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-primary text-center mb-2">Reise buchen</h1>
+          <p className="text-center text-muted-foreground mb-10">Fülle das Formular aus und sichere dir deinen Platz</p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6 bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm"
+          >
             {/* Name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -178,7 +181,7 @@ const Buchen = () => {
                     htmlFor={`tour-${tour.id}`}
                     className={cn(
                       "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tourId === tour.id ? "border-primary bg-primary/5" : "border-border"
+                      tourId === tour.id ? "border-primary bg-primary/5" : "border-border",
                     )}
                   >
                     <RadioGroupItem value={tour.id} id={`tour-${tour.id}`} />
@@ -194,7 +197,7 @@ const Buchen = () => {
               {errors.tour && <p className="text-sm text-destructive">{errors.tour.message}</p>}
             </div>
 
-            {/* Tier – only for Kultur Tour */}
+            {/* Tier */}
             {selectedTour?.hasTiers && (
               <div className="space-y-3">
                 <Label>Reisetyp *</Label>
@@ -204,28 +207,26 @@ const Buchen = () => {
                   className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 >
                   <label
-                    htmlFor="economy"
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tier === "economy" ? "border-primary bg-primary/5" : "border-border"
+                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer",
+                      tier === "economy" ? "border-primary bg-primary/5" : "border-border",
                     )}
                   >
-                    <RadioGroupItem value="economy" id="economy" />
+                    <RadioGroupItem value="economy" />
                     <div>
-                      <p className="font-semibold text-foreground">Economy</p>
+                      <p className="font-semibold">Economy</p>
                       <p className="text-sm text-muted-foreground">990 € / Person</p>
                     </div>
                   </label>
                   <label
-                    htmlFor="comfort"
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tier === "comfort" ? "border-primary bg-primary/5" : "border-border"
+                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer",
+                      tier === "comfort" ? "border-primary bg-primary/5" : "border-border",
                     )}
                   >
-                    <RadioGroupItem value="comfort" id="comfort" />
+                    <RadioGroupItem value="comfort" />
                     <div>
-                      <p className="font-semibold text-foreground">Comfort</p>
+                      <p className="font-semibold">Comfort</p>
                       <p className="text-sm text-muted-foreground">1.490 € / Person</p>
                     </div>
                   </label>
@@ -234,76 +235,11 @@ const Buchen = () => {
             )}
 
             {/* Persons */}
-            <div className="space-y-2">
-              <Label htmlFor="persons">Anzahl der Personen *</Label>
-              <Input
-                id="persons"
-                type="number"
-                min={1}
-                max={20}
-                {...register("persons", { valueAsNumber: true })}
-              />
-              {errors.persons && <p className="text-sm text-destructive">{errors.persons.message}</p>}
-            </div>
+            <Input type="number" {...register("persons", { valueAsNumber: true })} />
 
-            {/* Travel Date */}
-            <div className="space-y-2">
-              <Label>Reisedatum *</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !travelDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {travelDate ? format(travelDate, "PPP", { locale: de }) : "Datum wählen"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={travelDate}
-                    onSelect={(date) => date && setValue("travelDate", date, { shouldValidate: true })}
-                    disabled={(date) => date < new Date()}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-              {errors.travelDate && <p className="text-sm text-destructive">{errors.travelDate.message}</p>}
-            </div>
-
-            {/* Notes */}
-            <div className="space-y-2">
-              <Label htmlFor="notes">Besondere Wünsche</Label>
-              <Textarea id="notes" {...register("notes")} placeholder="Allergien, besondere Anforderungen..." rows={3} />
-            </div>
-
-            {/* Price Summary */}
-            <div className="rounded-xl bg-muted p-4 text-center">
-              <p className="text-lg font-bold text-primary">
-                Gesamtpreis: {totalPrice.toLocaleString("de-DE")} € ({persons || 1} {(persons || 1) === 1 ? "Person" : "Personen"} × {pricePerPerson.toLocaleString("de-DE")} €)
-              </p>
-            </div>
-
-            {submitError && (
-              <Alert variant="destructive">
-                <AlertDescription>{submitError}</AlertDescription>
-              </Alert>
-            )}
-
-            <Button type="submit" className="w-full h-12 text-base" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Wird gesendet...
-                </>
-              ) : (
-                "Jetzt verbindlich buchen"
-              )}
+            {/* Submit */}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Wird gesendet..." : "Jetzt verbindlich buchen"}
             </Button>
           </form>
         </div>
