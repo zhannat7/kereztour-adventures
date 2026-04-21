@@ -41,11 +41,17 @@ const Zahlung = () => {
           <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm text-center space-y-6">
             <CheckCircle className="mx-auto h-16 w-16 text-primary" />
             <h1 className="text-2xl md:text-3xl font-bold text-primary">Buchung eingegangen!</h1>
-
+            <p className="text-muted-foreground text-sm">
+              Wir melden uns in Kürze bei dir. Danke für dein Vertrauen! 🙏
+            </p>
             <div className="text-left space-y-3 bg-muted rounded-xl p-4">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Name</span>
                 <span className="font-medium text-foreground">{booking.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Reise</span>
+                <span className="font-medium text-foreground">{booking.tour}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Reisedatum</span>
@@ -64,9 +70,7 @@ const Zahlung = () => {
                 <span className="font-bold text-primary">{booking.totalPrice.toLocaleString("de-DE")} €</span>
               </div>
             </div>
-
-            <p className="text-muted-foreground">Zahlung wird in Kürze verfügbar sein</p>
-
+            <p className="text-muted-foreground text-sm">Zahlung wird in Kürze verfügbar sein.</p>
             <Button onClick={() => navigate("/")} className="w-full">
               Zurück zur Startseite
             </Button>
