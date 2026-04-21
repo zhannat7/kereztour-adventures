@@ -4,7 +4,7 @@ import { Menu, X, ArrowRight } from "lucide-react";
 
 const navLinks = [
   { label: "Reiseplan", href: "#reiseplan", isRoute: false },
-  { label: "Preise", href: "#preise", isRoute: false },
+  { label: "Pakete", href: "#preise", isRoute: false },
   { label: "Buchen", href: "/buchen", isRoute: true },
   { label: "Kontakt", href: "#kontakt", isRoute: false },
 ];
@@ -30,9 +30,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-card/90 backdrop-blur-xl shadow-[0_1px_0_0_hsl(var(--border))]"
-          : "bg-transparent"
+        scrolled ? "bg-card/90 backdrop-blur-xl shadow-[0_1px_0_0_hsl(var(--border))]" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-5 md:py-6">
@@ -43,18 +41,20 @@ const Navbar = () => {
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-10">
           <ul className="flex items-center gap-8">
-            {navLinks.filter(l => !l.isRoute).map((l) => (
-              <li key={l.label}>
-                <a
-                  href={l.href}
-                  onClick={() => handleHashClick(l.href)}
-                  className="font-body text-sm font-medium tracking-wide uppercase transition-colors duration-300 hover:text-primary"
-                  style={{ color: scrolled ? "hsl(var(--foreground))" : "hsla(0,0%,100%,0.85)" }}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
+            {navLinks
+              .filter((l) => !l.isRoute)
+              .map((l) => (
+                <li key={l.label}>
+                  <a
+                    href={l.href}
+                    onClick={() => handleHashClick(l.href)}
+                    className="font-body text-sm font-medium tracking-wide uppercase transition-colors duration-300 hover:text-primary"
+                    style={{ color: scrolled ? "hsl(var(--foreground))" : "hsla(0,0%,100%,0.85)" }}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
           </ul>
           <Link
             to="/buchen"
