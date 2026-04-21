@@ -25,7 +25,7 @@ const days = [
   {
     day: 4,
     title: "Nomadenleben am Song-Köl",
-    desc: "Wanderung entlang der Uferlinie oder zu Bergrücken bis 3.500 m – 360°-Panorama. Kontakt mit Hirten, Beobachtung der Stutenmilch-Produktion.",
+    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. Kontakt mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
     stay: "Jurtencamp am Song-Köl",
   },
   {
@@ -37,7 +37,7 @@ const days = [
   {
     day: 6,
     title: "Skazka Canyon → Karakol",
-    desc: "Trekking durch die bizarren Felsformationen des Fairytale Canyons. Weiterfahrt nach Karakol, Vorbereitung auf den Ala-Köl Trek.",
+    desc: "Kurzes aber intensives Trekking durch die bizarren Felsformationen des Skazka (Fairytale) Canyons. Weiterfahrt nach Karakol, Besuch der historischen hölzernen russisch-orthodoxen Kirche. Vorbereitung auf den großen Ala-Köl Trek.",
     stay: "Hotel/Gästehaus in Karakol",
   },
   {
