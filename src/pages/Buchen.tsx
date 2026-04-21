@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, Minus, Plus } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,19 +14,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const TOURS = [
-  { id: "nomaden", label: "Weltspiele der Nomaden 2026", price: 1200, hasTiers: false },
-  { id: "kultur", label: "Kultur Tour", price: null, hasTiers: true },
-  { id: "trekking", label: "Intensiv-Trekking", price: 1200, hasTiers: false },
+  {
+    id: "nomaden",
+    emoji: "🏇",
+    label: "Weltspiele der Nomaden 2026",
+    desc: "Kultur & Sportevent am Issyk-Kul",
+    price: 1200,
+    hasTiers: false,
+  },
+  {
+    id: "kultur",
+    emoji: "🏛️",
+    label: "Kultur Tour",
+    desc: "10 Tage durch Kirgisistans Highlights",
+    price: null,
+    hasTiers: true,
+  },
+  {
+    id: "trekking",
+    emoji: "🥾",
+    label: "Intensiv-Trekking",
+    desc: "Bergseen & Hochgebirge, 10 Tage",
+    price: 1200,
+    hasTiers: false,
+  },
 ] as const;
 
 type TourId = (typeof TOURS)[number]["id"];
-
 const TIER_PRICES = { economy: 990, comfort: 1490 } as const;
 
 const bookingSchema = z.object({
@@ -34,7 +53,7 @@ const bookingSchema = z.object({
   nachname: z.string().trim().min(1, "Nachname ist erforderlich").max(100),
   email: z.string().trim().email("Bitte gib eine gültige E-Mail-Adresse ein").max(255),
   phone: z.string().trim().min(1, "Telefonnummer ist erforderlich").max(30),
-  persons: z.number({ required_error: "Anzahl ist erforderlich" }).min(1, "Mindestens 1 Person").max(20, "Maximal 20 Personen"),
+  persons: z.number().min(1).max(20),
   travelDate: z.date({ required_error: "Reisedatum ist erforderlich" }),
   tour: z.string().min(1, "Bitte wähle eine Reise"),
   tier: z.string().optional(),
@@ -42,6 +61,15 @@ const bookingSchema = z.object({
 });
 
 type BookingForm = z.infer<typeof bookingSchema>;
+
+const Step = ({ n, title }: { n: number; title: string }) => (
+  <div className="flex items-center gap-3 mb-4">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold">
+      {n}
+    </span>
+    <h2 className="font-display text-lg text-foreground">{title}</h2>
+  </div>
+);
 
 const Buchen = () => {
   const navigate = useNavigate();
@@ -66,7 +94,6 @@ const Buchen = () => {
   const tourId = watch("tour") as TourId;
   const tier = watch("tier") as "economy" | "comfort";
   const travelDate = watch("travelDate");
-
   const selectedTour = TOURS.find((t) => t.id === tourId);
 
   const pricePerPerson = useMemo(() => {
@@ -87,16 +114,15 @@ const Buchen = () => {
       const tierValue = tour?.hasTiers ? data.tier! : "standard";
 
       const { error } = await supabase.from("bookings").insert({
-  name: `${data.vorname} ${data.nachname}`,
-  email: data.email,
-  phone: data.phone,
-  persons: data.persons,
-  travel_date: format(data.travelDate, "yyyy-MM-dd"),
-  tour: tour?.label,
-  tier: tierValue,
-  notes: data.notes || null,
-  total_price: total,
-});
+        name: `${data.vorname} ${data.nachname}`,
+        email: data.email,
+        phone: data.phone,
+        persons: data.persons,
+        travel_date: format(data.travelDate, "yyyy-MM-dd"),
+        tour: tour?.label,
+        tier: tierValue,
+        notes: data.notes || null,
+        total_price: total,
       });
 
       if (error) throw error;
@@ -130,165 +156,186 @@ const Buchen = () => {
           >
             ← Zurück
           </Button>
-          <h1 className="text-3xl md:text-4xl font-bold text-primary text-center mb-2">
-            Reise buchen
-          </h1>
-          <p className="text-center text-muted-foreground mb-10">
-            Fülle das Formular aus und sichere dir deinen Platz
-          </p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm">
-            {/* Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="vorname">Vorname *</Label>
-                <Input id="vorname" {...register("vorname")} placeholder="Max" />
-                {errors.vorname && <p className="text-sm text-destructive">{errors.vorname.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="nachname">Nachname *</Label>
-                <Input id="nachname" {...register("nachname")} placeholder="Mustermann" />
-                {errors.nachname && <p className="text-sm text-destructive">{errors.nachname.message}</p>}
-              </div>
-            </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-primary text-center mb-2">Reise buchen</h1>
+          <p className="text-center text-muted-foreground mb-10">Nur 3 Schritte bis zu deinem Kirgisistan-Abenteuer</p>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <Label htmlFor="email">E-Mail *</Label>
-              <Input id="email" type="email" {...register("email")} placeholder="max@beispiel.de" />
-              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
-            </div>
-
-            {/* Phone */}
-            <div className="space-y-2">
-              <Label htmlFor="phone">Telefonnummer *</Label>
-              <Input id="phone" type="tel" {...register("phone")} placeholder="+49 123 456789" />
-              {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
-            </div>
-
-            {/* Tour Selection */}
-            <div className="space-y-3">
-              <Label>Reise wählen *</Label>
-              <RadioGroup
-                defaultValue={defaultTour}
-                onValueChange={(v) => setValue("tour", v, { shouldValidate: true })}
-                className="space-y-3"
-              >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* SCHRITT 1 – Reise wählen */}
+            <div className="bg-card rounded-2xl border border-border p-6">
+              <Step n={1} title="Welche Reise möchtest du buchen?" />
+              <div className="space-y-3">
                 {TOURS.map((tour) => (
-                  <label
+                  <button
                     key={tour.id}
-                    htmlFor={`tour-${tour.id}`}
+                    type="button"
+                    onClick={() => setValue("tour", tour.id, { shouldValidate: true })}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tourId === tour.id ? "border-primary bg-primary/5" : "border-border"
+                      "w-full flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200",
+                      tourId === tour.id
+                        ? "border-primary bg-primary/5 shadow-sm"
+                        : "border-border hover:border-primary/40",
                     )}
                   >
-                    <RadioGroupItem value={tour.id} id={`tour-${tour.id}`} />
+                    <span className="text-3xl">{tour.emoji}</span>
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">{tour.label}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {tour.hasTiers ? "ab 990 € / Person" : `${tour.price!.toLocaleString("de-DE")} € / Person`}
+                      <p className="text-sm text-muted-foreground">{tour.desc}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-bold text-primary text-sm">
+                        {tour.hasTiers ? "ab 990 €" : `${tour.price!.toLocaleString("de-DE")} €`}
                       </p>
+                      <p className="text-xs text-muted-foreground">/ Person</p>
                     </div>
-                  </label>
+                  </button>
                 ))}
-              </RadioGroup>
-              {errors.tour && <p className="text-sm text-destructive">{errors.tour.message}</p>}
-            </div>
-
-            {/* Tier – only for Kultur Tour */}
-            {selectedTour?.hasTiers && (
-              <div className="space-y-3">
-                <Label>Reisetyp *</Label>
-                <RadioGroup
-                  defaultValue="comfort"
-                  onValueChange={(v) => setValue("tier", v, { shouldValidate: true })}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-                >
-                  <label
-                    htmlFor="economy"
-                    className={cn(
-                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tier === "economy" ? "border-primary bg-primary/5" : "border-border"
-                    )}
-                  >
-                    <RadioGroupItem value="economy" id="economy" />
-                    <div>
-                      <p className="font-semibold text-foreground">Economy</p>
-                      <p className="text-sm text-muted-foreground">990 € / Person</p>
-                    </div>
-                  </label>
-                  <label
-                    htmlFor="comfort"
-                    className={cn(
-                      "flex items-center gap-3 rounded-xl border-2 p-4 cursor-pointer transition-colors",
-                      tier === "comfort" ? "border-primary bg-primary/5" : "border-border"
-                    )}
-                  >
-                    <RadioGroupItem value="comfort" id="comfort" />
-                    <div>
-                      <p className="font-semibold text-foreground">Comfort</p>
-                      <p className="text-sm text-muted-foreground">1.490 € / Person</p>
-                    </div>
-                  </label>
-                </RadioGroup>
               </div>
-            )}
+              {errors.tour && <p className="text-sm text-destructive mt-2">{errors.tour.message}</p>}
 
-            {/* Persons */}
-            <div className="space-y-2">
-              <Label htmlFor="persons">Anzahl der Personen *</Label>
-              <Input
-                id="persons"
-                type="number"
-                min={1}
-                max={20}
-                {...register("persons", { valueAsNumber: true })}
-              />
-              {errors.persons && <p className="text-sm text-destructive">{errors.persons.message}</p>}
+              {/* Tier – nur bei Kultur Tour */}
+              {selectedTour?.hasTiers && (
+                <div className="mt-5 pt-5 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground mb-3">Wähle dein Paket für die Kultur Tour:</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(["economy", "comfort"] as const).map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setValue("tier", t, { shouldValidate: true })}
+                        className={cn(
+                          "rounded-xl border-2 p-4 text-left transition-all duration-200",
+                          tier === t ? "border-primary bg-primary/5" : "border-border hover:border-primary/40",
+                        )}
+                      >
+                        <p className="font-bold text-foreground capitalize">{t}</p>
+                        <p className="text-lg font-display text-primary mt-1">
+                          {TIER_PRICES[t].toLocaleString("de-DE")} €
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {t === "economy" ? "Hostel & Jurte, Gruppe bis 12" : "Luxushotel, Gruppe bis 4"}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Travel Date */}
-            <div className="space-y-2">
-              <Label>Reisedatum *</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !travelDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {travelDate ? format(travelDate, "PPP", { locale: de }) : "Datum wählen"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={travelDate}
-                    onSelect={(date) => date && setValue("travelDate", date, { shouldValidate: true })}
-                    disabled={(date) => date < new Date()}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
+            {/* SCHRITT 2 – Personen & Datum */}
+            <div className="bg-card rounded-2xl border border-border p-6">
+              <Step n={2} title="Wann und wie viele Personen?" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Personen */}
+                <div className="space-y-2">
+                  <Label>Anzahl der Personen</Label>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setValue("persons", Math.max(1, (persons || 1) - 1))}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </button>
+                    <span className="text-2xl font-bold text-primary w-8 text-center">{persons || 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => setValue("persons", Math.min(20, (persons || 1) + 1))}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Datum */}
+                <div className="space-y-2">
+                  <Label>Reisedatum *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !travelDate && "text-muted-foreground",
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {travelDate ? format(travelDate, "PPP", { locale: de }) : "Datum wählen"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={travelDate}
+                        onSelect={(date) => date && setValue("travelDate", date, { shouldValidate: true })}
+                        disabled={(date) => date < new Date()}
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {errors.travelDate && <p className="text-sm text-destructive">{errors.travelDate.message}</p>}
+                </div>
+              </div>
+            </div>
+
+            {/* SCHRITT 3 – Kontaktdaten */}
+            <div className="bg-card rounded-2xl border border-border p-6">
+              <Step n={3} title="Deine Kontaktdaten" />
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="vorname">Vorname *</Label>
+                    <Input id="vorname" {...register("vorname")} placeholder="Max" />
+                    {errors.vorname && <p className="text-sm text-destructive">{errors.vorname.message}</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="nachname">Nachname *</Label>
+                    <Input id="nachname" {...register("nachname")} placeholder="Mustermann" />
+                    {errors.nachname && <p className="text-sm text-destructive">{errors.nachname.message}</p>}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">E-Mail *</Label>
+                  <Input id="email" type="email" {...register("email")} placeholder="max@beispiel.de" />
+                  {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Telefonnummer *</Label>
+                  <Input id="phone" type="tel" {...register("phone")} placeholder="+49 123 456789" />
+                  {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="notes">
+                    Besondere Wünsche <span className="text-muted-foreground font-normal">(optional)</span>
+                  </Label>
+                  <Textarea
+                    id="notes"
+                    {...register("notes")}
+                    placeholder="Allergien, besondere Anforderungen..."
+                    rows={3}
                   />
-                </PopoverContent>
-              </Popover>
-              {errors.travelDate && <p className="text-sm text-destructive">{errors.travelDate.message}</p>}
+                </div>
+              </div>
             </div>
 
-            {/* Notes */}
-            <div className="space-y-2">
-              <Label htmlFor="notes">Besondere Wünsche</Label>
-              <Textarea id="notes" {...register("notes")} placeholder="Allergien, besondere Anforderungen..." rows={3} />
-            </div>
-
-            {/* Price Summary */}
-            <div className="rounded-xl bg-muted p-4 text-center">
-              <p className="text-lg font-bold text-primary">
-                Gesamtpreis: {totalPrice.toLocaleString("de-DE")} € ({persons || 1} {(persons || 1) === 1 ? "Person" : "Personen"} × {pricePerPerson.toLocaleString("de-DE")} €)
-              </p>
+            {/* Preisübersicht */}
+            <div className="rounded-2xl bg-primary text-primary-foreground p-6 flex items-center justify-between">
+              <div>
+                <p className="text-primary-foreground/70 text-sm mb-1">Gesamtpreis</p>
+                <p className="font-display text-4xl">{totalPrice.toLocaleString("de-DE")} €</p>
+                <p className="text-primary-foreground/70 text-xs mt-1">
+                  {persons || 1} {(persons || 1) === 1 ? "Person" : "Personen"} ×{" "}
+                  {pricePerPerson.toLocaleString("de-DE")} €
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-primary-foreground/70 text-xs">Ausgewählt</p>
+                <p className="font-semibold text-sm">
+                  {selectedTour?.emoji} {selectedTour?.label}
+                </p>
+              </div>
             </div>
 
             {submitError && (
@@ -297,14 +344,14 @@ const Buchen = () => {
               </Alert>
             )}
 
-            <Button type="submit" className="w-full h-12 text-base" disabled={isSubmitting}>
+            <Button type="submit" className="w-full h-14 text-base rounded-xl" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Wird gesendet...
                 </>
               ) : (
-                "Jetzt verbindlich buchen"
+                "Jetzt verbindlich buchen →"
               )}
             </Button>
           </form>
