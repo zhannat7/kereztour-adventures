@@ -145,10 +145,7 @@ const Lightbox = ({
   }, [index]);
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95" onClick={onClose}>
       {/* Close */}
       <button
         onClick={onClose}
@@ -159,14 +156,20 @@ const Lightbox = ({
 
       {/* Prev */}
       <button
-        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onPrev();
+        }}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
 
       {/* Main Image */}
-      <div className="flex-1 flex items-center justify-center min-h-0 w-full px-10 md:px-16 pb-2" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="flex-1 flex items-center justify-center min-h-0 w-full px-10 md:px-16 pb-2"
+        onClick={(e) => e.stopPropagation()}
+      >
         <img
           key={index}
           src={images[index].src}
@@ -177,7 +180,10 @@ const Lightbox = ({
 
       {/* Next */}
       <button
-        onClick={(e) => { e.stopPropagation(); onNext(); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onNext();
+        }}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
       >
         <ChevronRight className="h-6 w-6" />
@@ -200,17 +206,10 @@ const Lightbox = ({
             key={i}
             onClick={() => onSelect(i)}
             className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded overflow-hidden transition-all duration-200 ${
-              i === index
-                ? "ring-2 ring-white opacity-100 scale-105"
-                : "opacity-40 hover:opacity-70"
+              i === index ? "ring-2 ring-white opacity-100 scale-105" : "opacity-40 hover:opacity-70"
             }`}
           >
-            <img
-              src={img.src}
-              alt={img.alt}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
+            <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
           </button>
         ))}
       </div>
@@ -219,24 +218,23 @@ const Lightbox = ({
 };
 
 /* ── Gallery ── */
-const VISIBLE_COUNT = 20;
+const VISIBLE_COUNT = 12;
 
 const Gallery = () => {
   const ref = useScrollReveal();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(VISIBLE_COUNT);
 
   const openLightbox = useCallback((i: number) => setLightboxIdx(i), []);
   const closeLightbox = useCallback(() => setLightboxIdx(null), []);
   const prev = useCallback(
     () => setLightboxIdx((i) => (i !== null ? (i - 1 + images.length) % images.length : null)),
-    []
+    [],
   );
-  const next = useCallback(
-    () => setLightboxIdx((i) => (i !== null ? (i + 1) % images.length : null)),
-    []
-  );
+  const next = useCallback(() => setLightboxIdx((i) => (i !== null ? (i + 1) % images.length : null)), []);
 
-  const visibleImages = images.slice(0, VISIBLE_COUNT);
+  const visibleImages = images.slice(0, visibleCount);
+  const hasMore = visibleCount < images.length;
 
   return (
     <>
@@ -247,12 +245,10 @@ const Gallery = () => {
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground">
               Fotos unserer zufriedenen Kunden
             </h2>
-            <p className="mt-3 text-primary font-medium tracking-wide">
-              #kereztour
-            </p>
+            <p className="mt-3 text-primary font-medium tracking-wide">#kereztour</p>
           </div>
 
-          {/* Compact Mosaic Grid — 20 images */}
+          {/* Grid */}
           <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5 gap-[2px]">
             {visibleImages.map((img, i) => (
               <button
@@ -269,6 +265,18 @@ const Gallery = () => {
               </button>
             ))}
           </div>
+
+          {/* Mehr laden Button */}
+          {hasMore && (
+            <div className="mt-8 text-center">
+              <button
+                onClick={() => setVisibleCount((c) => Math.min(c + 12, images.length))}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                Mehr laden ({images.length - visibleCount} weitere Fotos)
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
