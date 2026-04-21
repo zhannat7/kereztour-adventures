@@ -49,7 +49,7 @@ const days = [
   {
     day: 8,
     title: "Königsetappe: Ala-Köl Pass",
-    desc: "Der härteste Tag: Aufstieg zum Ala-Köl See (3.560 m) und über den Ala-Köl Pass (3.911 m). Atemberaubender Blick auf die 5.000er Gipfel des Tienschan. Abstieg nach Altyn-Arashan.",
+    desc: "Der härteste Tag der Tour: Aufstieg zum Ala-Köl See (3.560 m) und weiter über den Ala-Köl Pass (3.911 m). Atemberaubender Blick auf die 5.000er Gipfel des Tienschan. Langer Abstieg in das idyllische Tal von Altyn-Arashan.",
     stay: "Berghütte mit heißen Thermalquellen",
   },
   {
