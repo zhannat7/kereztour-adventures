@@ -172,7 +172,28 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
   );
 };
 
-const Kultur = () => (
+const Kultur = () => {
+  const [activeDay, setActiveDay] = useState(0);
+  const dayRefs = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = dayRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (idx !== -1) setActiveDay(idx);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: "-20% 0px -60% 0px" }
+    );
+    dayRefs.current.forEach((el) => { if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+  
   <>
     <Navbar />
     <main className="pt-28 pb-20">
@@ -221,17 +242,21 @@ const Kultur = () => (
             Dein <span className="italic text-primary">Reiseplan</span>
           </h2>
 
-          <div className="relative">
+         <div className="relative">
             {/* Vertikale Linie */}
             <div className="absolute left-5 top-0 bottom-0 w-px bg-border md:left-8" />
 
             <div className="space-y-16">
               {days.map((d, i) => (
-                <div key={d.day} className="relative flex gap-6 md:gap-10">
+                <div
+                  key={d.day}
+                  className="relative flex gap-6 md:gap-10"
+                  ref={(el) => { if (el) dayRefs.current[i] = el; }}
+                >
 
                   {/* Kreis mit Tag-Nummer */}
                   <div className="relative z-10 flex-shrink-0">
-                    <div className={`flex h-11 w-11 items-center justify-center rounded-full font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl ${i === 0 ? "bg-primary text-primary-foreground" : "bg-card border-2 border-primary text-primary"}`}>
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-full font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
                       {d.day}
                     </div>
                   </div>
@@ -337,5 +362,5 @@ const Kultur = () => (
     <Footer />
   </>
 );
-
+};
 export default Kultur;
