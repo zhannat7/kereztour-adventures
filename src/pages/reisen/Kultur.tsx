@@ -180,7 +180,7 @@ const Kultur = () => {
               {days.map((d, i) => (
                 <div
                   key={d.day}
-                  className={`flex flex-col ${d.photos.length > 0 ? "md:flex-row" : ""} ${i % 2 === 1 && d.photos.length > 0 ? "md:flex-row-reverse" : ""} gap-6 rounded-2xl bg-card border border-border p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300`}
+                  className="flex flex-col md:flex-row gap-6 rounded-2xl bg-card border border-border p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
                 >
                   {/* Foto Slider */}
                   {d.photos.length > 0 && (
