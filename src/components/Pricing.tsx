@@ -1,4 +1,4 @@
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Home, Hotel, Users, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -6,13 +6,24 @@ const plans = [
   {
     name: "Economy",
     price: "990",
-    perks: ["Hostel", "Mehrbettzimmer (2+ Personen)", "Standardservice"],
+    featured: false,
+    tagline: "Authentisch & erschwinglich",
+    details: [
+      { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" },
+      { icon: Users, text: "Gruppe bis 12 Personen" },
+      { icon: Star, text: "Standard Service" },
+    ],
   },
   {
     name: "Comfort",
     price: "1.490",
-    perks: ["Luxushotel", "Einzel-/Doppelzimmer", "Premium-Service"],
     featured: true,
+    tagline: "Exklusiv & komfortabel",
+    details: [
+      { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" },
+      { icon: Users, text: "Kleine Gruppe, max. 4 Personen" },
+      { icon: Star, text: "Premium Service" },
+    ],
   },
 ];
 
@@ -26,13 +37,13 @@ const Pricing = () => {
       <div ref={ref} className="section-reveal container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-            Unsere Pakete
+            Nur für die Kultur Tour
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            Wähle dein <span className="italic text-primary">Abenteuer</span>
+            Wähle dein <span className="italic text-primary">Paket</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Zwei Pakete, ein unvergessliches Erlebnis – wähle, was am besten zu dir passt
+            Beide Pakete beinhalten dasselbe 10-Tage-Programm – der Unterschied liegt im Komfort.
           </p>
         </div>
 
@@ -52,33 +63,36 @@ const Pricing = () => {
                 </div>
               )}
 
+              <p className={`text-sm font-medium mb-2 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                {plan.tagline}
+              </p>
               <h3 className="font-display text-2xl md:text-3xl mb-1">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-1">
+              <div className="flex items-baseline gap-1 mb-8">
                 <span className="text-5xl md:text-6xl font-display">{plan.price}</span>
                 <span className="text-lg">€</span>
+                <span className={`text-sm ml-1 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                  pro Person
+                </span>
               </div>
-              <p className={`text-sm mb-8 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                pro Person
-              </p>
 
               <ul className="space-y-4 mb-10 flex-1">
-                {plan.perks.map((perk) => (
-                  <li key={perk} className="flex items-start gap-3 text-sm">
-                    <Check className={`h-5 w-5 shrink-0 mt-0.5 ${plan.featured ? "text-secondary" : "text-primary"}`} />
-                    <span>{perk}</span>
+                {plan.details.map((d) => (
+                  <li key={d.text} className="flex items-center gap-3 text-sm">
+                    <d.icon className={`h-5 w-5 shrink-0 ${plan.featured ? "text-secondary" : "text-primary"}`} />
+                    <span>{d.text}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
-                to="/buchen"
+                to="/buchen?tour=kultur"
                 className={`inline-flex items-center justify-center gap-2 rounded-full py-4 font-semibold transition-all duration-300 hover:scale-105 ${
                   plan.featured
                     ? "bg-secondary text-secondary-foreground shadow-lg shadow-secondary/25 hover:shadow-secondary/40"
                     : "bg-primary text-primary-foreground shadow-lg shadow-primary/15 hover:shadow-primary/30"
                 }`}
               >
-                Jetzt buchen <ArrowRight className="h-4 w-4" />
+                Kultur Tour buchen <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ))}
