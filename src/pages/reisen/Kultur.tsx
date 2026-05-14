@@ -183,24 +183,28 @@ const Kultur = () => (
                       {d.title}
                     </h3>
 
+                   {/* Foto + Text nebeneinander */}
+                  <div className={`flex flex-col ${d.photos.length > 0 ? "md:flex-row" : ""} gap-5 mt-1`}>
+
                     {/* Foto Slider */}
                     {d.photos.length > 0 && (
-                      <div className="mb-4">
+                      <div className="w-full md:w-[280px] flex-shrink-0">
                         <PhotoSlider photos={d.photos} />
                       </div>
                     )}
 
                     {/* Text */}
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3">
-                      {d.desc}
-                    </p>
-
-                    {/* Unterkunft */}
-                    {d.stay && (
-                      <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
-                        Unterkunft: {d.stay}
-                      </div>
-                    )}
+                    <div className="flex flex-col justify-center gap-3">
+                      <p className="text-base text-muted-foreground leading-relaxed">
+                        {d.desc}
+                      </p>
+                      {d.stay && (
+                        <div className="inline-flex self-start items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
+                          Unterkunft: {d.stay}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   </div>
                 </div>
               ))}
