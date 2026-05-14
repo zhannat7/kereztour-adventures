@@ -65,14 +65,28 @@ const highlights = [
 /* ── Foto Slider ── */
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [idx, setIdx] = useState(0);
+  const [dir, setDir] = useState<"left" | "right" | null>(null);
+  const [animating, setAnimating] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const prev = () => setIdx((i) => (i - 1 + photos.length) % photos.length);
-  const next = () => setIdx((i) => (i + 1) % photos.length);
+  const go = (newIdx: number, direction: "left" | "right") => {
+    if (animating) return;
+    setDir(direction);
+    setAnimating(true);
+    setTimeout(() => {
+      setIdx(newIdx);
+      setAnimating(false);
+      setDir(null);
+    }, 350);
+  };
+
+  const prev = () => go((idx - 1 + photos.length) % photos.length, "right");
+  const next = () => go((idx + 1) % photos.length, "left");
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl aspect-[16/9] select-none"
+      className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none cursor-pointer"
+      onClick={next}
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
@@ -81,29 +95,78 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
         else if (diff < -40) prev();
         touchStartX.current = null;
       }}
+      style={{ touchAction: "pan-y" }}
     >
+      {/* Aktuelles Bild */}
       <img
         key={idx}
         src={photos[idx]}
-        className="w-full h-full object-cover transition-opacity duration-300"
+        className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
+        style={{
+          transform: animating
+            ? `translateX(${dir === "left" ? "-100%" : "100%"})`
+            : "translateX(0)",
+          transition: animating ? "transform 350ms cubic-bezier(0.4,0,0.2,1)" : "none",
+        }}
       />
+
+      {/* Nächstes Bild das reinkommt */}
+      {animating && (
+        <img
+          src={photos[dir === "left"
+            ? (idx + 1) % photos.length
+            : (idx - 1 + photos.length) % photos.length
+          ]}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            transform: dir === "left" ? "translateX(100%)" : "translateX(-100%)",
+            animation: `slideIn-${dir} 350ms cubic-bezier(0.4,0,0.2,1) forwards`,
+          }}
+        />
+      )}
+
+      <style>{`
+        @keyframes slideIn-left {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+        @keyframes slideIn-right {
+          from { transform: translateX(-100%); }
+          to { transform: translateX(0); }
+        }
+      `}</style>
+
+      {/* Dot Indikatoren */}
       {photos.length > 1 && (
-        <>
-          <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all">
-            <ChevronLeft className="h-5 w-5" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+          {photos.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Pfeil-Hint nur auf Desktop */}
+      {photos.length > 1 && (
+        <div className="absolute inset-0 flex items-center justify-between px-2 opacity-0 hover:opacity-100 transition-opacity duration-200">
+          <button
+            onClick={(e) => { e.stopPropagation(); prev(); }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
+          >
+            <ChevronLeft className="h-4 w-4" />
           </button>
-          <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all">
-            <ChevronRight className="h-5 w-5" />
+          <button
+            onClick={(e) => { e.stopPropagation(); next(); }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
+          >
+            <ChevronRight className="h-4 w-4" />
           </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {photos.map((_, i) => (
-              <button key={i} onClick={() => setIdx(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
-              />
-            ))}
-          </div>
-        </>
+        </div>
       )}
     </div>
   );
