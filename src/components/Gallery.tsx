@@ -114,7 +114,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
       onClick={onClose}
     >
       {/* Dunkles Overlay */}
-    <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl" />
+    <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl" />
     >
       <button onClick={onClose} className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition">
         <X className="h-6 w-6" />
