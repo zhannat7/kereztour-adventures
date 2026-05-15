@@ -50,75 +50,43 @@ import img45 from "@/assets/gallery/IMG_4933.jpg";
 import img46 from "@/assets/gallery/IMG_4992.jpg";
 import img47 from "@/assets/gallery/IMG_5006.jpg";
 import img48 from "@/assets/gallery/IMG_5010.jpg";
+import img49 from "@/assets/gallery/10.png";
+import img50 from "@/assets/gallery/11.png";
+import img51 from "@/assets/gallery/12.png";
+import img52 from "@/assets/gallery/13.png";
+import img53 from "@/assets/gallery/14.png";
+import img54 from "@/assets/gallery/21.png";
+import img55 from "@/assets/gallery/22.png";
+import img56 from "@/assets/gallery/31.png";
+import img57 from "@/assets/gallery/32.png";
+import img58 from "@/assets/gallery/41.png";
+import img59 from "@/assets/gallery/42.png";
+import img60 from "@/assets/gallery/51.png";
+import img61 from "@/assets/gallery/81.png";
+import img62 from "@/assets/gallery/82.png";
+import img63 from "@/assets/gallery/91.png";
 
 const images = [
-  { src: img1, alt: "Kirgisistan Landschaft" },
-  { src: img2, alt: "Kirgisistan Berge" },
-  { src: img11, alt: "Kirgisistan Panorama" },
-  { src: img3, alt: "Kirgisistan Natur" },
-  { src: img21, alt: "Kirgisistan Hochebene" },
-  { src: img4, alt: "Kirgisistan Kultur" },
-  { src: img31, alt: "Kirgisistan Wasser" },
-  { src: img41, alt: "Kirgisistan Felsen" },
-  { src: img12, alt: "Kirgisistan Dorf" },
-  { src: img22, alt: "Kirgisistan Fluss" },
-  { src: img5, alt: "Kirgisistan Reise" },
-  { src: img32, alt: "Kirgisistan Bergpfad" },
-  { src: img42, alt: "Kirgisistan Grünland" },
-  { src: img6, alt: "Kirgisistan Abenteuer" },
-  { src: img23, alt: "Kirgisistan Aussicht" },
-  { src: img33, alt: "Kirgisistan Almen" },
-  { src: img43, alt: "Kirgisistan Wald" },
-  { src: img13, alt: "Kirgisistan Gebirge" },
-  { src: img7, alt: "Kirgisistan Begegnungen" },
-  { src: img34, alt: "Kirgisistan Hochland" },
-  { src: img44, alt: "Kirgisistan Wolken" },
-  { src: img24, alt: "Kirgisistan Steppe" },
-  { src: img14, alt: "Kirgisistan Weite" },
-  { src: img35, alt: "Kirgisistan Lager" },
-  { src: img45, alt: "Kirgisistan Pfade" },
-  { src: img8, alt: "Kirgisistan Erlebnis" },
-  { src: img25, alt: "Kirgisistan Nomaden" },
-  { src: img36, alt: "Kirgisistan Schlucht" },
-  { src: img46, alt: "Kirgisistan Landweg" },
-  { src: img15, alt: "Kirgisistan Wanderung" },
-  { src: img9, alt: "Kirgisistan Tradition" },
-  { src: img37, alt: "Kirgisistan Wiesen" },
-  { src: img47, alt: "Kirgisistan Aussichtspunkt" },
-  { src: img26, alt: "Kirgisistan Markt" },
-  { src: img16, alt: "Kirgisistan See" },
-  { src: img38, alt: "Kirgisistan Sonnenaufgang" },
-  { src: img48, alt: "Kirgisistan Morgenrot" },
-  { src: img10, alt: "Kirgisistan Pferde" },
-  { src: img27, alt: "Kirgisistan Gipfel" },
-  { src: img39, alt: "Kirgisistan Gletscher" },
-  { src: img17, alt: "Kirgisistan Jurten" },
-  { src: img28, alt: "Kirgisistan Abend" },
-  { src: img40, alt: "Kirgisistan Weide" },
-  { src: img18, alt: "Kirgisistan Sonnenuntergang" },
-  { src: img29, alt: "Kirgisistan Wildnis" },
-  { src: img19, alt: "Kirgisistan Tal" },
-  { src: img30, alt: "Kirgisistan Freiheit" },
-  { src: img20, alt: "Kirgisistan Horizont" },
-];
+  img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
+  img11, img12, img13, img14, img15, img16, img17, img18, img19, img20,
+  img21, img22, img23, img24, img25, img26, img27, img28, img29, img30,
+  img31, img32, img33, img34, img35, img36, img37, img38, img39, img40,
+  img41, img42, img43, img44, img45, img46, img47, img48, img49, img50,
+  img51, img52, img53, img54, img55, img56, img57, img58, img59, img60,
+  img61, img62, img63,
+].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
 
-/* ── Lightbox with Thumbnail Strip ── */
-const Lightbox = ({
-  images,
-  index,
-  onClose,
-  onPrev,
-  onNext,
-  onSelect,
-}: {
+const VISIBLE = 24; // 2 Zeilen × 12
+
+/* ── Lightbox ── */
+const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
   images: { src: string; alt: string }[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
-  onSelect: (i: number) => void;
 }) => {
-  const thumbRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -134,80 +102,49 @@ const Lightbox = ({
     };
   }, [onClose, onPrev, onNext]);
 
-  // Scroll active thumbnail into view
-  useEffect(() => {
-    const container = thumbRef.current;
-    if (!container) return;
-    const active = container.children[index] as HTMLElement;
-    if (active) {
-      active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    }
-  }, [index]);
-
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95" onClick={onClose}>
-      {/* Close */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white/80 transition hover:bg-white/20 hover:text-white"
-      >
+    <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/92"
+      onClick={onClose}
+    >
+      <button onClick={onClose} className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition">
         <X className="h-6 w-6" />
       </button>
 
-      {/* Prev */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onPrev();
-        }}
-        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
-      >
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+        {index + 1} / {images.length}
+      </div>
+
+      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition">
         <ChevronLeft className="h-6 w-6" />
       </button>
 
-      {/* Main Image */}
-      <div
-        className="flex-1 flex items-center justify-center min-h-0 w-full px-10 md:px-16 pb-2"
+      <img
+        src={images[index].src}
+        alt={images[index].alt}
+        className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
         onClick={(e) => e.stopPropagation()}
-      >
-        <img
-          key={index}
-          src={images[index].src}
-          alt={images[index].alt}
-          className="max-h-[82vh] max-w-[90vw] object-contain animate-fade-in"
-        />
-      </div>
-
-      {/* Next */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onNext();
+        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (!touchStartX.current) return;
+          const diff = touchStartX.current - e.changedTouches[0].clientX;
+          if (diff > 40) onNext();
+          else if (diff < -40) onPrev();
+          touchStartX.current = null;
         }}
-        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/10 p-2.5 text-white/80 transition hover:bg-white/20 hover:text-white"
-      >
+      />
+
+      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition">
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Counter */}
-      <span className="text-white/60 text-sm mb-2">
-        {index + 1} von {images.length}
-      </span>
-
       {/* Thumbnail Strip */}
-      <div
-        ref={thumbRef}
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-4xl flex gap-1.5 overflow-x-auto px-4 pb-4 pt-1 scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 overflow-x-auto max-w-[90vw] px-2" style={{ scrollbarWidth: "none" }}>
         {images.map((img, i) => (
           <button
             key={i}
-            onClick={() => onSelect(i)}
-            className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded overflow-hidden transition-all duration-200 ${
-              i === index ? "ring-2 ring-white opacity-100 scale-105" : "opacity-40 hover:opacity-70"
-            }`}
+            onClick={(e) => { e.stopPropagation(); }}
+            className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all ${i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-40 hover:opacity-70"}`}
           >
             <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
           </button>
@@ -218,69 +155,62 @@ const Lightbox = ({
 };
 
 /* ── Gallery ── */
-const VISIBLE_COUNT = 12;
-
 const Gallery = () => {
   const ref = useScrollReveal();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(VISIBLE_COUNT);
 
   const openLightbox = useCallback((i: number) => setLightboxIdx(i), []);
   const closeLightbox = useCallback(() => setLightboxIdx(null), []);
-  const prev = useCallback(
-    () => setLightboxIdx((i) => (i !== null ? (i - 1 + images.length) % images.length : null)),
-    [],
-  );
-  const next = useCallback(() => setLightboxIdx((i) => (i !== null ? (i + 1) % images.length : null)), []);
-
-  const visibleImages = images.slice(0, visibleCount);
-  const hasMore = visibleCount < images.length;
+  const prev = useCallback(() => setLightboxIdx((i) => i !== null ? (i - 1 + images.length) % images.length : null), []);
+  const next = useCallback(() => setLightboxIdx((i) => i !== null ? (i + 1) % images.length : null), []);
 
   return (
     <>
-      <section id="galerie" className="py-16 md:py-24 bg-background relative overflow-hidden">
-        <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-5xl">
+      <section id="galerie" className="py-14 md:py-20 bg-background">
+        <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
+
           {/* Header */}
-          <div className="text-center mb-8">
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground">
-              Fotos unserer zufriedenen Kunden
+          <div className="text-center mb-10">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-3 block">
+              Echte Reisefotos
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl text-foreground">
+              Eindrücke aus <span className="italic text-primary">Kirgisistan</span>
             </h2>
-            <p className="mt-3 text-primary font-medium tracking-wide">#kereztour</p>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+              Fotos unserer Reisegäste – authentisch und unvergesslich. Klicke auf ein Bild um alle {images.length} Fotos zu sehen.
+            </p>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5 gap-[2px]">
-            {visibleImages.map((img, i) => (
+          {/* Grid – nur 24 sichtbar */}
+          <div className="grid grid-cols-6 md:grid-cols-12 gap-1.5">
+            {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
                 onClick={() => openLightbox(i)}
-                className="aspect-square overflow-hidden rounded-[4px] focus:outline-none focus:ring-2 focus:ring-primary"
+                className="group relative aspect-square overflow-hidden rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <img
                   src={img.src}
                   alt={img.alt}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-lg" />
               </button>
             ))}
           </div>
 
-          {/* Mehr laden Button */}
-          {hasMore && (
-            <div className="mt-8 text-center">
-              <button
-                onClick={() => setVisibleCount((c) => Math.min(c + 12, images.length))}
-                className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-              >
-                Mehr laden ({images.length - visibleCount} weitere Fotos)
-              </button>
-            </div>
-          )}
+          {/* Hinweis */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              {VISIBLE} von {images.length} Fotos sichtbar · Klick auf ein Bild um alle zu sehen
+            </p>
+          </div>
+
         </div>
       </section>
 
-      {/* Lightbox */}
       {lightboxIdx !== null && (
         <Lightbox
           images={images}
@@ -288,7 +218,6 @@ const Gallery = () => {
           onClose={closeLightbox}
           onPrev={prev}
           onNext={next}
-          onSelect={openLightbox}
         />
       )}
     </>
