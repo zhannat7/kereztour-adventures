@@ -102,7 +102,7 @@ const Hero = () => {
               Unsere Reisen entdecken <ArrowRight className="h-5 w-5" />
             </Link>
             
-              href="#reisen"
+             <a
               className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 backdrop-blur-sm px-8 py-4 text-white text-base font-medium hover:bg-white/20 transition-all duration-300"
             >
               Mehr erfahren
