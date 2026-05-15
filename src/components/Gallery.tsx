@@ -104,8 +104,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
 
   return (
     <div
- <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[100]"
       style={{
         backgroundImage: `url(${images[index].src})`,
         backgroundSize: "cover",
@@ -113,48 +112,69 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
       }}
       onClick={onClose}
     >
-      {/* Dunkles Overlay */}
-    <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl" />
-    >
-      <button onClick={onClose} className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition">
-        <X className="h-6 w-6" />
-      </button>
+      {/* Blur Overlay */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl" />
 
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+      {/* Counter */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 text-white/70 text-sm">
         {index + 1} / {images.length}
       </div>
 
-      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition">
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-30 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition"
+      >
+        <X className="h-6 w-6" />
+      </button>
+
+      {/* Prev */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
+      >
         <ChevronLeft className="h-6 w-6" />
       </button>
 
-      <img
+      {/* Hauptbild – immer vorne */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-16 pb-24">
         <img
-        src={images[index].src}
-        alt={images[index].alt}
-        className="relative z-10 max-h-[75vh] max-w-[90vw] object-contain rounded-lg"
-        onClick={(e) => e.stopPropagation()}
-        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-        onTouchEnd={(e) => {
-          if (!touchStartX.current) return;
-          const diff = touchStartX.current - e.changedTouches[0].clientX;
-          if (diff > 40) onNext();
-          else if (diff < -40) onPrev();
-          touchStartX.current = null;
-        }}
-      />
+          src={images[index].src}
+          alt={images[index].alt}
+          className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={(e) => {
+            if (!touchStartX.current) return;
+            const diff = touchStartX.current - e.changedTouches[0].clientX;
+            if (diff > 40) onNext();
+            else if (diff < -40) onPrev();
+            touchStartX.current = null;
+          }}
+        />
+      </div>
 
-      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition">
+      {/* Next */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onNext(); }}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
+      >
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Thumbnail Strip */}
-    <div className="relative z-10 mt-auto flex gap-1.5 overflow-x-auto max-w-[90vw] px-2 pb-4 pt-2" style={{ scrollbarWidth: "none" }}>
+      {/* Thumbnails – ganz unten, unter dem Hauptbild */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-30 flex gap-1.5 overflow-x-auto px-4 py-3 bg-black/30"
+        style={{ scrollbarWidth: "none" }}
+        onClick={(e) => e.stopPropagation()}
+      >
         {images.map((img, i) => (
           <button
             key={i}
-            onClick={(e) => { e.stopPropagation(); }}
-            className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all ${i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-40 hover:opacity-70"}`}
+            onClick={() => {}}
+            className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all ${
+              i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-50 hover:opacity-80"
+            }`}
           >
             <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
           </button>
@@ -163,7 +183,6 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
     </div>
   );
 };
-
 /* ── Gallery ── */
 const Gallery = () => {
   const ref = useScrollReveal();
