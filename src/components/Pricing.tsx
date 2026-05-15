@@ -31,13 +31,13 @@ const Pricing = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="preise" className="py-24 md:py-32 bg-background relative overflow-hidden">
+    <section id="preise" className="py-16 md:py-20 bg-background relative overflow-hidden">
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl translate-y-1/2 -translate-x-1/2" />
 
       <div ref={ref} className="section-reveal container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-            Nur für die Kultur Tour
+            Kultur Tour · Pakete
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
             Wähle dein <span className="italic text-primary">Paket</span>
