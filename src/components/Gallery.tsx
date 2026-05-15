@@ -113,7 +113,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
       onClick={onClose}
     >
       {/* Blur Overlay */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl" />
+    <div className="absolute inset-0 bg-black/25 backdrop-blur-lg" />
 
       {/* Counter */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 text-white/70 text-sm">
@@ -141,14 +141,18 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
         <img
           src={images[index].src}
           alt={images[index].alt}
-          className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
-          onClick={(e) => e.stopPropagation()}
+          className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl cursor-pointer"
+          onClick={(e) => { e.stopPropagation(); onNext(); }}
           onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
           onTouchEnd={(e) => {
             if (!touchStartX.current) return;
             const diff = touchStartX.current - e.changedTouches[0].clientX;
-            if (diff > 40) onNext();
-            else if (diff < -40) onPrev();
+            if (Math.abs(diff) > 40) {
+              if (diff > 0) onNext();
+              else onPrev();
+            } else {
+              onNext();
+            }
             touchStartX.current = null;
           }}
         />
