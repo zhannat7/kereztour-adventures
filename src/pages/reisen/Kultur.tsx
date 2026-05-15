@@ -85,7 +85,8 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           className="flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
           style={{
             width: activeIdx === i ? `${activeW}px` : `${itemW}px`,
-            height: activeIdx === i ? `${activeH}px` : `${itemH}px`,
+            minHeight: activeIdx === i ? `${activeH}px` : `${itemH}px`,
+            height: "auto",
             opacity: activeIdx !== null && activeIdx !== i ? 0.45 : 1,
             transition: "all 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)",
           }}
@@ -93,7 +94,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           <img
             src={photo}
             loading="lazy"
-            className="w-full h-full object-cover object-top"
+           className="w-full h-full object-contain"
           />
         </div>
       ))}
