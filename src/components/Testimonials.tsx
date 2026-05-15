@@ -3,31 +3,30 @@ import { Star, Quote } from "lucide-react";
 
 const reviews = [
   {
-    name: "Maria S.",
+    name: "Helmut & Hannelore S.",
     country: "Deutschland",
     rating: 5,
-    text: "Eine unvergessliche Reise! Die Adlerjagd und die Jurtenübernachtung am Issyk-Kul waren absolute Highlights. Zarina hat alles perfekt organisiert – wir haben uns von Anfang an in besten Händen gefühlt.",
+    text: "Der Alltag hat zwar wieder begonnen, aber ich denke noch oft an die beinahe unendliche Weite von Kirgistan, an Pferde und Jurten, vor allem aber an die freundlichen Menschen. Du hast die Reise perfekt geplant und organisiert – danke!",
     tour: "Kultur Tour",
-    initial: "M",
+    initial: "H",
   },
   {
-    name: "Marco R.",
-    country: "Italien",
+    name: "Hubert K.",
+    country: "Deutschland",
     rating: 5,
-    text: "Der Ala-Köl Pass war körperlich fordernd aber die Aussicht auf die 5.000er Gipfel des Tienschan war schlicht atemberaubend. Professionelle Begleitung, authentische Erlebnisse – absolute Empfehlung!",
-    tour: "Intensiv-Trekking",
-    initial: "M",
+    text: "Es war sehr schön und beeindruckend Deine Heimat kennen zu lernen. Unsere Bekannten waren sehr begeistert. Eure Gastfreundschaft ist großartig und tut gut unserem Herzen. Nochmals vielen Dank!",
+    tour: "Kultur Tour",
+    initial: "H",
   },
   {
-    name: "Hans & Petra M.",
+    name: "Maria S.",
     country: "Österreich",
     rating: 5,
     text: "Kirgisistan hat uns völlig überrascht – die Herzlichkeit der Menschen, die unberührte Natur, das köstliche Essen. Wir kommen definitiv wieder! Danke KérezTour für diese wunderschöne Erfahrung.",
     tour: "Kultur Tour",
-    initial: "H",
+    initial: "M",
   },
 ];
-
 const Testimonials = () => {
   const ref = useScrollReveal();
 
