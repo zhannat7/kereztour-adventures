@@ -2,8 +2,9 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Highlights from "@/components/Highlights";
 import Tours from "@/components/Tours";
-import Pricing from "@/components/Pricing";
 import Gallery from "@/components/Gallery";
+import Testimonials from "@/components/Testimonials";
+import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -12,8 +13,9 @@ const Index = () => (
     <Hero />
     <Highlights />
     <Tours />
-    <Pricing />
     <Gallery />
+    <Testimonials />
+    <Pricing />
     <Footer />
   </>
 );
