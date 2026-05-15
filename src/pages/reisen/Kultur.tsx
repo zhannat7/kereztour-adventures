@@ -84,21 +84,20 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const goPrev = () => go((idx - 1 + photos.length) % photos.length, "right");
   const goNext = () => go((idx + 1) % photos.length, "left");
 
-  const expandPrev = (e: React.MouseEvent) => {
+ const expandPrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setExpandedIdx((i) => i !== null ? (i - 1 + photos.length) % photos.length : null);
+    setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
   };
   const expandNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setExpandedIdx((i) => i !== null ? (i + 1) % photos.length : null);
+    setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
   };
-
   useEffect(() => {
     if (expandedIdx === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") setExpandedIdx(null);
-      if (e.key === "ArrowLeft") setExpandedIdx((i) => i !== null ? (i - 1 + photos.length) % photos.length : null);
-      if (e.key === "ArrowRight") setExpandedIdx((i) => i !== null ? (i + 1) % photos.length : null);
+      if (e.key === "ArrowLeft") setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
+      if (e.key === "ArrowRight") setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handler);
@@ -118,12 +117,8 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
         onTouchEnd={(e) => {
           if (touchStartX.current === null) return;
           const diff = touchStartX.current - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 40) {
-            if (diff > 0) goNext();
-            else goPrev();
-          } else {
-            setExpandedIdx(idx);
-          }
+          if (diff > 40) goNext();
+          else if (diff < -40) goPrev();
           touchStartX.current = null;
         }}
         style={{ touchAction: "pan-y" }}
@@ -196,11 +191,19 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           )}
 
           {/* Bild */}
-          <img
+        <img
             key={`lb-${expandedIdx}`}
             src={photos[expandedIdx]}
             className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+            onTouchEnd={(e) => {
+              if (touchStartX.current === null) return;
+              const diff = touchStartX.current - e.changedTouches[0].clientX;
+              if (diff > 40) setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
+              else if (diff < -40) setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
+              touchStartX.current = null;
+            }}
             style={{ animation: "lightboxIn 200ms ease forwards" }}
           />
 
