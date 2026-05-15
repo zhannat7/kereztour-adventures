@@ -82,7 +82,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           key={i}
           onClick={() => setActiveIdx(activeIdx === i ? null : i)}
           onMouseEnter={() => setActiveIdx(i)}
-          className="flex-shrink-0 rounded-xl overflow-hidden cursor-pointer bg-muted"
+          className="flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
           style={{
             width: activeIdx === i ? `${activeW}px` : `${itemW}px`,
             height: activeIdx === i ? `${activeH}px` : `${itemH}px`,
@@ -93,7 +93,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           <img
             src={photo}
             loading="lazy"
-           className="w-full h-full object-contain"
+           className="w-full h-full object-cover"
           />
         </div>
       ))}
