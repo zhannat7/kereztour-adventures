@@ -104,7 +104,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
 
   return (
     <div
-    className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm"
+  className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-md"
       onClick={onClose}
     >
       <button onClick={onClose} className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition">
