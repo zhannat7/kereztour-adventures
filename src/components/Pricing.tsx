@@ -36,14 +36,14 @@ const Pricing = () => {
 
       <div ref={ref} className="section-reveal container mx-auto px-6 relative z-10">
         <div className="text-center mb-10">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
+        <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-3 block">
             Kultur Tour · Pakete
           </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            Wähle dein <span className="italic text-primary">Paket</span>
+          <h2 className="font-display text-4xl md:text-5xl text-foreground mb-3">
+            Finde dein <span className="italic text-primary">perfektes Paket</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Beide Pakete beinhalten dasselbe 10-Tage-Programm – der Unterschied liegt im Komfort.
+            Dasselbe unvergessliche 10-Tage-Programm – du wählst deinen Komfort.
           </p>
         </div>
 
