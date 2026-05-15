@@ -191,8 +191,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           )}
 
           {/* Bild */}
-        <img
-            key={`lb-${expandedIdx}`}
+       <img
             src={photos[expandedIdx]}
             className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
@@ -204,7 +203,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
               else if (diff < -40) setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
               touchStartX.current = null;
             }}
-            style={{ animation: "lightboxIn 200ms ease forwards" }}
+            style={{ transition: "opacity 200ms ease", opacity: 1 }}
           />
 
           {/* Pfeile */}
