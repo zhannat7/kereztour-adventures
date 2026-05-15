@@ -104,8 +104,17 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
 
   return (
     <div
-  className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-md"
+ <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
+      style={{
+        backgroundImage: `url(${images[index].src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
       onClick={onClose}
+    >
+      {/* Dunkles Overlay */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-xl" />
     >
       <button onClick={onClose} className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition">
         <X className="h-6 w-6" />
