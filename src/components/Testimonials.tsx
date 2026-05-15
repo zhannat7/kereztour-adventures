@@ -1,8 +1,8 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Star } from "lucide-react";
 
-import reviewHelmut from "@/assets/333.PNG";
-import reviewHubert from "@/assets/666.PNG";
+import reviewHelmut from "@/assets/333.png";
+import reviewHubert from "@/assets/666.png";
 
 const reviews = [
   {
