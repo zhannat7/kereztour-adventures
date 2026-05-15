@@ -156,19 +156,19 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
       {/* Expanded Overlay – Text bleibt im Hintergrund sichtbar */}
 {expanded && (
         <div
-         className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-white/20 backdrop-blur-[1px]"
           style={{ animation: "fadeIn 300ms ease forwards" }}
           onClick={() => setExpanded(false)}
         >
           <div
-            className="relative w-[90vw] max-w-3xl rounded-3xl overflow-hidden shadow-2xl"
+          className="relative w-[90vw] max-w-3xl rounded-3xl overflow-hidden shadow-2xl bg-transparent"
             style={{ animation: "zoomIn 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards" }}
             onClick={(e) => e.stopPropagation()}
           >
             <img
               key={`exp-${idx}`}
               src={photos[idx]}
-              className="w-full max-h-[80vh] object-contain object-top bg-black"
+             className="w-full max-h-[80vh] object-cover"
             />
 
             {/* Schliessen */}
