@@ -65,12 +65,13 @@ const highlights = [
 /* ── Foto Slider ── */
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [idx, setIdx] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const [dir, setDir] = useState<"left" | "right" | null>(null);
   const [animating, setAnimating] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const go = (newIdx: number, direction: "left" | "right") => {
-    if (animating) return;
+    if (animating || photos.length <= 1) return;
     setDir(direction);
     setAnimating(true);
     setTimeout(() => {
@@ -80,98 +81,132 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
     }, 350);
   };
 
-  const prev = () => go((idx - 1 + photos.length) % photos.length, "right");
-  const next = () => go((idx + 1) % photos.length, "left");
+  const prev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    go((idx - 1 + photos.length) % photos.length, "right");
+  };
+  const next = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    go((idx + 1) % photos.length, "left");
+  };
 
   return (
-    <div
-className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none"
-      onClick={photos.length > 1 ? next : undefined}
-      onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-      onTouchEnd={(e) => {
-        if (touchStartX.current === null) return;
-        const diff = touchStartX.current - e.changedTouches[0].clientX;
-        if (diff > 40) next();
-        else if (diff < -40) prev();
-        touchStartX.current = null;
-      }}
-      style={{ touchAction: "pan-y" }}
-    >
-      {/* Aktuelles Bild */}
-      <img
-        key={idx}
-        src={photos[idx]}
-        className="absolute inset-0 w-full h-full object-cover"
-        loading="lazy"
-        style={{
-          transform: animating
-            ? `translateX(${dir === "left" ? "-100%" : "100%"})`
-            : "translateX(0)",
-          transition: animating ? "transform 350ms cubic-bezier(0.4,0,0.2,1)" : "none",
+    <>
+      {/* Kleines Bild in Timeline */}
+      <div
+        className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none cursor-zoom-in"
+        onClick={() => setExpanded(true)}
+        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const diff = touchStartX.current - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 40) {
+            if (diff > 0) go((idx + 1) % photos.length, "left");
+            else go((idx - 1 + photos.length) % photos.length, "right");
+          } else {
+            setExpanded(true);
+          }
+          touchStartX.current = null;
         }}
-      />
-
-      {/* Nächstes Bild das reinkommt */}
-      {animating && (
+        style={{ touchAction: "pan-y" }}
+      >
         <img
-          src={photos[dir === "left"
-            ? (idx + 1) % photos.length
-            : (idx - 1 + photos.length) % photos.length
-          ]}
-          className="absolute inset-0 w-full h-full object-cover"
+          key={idx}
+          src={photos[idx]}
+          className="absolute inset-0 w-full h-full object-cover object-top"
+          loading="lazy"
           style={{
-            transform: dir === "left" ? "translateX(100%)" : "translateX(-100%)",
-            animation: `slideIn-${dir} 350ms cubic-bezier(0.4,0,0.2,1) forwards`,
+            transform: animating ? `translateX(${dir === "left" ? "-100%" : "100%"})` : "translateX(0)",
+            transition: animating ? "transform 350ms cubic-bezier(0.4,0,0.2,1)" : "none",
           }}
         />
-      )}
+        {animating && (
+          <img
+            src={photos[dir === "left" ? (idx + 1) % photos.length : (idx - 1 + photos.length) % photos.length]}
+            className="absolute inset-0 w-full h-full object-cover object-top"
+            style={{
+              transform: dir === "left" ? "translateX(100%)" : "translateX(-100%)",
+              animation: `slideIn-${dir} 350ms cubic-bezier(0.4,0,0.2,1) forwards`,
+            }}
+          />
+        )}
+        <style>{`
+          @keyframes slideIn-left { from { transform: translateX(100%); } to { transform: translateX(0); } }
+          @keyframes slideIn-right { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+          @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+          @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        `}</style>
 
-      <style>{`
-        @keyframes slideIn-left {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
-        }
-        @keyframes slideIn-right {
-          from { transform: translateX(-100%); }
-          to { transform: translateX(0); }
-        }
-      `}</style>
+        {/* Vergrössern-Hinweis */}
+        <div className="absolute top-2 right-2 bg-black/40 rounded-full p-1.5 text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+          </svg>
+        </div>
 
-      {/* Dot Indikatoren */}
-      {photos.length > 1 && (
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-          {photos.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"
-              }`}
+        {photos.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {photos.map((_, i) => (
+              <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"}`} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Expanded Overlay – Text bleibt im Hintergrund sichtbar */}
+{expanded && (
+        <div
+         className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]"
+          style={{ animation: "fadeIn 300ms ease forwards" }}
+          onClick={() => setExpanded(false)}
+        >
+          <div
+            className="relative w-[90vw] max-w-3xl rounded-3xl overflow-hidden shadow-2xl"
+            style={{ animation: "zoomIn 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              key={`exp-${idx}`}
+              src={photos[idx]}
+              className="w-full max-h-[80vh] object-contain object-top bg-black"
             />
-          ))}
-        </div>
-      )}
 
-      {/* Pfeil-Hint nur auf Desktop */}
-      {photos.length > 1 && (
-        <div className="absolute inset-0 flex items-center justify-between px-2 opacity-0 hover:opacity-100 transition-opacity duration-200">
-          <button
-            onClick={(e) => { e.stopPropagation(); prev(); }}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); next(); }}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
+            {/* Schliessen */}
+            <button
+              onClick={() => setExpanded(false)}
+              className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-all"
+            >
+              <ChevronLeft className="h-5 w-5 rotate-[135deg]" />
+            </button>
+
+            {/* Pfeile im Expanded */}
+            {photos.length > 1 && (
+              <>
+                <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-all">
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-all">
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+
+            {/* Counter */}
+            {photos.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {photos.map((_, i) => (
+                  <button key={i} onClick={() => setIdx(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
-
 const Kultur = () => {
   const [activeDay, setActiveDay] = useState(0);
   const dayRefs = useRef<HTMLDivElement[]>([]);
