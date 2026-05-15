@@ -85,8 +85,8 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none cursor-pointer"
-      onClick={next}
+className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none"
+      onClick={photos.length > 1 ? next : undefined}
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
