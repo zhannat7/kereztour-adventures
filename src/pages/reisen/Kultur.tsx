@@ -177,19 +177,25 @@ const Kultur = () => {
   const dayRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = dayRefs.current.indexOf(entry.target as HTMLDivElement);
-            if (idx !== -1) setActiveDay(idx);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "-10% 0px -50% 0px" }
-    );
-    dayRefs.current.forEach((el) => { if (el) observer.observe(el); });
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const windowMid = window.scrollY + window.innerHeight / 2;
+      let closest = 0;
+      let closestDist = Infinity;
+      dayRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const elMid = window.scrollY + rect.top + rect.height / 2;
+        const dist = Math.abs(windowMid - elMid);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      });
+      setActiveDay(closest);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
