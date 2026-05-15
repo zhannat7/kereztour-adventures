@@ -104,17 +104,10 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
 
   return (
     <div
-      className="fixed inset-0 z-[100]"
-      style={{
-        backgroundImage: `url(${images[index].src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      <div
+      className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-md"
       onClick={onClose}
     >
-      {/* Blur Overlay */}
-    <div className="absolute inset-0 bg-black/25 backdrop-blur-lg" />
-
       {/* Counter */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 text-white/70 text-sm">
         {index + 1} / {images.length}
