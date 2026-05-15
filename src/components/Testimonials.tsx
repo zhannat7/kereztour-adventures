@@ -77,9 +77,11 @@ const Testimonials = () => {
                   ))}
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1 italic">
-                  „{r.text}"
-                </p>
+               {!r.screenshot && (
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1 italic">
+                    „{r.text}"
+                  </p>
+                )}
 
                 <div className="flex items-center gap-3 pt-3 border-t border-border">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm shrink-0">
