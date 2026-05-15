@@ -129,9 +129,10 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
       </button>
 
       <img
+        <img
         src={images[index].src}
         alt={images[index].alt}
-        className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+        className="relative z-10 max-h-[75vh] max-w-[90vw] object-contain rounded-lg"
         onClick={(e) => e.stopPropagation()}
         onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
         onTouchEnd={(e) => {
@@ -148,7 +149,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
       </button>
 
       {/* Thumbnail Strip */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 overflow-x-auto max-w-[90vw] px-2" style={{ scrollbarWidth: "none" }}>
+    <div className="relative z-10 mt-auto flex gap-1.5 overflow-x-auto max-w-[90vw] px-2 pb-4 pt-2" style={{ scrollbarWidth: "none" }}>
         {images.map((img, i) => (
           <button
             key={i}
