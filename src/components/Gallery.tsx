@@ -76,7 +76,7 @@ const images = [
   img61, img62, img63,
 ].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
 
-const VISIBLE = 24; // 2 Zeilen × 12
+const VISIBLE = 56; // 2 Zeilen × 12
 
 /* ── Lightbox ── */
 const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
@@ -183,12 +183,12 @@ const Gallery = () => {
           </div>
 
           {/* Grid – nur 24 sichtbar */}
-          <div className="grid grid-cols-6 md:grid-cols-12 gap-1.5">
+         <div className="grid gap-0" style={{ gridTemplateColumns: "repeat(14, 1fr)" }}>
             {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
                 onClick={() => openLightbox(i)}
-                className="group relative aspect-square overflow-hidden rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="group relative aspect-square overflow-hidden focus:outline-none"
               >
                 <img
                   src={img.src}
@@ -196,18 +196,15 @@ const Gallery = () => {
                   loading="lazy"
                   className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-lg" />
               </button>
             ))}
           </div>
 
-          {/* Hinweis */}
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              {VISIBLE} von {images.length} Fotos sichtbar · Klick auf ein Bild um alle zu sehen
+              {images.length} Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht
             </p>
           </div>
-
         </div>
       </section>
 
@@ -222,6 +219,7 @@ const Gallery = () => {
       )}
     </>
   );
+};
 };
 
 export default Gallery;
