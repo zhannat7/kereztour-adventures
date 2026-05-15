@@ -64,179 +64,40 @@ const highlights = [
 
 /* ── Foto Slider ── */
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
-  const [idx, setIdx] = useState(0);
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
-  const [dir, setDir] = useState<"left" | "right" | null>(null);
-  const [animating, setAnimating] = useState(false);
-  const touchStartX = useRef<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
-  const go = (newIdx: number, direction: "left" | "right") => {
-    if (animating || photos.length <= 1) return;
-    setDir(direction);
-    setAnimating(true);
-    setTimeout(() => {
-      setIdx(newIdx);
-      setAnimating(false);
-      setDir(null);
-    }, 350);
-  };
-
-  const goPrev = () => go((idx - 1 + photos.length) % photos.length, "right");
-  const goNext = () => go((idx + 1) % photos.length, "left");
-
- const expandPrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
-  };
-  const expandNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
-  };
-  useEffect(() => {
-    if (expandedIdx === null) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setExpandedIdx(null);
-      if (e.key === "ArrowLeft") setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
-      if (e.key === "ArrowRight") setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
-    };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handler);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handler);
-    };
-  }, [expandedIdx, photos.length]);
+  const itemW = photos.length <= 2 ? 220 : photos.length <= 4 ? 140 : 110;
+  const itemH = photos.length <= 2 ? 140 : photos.length <= 4 ? 100 : 80;
+  const activeW = 280;
+  const activeH = 200;
 
   return (
-    <>
-      {/* Kleiner Slider in Timeline */}
-      <div
-        className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] select-none cursor-pointer group"
-        onClick={() => setExpandedIdx(idx)}
-        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-        onTouchEnd={(e) => {
-          if (touchStartX.current === null) return;
-          const diff = touchStartX.current - e.changedTouches[0].clientX;
-          if (diff > 40) goNext();
-          else if (diff < -40) goPrev();
-          touchStartX.current = null;
-        }}
-        style={{ touchAction: "pan-y" }}
-      >
-        <img
-          key={idx}
-          src={photos[idx]}
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          loading="lazy"
-          style={{
-            transform: animating ? `translateX(${dir === "left" ? "-100%" : "100%"})` : "translateX(0)",
-            transition: animating ? "transform 350ms cubic-bezier(0.4,0,0.2,1)" : "none",
-          }}
-        />
-        {animating && (
-          <img
-            src={photos[dir === "left" ? (idx + 1) % photos.length : (idx - 1 + photos.length) % photos.length]}
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            style={{
-              transform: dir === "left" ? "translateX(100%)" : "translateX(-100%)",
-              animation: `slideIn-${dir} 350ms cubic-bezier(0.4,0,0.2,1) forwards`,
-            }}
-          />
-        )}
-        <style>{`
-          @keyframes slideIn-left { from { transform: translateX(100%); } to { transform: translateX(0); } }
-          @keyframes slideIn-right { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-          @keyframes lightboxIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        `}</style>
-
-        {/* Hover Overlay mit Lupe */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Dots */}
-        {photos.length > 1 && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-            {photos.map((_, i) => (
-              <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/60"}`} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Lightbox */}
-      {expandedIdx !== null && (
+    <div
+      className="flex gap-2 overflow-x-auto pb-1"
+      style={{ scrollbarWidth: "none" }}
+      onMouseLeave={() => setActiveIdx(null)}
+    >
+      {photos.map((photo, i) => (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85"
-          style={{ animation: "lightboxIn 250ms ease forwards" }}
-          onClick={() => setExpandedIdx(null)}
+          key={i}
+          onClick={() => setActiveIdx(activeIdx === i ? null : i)}
+          onMouseEnter={() => setActiveIdx(i)}
+          className="flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
+          style={{
+            width: activeIdx === i ? `${activeW}px` : `${itemW}px`,
+            height: activeIdx === i ? `${activeH}px` : `${itemH}px`,
+            opacity: activeIdx !== null && activeIdx !== i ? 0.45 : 1,
+            transition: "all 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)",
+          }}
         >
-          {/* Schliessen */}
-          <button
-            onClick={() => setExpandedIdx(null)}
-            className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-all z-10"
-          >
-            <ChevronLeft className="h-5 w-5 rotate-[135deg]" />
-          </button>
-
-          {/* Counter */}
-          {photos.length > 1 && (
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-white/70 text-sm font-medium">
-              {(expandedIdx + 1)} / {photos.length}
-            </div>
-          )}
-
-          {/* Bild */}
-       <img
-            src={photos[expandedIdx]}
-            className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-            onTouchEnd={(e) => {
-              if (touchStartX.current === null) return;
-              const diff = touchStartX.current - e.changedTouches[0].clientX;
-              if (diff > 40) setExpandedIdx((i) => (i !== null && i < photos.length - 1) ? i + 1 : i);
-              else if (diff < -40) setExpandedIdx((i) => (i !== null && i > 0) ? i - 1 : i);
-              touchStartX.current = null;
-            }}
-            style={{ transition: "opacity 200ms ease", opacity: 1 }}
+          <img
+            src={photo}
+            loading="lazy"
+            className="w-full h-full object-cover object-top"
           />
-
-          {/* Pfeile */}
-          {photos.length > 1 && (
-            <>
-              <button
-                onClick={expandPrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-all"
-              >
-                <ChevronLeft className="h-7 w-7" />
-              </button>
-              <button
-                onClick={expandNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-all"
-              >
-                <ChevronRight className="h-7 w-7" />
-              </button>
-
-              {/* Dots unten */}
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
-                {photos.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={(e) => { e.stopPropagation(); setExpandedIdx(i); }}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${i === expandedIdx ? "w-6 bg-white" : "w-1.5 bg-white/40"}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
         </div>
-      )}
-    </>
+      ))}
+    </div>
   );
 };
 const Kultur = () => {
