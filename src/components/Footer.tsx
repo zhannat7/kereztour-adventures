@@ -65,7 +65,7 @@ const Footer = () => (
       </div>
 
       <div className="mt-16 pt-8 border-t border-primary-foreground/10 text-center text-xs text-primary-foreground/30">
-        © 2025 Kereztour – Alle Rechte vorbehalten
+       © 2025–2026 KérezTour Adventures – Alle Rechte vorbehalten
       </div>
     </div>
   </footer>
