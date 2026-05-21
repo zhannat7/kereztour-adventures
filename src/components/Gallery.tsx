@@ -103,8 +103,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
   }, [onClose, onPrev, onNext]);
 
   return (
-    <div
-      <div
+    <div     
   className="fixed inset-0 z-[100] bg-black/95"
       onClick={onClose}
     >
