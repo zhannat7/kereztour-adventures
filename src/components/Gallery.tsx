@@ -76,15 +76,16 @@ const images = [
   img61, img62, img63,
 ].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
 
-const VISIBLE = 56; // 2 Zeilen × 12
+const VISIBLE = 56; // 2 Zeilen × 14
 
 /* ── Lightbox ── */
-const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
+const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
   images: { src: string; alt: string }[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  onSelect: (i: number) => void;
 }) => {
   const touchStartX = useRef<number | null>(null);
 
@@ -104,7 +105,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
 
   return (
     <div     
-  className="fixed inset-0 z-[100] bg-black/95"
+  className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm"
       onClick={onClose}
     >
       {/* Counter */}
@@ -167,7 +168,8 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext }: {
         {images.map((img, i) => (
           <button
             key={i}
-            onClick={() => {}}
+           onClick={(e) => { e.stopPropagation(); onSelect(i); }}
+            
             className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden transition-all ${
               i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-50 hover:opacity-80"
             }`}
@@ -233,13 +235,14 @@ const Gallery = () => {
         </div>
       </section>
 
-      {lightboxIdx !== null && (
+     {lightboxIdx !== null && (
         <Lightbox
           images={images}
           index={lightboxIdx}
           onClose={closeLightbox}
           onPrev={prev}
           onNext={next}
+          onSelect={openLightbox}
         />
       )}
     </>
