@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, ShieldCheck, Users, MessageCircle } from "lucide-react";
-import heroAsset from "@/assets/hero.jpg.asset.json";
 
 const Hero = () => {
   return (
