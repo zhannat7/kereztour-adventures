@@ -34,8 +34,8 @@ const Hero = () => {
 
           {/* Headline */}
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-primary-foreground leading-[0.95] mb-7 animate-slide-up">
-            Kirgisistan <br className="hidden sm:block" />
-            <span className="italic text-secondary">erleben, nicht besuchen.</span>
+            Kirgisistan erleben,
+            <span className="italic text-secondary block">nicht besuchen.</span>
           </h1>
 
           {/* Subline */}
