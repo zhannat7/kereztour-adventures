@@ -193,29 +193,27 @@ const Gallery = () => {
 
   return (
     <>
-      <section id="galerie" className="py-14 md:py-20 bg-background">
+      <section id="galerie" className="py-16 md:py-24 bg-background">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-7xl">
 
           {/* Header */}
-          <div className="text-center mb-10">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-3 block">
-              Echte Reisefotos
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl text-foreground">
+          <div className="max-w-2xl mb-10">
+            <span className="eyebrow mb-4 block">Echte Reisefotos</span>
+            <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
               Eindrücke aus <span className="italic text-primary">Kirgisistan</span>
             </h2>
-            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Fotos unserer Reisegäste – authentisch und unvergesslich. Klicke auf ein Bild um alle {images.length} Fotos zu sehen.
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle {images.length} Fotos zu sehen.
             </p>
           </div>
 
           {/* Grid – nur 24 sichtbar */}
-         <div className="grid gap-0" style={{ gridTemplateColumns: "repeat(14, 1fr)" }}>
+         <div className="grid gap-1 grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 overflow-hidden rounded-2xl">
             {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
                 onClick={() => openLightbox(i)}
-                className="group relative aspect-square overflow-hidden focus:outline-none"
+                className="group relative aspect-square overflow-hidden rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
               >
                 <img
                   src={img.src}
@@ -227,7 +225,7 @@ const Gallery = () => {
             ))}
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6">
             <p className="text-sm text-muted-foreground">
               {images.length} Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht
             </p>

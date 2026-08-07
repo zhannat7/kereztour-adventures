@@ -87,7 +87,7 @@ const tips = [
 const Trekking = () => (
   <>
     <Navbar />
-    <main className="pt-28 pb-20">
+    <main className="pt-12 md:pt-16 pb-20">
       <div className="container mx-auto px-6 max-w-5xl">
         <Link
           to="/"
