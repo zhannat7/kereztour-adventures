@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users, Mountain } from "lucide-react";
 import nomadenImage from "@/assets/nomaden-spiele.png.asset.json";
+import trekkingImage from "@/assets/trekking.jpg.asset.json";
+
 
 
 const tours = [
