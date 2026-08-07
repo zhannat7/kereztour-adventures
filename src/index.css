@@ -48,11 +48,11 @@
     --gradient-primary: linear-gradient(135deg, hsl(168 44% 17%) 0%, hsl(165 32% 28%) 100%);
     --gradient-warm: linear-gradient(135deg, hsl(16 62% 50%) 0%, hsl(30 70% 56%) 100%);
     --gradient-veil: linear-gradient(180deg, hsla(168, 40%, 8%, 0.55) 0%, hsla(168, 40%, 8%, 0.25) 40%, hsla(168, 40%, 8%, 0.8) 100%);
-    --gradient-sun: radial-gradient(ellipse at 85% 15%, hsla(43, 80%, 70%, 0.22) 0%, transparent 55%);
-    --gradient-airy: linear-gradient(135deg, hsla(40, 33%, 98%, 0.92) 0%, hsla(40, 33%, 98%, 0.55) 55%, transparent 100%);
-    --gradient-text-veil: linear-gradient(90deg, hsla(40, 33%, 98%, 0.88) 0%, hsla(40, 33%, 98%, 0.42) 42%, transparent 70%);
-    --gradient-vignette: radial-gradient(ellipse at center, transparent 55%, hsla(168, 40%, 8%, 0.22) 100%);
-    --gradient-bottom-fade: linear-gradient(0deg, hsla(40, 33%, 98%, 0.75) 0%, hsla(40, 33%, 98%, 0.2) 45%, transparent 100%);
+    --gradient-sun: radial-gradient(ellipse at 85% 15%, hsla(43, 70%, 62%, 0.14) 0%, transparent 55%);
+    --gradient-airy: linear-gradient(135deg, hsla(40, 33%, 98%, 0.72) 0%, hsla(40, 33%, 98%, 0.32) 55%, transparent 100%);
+    --gradient-text-veil: linear-gradient(90deg, hsla(40, 33%, 98%, 0.72) 0%, hsla(40, 33%, 98%, 0.28) 42%, transparent 70%);
+    --gradient-vignette: radial-gradient(ellipse at center, transparent 50%, hsla(168, 40%, 8%, 0.28) 100%);
+    --gradient-bottom-fade: linear-gradient(0deg, hsla(40, 33%, 98%, 0.62) 0%, hsla(40, 33%, 98%, 0.14) 45%, transparent 100%);
 
     --shadow-soft: 0 1px 2px hsl(168 30% 10% / 0.04), 0 8px 24px -12px hsl(168 30% 10% / 0.12);
     --shadow-lift: 0 2px 4px hsl(168 30% 10% / 0.04), 0 24px 48px -20px hsl(168 30% 10% / 0.22);
