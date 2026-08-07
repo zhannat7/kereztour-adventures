@@ -6,7 +6,19 @@ import trekkingImage from "@/assets/trekking.jpg.asset.json";
 
 
 
-const tours = [
+type Tour = {
+  badge: string;
+  title: string;
+  desc: string;
+  duration: string;
+  groupSize: string;
+  price: string;
+  to: string;
+  image: string;
+  imagePosition?: string;
+};
+
+const tours: Tour[] = [
   {
     badge: "Bestseller",
     title: "Kultur Tour",
