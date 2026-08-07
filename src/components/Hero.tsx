@@ -76,7 +76,7 @@ const Hero = () => {
       </div>
 
       {/* Floating proof card */}
-      <div className="hidden md:flex absolute bottom-28 right-8 lg:right-16 z-20 items-center gap-4 rounded-2xl bg-card/90 backdrop-blur-xl border border-border px-6 py-5 shadow-lift max-w-[18rem] animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
+      <div className="hidden md:flex absolute bottom-36 right-8 lg:right-16 z-20 items-center gap-4 rounded-2xl bg-card/90 backdrop-blur-xl border border-border px-6 py-5 shadow-lift max-w-[18rem] animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
         <p className="font-display text-5xl text-primary leading-none">12</p>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Reisende pro Gruppe – nie mehr. Damit jede Begegnung echt bleibt.
