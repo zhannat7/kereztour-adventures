@@ -89,6 +89,9 @@ export default {
         "gradient-veil": "var(--gradient-veil)",
         "gradient-sun": "var(--gradient-sun)",
         "gradient-airy": "var(--gradient-airy)",
+        "gradient-text-veil": "var(--gradient-text-veil)",
+        "gradient-vignette": "var(--gradient-vignette)",
+        "gradient-bottom-fade": "var(--gradient-bottom-fade)",
       },
 
       keyframes: {
