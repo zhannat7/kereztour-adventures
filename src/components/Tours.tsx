@@ -38,6 +38,7 @@ const tours: Tour[] = [
     price: "1.200 €",
     to: "/reisen/nomaden",
     image: nomadenImage.url,
+    imagePosition: "center 40%",
   },
   {
     badge: "Für Aktive",
@@ -48,6 +49,7 @@ const tours: Tour[] = [
     price: "1.200 €",
     to: "/reisen/trekking",
     image: trekkingImage.url,
+    imagePosition: "center 35%",
   },
 ];
 
