@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowRight, Globe } from "lucide-react";
+import { Menu, X, ArrowRight, Phone } from "lucide-react";
 
 const navLinks = [
-  { label: "Startseite", href: "/" },
+  { label: "Reisen", href: "/#reisen" },
   { label: "Kultur Tour", href: "/reisen/kultur" },
   { label: "Trekking", href: "/reisen/trekking" },
   { label: "Nomaden 2026", href: "/reisen/nomaden" },
+  { label: "Über uns", href: "/#ueber-uns" },
   { label: "Kontakt", href: "/#kontakt" },
 ];
 
@@ -16,135 +17,124 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const onHome = location.pathname === "/";
+  const solid = true;
+  void scrolled;
+  void onHome;
+
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-card/90 backdrop-blur-xl shadow-[0_1px_0_0_hsl(var(--border))]"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between px-6 py-5 md:py-6">
-        {/* Logo */}
-        <Link to="/" className="font-display text-2xl md:text-3xl text-primary tracking-tight">
-          Kereztour
-        </Link>
-
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-6">
-            {navLinks.map((l) => (
-              <li key={l.label}>
-                <Link
-                  to={l.href}
-                  className={`font-body text-sm font-medium tracking-wide uppercase transition-colors duration-300 hover:text-primary ${
-                    location.pathname === l.href
-                      ? "text-primary"
-                      : scrolled
-                      ? "text-foreground"
-                      : "text-white/85"
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Sprachumschalter */}
-          <div className="flex items-center gap-1">
-            <Globe
-              className="h-4 w-4 mr-1"
-              style={{ color: scrolled ? "hsl(var(--foreground))" : "rgba(255,255,255,0.7)" }}
-            />
-            {["DE", "EN", "IT"].map((lang, i) => (
-              <span key={lang} className="flex items-center">
-                <button
-                  className={`text-xs font-semibold px-1 transition-colors hover:text-primary ${
-                    lang === "DE"
-                      ? "text-primary"
-                      : scrolled
-                      ? "text-foreground/50"
-                      : "text-white/50"
-                  }`}
-                >
-                  {lang}
-                </button>
-                {i < 2 && (
-                  <span className={scrolled ? "text-border text-xs" : "text-white/30 text-xs"}>
-                    |
-                  </span>
-                )}
-              </span>
-            ))}
-          </div>
-
-          {/* Buchen Button */}
-          <Link
-            to="/buchen"
-            className="inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-2.5 text-sm font-semibold text-secondary-foreground shadow-lg hover:shadow-secondary/40 transition-all duration-300 hover:scale-105"
-          >
-            Jetzt buchen <ArrowRight className="h-4 w-4" />
-          </Link>
+    <>
+      {/* Trust bar */}
+      <div className="hidden md:block bg-primary text-primary-foreground/85 text-xs">
+        <div className="container mx-auto flex items-center justify-between px-6 py-2">
+          <span className="tracking-wide">Kleine Gruppen · Persönliche Reiseleitung vor Ort · Seit 2018 in Kirgisistan</span>
+          <a href="tel:+393474867408" className="inline-flex items-center gap-2 hover:text-secondary transition-colors">
+            <Phone className="h-3.5 w-3.5" /> +39 347 486 7408
+          </a>
         </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Menü"
-          style={{ color: scrolled ? "hsl(var(--foreground))" : "#fff" }}
-        >
-          {mobileOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
       </div>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="md:hidden bg-card/98 backdrop-blur-xl border-t border-border">
-          <ul className="flex flex-col items-center gap-5 py-8">
-            {navLinks.map((l) => (
-              <li key={l.label}>
-                <Link
-                  to={l.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`font-body text-base font-semibold transition-colors hover:text-primary ${
-                    location.pathname === l.href ? "text-primary" : "text-foreground"
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link
-                to="/buchen"
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground"
-              >
-                Jetzt buchen <ArrowRight className="h-4 w-4" />
-              </Link>
-            </li>
-            <li className="flex items-center gap-1">
-              <Globe className="h-4 w-4 text-muted-foreground mr-1" />
-              {["DE", "EN", "IT"].map((lang, i) => (
-                <span key={lang} className="flex items-center">
-                  <button className={`text-xs font-semibold px-1 ${lang === "DE" ? "text-primary" : "text-muted-foreground"}`}>
-                    {lang}
-                  </button>
-                  {i < 2 && <span className="text-border text-xs">|</span>}
-                </span>
+      <nav
+        className={`sticky top-0 z-50 transition-all duration-500 ${
+          solid
+            ? "bg-background/85 backdrop-blur-xl border-b border-border"
+            : "bg-transparent border-b border-transparent"
+        }`}
+      >
+        <div className="container mx-auto flex items-center justify-between px-6 py-4">
+          <Link to="/" className="flex items-baseline gap-2">
+            <span
+              className={`font-display text-2xl md:text-[27px] tracking-tight ${
+                solid ? "text-primary" : "text-primary-foreground"
+              }`}
+            >
+              Kereztour
+            </span>
+            <span
+              className={`hidden sm:block text-[10px] uppercase tracking-[0.28em] ${
+                solid ? "text-muted-foreground" : "text-primary-foreground/60"
+              }`}
+            >
+              Kirgisistan
+            </span>
+          </Link>
+
+          <div className="hidden lg:flex items-center gap-9">
+            <ul className="flex items-center gap-7">
+              {navLinks.map((l) => (
+                <li key={l.label}>
+                  <Link
+                    to={l.href}
+                    className={`text-sm font-medium transition-colors duration-300 hover:text-secondary ${
+                      location.pathname === l.href
+                        ? "text-secondary"
+                        : solid
+                        ? "text-foreground/80"
+                        : "text-primary-foreground/85"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                </li>
               ))}
-            </li>
-          </ul>
+            </ul>
+
+            <Link
+              to="/buchen"
+              className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
+                solid
+                  ? "bg-primary text-primary-foreground hover:bg-primary-glow"
+                  : "bg-primary-foreground text-primary hover:bg-secondary hover:text-secondary-foreground"
+              }`}
+            >
+              Anfrage senden <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <button
+            className={`lg:hidden ${solid ? "text-foreground" : "text-primary-foreground"}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menü"
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      )}
-    </nav>
+
+        {mobileOpen && (
+          <div className="lg:hidden bg-background border-t border-border">
+            <ul className="flex flex-col px-6 py-4">
+              {navLinks.map((l) => (
+                <li key={l.label} className="border-b border-border/60 last:border-0">
+                  <Link
+                    to={l.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-3.5 text-base font-medium text-foreground hover:text-secondary transition-colors"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="px-6 pb-6 flex flex-col gap-3">
+              <Link to="/buchen" onClick={() => setMobileOpen(false)} className="btn-primary w-full">
+                Anfrage senden <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a href="tel:+393474867408" className="btn-ghost w-full">
+                <Phone className="h-4 w-4" /> +39 347 486 7408
+              </a>
+            </div>
+          </div>
+        )}
+      </nav>
+    </>
   );
 };
 

@@ -2,20 +2,28 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Highlights from "@/components/Highlights";
 import Tours from "@/components/Tours";
+import About from "@/components/About";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
+import Faq from "@/components/Faq";
+import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 
 const Index = () => (
   <>
     <Navbar />
-    <Hero />
-    <Highlights />
-    <Tours />
-    <Gallery />
-    <Testimonials />
-    <Pricing />
+    <main>
+      <Hero />
+      <Highlights />
+      <Tours />
+      <About />
+      <Gallery />
+      <Testimonials />
+      <Pricing />
+      <Faq />
+      <CtaBand />
+    </main>
     <Footer />
   </>
 );

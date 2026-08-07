@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, Home, Hotel, Users, Star } from "lucide-react";
+import { ArrowRight, Sparkles, Home, Hotel, Users, Star, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -9,9 +9,9 @@ const plans = [
     featured: false,
     tagline: "Authentisch & erschwinglich",
     details: [
-      { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" },
+      { icon: Home, text: "Gästehaus & Jurte, Mehrbettzimmer" },
       { icon: Users, text: "Gruppe bis 12 Personen" },
-      { icon: Star, text: "Standard Service" },
+      { icon: Star, text: "Standard-Service, volle Betreuung" },
     ],
   },
   {
@@ -20,82 +20,98 @@ const plans = [
     featured: true,
     tagline: "Exklusiv & komfortabel",
     details: [
-      { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" },
+      { icon: Hotel, text: "Ausgewählte Hotels, Einzel-/Doppelzimmer" },
       { icon: Users, text: "Kleine Gruppe, max. 4 Personen" },
-      { icon: Star, text: "Premium Service" },
+      { icon: Star, text: "Premium-Service & private Transfers" },
     ],
   },
+];
+
+const included = [
+  "Alle Übernachtungen",
+  "Transfers im Land",
+  "Verpflegung nach Programm",
+  "Deutschsprachige Reiseleitung",
 ];
 
 const Pricing = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="preise" className="py-16 md:py-20 bg-background relative overflow-hidden">
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-      <div ref={ref} className="section-reveal container mx-auto px-6 relative z-10">
-        <div className="text-center mb-10">
-        <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-3 block">
-            Kultur Tour · Pakete
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl text-foreground mb-3">
-            Finde dein <span className="italic text-primary">perfektes Paket</span>
+    <section id="preise" className="py-16 md:py-24 bg-sand/60">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-5xl">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="eyebrow mb-4 block">Kultur Tour · Pakete</span>
+          <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
+            Dasselbe Programm – <span className="italic text-primary">dein Komfort entscheidet</span>
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Dasselbe unvergessliche 10-Tage-Programm – du wählst deinen Komfort.
+          <p className="text-muted-foreground text-lg">
+            Zehn Tage, identische Route. Du wählst nur, wie du übernachten und reisen möchtest.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`stagger-child relative rounded-3xl p-8 md:p-10 flex flex-col transition-all duration-500 hover:-translate-y-1 ${
+              className={`stagger-child relative flex flex-col rounded-[1.5rem] p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 ${
                 plan.featured
-                  ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/20 ring-1 ring-primary"
-                  : "bg-card border border-border hover:border-primary/30 hover:shadow-xl"
+                  ? "bg-gradient-primary text-primary-foreground shadow-lift"
+                  : "bg-card border border-border shadow-soft hover:shadow-lift"
               }`}
             >
               {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-1.5 text-xs font-bold text-secondary-foreground uppercase tracking-wider shadow-lg">
-                  <Sparkles className="h-3 w-3" /> Empfohlen
-                </div>
+                <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-secondary-foreground shadow-glow">
+                  <Sparkles className="h-3 w-3" /> Beliebteste Wahl
+                </span>
               )}
 
-              <p className={`text-sm font-medium mb-2 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+              <p className={`text-sm mb-2 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                 {plan.tagline}
               </p>
-              <h3 className="font-display text-2xl md:text-3xl mb-1">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-5xl md:text-6xl font-display">{plan.price}</span>
-                <span className="text-lg">€</span>
-                <span className={`text-sm ml-1 ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                  pro Person
+              <h3 className="font-display text-2xl mb-6">{plan.name}</h3>
+
+              <div className="flex items-baseline gap-2 mb-8">
+                <span className="font-display text-5xl md:text-[3.5rem] leading-none">{plan.price} €</span>
+                <span className={`text-sm ${plan.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                  / Person
                 </span>
               </div>
 
               <ul className="space-y-4 mb-10 flex-1">
                 {plan.details.map((d) => (
-                  <li key={d.text} className="flex items-center gap-3 text-sm">
+                  <li key={d.text} className="flex items-start gap-3 text-sm">
                     <d.icon className={`h-5 w-5 shrink-0 ${plan.featured ? "text-secondary" : "text-primary"}`} />
-                    <span>{d.text}</span>
+                    <span className={plan.featured ? "text-primary-foreground/90" : "text-foreground/85"}>{d.text}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 to="/buchen?tour=kultur"
-                className={`inline-flex items-center justify-center gap-2 rounded-full py-4 font-semibold transition-all duration-300 hover:scale-105 ${
+                className={`inline-flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all duration-300 hover:brightness-105 ${
                   plan.featured
-                    ? "bg-secondary text-secondary-foreground shadow-lg shadow-secondary/25 hover:shadow-secondary/40"
-                    : "bg-primary text-primary-foreground shadow-lg shadow-primary/15 hover:shadow-primary/30"
+                    ? "bg-secondary text-secondary-foreground shadow-glow"
+                    : "bg-primary text-primary-foreground"
                 }`}
               >
-                Kultur Tour buchen <ArrowRight className="h-4 w-4" />
+                {plan.name} anfragen <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ))}
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-border bg-card px-6 py-5 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">
+            In beiden Paketen enthalten
+          </p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {included.map((i) => (
+              <li key={i} className="flex items-center gap-2.5 text-sm text-foreground/85">
+                <Check className="h-4 w-4 shrink-0 text-secondary" /> {i}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
