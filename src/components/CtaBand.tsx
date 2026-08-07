@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, MessageCircle, Mail } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
+
 
 const CtaBand = () => {
   const ref = useScrollReveal();
