@@ -1,12 +1,22 @@
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users, Mountain } from "lucide-react";
-import nomadenImage from "@/assets/nomaden-spiele.png.asset.json";
-import trekkingImage from "@/assets/trekking.jpg.asset.json";
 
 
 
-const tours = [
+type Tour = {
+  badge: string;
+  title: string;
+  desc: string;
+  duration: string;
+  groupSize: string;
+  price: string;
+  to: string;
+  image: string;
+  imagePosition?: string;
+};
+
+const tours: Tour[] = [
   {
     badge: "Bestseller",
     title: "Kultur Tour",
@@ -25,7 +35,8 @@ const tours = [
     groupSize: "bis 12 Personen",
     price: "1.200 €",
     to: "/reisen/nomaden",
-    image: nomadenImage.url,
+    image: "/tour-nomaden.jpg",
+    imagePosition: "center 40%",
   },
   {
     badge: "Für Aktive",
@@ -35,7 +46,8 @@ const tours = [
     groupSize: "bis 8 Personen",
     price: "1.200 €",
     to: "/reisen/trekking",
-    image: trekkingImage.url,
+    image: "/tour-trekking.jpg",
+    imagePosition: "center 35%",
   },
 ];
 
@@ -64,11 +76,12 @@ const Tours = () => {
               to={tour.to}
               className="stagger-child group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
             >
-              <div className="relative aspect-[16/10] overflow-hidden">
+              <div className="relative aspect-[4/5] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={tour.title}
                   loading="lazy"
+                  style={{ objectPosition: tour.imagePosition ?? "center" }}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <span className="absolute left-4 top-4 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
