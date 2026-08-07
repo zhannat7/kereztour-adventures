@@ -64,11 +64,12 @@ const Tours = () => {
               to={tour.to}
               className="stagger-child group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
             >
-              <div className="relative aspect-[16/10] overflow-hidden">
+              <div className="relative aspect-[4/5] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={tour.title}
                   loading="lazy"
+                  style={{ objectPosition: tour.imagePosition ?? "center" }}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <span className="absolute left-4 top-4 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
