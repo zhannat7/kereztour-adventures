@@ -25,7 +25,8 @@ const tours: Tour[] = [
     groupSize: "bis 12 Personen",
     price: "ab 990 €",
     to: "/reisen/kultur",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80",
+    image: "/tour-kultur.jpg",
+    imagePosition: "center 45%",
   },
   {
     badge: "Einmaliges Event",
