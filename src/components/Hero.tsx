@@ -1,83 +1,98 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, ShieldCheck, Users, MessageCircle } from "lucide-react";
+import { ArrowRight, Star, ShieldCheck, Users, MessageCircle, MapPin } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative bg-background pt-10 pb-6 md:pt-14 md:pb-10">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Copy */}
-          <div className="lg:col-span-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 shadow-soft mb-7">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-secondary text-secondary" />
-                ))}
-              </div>
-              <span className="text-xs font-medium text-muted-foreground">5,0 aus echten Gästestimmen</span>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/hero.jpg"
+          alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
+          loading="eager"
+          className="h-full w-full object-cover animate-[scale-in_1.5s_ease-out_forwards]"
+          style={{ transform: "scale(1.05)" }}
+        />
+        {/* Left-to-right readability veil */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/50 to-transparent" />
+        {/* Bottom veil for floating card + bottom bar */}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-primary/20" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-6 pt-32 pb-28 md:pt-40 md:pb-32">
+        <div className="max-w-3xl">
+          {/* Social proof badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 backdrop-blur-md px-4 py-1.5 mb-8 animate-fade-in-up">
+            <div className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-3.5 w-3.5 fill-secondary text-secondary" />
+              ))}
             </div>
-
-            <h1 className="font-display text-[2.7rem] leading-[1.05] md:text-6xl lg:text-[4.2rem] text-foreground mb-6">
-              Kirgisistan erleben –
-              <span className="block italic text-primary">persönlich geführt, wirklich nah.</span>
-            </h1>
-
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-xl mb-8">
-              Kleine Gruppen, lokale Gastgeber und ein Programm, das von der ersten Anfrage bis zur
-              Heimreise durchdacht ist. Geplant und begleitet von Sarina – geboren in Kirgisistan,
-              zuhause in beiden Welten.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 mb-10">
-              <Link to="/buchen" className="btn-accent">
-                Kostenlos anfragen <ArrowRight className="h-4 w-4" />
-              </Link>
-              <a href="#reisen" className="btn-ghost">
-                Reisen ansehen
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <Users className="h-4 w-4 text-primary" /> Max. 12 Personen
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-primary" /> Voll organisiert, keine Anzahlung
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <MessageCircle className="h-4 w-4 text-primary" /> Antwort innerhalb 24 Std.
-              </span>
-            </div>
+            <span className="text-xs font-medium text-primary-foreground/90">5,0 aus echten Gästestimmen</span>
           </div>
 
-          {/* Visual */}
-          <div className="lg:col-span-6">
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
-                <img
-                  src="/hero.jpg"
-                  alt="Landschaft in Kirgisistan – Tian Shan Gebirge"
-                  loading="eager"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-veil" />
+          {/* Headline */}
+          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-primary-foreground leading-[0.95] mb-7 animate-slide-up">
+            Kirgisistan <br className="hidden sm:block" />
+            <span className="italic text-secondary">erleben, nicht besuchen.</span>
+          </h1>
 
-                <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-6">
-                  <p className="text-xs uppercase tracking-[0.2em] text-primary-foreground/90">
-                    Tian Shan Gebirge
-                  </p>
-                </div>
-              </div>
+          {/* Subline */}
+          <p className="text-lg md:text-xl text-primary-foreground/85 leading-relaxed max-w-xl mb-10 animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
+            Kleine Gruppen, lokale Gastgeber und ein Programm, das von der ersten Anfrage bis zur
+            Heimreise durchdacht ist. Geplant und begleitet von Sarina.
+          </p>
 
-              {/* Floating proof card */}
-              <div className="hidden sm:flex absolute -bottom-7 -left-4 lg:-left-8 items-center gap-4 rounded-2xl bg-card border border-border px-5 py-4 shadow-lift max-w-[16rem]">
-                <p className="font-display text-4xl text-primary leading-none">12</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Reisende pro Gruppe – nie mehr. Damit jede Begegnung echt bleibt.
-                </p>
-              </div>
-            </div>
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-14 animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
+            <Link
+              to="/buchen"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-4 text-sm font-semibold text-secondary-foreground transition-all duration-300 hover:brightness-105 shadow-glow"
+            >
+              Kostenlos anfragen <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="#reisen"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-8 py-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary-foreground/20"
+            >
+              Reisen ansehen
+            </a>
           </div>
+
+          {/* Trust pills */}
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-primary-foreground/80 animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
+            <span className="inline-flex items-center gap-2">
+              <Users className="h-4 w-4 text-secondary" /> Max. 12 Personen
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-secondary" /> Voll organisiert
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <MessageCircle className="h-4 w-4 text-secondary" /> Antwort innerhalb 24 Std.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating proof card */}
+      <div className="hidden md:flex absolute bottom-28 right-8 lg:right-16 z-20 items-center gap-4 rounded-2xl bg-card/90 backdrop-blur-xl border border-border px-6 py-5 shadow-lift max-w-[18rem] animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
+        <p className="font-display text-5xl text-primary leading-none">12</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Reisende pro Gruppe – nie mehr. Damit jede Begegnung echt bleibt.
+        </p>
+      </div>
+
+      {/* Bottom location bar */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-primary-foreground/10 bg-primary/40 backdrop-blur-md">
+        <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-primary-foreground/80 text-sm">
+          <span className="inline-flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-secondary" />
+            Tian Shan Gebirge, Kirgisistan
+          </span>
+          <span className="text-xs uppercase tracking-[0.15em] text-primary-foreground/60">
+            10 Tage · Premium Jurten · Lokale Gastgeber
+          </span>
         </div>
       </div>
     </section>
