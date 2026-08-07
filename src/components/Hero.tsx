@@ -1,34 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, ShieldCheck, Users, MessageCircle } from "lucide-react";
 
-const slides = [
-  {
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
-    location: "Tian Shan Gebirge",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80",
-    location: "Kirgisische Hochebene",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=1920&q=80",
-    location: "Issyk-Kul Region",
-  },
-];
-
-const INTERVAL = 7000;
-
 const Hero = () => {
-  const [index, setIndex] = useState(0);
-
-  const next = useCallback(() => setIndex((p) => (p + 1) % slides.length), []);
-
-  useEffect(() => {
-    const id = setInterval(next, INTERVAL);
-    return () => clearInterval(id);
-  }, [next]);
-
   return (
     <section className="relative bg-background pt-10 pb-6 md:pt-14 md:pb-10">
       <div className="container mx-auto px-6">
@@ -81,35 +54,18 @@ const Hero = () => {
           <div className="lg:col-span-6">
             <div className="relative">
               <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
-                {slides.map((s, i) => (
-                  <img
-                    key={s.image}
-                    src={s.image}
-                    alt={`Landschaft in Kirgisistan – ${s.location}`}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-in-out ${
-                      i === index ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                ))}
+                <img
+                  src="/hero.jpg"
+                  alt="Landschaft in Kirgisistan – Tian Shan Gebirge"
+                  loading="eager"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-veil" />
 
                 <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-6">
                   <p className="text-xs uppercase tracking-[0.2em] text-primary-foreground/90">
-                    {slides[index].location}
+                    Tian Shan Gebirge
                   </p>
-                  <div className="flex gap-1.5">
-                    {slides.map((s, i) => (
-                      <button
-                        key={s.location}
-                        onClick={() => setIndex(i)}
-                        aria-label={`Bild ${i + 1} anzeigen`}
-                        className={`h-1.5 rounded-full transition-all duration-500 ${
-                          i === index ? "w-7 bg-primary-foreground" : "w-1.5 bg-primary-foreground/45"
-                        }`}
-                      />
-                    ))}
-                  </div>
                 </div>
               </div>
 
