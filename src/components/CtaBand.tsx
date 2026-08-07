@@ -12,7 +12,8 @@ const CtaBand = () => {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
               <h2 className="font-display text-3xl md:text-[2.6rem] leading-tight text-primary-foreground mb-4">
-                Erzähl mir, wovon du träumst –<span className="block italic">ich plane den Rest.</span>
+                Erzähl mir, wovon du träumst
+                <span className="block italic">ich plane den Rest.</span>
               </h2>
               <p className="text-primary-foreground/70 text-lg leading-relaxed max-w-xl">
                 Unverbindliche Anfrage, Antwort innerhalb von 24 Stunden, keine Anzahlung.
