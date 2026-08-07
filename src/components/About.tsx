@@ -15,9 +15,9 @@ const About = () => {
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           <div className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/5]">
+            <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/3]">
               <img
-                src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80"
+                src="/about.jpg"
                 alt="Weite Landschaft Kirgisistans"
                 loading="lazy"
                 className="h-full w-full object-cover"
