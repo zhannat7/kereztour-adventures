@@ -50,6 +50,10 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          foreground: "hsl(var(--gold-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -83,6 +87,8 @@ export default {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-warm": "var(--gradient-warm)",
         "gradient-veil": "var(--gradient-veil)",
+        "gradient-sun": "var(--gradient-sun)",
+        "gradient-airy": "var(--gradient-airy)",
       },
 
       keyframes: {
