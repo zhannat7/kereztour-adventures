@@ -1,5 +1,7 @@
 import { Mail, Phone, MessageCircle, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
+
 
 const tourLinks = [
   { label: "Kultur Tour", to: "/reisen/kultur" },
