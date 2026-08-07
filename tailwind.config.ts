@@ -87,6 +87,8 @@ export default {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-warm": "var(--gradient-warm)",
         "gradient-veil": "var(--gradient-veil)",
+        "gradient-sun": "var(--gradient-sun)",
+        "gradient-airy": "var(--gradient-airy)",
       },
 
       keyframes: {
