@@ -10,16 +10,16 @@ const Hero = () => {
           src="/hero.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
-          className="h-full w-full object-cover brightness-105 animate-[scale-in_1.5s_ease-out_forwards]"
+          className="h-full w-full object-cover animate-[scale-in_1.5s_ease-out_forwards]"
           style={{ transform: "scale(1.05)" }}
         />
-        {/* Subtle cinematic vignette for depth */}
+        {/* Cinematic vignette for depth */}
         <div className="absolute inset-0 bg-gradient-vignette" />
-        {/* Very soft warm glow in top-right corner */}
+        {/* Soft warm glow in top-right corner */}
         <div className="absolute inset-0 bg-gradient-sun" />
         {/* Localized readability veil behind text only */}
         <div className="absolute inset-0 bg-gradient-text-veil" />
-        {/* Minimal bottom fade for the location bar */}
+        {/* Bottom fade for the location bar */}
         <div className="absolute inset-0 bg-gradient-bottom-fade" />
       </div>
 
