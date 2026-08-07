@@ -26,13 +26,15 @@ const CtaBand = () => {
                 Reise anfragen <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="https://wa.me/393474867408"
+                href={whatsappUrl("Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
+                onClick={(e) => openWhatsApp(e, "Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
               >
                 <MessageCircle className="h-4 w-4" /> Direkt auf WhatsApp
               </a>
+
               <a
                 href="mailto:sarinasadirovna@gmail.com"
                 className="inline-flex items-center justify-center gap-2 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
