@@ -137,11 +137,17 @@ const Buchen = () => {
           totalPrice: total,
         },
       });
-    } catch {
-      setSubmitError("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      setSubmitError(
+        message
+          ? `Buchung konnte nicht gesendet werden: ${message}`
+          : "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+      );
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (
