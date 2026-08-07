@@ -55,7 +55,7 @@ const Hero = () => {
             <div className="relative">
               <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
                 <img
-                  src={heroAsset.url}
+                  src="/hero.jpg"
                   alt="Landschaft in Kirgisistan – Tian Shan Gebirge"
                   loading="eager"
                   className="absolute inset-0 h-full w-full object-cover"
