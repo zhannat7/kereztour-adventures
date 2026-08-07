@@ -62,7 +62,7 @@ const Hero = () => {
             </Link>
             <a
               href="#reisen"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/15 bg-white/75 backdrop-blur-md px-8 py-4 text-sm font-semibold text-foreground transition-all duration-300 hover:bg-white hover:border-primary/25 shadow-soft"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/15 bg-white/65 backdrop-blur-md px-8 py-4 text-sm font-semibold text-foreground transition-all duration-300 hover:bg-white/80 hover:border-primary/25 shadow-soft"
             >
               Reisen ansehen
             </a>
@@ -88,7 +88,7 @@ const Hero = () => {
 
       {/* Floating proof card — light glass */}
       <div
-        className="hidden md:flex absolute bottom-36 right-8 lg:right-16 z-20 items-center gap-4 rounded-2xl bg-white/80 backdrop-blur-xl border border-border px-6 py-5 shadow-lift max-w-[18rem] animate-fade-in-up"
+        className="hidden md:flex absolute bottom-36 right-8 lg:right-16 z-20 items-center gap-4 rounded-2xl bg-white/70 backdrop-blur-xl border border-border px-6 py-5 shadow-lift max-w-[18rem] animate-fade-in-up"
         style={{ animationDelay: "0.45s" }}
       >
         <p className="font-display text-5xl text-primary leading-none">12</p>
@@ -99,7 +99,7 @@ const Hero = () => {
 
       {/* Social proof star card — top right on desktop */}
       <div
-        className="hidden lg:flex absolute top-40 right-16 z-20 flex-col items-center gap-1 rounded-2xl bg-white/80 backdrop-blur-xl border border-border px-6 py-4 shadow-lift animate-fade-in-up"
+        className="hidden lg:flex absolute top-40 right-16 z-20 flex-col items-center gap-1 rounded-2xl bg-white/70 backdrop-blur-xl border border-border px-6 py-4 shadow-lift animate-fade-in-up"
         style={{ animationDelay: "0.55s" }}
       >
         <div className="flex gap-0.5">
@@ -112,7 +112,7 @@ const Hero = () => {
       </div>
 
       {/* Bottom location bar — light glass */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-border/60 bg-white/85 backdrop-blur-md">
+      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-border/60 bg-white/75 backdrop-blur-md">
         <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-foreground/80 text-sm">
           <span className="inline-flex items-center gap-2">
             <MapPin className="h-4 w-4 text-gold" />
