@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users, Mountain } from "lucide-react";
 import nomadenImage from "@/assets/nomaden-spiele.png.asset.json";
+import trekkingImage from "@/assets/trekking.jpg.asset.json";
+
 
 
 const tours = [
@@ -33,7 +35,7 @@ const tours = [
     groupSize: "bis 8 Personen",
     price: "1.200 €",
     to: "/reisen/trekking",
-    image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=1200&q=80",
+    image: trekkingImage.url,
   },
 ];
 
