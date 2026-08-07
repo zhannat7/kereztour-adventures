@@ -24,15 +24,18 @@ const Navbar = () => {
   }, []);
 
   const onHome = location.pathname === "/";
-  const solid = true;
-  void scrolled;
-  void onHome;
-
+  const transparent = onHome && !scrolled && !mobileOpen;
 
   return (
-    <>
+    <div className={`${onHome ? "absolute" : "relative"} top-0 left-0 right-0 z-50`}>
       {/* Trust bar */}
-      <div className="hidden md:block bg-primary text-primary-foreground/85 text-xs">
+      <div
+        className={`hidden md:block text-xs transition-colors duration-500 ${
+          transparent
+            ? "bg-primary/60 text-primary-foreground/90 backdrop-blur-md"
+            : "bg-primary text-primary-foreground/85"
+        }`}
+      >
         <div className="container mx-auto flex items-center justify-between px-6 py-2">
           <span className="tracking-wide">Kleine Gruppen · Persönliche Reiseleitung vor Ort · Seit 2018 in Kirgisistan</span>
           <a href="tel:+393474867408" className="inline-flex items-center gap-2 hover:text-secondary transition-colors">
@@ -42,24 +45,24 @@ const Navbar = () => {
       </div>
 
       <nav
-        className={`sticky top-0 z-50 transition-all duration-500 ${
-          solid
-            ? "bg-background/85 backdrop-blur-xl border-b border-border"
-            : "bg-transparent border-b border-transparent"
+        className={`transition-all duration-500 ${
+          transparent
+            ? "bg-transparent border-b border-transparent"
+            : "bg-background/85 backdrop-blur-xl border-b border-border"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-baseline gap-2">
             <span
               className={`font-display text-2xl md:text-[27px] tracking-tight ${
-                solid ? "text-primary" : "text-primary-foreground"
+                transparent ? "text-primary-foreground" : "text-primary"
               }`}
             >
               Kereztour
             </span>
             <span
               className={`hidden sm:block text-[10px] uppercase tracking-[0.28em] ${
-                solid ? "text-muted-foreground" : "text-primary-foreground/60"
+                transparent ? "text-primary-foreground/60" : "text-muted-foreground"
               }`}
             >
               Kirgisistan
@@ -75,9 +78,9 @@ const Navbar = () => {
                     className={`text-sm font-medium transition-colors duration-300 hover:text-secondary ${
                       location.pathname === l.href
                         ? "text-secondary"
-                        : solid
-                        ? "text-foreground/80"
-                        : "text-primary-foreground/85"
+                        : transparent
+                        ? "text-primary-foreground/85"
+                        : "text-foreground/80"
                     }`}
                   >
                     {l.label}
@@ -89,9 +92,9 @@ const Navbar = () => {
             <Link
               to="/buchen"
               className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
-                solid
-                  ? "bg-primary text-primary-foreground hover:bg-primary-glow"
-                  : "bg-primary-foreground text-primary hover:bg-secondary hover:text-secondary-foreground"
+                transparent
+                  ? "bg-primary-foreground text-primary hover:bg-secondary hover:text-secondary-foreground"
+                  : "bg-primary text-primary-foreground hover:bg-primary-glow"
               }`}
             >
               Anfrage senden <ArrowRight className="h-4 w-4" />
@@ -99,7 +102,7 @@ const Navbar = () => {
           </div>
 
           <button
-            className={`lg:hidden ${solid ? "text-foreground" : "text-primary-foreground"}`}
+            className={`lg:hidden ${transparent ? "text-primary-foreground" : "text-foreground"}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menü"
             aria-expanded={mobileOpen}
@@ -134,7 +137,7 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-    </>
+    </div>
   );
 };
 
