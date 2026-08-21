@@ -9,7 +9,7 @@ const Hero = () => {
           src="/hero.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
-          className="h-full w-full object-cover animate-[scale-in_1.5s_ease-out_forwards]"
+          className="h-full w-full object-cover object-[center_70%] animate-[scale-in_1.5s_ease-out_forwards]"
           style={{ transform: "scale(1.05)" }}
         />
         <div className="absolute inset-0 bg-gradient-cinematic" />
