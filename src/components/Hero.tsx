@@ -27,17 +27,17 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-6 pt-32 pb-28 md:pt-40 md:pb-32">
         <div className="max-w-2xl">
           {/* Premium eyebrow badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-white/70 backdrop-blur-md px-4 py-1.5 mb-6 animate-fade-in-up shadow-soft">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-white/70 backdrop-blur-md px-4 py-1.5 mb-6 animate-fade-in-up shadow-soft">
             <span className="flex h-2 w-2 rounded-full bg-secondary animate-pulse" />
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
-              Exklusive Kleingruppenreisen
+              Persönliche Reisen durch Kirgisistan
             </span>
           </div>
 
           {/* Headline */}
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-foreground leading-[0.95] mb-6 animate-slide-up [text-shadow:0_2px_30px_hsla(40,33%,98%,0.75)]">
-            Kirgisistan erleben,
-            <span className="italic text-gold block">nicht besuchen.</span>
+            Kirgisistan, wie du es sonst
+            <span className="italic text-gold block">nicht erleben würdest.</span>
           </h1>
 
           {/* Subline */}
