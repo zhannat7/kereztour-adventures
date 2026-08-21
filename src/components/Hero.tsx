@@ -18,21 +18,21 @@ const Hero = () => {
 
       <div className="relative z-10 w-full h-full flex items-center">
         <div className="w-full px-6 lg:pl-[15vw] lg:pr-6 pt-20 lg:pt-24">
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <div className="max-w-[560px] lg:max-w-[760px]">
             <p
-              className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-8 sm:mb-9 lg:mb-10"
+              className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-7 sm:mb-8 lg:mb-10"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
             >
               Kleine Gruppenreisen ins Herz Zentralasiens
             </p>
 
             <h1
-              className="font-display font-normal text-white animate-slide-up text-[56px] sm:text-[72px] md:text-[88px] lg:text-[104px] xl:text-[116px] leading-[0.94] tracking-[-0.015em] mb-9 sm:mb-10 lg:mb-12"
+              className="font-display font-normal text-white animate-slide-up text-[56px] sm:text-[72px] md:text-[88px] lg:text-[104px] xl:text-[116px] leading-[0.94] tracking-[-0.015em] mb-8 sm:mb-9 lg:mb-10"
               style={{ textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
             >
               Kirgisistan.
               <span
-                className="block"
+                className="block lg:whitespace-nowrap"
                 style={{ color: "hsl(var(--gold))", textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
               >
                 Authentisch erleben.
@@ -40,7 +40,7 @@ const Hero = () => {
             </h1>
 
             <p
-              className="font-sans text-white/90 animate-fade-in-up leading-[1.5] max-w-[560px] text-[17px] sm:text-[19px] lg:text-[23px] mb-8 sm:mb-9 lg:mb-11"
+              className="font-sans text-white/90 animate-fade-in-up leading-[1.55] max-w-[520px] lg:max-w-[600px] text-[17px] sm:text-[19px] lg:text-[22px] mb-9 sm:mb-10 lg:mb-12"
               style={{ animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}
             >
               Abseits des Massentourismus: echte Nomadenkultur, wilde Berglandschaften und
@@ -48,7 +48,7 @@ const Hero = () => {
             </p>
 
             <div
-              className="flex flex-col sm:flex-row gap-4 animate-fade-in-up mb-7 sm:mb-8 lg:mb-9"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-5 animate-fade-in-up mb-8 sm:mb-9 lg:mb-10"
               style={{ animationDelay: "0.25s" }}
             >
               <Link
@@ -66,10 +66,10 @@ const Hero = () => {
             </div>
 
             <p
-              className="flex items-center gap-2 text-white/70 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
+              className="flex items-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
             >
-              <Star className="h-3.5 w-3.5 fill-gold text-gold" />
+              <Star className="h-4 w-4 fill-gold text-gold" />
               5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber
             </p>
           </div>
