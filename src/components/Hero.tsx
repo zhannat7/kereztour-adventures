@@ -3,7 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative h-[600px] sm:h-[660px] lg:h-[78vh] lg:max-h-[720px] lg:min-h-[560px] flex items-center overflow-hidden bg-background">
+    <section className="relative w-full aspect-[3/4] sm:aspect-[3/4] lg:aspect-[3/4] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
         <img
           src="/hero.jpg"
