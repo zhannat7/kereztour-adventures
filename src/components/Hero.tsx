@@ -17,10 +17,10 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-6">
-        <div className="max-w-[700px]">
+        <div style={{ maxWidth: "720px" }}>
           <p
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-white animate-fade-in-up"
-            style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", marginBottom: "32px" }}
+            className="font-semibold uppercase text-white animate-fade-in-up"
+            style={{ fontSize: "12px", letterSpacing: "0.25em", marginBottom: "28px", textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
           >
             Persönliche Reisen durch Kirgisistan
           </p>
@@ -28,12 +28,12 @@ const Hero = () => {
           <h1
             className="font-display font-normal text-white animate-slide-up"
             style={{
-              fontSize: "clamp(62px, 6.5vw, 88px)",
+              fontSize: "clamp(64px, 6.5vw, 88px)",
               lineHeight: 0.95,
-              letterSpacing: "-0.01em",
+              letterSpacing: "-0.015em",
               maxWidth: "720px",
               textShadow: "0 4px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5)",
-              marginBottom: "36px",
+              marginBottom: "30px",
             }}
           >
             Kirgisistan.
@@ -43,8 +43,15 @@ const Hero = () => {
           </h1>
 
           <p
-            className="font-sans text-white leading-[1.45] max-w-[560px] animate-fade-in-up"
-            style={{ fontSize: "18px", animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)", marginBottom: "32px" }}
+            className="font-sans text-white animate-fade-in-up"
+            style={{
+              fontSize: "18px",
+              lineHeight: 1.5,
+              maxWidth: "560px",
+              marginBottom: "30px",
+              animationDelay: "0.15s",
+              textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+            }}
           >
             Kleine Gruppen, lokale Gastgeber und persönlich geplante Reisen – von der ersten
             Anfrage bis zur Heimreise.
@@ -52,7 +59,7 @@ const Hero = () => {
 
           <div
             className="flex flex-col sm:flex-row gap-4 animate-fade-in-up"
-            style={{ animationDelay: "0.25s", marginBottom: "28px" }}
+            style={{ animationDelay: "0.25s", marginBottom: "0px" }}
           >
             <Link
               to="/buchen"
@@ -70,7 +77,7 @@ const Hero = () => {
 
           <p
             className="flex items-center gap-2 text-white/80 tracking-wide animate-fade-in-up"
-            style={{ fontSize: "13px", animationDelay: "0.35s", textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
+            style={{ fontSize: "13px", marginTop: "28px", animationDelay: "0.35s", textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
           >
             <Star className="h-3.5 w-3.5 fill-gold text-gold" />
             5,0 / 5,0 · Kleine Gruppen · Persönlich geplant
