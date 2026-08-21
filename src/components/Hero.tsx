@@ -34,10 +34,13 @@ const Hero = () => {
             </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-foreground leading-[0.95] mb-6 animate-slide-up [text-shadow:0_2px_30px_hsla(40,33%,98%,0.75)]">
-            Kirgisistan, wie du es sonst
-            <span className="italic text-gold block">nicht erleben würdest.</span>
+                   {/* Headline */}
+          <h1
+            className="font-display font-normal text-foreground mb-6 animate-slide-up [text-shadow:0_2px_30px_hsla(40,33%,98%,0.75)] max-w-xl"
+            style={{ fontSize: "clamp(56px, 4.5vw, 78px)", lineHeight: 0.98 }}
+          >
+            <span className="text-primary">Kirgisistan erleben.</span>{" "}
+            <span className="text-gold">Nicht nur bereisen.</span>
           </h1>
 
           {/* Subline */}
