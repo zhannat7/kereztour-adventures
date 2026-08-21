@@ -32,7 +32,7 @@ const Navbar = () => {
       <div
         className={`hidden md:block text-xs transition-colors duration-500 ${
           transparent
-            ? "bg-white/80 text-foreground/80 backdrop-blur-md border-b border-border/40"
+            ? "bg-transparent text-primary-foreground/80 border-b border-transparent"
             : "bg-primary text-primary-foreground/85"
         }`}
       >
@@ -55,14 +55,14 @@ const Navbar = () => {
           <Link to="/" className="flex items-baseline gap-2">
             <span
               className={`font-display text-2xl md:text-[27px] tracking-tight ${
-                transparent ? "text-primary" : "text-primary"
+                transparent ? "text-primary-foreground" : "text-primary"
               }`}
             >
               Kereztour
             </span>
             <span
               className={`hidden sm:block text-[10px] uppercase tracking-[0.28em] ${
-                transparent ? "text-muted-foreground" : "text-muted-foreground"
+                transparent ? "text-primary-foreground/70" : "text-muted-foreground"
               }`}
             >
               Kirgisistan
@@ -79,7 +79,7 @@ const Navbar = () => {
                       location.pathname === l.href
                         ? "text-secondary"
                         : transparent
-                        ? "text-foreground/85"
+                        ? "text-primary-foreground/90"
                         : "text-foreground/80"
                     }`}
                   >
@@ -91,14 +91,18 @@ const Navbar = () => {
 
             <Link
               to="/buchen"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary-glow"
+              className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
+                transparent
+                  ? "bg-primary/40 backdrop-blur-md border border-primary-foreground/20 text-primary-foreground hover:bg-primary/60"
+                  : "bg-primary text-primary-foreground hover:bg-primary-glow"
+              }`}
             >
               Anfrage senden <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
           <button
-            className={`lg:hidden ${transparent ? "text-foreground" : "text-foreground"}`}
+            className={`lg:hidden ${transparent ? "text-primary-foreground" : "text-foreground"}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menü"
             aria-expanded={mobileOpen}
