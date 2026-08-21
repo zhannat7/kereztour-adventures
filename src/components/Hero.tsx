@@ -4,7 +4,6 @@ import { ArrowRight, Star } from "lucide-react";
 const Hero = () => {
   return (
     <section className="relative h-[92vh] min-h-[640px] flex items-center overflow-hidden bg-background">
-      {/* Background image — rich, cinematic, no pale wash */}
       <div className="absolute inset-0 z-0">
         <img
           src="/hero.jpg"
@@ -20,20 +19,21 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-6">
         <div className="max-w-[700px]">
           <p
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-white mb-7 animate-fade-in-up"
-            style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-white animate-fade-in-up"
+            style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", marginBottom: "32px" }}
           >
             Persönliche Reisen durch Kirgisistan
           </p>
 
           <h1
-            className="font-display font-normal text-white mb-7 animate-slide-up"
+            className="font-display font-normal text-white animate-slide-up"
             style={{
               fontSize: "clamp(64px, 6.8vw, 92px)",
               lineHeight: 0.92,
               letterSpacing: "-0.01em",
               maxWidth: "720px",
               textShadow: "0 4px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5)",
+              marginBottom: "32px",
             }}
           >
             Kirgisistan.
@@ -43,16 +43,16 @@ const Hero = () => {
           </h1>
 
           <p
-            className="font-sans text-white leading-[1.45] max-w-[560px] mb-7 animate-fade-in-up"
-            style={{ fontSize: "18px", animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}
+            className="font-sans text-white leading-[1.45] max-w-[560px] animate-fade-in-up"
+            style={{ fontSize: "18px", animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)", marginBottom: "32px" }}
           >
             Kleine Gruppen, lokale Gastgeber und persönlich geplante Reisen – von der ersten
             Anfrage bis zur Heimreise.
           </p>
 
           <div
-            className="flex flex-col sm:flex-row gap-4 mb-6 animate-fade-in-up"
-            style={{ animationDelay: "0.25s" }}
+            className="flex flex-col sm:flex-row gap-4 animate-fade-in-up"
+            style={{ animationDelay: "0.25s", marginBottom: "28px" }}
           >
             <Link
               to="/buchen"
