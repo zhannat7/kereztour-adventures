@@ -28,22 +28,6 @@ const Navbar = () => {
 
   return (
     <div className={`${onHome ? "absolute" : "relative"} top-0 left-0 right-0 z-50`}>
-      {/* Trust bar */}
-      <div
-        className={`hidden md:block text-xs transition-colors duration-500 ${
-          transparent
-            ? "bg-transparent text-primary-foreground/80 border-b border-transparent"
-            : "bg-primary text-primary-foreground/85"
-        }`}
-      >
-        <div className="container mx-auto flex items-center justify-between px-6 py-2">
-          <span className="tracking-wide">Kleine Gruppen · Persönliche Reiseleitung vor Ort · Seit 2018 in Kirgisistan</span>
-          <a href="tel:+393474867408" className="inline-flex items-center gap-2 hover:text-secondary transition-colors">
-            <Phone className="h-3.5 w-3.5" /> +39 347 486 7408
-          </a>
-        </div>
-      </div>
-
       <nav
         className={`transition-all duration-500 ${
           transparent
