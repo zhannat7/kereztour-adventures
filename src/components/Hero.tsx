@@ -21,7 +21,7 @@ const Hero = () => {
           <div className="max-w-[560px] lg:max-w-[700px] lg:-mt-[3vh]">
             <p
               className="font-semibold uppercase text-white animate-fade-in-up"
-              style={{ fontSize: "16px", letterSpacing: "0.22em", marginBottom: "28px", textShadow: "0 2px 18px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.65)" }}
+              style={{ fontSize: "16px", letterSpacing: "0.26em", marginBottom: "36px", textShadow: "0 2px 18px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.65)" }}
             >
               Persönliche Reisen durch Kirgisistan
             </p>
@@ -30,10 +30,10 @@ const Hero = () => {
               className="font-display font-normal text-white animate-slide-up"
               style={{
                 fontSize: "clamp(58px, 6.8vw, 96px)",
-                lineHeight: 0.94,
+                lineHeight: 0.96,
                 letterSpacing: "-0.015em",
                 textShadow: "0 4px 32px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.55)",
-                marginBottom: "34px",
+                marginBottom: "46px",
               }}
             >
               Kirgisistan.
@@ -49,9 +49,9 @@ const Hero = () => {
               className="font-sans text-white/95 animate-fade-in-up"
               style={{
                 fontSize: "22px",
-                lineHeight: 1.55,
-                maxWidth: "580px",
-                marginBottom: "40px",
+                lineHeight: 1.65,
+                maxWidth: "600px",
+                marginBottom: "52px",
                 animationDelay: "0.15s",
                 textShadow: "0 3px 24px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.55)",
               }}
@@ -61,19 +61,19 @@ const Hero = () => {
             </p>
 
             <div
-              className="flex flex-col sm:flex-row gap-5 animate-fade-in-up"
-              style={{ animationDelay: "0.25s", marginBottom: "32px" }}
+              className="flex flex-col sm:flex-row gap-6 animate-fade-in-up"
+              style={{ animationDelay: "0.25s", marginBottom: "44px" }}
             >
               <Link
                 to="/buchen"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-9 py-4 text-lg font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110 shadow-lift hover:shadow-glow"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-primary px-10 py-[18px] text-lg font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110 shadow-lift hover:shadow-glow"
               >
                 Reise entdecken <ArrowRight className="h-6 w-6" />
               </Link>
               
               <a
                 href="#reisen"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-white/12 backdrop-blur-sm px-9 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-white/18 hover:border-white/65"
+                className="inline-flex items-center justify-center gap-3 rounded-full border border-white/45 bg-white/12 backdrop-blur-sm px-10 py-[18px] text-lg font-semibold text-white transition-all duration-300 hover:bg-white/18 hover:border-white/65"
               >
                 Persönliche Reise anfragen
               </a>
@@ -81,7 +81,7 @@ const Hero = () => {
 
             <p
               className="flex items-center gap-3 text-white/90 tracking-wide animate-fade-in-up"
-              style={{ fontSize: "16px", textShadow: "0 2px 18px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.65)", animationDelay: "0.35s" }}
+              style={{ fontSize: "16px", lineHeight: 1.6, textShadow: "0 2px 18px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.65)", animationDelay: "0.35s" }}
             >
               <Star className="h-5 w-5 fill-gold text-gold" />
               5,0 / 5,0 · Kleine Gruppen · Persönlich geplant
