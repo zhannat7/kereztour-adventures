@@ -28,12 +28,12 @@ const Hero = () => {
           <h1
             className="font-display font-normal text-white animate-slide-up"
             style={{
-              fontSize: "clamp(64px, 6.8vw, 92px)",
-              lineHeight: 0.92,
+              fontSize: "clamp(62px, 6.5vw, 88px)",
+              lineHeight: 0.95,
               letterSpacing: "-0.01em",
               maxWidth: "720px",
               textShadow: "0 4px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5)",
-              marginBottom: "32px",
+              marginBottom: "36px",
             }}
           >
             Kirgisistan.
