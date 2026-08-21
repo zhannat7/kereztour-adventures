@@ -20,8 +20,8 @@ const Hero = () => {
         <div className="w-full px-6 lg:pl-[19vw] lg:pr-6">
           <div className="max-w-[560px] lg:max-w-[700px] lg:-mt-[3vh]">
             <p
-              className="font-semibold uppercase text-white/90 animate-fade-in-up"
-              style={{ fontSize: "13px", letterSpacing: "0.24em", marginBottom: "26px", textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
+              className="font-semibold uppercase text-white animate-fade-in-up"
+              style={{ fontSize: "15px", letterSpacing: "0.24em", marginBottom: "26px", textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.6)" }}
             >
               Persönliche Reisen durch Kirgisistan
             </p>
@@ -46,14 +46,14 @@ const Hero = () => {
             </h1>
 
             <p
-              className="font-sans text-white/90 animate-fade-in-up"
+              className="font-sans text-white/95 animate-fade-in-up"
               style={{
-                fontSize: "18px",
+                fontSize: "20px",
                 lineHeight: 1.5,
                 maxWidth: "560px",
                 marginBottom: "34px",
                 animationDelay: "0.15s",
-                textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+                textShadow: "0 3px 20px rgba(0,0,0,0.65), 0 1px 4px rgba(0,0,0,0.5)",
               }}
             >
               Kleine Gruppen, lokale Gastgeber und persönlich geplante Reisen – von der ersten
@@ -66,23 +66,24 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110 shadow-lift hover:shadow-glow"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110 shadow-lift hover:shadow-glow"
               >
-                Reise entdecken <ArrowRight className="h-4 w-4" />
+                Reise entdecken <ArrowRight className="h-5 w-5" />
               </Link>
               
+              <a
                 href="#reisen"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm px-8 py-4 text-sm font-medium text-white/90 transition-all duration-300 hover:bg-white/10 hover:border-white/50"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 backdrop-blur-sm px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:bg-white/15 hover:border-white/60"
               >
                 Persönliche Reise anfragen
               </a>
             </div>
 
             <p
-              className="flex items-center gap-2 text-white/70 tracking-wide animate-fade-in-up"
-              style={{ fontSize: "13px", textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
+              className="flex items-center gap-2 text-white/90 tracking-wide animate-fade-in-up"
+              style={{ fontSize: "15px", textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.6)", animationDelay: "0.35s" }}
             >
-              <Star className="h-3.5 w-3.5 fill-gold text-gold" />
+              <Star className="h-4 w-4 fill-gold text-gold" />
               5,0 / 5,0 · Kleine Gruppen · Persönlich geplant
             </p>
           </div>
