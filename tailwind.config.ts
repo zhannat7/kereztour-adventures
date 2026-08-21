@@ -90,6 +90,7 @@ export default {
         "gradient-sun": "var(--gradient-sun)",
         "gradient-airy": "var(--gradient-airy)",
         "gradient-text-veil": "var(--gradient-text-veil)",
+        "gradient-cinematic": "var(--gradient-cinematic)",
         "gradient-vignette": "var(--gradient-vignette)",
         "gradient-bottom-fade": "var(--gradient-bottom-fade)",
       },
