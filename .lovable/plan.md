@@ -1,36 +1,28 @@
+# Navbar fixieren
 
+## Ziel
+Die Navbar bleibt beim Scrollen auf allen Seiten fixiert am oberen Bildschirmrand, damit Navigation und "Anfrage senden" jederzeit erreichbar sind.
 
-## Plan: Galerie-Redesign — Enges Mosaik-Grid mit Thumbnail-Lightbox
+## Aktueller Zustand
+- Auf der Startseite ist die Navbar `absolute` positioniert und scrollt mit der Seite aus dem Bild.
+- Auf Unterseiten ist sie `relative` und scrollt ebenfalls mit.
+- Es gibt bereits einen Scroll-State (`scrolled`), der das Aussehen zwischen transparent und solid umschaltet.
 
-Inspiriert vom Fussballtour-Referenzbild: kompaktes Grid mit vielen kleinen Bildern, keine Overlays, und eine Lightbox mit Thumbnail-Streifen.
+## Umsetzung
+1. **Positionierung ändern**
+   - Wrapper von `absolute`/`relative` auf `fixed top-0 left-0 right-0 z-50` umstellen.
+   - Auf der Startseite weiterhin transparent über dem Hero anzeigen, wenn `scrolled === false`.
+   - Nach dem Scrollen und auf allen Unterseiten die solide `bg-background/85 backdrop-blur-xl`-Variante verwenden.
 
-### Änderungen in `src/components/Gallery.tsx`
+2. **Layout-Kompensation**
+   - Prüfen, ob der fixierten Navbar ein Padding/Offset am `<body>` oder Page-Wrapper fehlt, damit Inhalte nicht unter die Navbar rutschen.
+   - Ggf. `pt-20` oder ähnlichen Abstand auf Page-Containern ergänzen.
 
-**1. Section-Header**
-- Titel: "Fotos unserer zufriedenen Kunden" mit Hashtag `#kereztour` (im Primary-Farbton)
-- Zentriert, passend zum bestehenden Design-System (Instrument Serif)
+3. **Mobile Menü**
+   - Sicherstellen, dass das aufklappende Mobile-Menü korrekt unter der fixierten Navbar erscheint und weiterhin scrollbar ist.
+   - Schließen-Verhalten beim Klick auf einen Link beibehalten.
 
-**2. Grid-Layout (ersetzt Masonry)**
-- Enges, gleichmässiges Grid: 4 Spalten mobile, 6-8 Spalten tablet, 10 Spalten desktop
-- Alle Bilder quadratisch zugeschnitten (`aspect-square object-cover`)
-- Kleiner Gap (2-3px) zwischen Bildern
-- Abgerundete Ecken (rounded, ~4px)
-- Keine dunklen Overlays, keine Hover-Effekte mit Gradient
-- Alle 48 Bilder direkt sichtbar (kein "Mehr laden" Button)
-
-**3. Neue Lightbox (ersetzt aktuelle)**
-- Dunkler Hintergrund (bg-black/95)
-- Grosses Bild zentriert in Originalgrösse
-- X-Button oben rechts zum Schliessen
-- Navigationspfeile links/rechts
-- Zähler unten (z.B. "5 von 48")
-- **Thumbnail-Streifen** am unteren Rand: horizontal scrollbare kleine Vorschaubilder, aktives Bild hervorgehoben mit hellem Rahmen
-- Keyboard-Navigation (Escape, Pfeiltasten)
-- Mobile-freundlich: Touch-fähiger Thumbnail-Streifen
-
-### Technische Details
-- Nur `Gallery.tsx` wird geändert
-- Alle 48 bestehenden Bild-Imports bleiben erhalten
-- Lightbox-Komponente wird inline neu geschrieben mit Thumbnail-Leiste
-- Scroll-into-view für aktives Thumbnail im Streifen
-
+## Technische Details
+- Datei: `src/components/Navbar.tsx`
+- Tailwind-Klassen: `fixed`, `top-0`, `z-50`, `bg-background/85`, `backdrop-blur-xl`
+- Keine neuen Abhängigkeiten nötig.
