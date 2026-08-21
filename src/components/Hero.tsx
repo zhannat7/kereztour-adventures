@@ -5,15 +5,25 @@ const Hero = () => {
   return (
     <section className="relative w-full h-[85vh] sm:h-[88vh] lg:h-[90vh] lg:max-h-[980px] lg:min-h-[620px] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
+        {/* Blurred full-bleed background so the hero never looks empty on the sides */}
+        <img
+          src="/hero.jpg"
+          alt=""
+          loading="eager"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center blur-xl scale-110 opacity-90"
+        />
+        <div className="absolute inset-0 bg-background/40" />
+        {/* Sharp, complete image centered without cropping */}
         <img
           src="/hero.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
-          className="h-full w-full object-contain object-center animate-[scale-in_1.5s_ease-out_forwards]"
-          style={{ transform: "scale(1.05)" }}
+          className="relative h-full w-full object-contain object-center animate-[scale-in_1.5s_ease-out_forwards]"
+          style={{ transform: "scale(1.02)" }}
         />
         <div className="absolute inset-0 bg-gradient-cinematic" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,30,26,0.4)] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,30,26,0.45)] via-transparent to-transparent" />
       </div>
 
       <div className="relative z-10 w-full h-full flex items-center">
