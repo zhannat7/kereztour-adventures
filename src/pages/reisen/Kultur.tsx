@@ -130,7 +130,7 @@ const Kultur = () => {
   
   <>
     <Navbar />
-    <main className="pt-12 md:pt-16 pb-20">
+    <main className="pt-20 md:pt-24 pb-20">
       <div className="container mx-auto px-6 max-w-4xl">
 
         <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
