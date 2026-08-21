@@ -49,7 +49,7 @@ const Hero = () => {
             >
               Reise entdecken <ArrowRight className="h-4 w-4" />
             </Link>
-            
+            <a
               href="#reisen"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-transparent px-8 py-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary-foreground/10"
             >
