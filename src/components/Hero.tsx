@@ -76,7 +76,7 @@ const Hero = () => {
             </div>
 
             <p
-              className="flex items-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
+              className="flex items-center justify-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
             >
               <Star className="h-4 w-4 fill-gold text-gold" />
