@@ -16,27 +16,42 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-cinematic" />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsla(168,45%,6%,0.55)] via-transparent to-transparent" />
       </div>
+
       <div className="relative z-10 container mx-auto px-6">
         <div className="max-w-[700px]">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-foreground/80 mb-5 animate-fade-in-up">
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-white mb-7 animate-fade-in-up"
+            style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
+          >
             Persönliche Reisen durch Kirgisistan
           </p>
+
           <h1
-            className="font-display font-normal text-primary-foreground mb-6 animate-slide-up"
-            style={{ fontSize: "clamp(64px, 7vw, 108px)", lineHeight: 0.92, maxWidth: "700px" }}
+            className="font-display font-normal text-white mb-7 animate-slide-up"
+            style={{
+              fontSize: "clamp(64px, 6.8vw, 92px)",
+              lineHeight: 0.92,
+              letterSpacing: "-0.01em",
+              maxWidth: "720px",
+              textShadow: "0 4px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5)",
+            }}
           >
             Kirgisistan.
-            <span className="text-gold block">Anders erleben.</span>
+            <span className="text-gold block" style={{ textShadow: "0 4px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5)" }}>
+              Anders erleben.
+            </span>
           </h1>
+
           <p
-            className="font-sans text-lg md:text-xl text-primary-foreground/85 leading-[1.45] max-w-[560px] mb-10 animate-fade-in-up"
-            style={{ animationDelay: "0.15s" }}
+            className="font-sans text-white leading-[1.45] max-w-[560px] mb-7 animate-fade-in-up"
+            style={{ fontSize: "18px", animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}
           >
             Kleine Gruppen, lokale Gastgeber und persönlich geplante Reisen – von der ersten
             Anfrage bis zur Heimreise.
           </p>
+
           <div
-            className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in-up"
+            className="flex flex-col sm:flex-row gap-4 mb-6 animate-fade-in-up"
             style={{ animationDelay: "0.25s" }}
           >
             <Link
@@ -52,9 +67,10 @@ const Hero = () => {
               Persönliche Reise anfragen
             </a>
           </div>
+
           <p
-            className="flex items-center gap-2 text-sm text-primary-foreground/75 animate-fade-in-up"
-            style={{ animationDelay: "0.35s" }}
+            className="flex items-center gap-2 text-white/80 tracking-wide animate-fade-in-up"
+            style={{ fontSize: "13px", animationDelay: "0.35s", textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
           >
             <Star className="h-3.5 w-3.5 fill-gold text-gold" />
             5,0 / 5,0 · Kleine Gruppen · Persönlich geplant
