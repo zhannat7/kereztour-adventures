@@ -3,22 +3,32 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative h-[600px] sm:h-[660px] lg:h-[78vh] lg:max-h-[720px] lg:min-h-[560px] flex items-center overflow-hidden bg-background">
+    <section className="relative w-full h-[85vh] sm:h-[88vh] lg:h-[90vh] lg:max-h-[980px] lg:min-h-[620px] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
+        {/* Blurred full-bleed background so the hero never looks empty on the sides */}
+        <img
+          src="/hero.jpg"
+          alt=""
+          loading="eager"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center blur-xl scale-110 opacity-90"
+        />
+        <div className="absolute inset-0 bg-background/40" />
+        {/* Sharp, complete image centered without cropping */}
         <img
           src="/hero.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
-          className="h-full w-full object-cover object-[center_70%] animate-[scale-in_1.5s_ease-out_forwards]"
-          style={{ transform: "scale(1.05)" }}
+          className="relative h-full w-full object-contain object-center animate-[scale-in_1.5s_ease-out_forwards]"
+          style={{ transform: "scale(1.02)" }}
         />
         <div className="absolute inset-0 bg-gradient-cinematic" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,30,26,0.4)] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,30,26,0.45)] via-transparent to-transparent" />
       </div>
 
       <div className="relative z-10 w-full h-full flex items-center">
-        <div className="w-full px-6 lg:pl-[15vw] lg:pr-6 pt-20 lg:pt-24">
-          <div className="max-w-[560px] lg:max-w-[760px]">
+        <div className="w-full px-6 pt-20 lg:pt-24">
+          <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-7 sm:mb-8 lg:mb-10"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
@@ -48,7 +58,7 @@ const Hero = () => {
             </p>
 
             <div
-              className="flex flex-col sm:flex-row gap-4 sm:gap-5 animate-fade-in-up mb-8 sm:mb-9 lg:mb-10"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-5 animate-fade-in-up mb-8 sm:mb-9 lg:mb-10 justify-center items-center"
               style={{ animationDelay: "0.25s" }}
             >
               <Link
@@ -66,7 +76,7 @@ const Hero = () => {
             </div>
 
             <p
-              className="flex items-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
+              className="flex items-center justify-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
             >
               <Star className="h-4 w-4 fill-gold text-gold" />

@@ -31,7 +31,7 @@ const Navbar = () => {
       <nav
         className={`transition-all duration-500 ${
           transparent
-            ? "bg-transparent border-b border-transparent"
+            ? "bg-[rgba(5,30,26,0.55)] backdrop-blur-xl border-b border-white/10"
             : "bg-background/85 backdrop-blur-xl border-b border-border"
         }`}
       >
