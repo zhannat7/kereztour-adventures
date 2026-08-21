@@ -27,8 +27,8 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 w-full h-full flex items-center">
-        <div className="w-full px-6 lg:pl-[15vw] lg:pr-6 pt-20 lg:pt-24">
-          <div className="max-w-[560px] lg:max-w-[760px]">
+        <div className="w-full px-6 pt-20 lg:pt-24">
+          <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-7 sm:mb-8 lg:mb-10"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
