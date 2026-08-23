@@ -3,28 +3,19 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-[85vh] sm:h-[88vh] lg:h-[90vh] lg:max-h-[980px] lg:min-h-[620px] flex items-center overflow-hidden bg-background">
+    <section className="relative w-full h-[82vh] sm:h-[85vh] lg:h-[88vh] lg:max-h-[900px] lg:min-h-[600px] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
-        {/* Blurred full-bleed background so the hero never looks empty on the sides */}
         <img
-          src="/hero.jpg"
-          alt=""
-          loading="eager"
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-center blur-xl scale-110 opacity-90"
-        />
-        <div className="absolute inset-0 bg-background/40" />
-        {/* Sharp, complete image centered without cropping */}
-        <img
-          src="/hero.jpg"
+          src="/hero-wide.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
-          className="relative h-full w-full object-contain object-center animate-[scale-in_1.5s_ease-out_forwards]"
-          style={{ transform: "scale(1.02)" }}
+          className="absolute inset-0 h-full w-full object-cover object-[center_45%] animate-[scale-in_1.6s_ease-out_forwards]"
         />
-        <div className="absolute inset-0 bg-gradient-cinematic" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,30,26,0.45)] via-transparent to-transparent" />
+        {/* Sanfte, cinematische Abdunklung nur für Lesbarkeit */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.55)_0%,rgba(5,30,26,0.28)_45%,rgba(5,30,26,0.5)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-vignette" />
       </div>
+
 
       <div className="relative z-10 w-full h-full flex items-center">
         <div className="w-full px-6 pt-20 lg:pt-24">
