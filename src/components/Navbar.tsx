@@ -120,7 +120,7 @@ const Navbar = () => {
 
           <Link
             to="/buchen"
-            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
           >
             <span>Anfrage senden</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -158,13 +158,13 @@ const Navbar = () => {
               <Link
                 to="/buchen"
                 onClick={() => setMobileOpen(false)}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--gold))] px-6 py-3 text-sm font-semibold text-[#062c26]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[hsl(var(--gold))] px-6 py-3 text-sm font-semibold text-[#062c26]"
               >
                 Anfrage senden <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="tel:+393474867408"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground"
               >
                 <Phone className="h-4 w-4" /> +39 347 486 7408
               </a>
