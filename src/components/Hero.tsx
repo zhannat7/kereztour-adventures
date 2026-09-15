@@ -47,9 +47,9 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-primary border border-[hsl(var(--gold))]/40 px-10 py-[18px] font-semibold text-primary-foreground text-[15px] sm:text-[16px] lg:text-[17px] tracking-wide shadow-lift transition-all duration-500 hover:border-[hsl(var(--gold))] hover:shadow-glow hover:brightness-110"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-[hsl(var(--gold))] border border-[hsl(var(--gold))] px-10 py-[18px] font-semibold text-[#1a2b24] text-[15px] sm:text-[16px] lg:text-[17px] tracking-wide shadow-lift transition-all duration-500 hover:brightness-105 hover:shadow-glow"
               >
-                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/20 to-transparent" />
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                 <span className="relative z-10 flex items-center gap-3">
                   Beginne Deine Reise
                   <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
