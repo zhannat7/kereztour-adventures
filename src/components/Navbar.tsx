@@ -50,7 +50,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-8 xl:gap-12 ml-8 mr-4">
+          <div className="hidden lg:flex flex-1 items-center justify-center px-8">
             <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
@@ -79,15 +79,15 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-
-            <Link
-              to="/buchen"
-              className="group flex shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[15px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
-            >
-              <span>Anfrage senden</span>
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
           </div>
+
+          <Link
+            to="/buchen"
+            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[15px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+          >
+            <span>Anfrage senden</span>
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
 
           <button
             className={`lg:hidden transition-colors duration-500 ${
