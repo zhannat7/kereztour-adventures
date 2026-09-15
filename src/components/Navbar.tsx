@@ -27,15 +27,15 @@ const Navbar = () => {
   const transparent = onHome && !scrolled && !mobileOpen;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-3 sm:pt-5">
+    <div className="fixed top-0 left-0 right-0 z-50">
       <nav
-        className={`container mx-auto rounded-2xl border transition-all duration-700 ease-out ${
+        className={`w-full border-b transition-all duration-500 ease-out ${
           transparent
             ? "bg-transparent border-transparent shadow-none"
-            : "bg-white/85 backdrop-blur-xl border-border/50 shadow-soft"
+            : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="flex items-center justify-between px-5 sm:px-8 py-3.5 sm:py-4">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10 py-3.5 sm:py-4">
           <Link to="/" className="flex items-baseline gap-3 shrink-0">
             <span
               className={`font-display text-[26px] md:text-3xl leading-none tracking-tight transition-colors duration-700 ${
