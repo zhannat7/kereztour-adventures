@@ -60,8 +60,8 @@ const Hero = () => {
       </div>
 
       <div className="absolute bottom-5 left-0 right-0 z-10 px-6 sm:bottom-7">
-        <p className="flex flex-wrap items-center justify-center gap-2 text-[13px] font-medium tracking-wide text-primary-foreground/90 sm:text-[14px]">
-          <Star className="h-4 w-4 shrink-0 fill-gold text-gold" />
+        <p className="flex flex-wrap items-center justify-center gap-2 text-[14px] font-medium tracking-wide text-primary-foreground/95 sm:gap-3 sm:text-[16px] lg:text-[18px]">
+          <Star className="h-[18px] w-[18px] shrink-0 fill-gold text-gold sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
           <span className="font-semibold text-gold">5,0 / 5,0</span>
           <span>· Kleine Gruppen · Lokale Gastgeber</span>
         </p>
