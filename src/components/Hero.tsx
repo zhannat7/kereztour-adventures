@@ -11,12 +11,15 @@ const Hero = () => {
           aria-hidden="true"
           className="absolute inset-0 h-full w-full scale-105 object-cover opacity-45 blur-xl"
         />
-        <img
-          src="/hero-wide.jpg"
-          alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
-          loading="eager"
-          className="absolute inset-0 h-full w-full object-contain"
-        />
+        <picture>
+          <source media="(max-width: 639px)" srcSet="/hero.jpg" />
+          <img
+            src="/hero-wide.jpg"
+            alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
+            loading="eager"
+            className="absolute inset-0 h-full w-full object-contain"
+          />
+        </picture>
         {/* Sehr sanfte Abdunklung, damit das Foto lebendig bleibt */}
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.42)_0%,rgba(5,30,26,0.18)_40%,rgba(5,30,26,0.35)_100%)]" />
         <div className="absolute inset-0 bg-gradient-vignette" />
