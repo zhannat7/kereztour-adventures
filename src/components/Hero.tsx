@@ -21,14 +21,14 @@ const Hero = () => {
         <div className="w-full px-6 pt-20 lg:pt-24">
           <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
             <p
-              className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-7 sm:mb-8 lg:mb-10"
+              className="font-semibold uppercase text-white/90 animate-fade-in-up text-[15px] sm:text-[17px] lg:text-[19px] tracking-[0.22em] mb-8 sm:mb-10 lg:mb-12"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
             >
               Kleine Gruppenreisen ins Herz Zentralasiens
             </p>
 
             <h1
-              className="font-display font-normal text-white animate-slide-up text-[56px] sm:text-[72px] md:text-[88px] lg:text-[104px] xl:text-[116px] leading-[0.94] tracking-[-0.015em] mb-10 sm:mb-12 lg:mb-16"
+              className="font-display font-normal text-white animate-slide-up text-[50px] sm:text-[66px] md:text-[82px] lg:text-[min(8vw,124px)] leading-[1.06] tracking-[-0.015em] mb-10 sm:mb-12 lg:mb-16"
               style={{ textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
             >
               Kirgisistan.
