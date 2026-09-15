@@ -80,6 +80,7 @@ const Navbar = () => {
                 <li key={l.label} className="relative">
                   <Link
                     to={l.href}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className={`whitespace-nowrap text-[19px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
                         ? "text-[hsl(var(--gold))]"
