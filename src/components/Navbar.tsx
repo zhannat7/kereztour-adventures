@@ -26,6 +26,30 @@ const Navbar = () => {
   const onHome = location.pathname === "/";
   const transparent = onHome && !scrolled && !mobileOpen;
 
+  // Nach Navigation (z. B. von einer Unterseite) zum Anker scrollen
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+    const t = window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+    return () => window.clearTimeout(t);
+  }, [location.pathname, location.hash]);
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    setMobileOpen(false);
+    if (!href.startsWith("/#")) return;
+    const id = href.slice(2);
+    if (location.pathname === "/") {
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState(null, "", href);
+      }
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       <nav
@@ -56,6 +80,7 @@ const Navbar = () => {
                 <li key={l.label} className="relative">
                   <Link
                     to={l.href}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className={`whitespace-nowrap text-[19px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
                         ? "text-[hsl(var(--gold))]"
@@ -109,7 +134,7 @@ const Navbar = () => {
                 <li key={l.label} className="border-b border-border/50 last:border-0">
                   <Link
                     to={l.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className="block py-3.5 text-base font-medium text-foreground hover:text-[hsl(var(--gold))] transition-colors"
                   >
                     {l.label}
