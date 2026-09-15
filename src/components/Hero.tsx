@@ -40,13 +40,6 @@ const Hero = () => {
               </span>
             </h1>
 
-            <p
-              className="font-sans text-white/90 animate-fade-in-up leading-[1.55] max-w-[520px] lg:max-w-[600px] text-[17px] sm:text-[19px] lg:text-[22px] mb-9 sm:mb-10 lg:mb-12"
-              style={{ animationDelay: "0.15s", textShadow: "0 2px 16px rgba(0,0,0,0.5)" }}
-            >
-              Abseits des Massentourismus: echte Nomadenkultur, wilde Berglandschaften und
-              herzliche Gastfreundschaft – persönlich geplant von Anfang bis Ende.
-            </p>
 
             <div
               className="flex flex-col sm:flex-row gap-4 sm:gap-5 animate-fade-in-up mb-8 sm:mb-9 lg:mb-10 justify-center items-center"
