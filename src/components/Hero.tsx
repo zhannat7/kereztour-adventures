@@ -28,7 +28,7 @@ const Hero = () => {
             </p>
 
             <h1
-              className="font-display font-normal text-white animate-slide-up text-[56px] sm:text-[72px] md:text-[88px] lg:text-[104px] xl:text-[116px] leading-[0.94] tracking-[-0.015em] mb-8 sm:mb-9 lg:mb-10"
+              className="font-display font-normal text-white animate-slide-up text-[56px] sm:text-[72px] md:text-[88px] lg:text-[104px] xl:text-[116px] leading-[0.94] tracking-[-0.015em] mb-10 sm:mb-12 lg:mb-16"
               style={{ textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
             >
               Kirgisistan.
