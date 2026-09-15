@@ -86,8 +86,8 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="ml-4 hidden items-center lg:flex">
-            <ul className="flex items-center gap-6 xl:gap-7">
+          <div className="ml-2 hidden items-center lg:flex xl:ml-4">
+            <ul className="flex items-center gap-5 xl:gap-7">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
                   <Link
