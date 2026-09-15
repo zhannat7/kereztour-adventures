@@ -135,9 +135,6 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-      {!transparent && (
-        <div className="container mx-auto mt-3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/30 to-transparent opacity-50 transition-opacity duration-700" />
-      )}
     </div>
   );
 };
