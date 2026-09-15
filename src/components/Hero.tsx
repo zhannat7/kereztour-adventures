@@ -51,17 +51,19 @@ const Hero = () => {
                 </span>
               </Link>
 
-              <div className="flex min-h-14 items-center gap-3 rounded-md border border-primary-foreground/20 bg-primary/25 px-5 py-3 text-left text-primary-foreground backdrop-blur-md">
-                <Star className="h-5 w-5 shrink-0 fill-gold text-gold" />
-                <p className="text-[12px] font-medium leading-snug tracking-wide sm:text-[13px]">
-                  <span className="block font-semibold text-gold">5,0 / 5,0</span>
-                  Kleine Gruppen · Lokale Gastgeber
-                </p>
-              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <div className="absolute bottom-5 left-0 right-0 z-10 px-6 sm:bottom-7">
+        <p className="flex flex-wrap items-center justify-center gap-2 text-[13px] font-medium tracking-wide text-primary-foreground/90 sm:text-[14px]">
+          <Star className="h-4 w-4 shrink-0 fill-gold text-gold" />
+          <span className="font-semibold text-gold">5,0 / 5,0</span>
+          <span>· Kleine Gruppen · Lokale Gastgeber</span>
+        </p>
+      </div>
+
     </section>
   );
 };
