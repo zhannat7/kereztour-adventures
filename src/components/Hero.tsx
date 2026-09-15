@@ -11,19 +11,19 @@ const Hero = () => {
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
         />
-        {/* Abdunklung fürs Foto */}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.55)_0%,rgba(5,30,26,0.35)_45%,rgba(5,30,26,0.6)_100%)]" />
+        {/* Sehr sanfte Abdunklung, damit das Foto lebendig bleibt */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.42)_0%,rgba(5,30,26,0.18)_40%,rgba(5,30,26,0.35)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-vignette" />
       </div>
 
       {/* Lokaler Lesbarkeits-Verlauf direkt hinter dem Text-Block */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1]"
+        className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[85%] -translate-y-1/2"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 52%, rgba(4,24,20,0.82) 0%, rgba(4,24,20,0.6) 45%, rgba(4,24,20,0.25) 72%, transparent 88%)",
+            "radial-gradient(ellipse at center, rgba(5,30,26,0.72) 0%, rgba(5,30,26,0.45) 42%, rgba(5,30,26,0.18) 68%, transparent 78%)",
         }}
       />
-
 
       <div className="relative z-10 w-full h-full flex items-center">
         <div className="w-full px-6 pt-20 lg:pt-24">
@@ -49,7 +49,7 @@ const Hero = () => {
             </h1>
 
             <p
-              className="font-sans text-white animate-fade-in-up leading-[1.65] mx-auto max-w-[520px] lg:max-w-[620px] text-[17px] sm:text-[19px] lg:text-[22px] mb-9 sm:mb-10 lg:mb-12"
+              className="font-sans text-white animate-fade-in-up leading-[1.65] max-w-[520px] lg:max-w-[620px] text-[17px] sm:text-[19px] lg:text-[22px] mb-9 sm:mb-10 lg:mb-12"
               style={{ animationDelay: "0.15s", textShadow: "0 3px 22px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.6)" }}
             >
               Abseits des Massentourismus: echte Nomadenkultur, wilde Berglandschaften und
