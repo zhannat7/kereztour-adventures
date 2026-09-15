@@ -86,8 +86,8 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="ml-7 hidden items-center lg:flex">
-            <ul className="flex items-center gap-7 xl:gap-9">
+          <div className="ml-5 hidden items-center lg:flex">
+            <ul className="flex items-center gap-5">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
                   <Link
@@ -120,7 +120,7 @@ const Navbar = () => {
 
           <Link
             to="/buchen"
-            className="group ml-auto hidden shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26] lg:flex"
+            className="group ml-auto hidden shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-4 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26] lg:flex"
           >
             <span>Anfrage senden</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
