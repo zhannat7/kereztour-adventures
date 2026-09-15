@@ -50,7 +50,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center justify-center px-8 translate-x-[38px]">
+          <div className="hidden lg:flex flex-1 items-center justify-center px-8">
             <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
@@ -72,7 +72,7 @@ const Navbar = () => {
                     {l.label}
                   </Link>
                   {l.label === "Nomaden 2026" && (
-                    <span className="absolute -top-4 -right-5 rounded-full bg-[hsl(var(--gold))] px-2 py-0.5 text-[13px] font-bold text-[#062c26]">
+                    <span className="absolute -top-4 -right-4 rounded-full bg-[hsl(var(--gold))] px-2 py-0.5 text-[11px] font-bold text-[#062c26]">
                       Neu
                     </span>
                   )}
