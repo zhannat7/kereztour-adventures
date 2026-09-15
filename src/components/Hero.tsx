@@ -19,13 +19,14 @@ const Hero = () => {
 
       <div className="relative z-10 w-full h-full flex items-start">
         <div className="w-full px-6 pt-24 sm:pt-28">
-          <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
+          <div className="max-w-[560px] lg:max-w-[820px] mx-auto text-center lg:mx-0 lg:ml-[38%] lg:text-left">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[15px] sm:text-[17px] lg:text-[19px] tracking-[0.22em] mb-8 sm:mb-10 lg:mb-12"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
             >
               Kleine Gruppenreisen ins Herz Zentralasiens
             </p>
+
 
             <h1
               className="font-display font-normal text-white animate-slide-up text-[46px] sm:text-[62px] md:text-[76px] lg:text-[min(7.6vw,118px)] leading-[1.2] tracking-[-0.015em] mb-12 sm:mb-14 lg:mb-16"
