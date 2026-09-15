@@ -38,14 +38,14 @@ const Navbar = () => {
         <div className="flex w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16 py-3.5 sm:py-4">
           <Link to="/" className="flex items-baseline gap-3 shrink-0">
             <span
-              className={`font-display text-[26px] md:text-3xl leading-none tracking-tight transition-colors duration-700 ${
+              className={`font-display text-[45px] leading-none tracking-tight transition-colors duration-700 ${
                 transparent ? "text-white" : "text-primary"
               }`}
               style={transparent ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" } : undefined}
             >
               Kereztour
             </span>
-            <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
+            <span className="hidden sm:block text-[25px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
               Kirgisistan
             </span>
           </Link>
