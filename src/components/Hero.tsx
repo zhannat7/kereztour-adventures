@@ -19,7 +19,7 @@ const Hero = () => {
 
       <div className="relative z-10 w-full h-full flex items-start">
         <div className="w-full px-6 pt-24 sm:pt-28">
-          <div className="max-w-[560px] lg:max-w-[820px] mx-auto text-center lg:mx-0 lg:ml-[38%] lg:text-left">
+          <div className="max-w-[560px] lg:max-w-[820px] mx-auto text-center lg:mx-0 lg:ml-[37.6%] lg:text-left">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[15px] sm:text-[17px] lg:text-[19px] tracking-[0.22em] mb-8 sm:mb-10 lg:mb-12"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
