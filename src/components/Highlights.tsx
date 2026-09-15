@@ -35,9 +35,12 @@ const Highlights = () => {
           <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
             Reisen, bei denen du dich <span className="italic text-primary">gut aufgehoben</span> fühlst
           </h2>
+          <p className="text-foreground text-lg md:text-xl leading-relaxed mb-3">
+            Abseits des Massentourismus: echte Nomadenkultur, wilde Berglandschaften und
+            herzliche Gastfreundschaft – persönlich geplant von Anfang bis Ende.
+          </p>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Kein Massentourismus, keine Callcenter. Du sprichst von Anfang bis Ende mit der Person,
-            die deine Reise auch begleitet.
+            Du sprichst von Anfang bis Ende mit der Person, die deine Reise auch begleitet.
           </p>
         </div>
 
