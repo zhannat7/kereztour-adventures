@@ -26,6 +26,30 @@ const Navbar = () => {
   const onHome = location.pathname === "/";
   const transparent = onHome && !scrolled && !mobileOpen;
 
+  // Nach Navigation (z. B. von einer Unterseite) zum Anker scrollen
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+    const t = window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+    return () => window.clearTimeout(t);
+  }, [location.pathname, location.hash]);
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    setMobileOpen(false);
+    if (!href.startsWith("/#")) return;
+    const id = href.slice(2);
+    if (location.pathname === "/") {
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState(null, "", href);
+      }
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       <nav
