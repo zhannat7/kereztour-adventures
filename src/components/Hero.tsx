@@ -17,25 +17,24 @@ const Hero = () => {
       </div>
 
 
-      {/* Eyebrow frei im Himmel über den Bergen */}
-      <div className="absolute left-0 right-0 top-[115px] z-10 flex items-center justify-center gap-4 px-6 sm:top-[127px] lg:top-[calc(8vh+36px)]">
-        <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
-        <p className="animate-fade-in-up text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[19px]">
-          Kleine Gruppenreisen ins Herz Zentralasiens
-        </p>
-        <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
-      </div>
-
       <div className="relative z-10 flex h-full w-full items-start">
         <div className="w-full px-6 pt-[190px] sm:px-10 sm:pt-[162px] lg:px-16 lg:pt-[calc(26vh-34px)] xl:px-24">
           <div className="mx-auto max-w-[620px] text-center lg:max-w-[900px]">
 
-            <h1 className="mb-9 animate-slide-up font-display text-[48px] font-normal leading-[0.98] tracking-[0.015em] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-11 lg:text-[clamp(82px,7vw,112px)]">
+            <h1 className="mb-7 animate-slide-up font-display text-[48px] font-normal leading-[0.98] tracking-[0.015em] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-9 lg:text-[clamp(82px,7vw,112px)]">
               <span className="block">Kirgisistan</span>
               <span className="mt-2 block text-gold sm:mt-3 lg:whitespace-nowrap">
                 Authentisch erleben
               </span>
             </h1>
+
+            <div className="mb-8 flex animate-fade-in items-center justify-center gap-4 px-6 sm:mb-10 lg:mb-12">
+              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
+              <p className="text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[19px]">
+                Kleine Gruppenreisen ins Herz Zentralasiens
+              </p>
+              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
+            </div>
 
             <div
               className="flex animate-fade-in-up flex-col items-center justify-center gap-5 sm:flex-row sm:items-stretch sm:gap-6"
