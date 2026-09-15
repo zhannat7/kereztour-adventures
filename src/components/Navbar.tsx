@@ -118,14 +118,6 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <Link
-            to="/buchen"
-            className="group ml-auto hidden shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-3.5 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26] lg:flex"
-          >
-            <span>Anfrage senden</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-
           <button
             className={`lg:hidden transition-colors duration-500 ${
               transparent ? "text-white" : "text-primary"
