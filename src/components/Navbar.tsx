@@ -134,7 +134,7 @@ const Navbar = () => {
                 <li key={l.label} className="border-b border-border/50 last:border-0">
                   <Link
                     to={l.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className="block py-3.5 text-base font-medium text-foreground hover:text-[hsl(var(--gold))] transition-colors"
                   >
                     {l.label}
