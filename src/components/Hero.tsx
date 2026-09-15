@@ -11,15 +11,23 @@ const Hero = () => {
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
         />
-        {/* Sanfte, cinematische Abdunklung nur für Lesbarkeit */}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.55)_0%,rgba(5,30,26,0.28)_45%,rgba(5,30,26,0.5)_100%)]" />
+        {/* Sehr sanfte Abdunklung, damit das Foto lebendig bleibt */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.42)_0%,rgba(5,30,26,0.18)_40%,rgba(5,30,26,0.35)_100%)]" />
         <div className="absolute inset-0 bg-gradient-vignette" />
       </div>
 
+      {/* Lokaler Lesbarkeits-Verlauf direkt hinter dem Text-Block */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[85%] -translate-y-1/2"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(5,30,26,0.72) 0%, rgba(5,30,26,0.45) 42%, rgba(5,30,26,0.18) 68%, transparent 78%)",
+        }}
+      />
 
       <div className="relative z-10 w-full h-full flex items-center">
         <div className="w-full px-6 pt-20 lg:pt-24">
-          <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
+          <div className="max-w-[600px] lg:max-w-[780px] mx-auto text-center">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px] tracking-[0.24em] mb-7 sm:mb-8 lg:mb-10"
               style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
