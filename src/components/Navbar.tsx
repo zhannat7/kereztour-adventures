@@ -56,7 +56,7 @@ const Navbar = () => {
                 <li key={l.label} className="relative">
                   <Link
                     to={l.href}
-                    className={`whitespace-nowrap text-[15px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
+                    className={`whitespace-nowrap text-[19px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
                         ? "text-[hsl(var(--gold))]"
                         : transparent
@@ -72,7 +72,7 @@ const Navbar = () => {
                     {l.label}
                   </Link>
                   {l.label === "Nomaden 2026" && (
-                    <span className="absolute -top-3.5 -right-4 rounded-full bg-[hsl(var(--gold))] px-1.5 py-0.5 text-[9px] font-bold text-[#062c26]">
+                    <span className="absolute -top-4 -right-5 rounded-full bg-[hsl(var(--gold))] px-2 py-0.5 text-[13px] font-bold text-[#062c26]">
                       Neu
                     </span>
                   )}
@@ -83,7 +83,7 @@ const Navbar = () => {
 
           <Link
             to="/buchen"
-            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[15px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
           >
             <span>Anfrage senden</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
