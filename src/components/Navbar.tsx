@@ -60,7 +60,19 @@ const Navbar = () => {
         }`}
       >
         <div className="flex w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16 py-3.5 sm:py-4">
-          <Link to="/" className="flex items-baseline gap-3 shrink-0">
+          <Link
+            to="/"
+            onClick={(e) => {
+              setMobileOpen(false);
+              if (location.pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                window.history.replaceState(null, "", "/");
+              }
+            }}
+            className="flex items-baseline gap-3 shrink-0"
+            aria-label="Kereztour – zur Startseite"
+          >
             <span
               className={`font-display text-[45px] leading-none tracking-tight transition-colors duration-700 ${
                 transparent ? "text-white" : "text-primary"
