@@ -5,22 +5,22 @@ const items = [
   {
     icon: Users,
     title: "Kleine Gruppen",
-    desc: "Maximal 12 Reisende. Genug Nähe für echte Gespräche, klein genug für spontane Umwege.",
+    desc: "Maximal 12 Reisende – für eine angenehme Atmosphäre und persönliche Begegnungen.",
   },
   {
     icon: ShieldCheck,
-    title: "Rundum organisiert",
-    desc: "Unterkunft, Transfers, Verpflegung und Programm – ein Preis, keine versteckten Kosten.",
+    title: "Persönlich betreut",
+    desc: "Von der ersten Anfrage bis zur Reise haben Sie persönliche Ansprechpartner.",
   },
   {
     icon: HandHeart,
-    title: "Authentisch & nah",
-    desc: "Begegnungen mit Nomadenfamilien, Adlerjägern und Gastgebern, die wir persönlich kennen.",
+    title: "Echte Begegnungen",
+    desc: "Lernen Sie Familien, Gastgeber und Menschen vor Ort kennen.",
   },
   {
     icon: Sprout,
-    title: "Faire Partnerschaft",
-    desc: "Wir buchen ausschließlich lokal. Dein Reisegeld bleibt in den Dörfern vor Ort.",
+    title: "Lokal verbunden",
+    desc: "Wir arbeiten mit lokalen Partnern zusammen, die wir persönlich kennen.",
   },
 ];
 
@@ -33,14 +33,11 @@ const Highlights = () => {
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Warum Kereztour</span>
           <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
-            Reisen, bei denen du dich <span className="italic text-primary">gut aufgehoben</span> fühlst
+            Mehr als <span className="italic text-primary">eine Reise</span>
           </h2>
-          <p className="text-foreground text-lg md:text-xl leading-relaxed mb-3">
-            Abseits des Massentourismus: echte Nomadenkultur, wilde Berglandschaften und
-            herzliche Gastfreundschaft – persönlich geplant von Anfang bis Ende.
-          </p>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            Du sprichst von Anfang bis Ende mit der Person, die deine Reise auch begleitet.
+          <p className="text-foreground text-lg md:text-xl leading-relaxed">
+            Bei Kereztour geht es um persönliche Betreuung, kleine Gruppen und echte Nähe zu Land
+            und Menschen.
           </p>
         </div>
 
