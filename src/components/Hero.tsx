@@ -19,12 +19,13 @@ const Hero = () => {
 
       <div className="relative z-10 flex h-full w-full items-start">
         <div className="w-full px-6 pt-28 sm:px-10 sm:pt-32 lg:px-16 lg:pt-[15vh] xl:px-24">
-          <div className="mx-auto max-w-[620px] text-center sm:mx-0 sm:text-left lg:max-w-[900px]">
-            <div className="mb-6 flex items-center justify-center gap-4 sm:justify-start lg:mb-7">
+          <div className="mx-auto max-w-[620px] text-center lg:max-w-[900px]">
+            <div className="mb-6 flex items-center justify-center gap-4 lg:mb-7">
               <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
               <p className="animate-fade-in-up text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[15px]">
                 Kleine Gruppenreisen ins Herz Zentralasiens
               </p>
+              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
             </div>
 
             <h1 className="mb-9 animate-slide-up font-display text-[48px] font-normal leading-[0.98] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-11 lg:text-[clamp(82px,7vw,112px)]">
@@ -35,7 +36,8 @@ const Hero = () => {
             </h1>
 
             <div
-              className="flex animate-fade-in-up flex-col items-center gap-5 sm:flex-row sm:items-stretch sm:gap-6"
+              className="flex animate-fade-in-up flex-col items-center justify-center gap-5 sm:flex-row sm:items-stretch sm:gap-6"
+
               style={{ animationDelay: "0.25s" }}
             >
               <Link
