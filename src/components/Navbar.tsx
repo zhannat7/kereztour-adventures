@@ -70,7 +70,7 @@ const Navbar = () => {
                 window.history.replaceState(null, "", "/");
               }
             }}
-            className="flex shrink-0 flex-col items-start"
+            className="flex shrink-0 flex-col items-start lg:ml-[calc(-1*min(80px,max(0px,50vw_-_568px)))]"
             aria-label="Kereztour – zur Startseite"
           >
             <span
@@ -86,7 +86,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="ml-2 hidden items-center lg:flex">
+          <div className="ml-2 hidden items-center lg:flex lg:ml-[calc(8px_+_min(80px,max(0px,50vw_-_568px)))]">
             <ul className="flex items-center gap-5">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
