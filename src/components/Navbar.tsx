@@ -59,7 +59,7 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="flex w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16 py-3.5 sm:py-4">
+        <div className="container mx-auto flex w-full max-w-6xl items-center px-6 py-3.5 sm:py-4">
           <Link
             to="/"
             onClick={(e) => {
@@ -70,7 +70,7 @@ const Navbar = () => {
                 window.history.replaceState(null, "", "/");
               }
             }}
-            className="flex items-baseline gap-3 shrink-0"
+            className="flex shrink-0 flex-col items-start"
             aria-label="Kereztour – zur Startseite"
           >
             <span
@@ -81,13 +81,13 @@ const Navbar = () => {
             >
               Kereztour
             </span>
-            <span className="hidden sm:block text-[25px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
+            <span className="hidden text-[25px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
               Kirgisistan
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center justify-end pl-10 pr-10">
-            <ul className="flex items-center gap-7 xl:gap-9">
+          <div className="ml-5 hidden items-center lg:flex">
+            <ul className="flex items-center gap-5">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
                   <Link
@@ -120,7 +120,7 @@ const Navbar = () => {
 
           <Link
             to="/buchen"
-            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+            className="group ml-auto hidden shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-4 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26] lg:flex"
           >
             <span>Anfrage senden</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
