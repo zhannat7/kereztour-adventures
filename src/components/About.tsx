@@ -2,9 +2,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Check } from "lucide-react";
 
 const points = [
-  "In Kirgisistan geboren, seit Jahren in Europa zuhause – ich kenne beide Erwartungen.",
-  "Jede Route bin ich selbst gegangen, jeden Gastgeber kenne ich persönlich.",
-  "Deutsch, Englisch und Kirgisisch – vor Ort und in der Planung.",
+  "Unser Ziel ist einfach: Wir möchten Ihnen Kirgisistan persönlich zeigen – mit beeindruckenden Landschaften, echten Begegnungen und einer Reise, die zu Ihren Wünschen passt.",
+  "Wir kümmern uns persönlich um die Planung und Organisation und arbeiten dabei mit unseren lokalen Kontakten in Kirgisistan zusammen. So können Sie das Land entspannt entdecken und seine Menschen und Kultur näher kennenlernen.",
 ];
 
 const About = () => {
@@ -28,16 +27,21 @@ const About = () => {
           <div className="lg:col-span-7">
             <span className="eyebrow mb-4 block">Über uns</span>
             <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-6">
-              Ein kleines Reisebüro – <span className="italic text-primary">und eine echte Ansprechpartnerin</span>
+              Kirgisistan <span className="italic text-primary">persönlich erleben</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-5">
-              Kereztour ist kein Konzern. Hinter jeder Reise stehe ich, Sarina, mit einem Netzwerk aus
-              Familien, Fahrern und Bergführern, das über Jahre gewachsen ist. Genau deshalb kann ich
-              versprechen, was große Anbieter nicht können: dass du nicht Nummer 400 in einem System bist.
+              Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt
+              wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-5">
+              Ich bin Sarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der
+              Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch,
+              Italienisch und Kirgisisch.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Du schreibst mir, wir sprechen über deine Vorstellungen, und ich baue die Reise darum herum.
-              Ohne Verkaufsdruck, ohne Anzahlung bei der Anfrage.
+              Gemeinsam haben wir bereits mehrere Reisen für Gäste organisiert. Dabei sind schöne Erlebnisse
+              und persönliche Begegnungen entstanden. Genau diese Erfahrungen möchten wir immer wieder mit
+              unseren Gästen teilen.
             </p>
 
             <ul className="space-y-3.5">
