@@ -59,7 +59,7 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="container mx-auto flex w-full max-w-[1340px] items-center px-5 py-3.5 sm:px-6 sm:py-4">
+        <div className="container mx-auto flex w-full max-w-6xl items-center px-6 py-3.5 sm:py-4">
           <Link
             to="/"
             onClick={(e) => {
@@ -70,7 +70,7 @@ const Navbar = () => {
                 window.history.replaceState(null, "", "/");
               }
             }}
-            className="flex items-baseline gap-3 shrink-0"
+            className="flex shrink-0 flex-col items-start"
             aria-label="Kereztour – zur Startseite"
           >
             <span
@@ -81,12 +81,12 @@ const Navbar = () => {
             >
               Kereztour
             </span>
-            <span className="hidden sm:block text-[25px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
+            <span className="hidden text-[25px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
               Kirgisistan
             </span>
           </Link>
 
-          <div className="ml-10 hidden items-center lg:flex">
+          <div className="ml-7 hidden items-center lg:flex">
             <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
