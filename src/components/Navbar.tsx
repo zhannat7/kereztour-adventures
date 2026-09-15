@@ -27,66 +27,58 @@ const Navbar = () => {
   const transparent = onHome && !scrolled && !mobileOpen;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-3 sm:pt-5">
       <nav
-        className={`transition-all duration-500 ${
+        className={`container mx-auto rounded-2xl border transition-all duration-500 ${
           transparent
-            ? "bg-[rgba(5,30,26,0.55)] backdrop-blur-xl border-b border-white/10"
-            : "bg-background/85 backdrop-blur-xl border-b border-border"
+            ? "bg-[rgba(6,44,38,0.72)] backdrop-blur-xl border-white/10 shadow-2xl shadow-black/40 ring-1 ring-inset ring-white/5"
+            : "bg-[rgba(6,44,38,0.92)] backdrop-blur-xl border-white/10 shadow-xl shadow-black/30"
         }`}
       >
-        <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          <Link to="/" className="flex items-baseline gap-2">
-            <span
-              className={`font-display text-2xl md:text-[27px] tracking-tight ${
-                transparent ? "text-primary-foreground" : "text-primary"
-              }`}
-            >
+        <div className="flex items-center justify-between px-5 sm:px-8 py-3.5 sm:py-4">
+          <Link to="/" className="flex items-baseline gap-3 shrink-0">
+            <span className="font-display text-[26px] md:text-3xl leading-none tracking-tight text-primary-foreground">
               Kereztour
             </span>
-            <span
-              className={`hidden sm:block text-[10px] uppercase tracking-[0.28em] ${
-                transparent ? "text-primary-foreground/70" : "text-muted-foreground"
-              }`}
-            >
+            <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
               Kirgisistan
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-9">
-            <ul className="flex items-center gap-7">
+          <div className="hidden lg:flex items-center gap-10">
+            <ul className="flex items-center gap-9">
               {navLinks.map((l) => (
-                <li key={l.label}>
+                <li key={l.label} className="relative">
                   <Link
                     to={l.href}
-                    className={`text-sm font-medium transition-colors duration-300 hover:text-secondary ${
+                    className={`text-sm font-medium transition-colors duration-300 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
-                        ? "text-secondary"
-                        : transparent
-                        ? "text-primary-foreground/90"
-                        : "text-foreground/80"
+                        ? "text-[hsl(var(--gold))]"
+                        : "text-primary-foreground/90"
                     }`}
                   >
                     {l.label}
                   </Link>
+                  {l.label === "Nomaden 2026" && (
+                    <span className="absolute -top-3.5 -right-4 rounded-full bg-[hsl(var(--gold))] px-1.5 py-0.5 text-[9px] font-bold text-[#062c26]">
+                      Neu
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
 
             <Link
               to="/buchen"
-              className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
-                transparent
-                  ? "bg-primary/40 backdrop-blur-md border border-primary-foreground/20 text-primary-foreground hover:bg-primary/60"
-                  : "bg-primary text-primary-foreground hover:bg-primary-glow"
-              }`}
+              className="group flex items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-sm font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
             >
-              Anfrage senden <ArrowRight className="h-4 w-4" />
+              <span>Anfrage senden</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 
           <button
-            className={`lg:hidden ${transparent ? "text-primary-foreground" : "text-foreground"}`}
+            className="lg:hidden text-primary-foreground"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menü"
             aria-expanded={mobileOpen}
@@ -96,33 +88,42 @@ const Navbar = () => {
         </div>
 
         {mobileOpen && (
-          <div className="lg:hidden bg-background border-t border-border">
-            <ul className="flex flex-col px-6 py-4">
+          <div className="lg:hidden border-t border-white/10">
+            <ul className="flex flex-col px-6 py-3">
               {navLinks.map((l) => (
-                <li key={l.label} className="border-b border-border/60 last:border-0">
+                <li key={l.label} className="border-b border-white/10 last:border-0">
                   <Link
                     to={l.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3.5 text-base font-medium text-foreground hover:text-secondary transition-colors"
+                    className="block py-3.5 text-base font-medium text-primary-foreground hover:text-[hsl(var(--gold))] transition-colors"
                   >
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="px-6 pb-6 flex flex-col gap-3">
-              <Link to="/buchen" onClick={() => setMobileOpen(false)} className="btn-primary w-full">
+            <div className="px-6 pb-6 pt-4 flex flex-col gap-3">
+              <Link
+                to="/buchen"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--gold))] px-6 py-3 text-sm font-semibold text-[#062c26]"
+              >
                 Anfrage senden <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="tel:+393474867408" className="btn-ghost w-full">
+              <a
+                href="tel:+393474867408"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-primary-foreground"
+              >
                 <Phone className="h-4 w-4" /> +39 347 486 7408
               </a>
             </div>
           </div>
         )}
       </nav>
+      <div className="container mx-auto mt-3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/30 to-transparent opacity-50" />
     </div>
   );
+
 };
 
 export default Navbar;
