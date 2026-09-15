@@ -74,14 +74,14 @@ const Navbar = () => {
             aria-label="Kereztour – zur Startseite"
           >
             <span
-              className={`font-display text-[45px] leading-none tracking-tight transition-colors duration-700 ${
+              className={`font-display text-[45px] font-medium leading-none tracking-[0.01em] transition-colors duration-700 ${
                 transparent ? "text-white" : "text-primary"
               }`}
               style={transparent ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" } : undefined}
             >
               Kereztour
             </span>
-            <span className="hidden text-[25px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
+            <span className="mt-2 hidden text-[25px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
               Kirgisistan
             </span>
           </Link>
