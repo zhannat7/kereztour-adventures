@@ -43,8 +43,9 @@ const Hero = () => {
 
 
             <div
-              className="flex justify-center animate-fade-in-up"
+              className="flex justify-center lg:justify-start animate-fade-in-up"
               style={{ animationDelay: "0.25s" }}
+
             >
               <Link
                 to="/buchen"
