@@ -29,15 +29,20 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-3 sm:pt-5">
       <nav
-        className={`container mx-auto rounded-2xl border transition-all duration-500 ${
+        className={`container mx-auto rounded-2xl border transition-all duration-700 ease-out ${
           transparent
-            ? "bg-[rgba(6,44,38,0.72)] backdrop-blur-xl border-white/10 shadow-2xl shadow-black/40 ring-1 ring-inset ring-white/5"
-            : "bg-[rgba(6,44,38,0.92)] backdrop-blur-xl border-white/10 shadow-xl shadow-black/30"
+            ? "bg-transparent border-transparent shadow-none"
+            : "bg-white/85 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
         <div className="flex items-center justify-between px-5 sm:px-8 py-3.5 sm:py-4">
           <Link to="/" className="flex items-baseline gap-3 shrink-0">
-            <span className="font-display text-[26px] md:text-3xl leading-none tracking-tight text-primary-foreground">
+            <span
+              className={`font-display text-[26px] md:text-3xl leading-none tracking-tight transition-colors duration-700 ${
+                transparent ? "text-white" : "text-primary"
+              }`}
+              style={transparent ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" } : undefined}
+            >
               Kereztour
             </span>
             <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] font-semibold text-[hsl(var(--gold))]">
@@ -51,11 +56,18 @@ const Navbar = () => {
                 <li key={l.label} className="relative">
                   <Link
                     to={l.href}
-                    className={`text-sm font-medium transition-colors duration-300 hover:text-[hsl(var(--gold))] ${
+                    className={`text-sm font-medium transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
                         ? "text-[hsl(var(--gold))]"
-                        : "text-primary-foreground/90"
+                        : transparent
+                          ? "text-white/90"
+                          : "text-foreground/85"
                     }`}
+                    style={
+                      transparent && location.pathname !== l.href
+                        ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
+                        : undefined
+                    }
                   >
                     {l.label}
                   </Link>
@@ -78,7 +90,10 @@ const Navbar = () => {
           </div>
 
           <button
-            className="lg:hidden text-primary-foreground"
+            className={`lg:hidden transition-colors duration-500 ${
+              transparent ? "text-white" : "text-primary"
+            }`}
+            style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menü"
             aria-expanded={mobileOpen}
@@ -88,14 +103,14 @@ const Navbar = () => {
         </div>
 
         {mobileOpen && (
-          <div className="lg:hidden border-t border-white/10">
+          <div className="lg:hidden border-t border-border/50">
             <ul className="flex flex-col px-6 py-3">
               {navLinks.map((l) => (
-                <li key={l.label} className="border-b border-white/10 last:border-0">
+                <li key={l.label} className="border-b border-border/50 last:border-0">
                   <Link
                     to={l.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3.5 text-base font-medium text-primary-foreground hover:text-[hsl(var(--gold))] transition-colors"
+                    className="block py-3.5 text-base font-medium text-foreground hover:text-[hsl(var(--gold))] transition-colors"
                   >
                     {l.label}
                   </Link>
@@ -112,7 +127,7 @@ const Navbar = () => {
               </Link>
               <a
                 href="tel:+393474867408"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-primary-foreground"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground"
               >
                 <Phone className="h-4 w-4" /> +39 347 486 7408
               </a>
@@ -120,10 +135,11 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-      <div className="container mx-auto mt-3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/30 to-transparent opacity-50" />
+      {!transparent && (
+        <div className="container mx-auto mt-3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/30 to-transparent opacity-50 transition-opacity duration-700" />
+      )}
     </div>
   );
-
 };
 
 export default Navbar;
