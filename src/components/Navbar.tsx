@@ -87,7 +87,7 @@ const Navbar = () => {
           </Link>
 
           <div className="ml-4 hidden items-center lg:flex">
-            <ul className="flex items-center gap-4">
+            <ul className="flex items-center gap-6 xl:gap-7">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
                   <Link
