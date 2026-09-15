@@ -50,7 +50,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center justify-center px-8">
+          <div className="hidden lg:flex flex-1 items-center justify-center px-8 translate-x-[38px]">
             <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
