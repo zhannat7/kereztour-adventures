@@ -42,32 +42,32 @@ const Hero = () => {
 
 
             <div
-              className="flex flex-col sm:flex-row gap-4 sm:gap-5 animate-fade-in-up mb-8 sm:mb-9 lg:mb-10 justify-center items-center"
+              className="flex justify-center animate-fade-in-up"
               style={{ animationDelay: "0.25s" }}
             >
               <Link
                 to="/buchen"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110 shadow-lift hover:shadow-glow text-[14px] sm:text-[15px] lg:text-[16px]"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-primary border border-[hsl(var(--gold))]/40 px-10 py-[18px] font-semibold text-primary-foreground text-[15px] sm:text-[16px] lg:text-[17px] tracking-wide shadow-lift transition-all duration-500 hover:border-[hsl(var(--gold))] hover:shadow-glow hover:brightness-110"
               >
-                Reise finden <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/#reisen"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm px-8 py-4 font-medium text-white/90 transition-all duration-300 hover:bg-white/10 hover:border-white/50 text-[14px] sm:text-[15px] lg:text-[16px]"
-              >
-                Unverbindlich anfragen
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-[hsl(var(--gold))]/20 to-transparent" />
+                <span className="relative z-10 flex items-center gap-3">
+                  Beginne Deine Reise
+                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </Link>
             </div>
-
-            <p
-              className="flex items-center justify-center gap-2 text-white/80 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[17px]"
-              style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
-            >
-              <Star className="h-4 w-4 fill-gold text-gold" />
-              5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber
-            </p>
           </div>
         </div>
+      </div>
+
+      <div className="absolute bottom-5 sm:bottom-7 left-0 right-0 z-10 flex justify-center px-6">
+        <p
+          className="flex items-center gap-2 text-white/85 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[16px]"
+          style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
+        >
+          <Star className="h-4 w-4 fill-gold text-gold" />
+          5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber
+        </p>
       </div>
     </section>
   );
