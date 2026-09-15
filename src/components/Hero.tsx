@@ -17,59 +17,48 @@ const Hero = () => {
       </div>
 
 
-      <div className="relative z-10 w-full h-full flex items-start">
-        <div className="w-full px-6 pt-24 sm:pt-28">
-          <div className="max-w-[560px] lg:max-w-[820px] mx-auto text-center lg:mx-0 lg:ml-[37.6%] lg:text-left">
-            <p
-              className="font-semibold uppercase text-white/90 animate-fade-in-up text-[15px] sm:text-[17px] lg:text-[19px] tracking-[0.22em] mb-8 sm:mb-10 lg:mb-12"
-              style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}
-            >
-              Kleine Gruppenreisen ins Herz Zentralasiens
-            </p>
+      <div className="relative z-10 flex h-full w-full items-start">
+        <div className="w-full px-6 pt-28 sm:px-10 sm:pt-32 lg:px-16 lg:pt-[15vh] xl:px-24">
+          <div className="mx-auto max-w-[620px] text-center sm:mx-0 sm:text-left lg:max-w-[900px]">
+            <div className="mb-6 flex items-center justify-center gap-4 sm:justify-start lg:mb-7">
+              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
+              <p className="animate-fade-in-up text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[15px]">
+                Kleine Gruppenreisen ins Herz Zentralasiens
+              </p>
+            </div>
 
-
-            <h1
-              className="font-display font-normal text-white animate-slide-up text-[46px] sm:text-[62px] md:text-[76px] lg:text-[min(7.6vw,118px)] leading-[1.2] tracking-[-0.015em] mb-12 sm:mb-14 lg:mb-16"
-              style={{ textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
-            >
-              Kirgisistan
-              <span
-                className="block lg:whitespace-nowrap"
-                style={{ color: "hsl(var(--gold))", textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
-              >
+            <h1 className="mb-9 animate-slide-up font-display text-[48px] font-normal leading-[0.98] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-11 lg:text-[clamp(82px,7vw,112px)]">
+              <span className="block">Kirgisistan</span>
+              <span className="mt-2 block text-gold sm:mt-3 lg:whitespace-nowrap">
                 Authentisch erleben
               </span>
             </h1>
 
-
             <div
-              className="flex justify-center lg:justify-start animate-fade-in-up"
+              className="flex animate-fade-in-up flex-col items-center gap-5 sm:flex-row sm:items-stretch sm:gap-6"
               style={{ animationDelay: "0.25s" }}
-
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white/10 backdrop-blur-md border-2 border-white px-10 py-[18px] font-semibold text-white text-[15px] sm:text-[16px] lg:text-[17px] tracking-wide shadow-lift transition-all duration-500 hover:bg-white/20 hover:shadow-glow"
+                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-md border border-gold bg-gold px-8 py-4 text-[15px] font-semibold uppercase tracking-[0.12em] text-gold-foreground shadow-lift transition-all duration-500 hover:brightness-110 hover:shadow-glow sm:px-9"
               >
-                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                <span className="relative z-10 flex items-center gap-3">
+                <span className="absolute inset-0 translate-y-full bg-primary-foreground/20 transition-transform duration-500 ease-out group-hover:translate-y-0" />
+                <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
                   Beginne Deine Reise
                   <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </Link>
+
+              <div className="flex min-h-14 items-center gap-3 rounded-md border border-primary-foreground/20 bg-primary/25 px-5 py-3 text-left text-primary-foreground backdrop-blur-md">
+                <Star className="h-5 w-5 shrink-0 fill-gold text-gold" />
+                <p className="text-[12px] font-medium leading-snug tracking-wide sm:text-[13px]">
+                  <span className="block font-semibold text-gold">5,0 / 5,0</span>
+                  Kleine Gruppen · Lokale Gastgeber
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="absolute bottom-5 sm:bottom-7 left-0 right-0 z-10 flex justify-center px-6">
-        <p
-          className="flex items-center gap-2 text-white/85 tracking-wide animate-fade-in-up text-[13px] sm:text-[15px] lg:text-[16px]"
-          style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)", animationDelay: "0.35s" }}
-        >
-          <Star className="h-4 w-4 fill-gold text-gold" />
-          5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber
-        </p>
       </div>
     </section>
   );
