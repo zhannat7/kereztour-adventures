@@ -42,9 +42,10 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-md border border-gold bg-gold px-8 py-4 text-[15px] font-semibold uppercase tracking-[0.12em] text-gold-foreground shadow-lift transition-all duration-500 hover:brightness-110 hover:shadow-glow sm:px-9"
+                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-md border border-gold bg-transparent px-8 py-4 text-[15px] font-semibold uppercase tracking-[0.12em] text-gold shadow-lift backdrop-blur-sm transition-all duration-500 hover:bg-gold/15 hover:shadow-glow sm:px-9"
               >
-                <span className="absolute inset-0 translate-y-full bg-primary-foreground/20 transition-transform duration-500 ease-out group-hover:translate-y-0" />
+                <span className="absolute inset-0 translate-y-full bg-gold/15 transition-transform duration-500 ease-out group-hover:translate-y-0" />
+
                 <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
                   Beginne Deine Reise
                   <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
