@@ -31,12 +31,12 @@ const Hero = () => {
               className="font-display font-normal text-white animate-slide-up text-[46px] sm:text-[62px] md:text-[76px] lg:text-[min(7.6vw,118px)] leading-[1.2] tracking-[-0.015em] mb-12 sm:mb-14 lg:mb-16"
               style={{ textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
             >
-              Kirgisistan.
+              Kirgisistan
               <span
                 className="block lg:whitespace-nowrap"
                 style={{ color: "hsl(var(--gold))", textShadow: "0 4px 28px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.5)" }}
               >
-                Authentisch erleben.
+                Authentisch erleben
               </span>
             </h1>
 
