@@ -18,7 +18,7 @@ const Hero = () => {
 
 
       <div className="relative z-10 w-full h-full flex items-start">
-        <div className="w-full px-6 pt-24 sm:pt-28 lg:pt-32">
+        <div className="w-full px-6 pt-24 sm:pt-32 lg:pt-40">
           <div className="max-w-[560px] lg:max-w-[760px] mx-auto text-center">
             <p
               className="font-semibold uppercase text-white/90 animate-fade-in-up text-[15px] sm:text-[17px] lg:text-[19px] tracking-[0.22em] mb-8 sm:mb-10 lg:mb-12"
