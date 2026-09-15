@@ -27,7 +27,7 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 flex h-full w-full items-start">
-        <div className="w-full px-6 pt-[209px] sm:px-10 sm:pt-[181px] lg:px-16 lg:pt-[calc(26vh-15px)] xl:px-24">
+        <div className="w-full px-6 pt-[190px] sm:px-10 sm:pt-[162px] lg:px-16 lg:pt-[calc(26vh-34px)] xl:px-24">
           <div className="mx-auto max-w-[620px] text-center lg:max-w-[900px]">
 
             <h1 className="mb-9 animate-slide-up font-display text-[48px] font-normal leading-[0.98] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-11 lg:text-[clamp(82px,7vw,112px)]">
