@@ -59,7 +59,7 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="flex w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16 py-3.5 sm:py-4">
+        <div className="container mx-auto flex w-full max-w-[1340px] items-center px-5 py-3.5 sm:px-6 sm:py-4">
           <Link
             to="/"
             onClick={(e) => {
@@ -86,7 +86,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center justify-end pl-10 pr-10">
+          <div className="ml-10 hidden items-center lg:flex">
             <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
@@ -120,7 +120,7 @@ const Navbar = () => {
 
           <Link
             to="/buchen"
-            className="hidden lg:flex group shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+            className="group ml-auto hidden shrink-0 items-center gap-2 rounded-md border border-[hsl(var(--gold))] px-6 py-2.5 text-[19px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26] lg:flex"
           >
             <span>Anfrage senden</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
