@@ -35,7 +35,7 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10 py-3.5 sm:py-4">
+        <div className="flex w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16 py-3.5 sm:py-4">
           <Link to="/" className="flex items-baseline gap-3 shrink-0">
             <span
               className={`font-display text-[26px] md:text-3xl leading-none tracking-tight transition-colors duration-700 ${
