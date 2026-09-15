@@ -18,7 +18,7 @@ const Hero = () => {
 
 
       {/* Eyebrow frei im Himmel über den Bergen */}
-      <div className="absolute left-0 right-0 top-[104px] z-10 flex items-center justify-center gap-4 px-6 sm:top-[116px] lg:top-[calc(8vh+25px)]">
+      <div className="absolute left-0 right-0 top-[115px] z-10 flex items-center justify-center gap-4 px-6 sm:top-[127px] lg:top-[calc(8vh+36px)]">
         <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
         <p className="animate-fade-in-up text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[15px]">
           Kleine Gruppenreisen ins Herz Zentralasiens
