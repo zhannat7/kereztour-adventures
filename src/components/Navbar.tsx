@@ -36,19 +36,17 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          <Link to="/" className="flex items-baseline gap-2.5">
+          <Link to="/" className="flex items-baseline gap-2">
             <span
-              className={`font-display font-bold text-2xl md:text-[28px] tracking-tight ${
+              className={`font-display text-2xl md:text-[27px] tracking-tight ${
                 transparent ? "text-primary-foreground" : "text-primary"
               }`}
             >
               Kereztour
             </span>
             <span
-              className={`hidden sm:block text-[11px] font-semibold uppercase tracking-[0.32em] pt-0.5 ${
-                transparent
-                  ? "text-primary-foreground/60"
-                  : "text-muted-foreground"
+              className={`hidden sm:block text-[10px] uppercase tracking-[0.28em] ${
+                transparent ? "text-primary-foreground/70" : "text-muted-foreground"
               }`}
             >
               Kirgisistan
