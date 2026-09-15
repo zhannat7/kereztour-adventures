@@ -50,13 +50,13 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden lg:flex flex-1 items-center ml-12 mr-10">
-            <ul className="flex w-full items-center justify-evenly">
+          <div className="hidden lg:flex flex-1 items-center justify-end gap-8 xl:gap-12 ml-12">
+            <ul className="flex items-center gap-7 xl:gap-9">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
                   <Link
                     to={l.href}
-                    className={`text-sm font-medium transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
+                    className={`whitespace-nowrap text-[15px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
                       location.pathname === l.href
                         ? "text-[hsl(var(--gold))]"
                         : transparent
@@ -82,7 +82,7 @@ const Navbar = () => {
 
             <Link
               to="/buchen"
-              className="group flex items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-sm font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
+              className="group flex shrink-0 items-center gap-2 rounded-full border border-[hsl(var(--gold))] px-6 py-2.5 text-[15px] font-semibold text-[hsl(var(--gold))] transition-all duration-300 hover:bg-[hsl(var(--gold))] hover:text-[#062c26]"
             >
               <span>Anfrage senden</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
