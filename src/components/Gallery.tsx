@@ -76,7 +76,7 @@ const images = [
   img61, img62, img63,
 ].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
 
-const VISIBLE = 56; // 2 Zeilen × 14
+const VISIBLE = 12; // 2 Zeilen · doppelt so große Fotos
 
 /* ── Lightbox ── */
 const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
@@ -208,7 +208,7 @@ const Gallery = () => {
           </div>
 
           {/* Grid – nur 24 sichtbar */}
-         <div className="grid gap-1 grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 overflow-hidden rounded-2xl">
+         <div className="grid gap-1.5 grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 overflow-hidden rounded-2xl">
             {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
