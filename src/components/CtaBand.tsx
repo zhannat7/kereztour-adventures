@@ -84,7 +84,7 @@ const CtaBand = () => {
   const onSubmit = async (data: InquiryForm) => {
     setSubmitError("");
     try {
-      const { data: row, error } = await supabase
+      const { error } = await supabase
         .from("contact_messages" as unknown as "bookings")
         .insert({
           name: data.name,
@@ -94,9 +94,7 @@ const CtaBand = () => {
           date_to: data.dateTo,
           persons: data.persons,
           message: data.message || null,
-        } as never)
-        .select("id")
-        .single();
+        } as never);
 
       if (error) throw error;
 
@@ -108,7 +106,7 @@ const CtaBand = () => {
           body: {
             templateName: "contact-inquiry",
             recipientEmail: OWNER_EMAIL,
-            idempotencyKey: `contact-inquiry-${row?.id ?? crypto.randomUUID()}`,
+            idempotencyKey: `contact-inquiry-${crypto.randomUUID()}`,
             templateData: {
               name: data.name,
               email: data.email,
