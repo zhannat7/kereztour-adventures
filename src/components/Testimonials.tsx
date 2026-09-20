@@ -62,12 +62,15 @@ const Testimonials = () => {
               className="stagger-child flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:shadow-lift"
             >
               {r.screenshot ? (
-                <img
-                  src={r.screenshot}
-                  alt="WhatsApp-Bewertung"
-                  loading="lazy"
-                  className="w-full h-auto object-contain"
-                />
+                <div className="flex flex-1 items-center justify-center bg-secondary/10 p-5 sm:p-6">
+                  <img
+                    src={r.screenshot}
+                    alt="WhatsApp-Bewertung"
+                    loading="lazy"
+                    className="w-auto max-w-full rounded-lg object-contain shadow-soft"
+                    style={{ maxHeight: "430px" }}
+                  />
+                </div>
               ) : (
                 <>
                   <blockquote className="flex-1 p-7 pb-0">
