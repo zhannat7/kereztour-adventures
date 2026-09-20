@@ -194,7 +194,7 @@ const Gallery = () => {
   return (
     <>
       <section id="galerie" className="py-16 md:py-24 bg-background">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-7xl">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
 
           {/* Header */}
           <div className="max-w-2xl mb-10">
@@ -207,8 +207,8 @@ const Gallery = () => {
             </p>
           </div>
 
-          {/* Grid – nur 24 sichtbar */}
-         <div className="grid gap-1.5 grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 overflow-hidden rounded-2xl">
+          {/* Grid – 2 Zeilen à 8 Spalten */}
+          <div className="grid gap-1.5 grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 overflow-hidden rounded-2xl">
             {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
