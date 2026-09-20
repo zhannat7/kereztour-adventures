@@ -39,7 +39,7 @@ const Pricing = () => {
 
   return (
     <section id="preise" className="py-16 md:py-24 bg-sand/60">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-5xl">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="eyebrow mb-4 block">Kultur Tour · Pakete</span>
           <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">

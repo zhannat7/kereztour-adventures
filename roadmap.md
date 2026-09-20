@@ -4,5 +4,5 @@
 - [x] Trust-Zeile „5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber" an den unteren Rand des Heroes verschieben
 - [x] Verifizieren (Desktop + Mobile Screenshot)
 
-- [ ] Äußere Breite aller Startseiten-Bereiche und der Navbar an die Galerie angleichen
+- [x] Äußere Breite aller Startseiten-Bereiche und der Navbar an die Galerie angleichen
 - [ ] Desktop und Handy auf Ausrichtung und Überlauf prüfen

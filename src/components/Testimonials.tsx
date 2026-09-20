@@ -36,7 +36,7 @@ const Testimonials = () => {
 
   return (
     <section className="py-16 md:py-24 bg-background">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Gästestimmen</span>

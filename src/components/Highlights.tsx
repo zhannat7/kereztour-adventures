@@ -29,7 +29,7 @@ const Highlights = () => {
 
   return (
     <section className="py-16 md:py-24 bg-sand/60">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Warum Kereztour</span>
           <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">

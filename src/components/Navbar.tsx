@@ -59,7 +59,7 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-        <div className="container mx-auto flex w-full max-w-6xl items-center px-6 py-3.5 sm:py-4">
+        <div className="container mx-auto flex w-full max-w-[1600px] items-center px-6 py-3.5 sm:py-4">
           <Link
             to="/"
             onClick={(e) => {
@@ -70,7 +70,7 @@ const Navbar = () => {
                 window.history.replaceState(null, "", "/");
               }
             }}
-            className="flex shrink-0 flex-col items-start lg:ml-[calc(-1*min(80px,max(0px,50vw_-_568px)))]"
+            className="flex shrink-0 flex-col items-start"
             aria-label="Kereztour – zur Startseite"
           >
             <span
@@ -86,7 +86,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="ml-2 hidden items-center lg:flex lg:ml-[calc(8px_+_min(80px,max(0px,50vw_-_568px)))]">
+          <div className="ml-auto hidden items-center lg:flex">
             <ul className="flex items-center gap-5">
               {navLinks.map((l) => (
                 <li key={l.label} className="relative">
