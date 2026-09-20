@@ -9,7 +9,7 @@ const CtaBand = () => {
 
   return (
     <section className="py-16 md:py-24 bg-background">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-primary px-8 py-12 md:px-14 md:py-16 shadow-lift">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
