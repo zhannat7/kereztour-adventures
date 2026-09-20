@@ -119,7 +119,7 @@ const Navbar = () => {
           </div>
 
           <button
-            className={`lg:hidden transition-colors duration-500 ${
+            className={`ml-auto lg:hidden transition-colors duration-500 ${
               transparent ? "text-white" : "text-primary"
             }`}
             style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}

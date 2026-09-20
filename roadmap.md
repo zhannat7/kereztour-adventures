@@ -5,4 +5,4 @@
 - [x] Verifizieren (Desktop + Mobile Screenshot)
 
 - [x] Äußere Breite aller Startseiten-Bereiche und der Navbar an die Galerie angleichen
-- [ ] Desktop und Handy auf Ausrichtung und Überlauf prüfen
+- [x] Desktop und Handy auf Ausrichtung und Überlauf prüfen
