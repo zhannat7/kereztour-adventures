@@ -59,6 +59,42 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          date_from: string | null
+          date_to: string | null
+          email: string
+          id: string
+          message: string | null
+          name: string
+          persons: number | null
+          tour: string | null
+        }
+        Insert: {
+          created_at?: string
+          date_from?: string | null
+          date_to?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          persons?: number | null
+          tour?: string | null
+        }
+        Update: {
+          created_at?: string
+          date_from?: string | null
+          date_to?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          persons?: number | null
+          tour?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
