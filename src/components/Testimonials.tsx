@@ -62,12 +62,12 @@ const Testimonials = () => {
               className="stagger-child flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:shadow-lift"
             >
               {r.screenshot ? (
-                <div className="bg-muted/40">
+                <div className="flex justify-center bg-muted/40 p-4">
                   <img
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
                     loading="lazy"
-                    className="w-full object-contain"
+                    className="max-h-[360px] w-auto max-w-full rounded-lg object-contain"
                   />
                 </div>
               ) : (
