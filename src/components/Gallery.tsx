@@ -76,7 +76,7 @@ const images = [
   img61, img62, img63,
 ].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
 
-const VISIBLE = 12; // 2 Zeilen · doppelt so große Fotos
+const VISIBLE = 16; // 2 Zeilen · 8 Spalten · große Fotos
 
 /* ── Lightbox ── */
 const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
