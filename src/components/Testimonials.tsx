@@ -67,8 +67,7 @@ const Testimonials = () => {
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
                     loading="lazy"
-                    className="w-auto max-w-full rounded-lg object-contain shadow-soft"
-                    style={{ maxHeight: "430px" }}
+                    className="w-auto max-w-full max-h-[360px] sm:max-h-[430px] rounded-lg object-contain shadow-soft"
                   />
                 </div>
               ) : (
