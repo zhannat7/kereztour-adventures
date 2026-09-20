@@ -62,32 +62,34 @@ const Testimonials = () => {
               className="stagger-child flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:shadow-lift"
             >
               {r.screenshot ? (
-                <div className="border-b border-border bg-muted/40">
+                <div className="bg-muted/40">
                   <img
                     src={r.screenshot}
-                    alt={`Nachricht von ${r.name}`}
+                    alt="WhatsApp-Bewertung"
                     loading="lazy"
-                    className="w-full max-h-72 object-contain"
+                    className="w-full object-contain"
                   />
                 </div>
               ) : (
-                <blockquote className="flex-1 p-7 pb-0">
-                  <Quote className="h-6 w-6 text-secondary/40 mb-4" />
-                  <p className="font-display text-lg leading-relaxed text-foreground/90">„{r.text}"</p>
-                </blockquote>
-              )}
+                <>
+                  <blockquote className="flex-1 p-7 pb-0">
+                    <Quote className="h-6 w-6 text-secondary/40 mb-4" />
+                    <p className="font-display text-lg leading-relaxed text-foreground/90">„{r.text}"</p>
+                  </blockquote>
 
-              <figcaption className="mt-auto flex items-center gap-3 p-6">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-semibold text-sm text-primary">
-                  {r.initial}
-                </span>
-                <span>
-                  <span className="block text-sm font-semibold text-foreground">{r.name}</span>
-                  <span className="block text-xs text-muted-foreground">
-                    {r.country} · {r.tour}
-                  </span>
-                </span>
-              </figcaption>
+                  <figcaption className="mt-auto flex items-center gap-3 p-6">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-semibold text-sm text-primary">
+                      {r.initial}
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold text-foreground">{r.name}</span>
+                      <span className="block text-xs text-muted-foreground">
+                        {r.country} · {r.tour}
+                      </span>
+                    </span>
+                  </figcaption>
+                </>
+              )}
             </figure>
           ))}
         </div>
