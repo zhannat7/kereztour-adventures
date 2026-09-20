@@ -144,8 +144,8 @@ const CtaBand = () => {
                 <span className="block italic">ich plane den Rest.</span>
               </h2>
               <p className="text-primary-foreground/70 text-lg leading-relaxed max-w-xl">
-                Unverbindliche Anfrage, Antwort innerhalb von 24 Stunden, keine Anzahlung.
-                Auch bei Fragen zu Terminen, Flügen oder Gruppengrößen.
+                Die Anfrage ist kostenlos und unverbindlich. Ich antworte innerhalb von
+                24 Stunden – auch bei Fragen zu Reiseterminen, Flügen oder Gruppengrößen.
               </p>
             </div>
 
