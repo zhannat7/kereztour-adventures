@@ -272,7 +272,7 @@ const Kultur = () => {
                   ))}
                 </ul>
                 <Link
-                  to="/buchen?tour=kultur"
+                  to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
                   className={`inline-flex items-center justify-center gap-2 rounded-full py-4 font-semibold transition-all duration-300 hover:scale-105 ${
                     tier.featured
                       ? "bg-secondary text-secondary-foreground shadow-lg"
