@@ -18,6 +18,7 @@ const Index = () => (
       <Hero />
       <Highlights />
       <Tours />
+      <NomadGames />
       <About />
       <Gallery />
       <Testimonials />
