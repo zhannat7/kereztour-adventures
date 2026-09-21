@@ -1,34 +1,45 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 
-const navLinks = [
-  { label: "Reisen", href: "/#reisen" },
-  { label: "Kultur Tour", href: "/reisen/kultur" },
-  { label: "Trekking", href: "/reisen/trekking" },
-  { label: "Kyrchyn Tour", href: "/reisen/kyrchyn" },
-  { label: "Nomaden 2026", href: "/reisen/nomaden" },
-  { label: "Über uns", href: "/#ueber-uns" },
-  { label: "Kontakt", href: "/#kontakt" },
+const travelLinks = [
+  {
+    label: "Kultur Tour",
+    href: "/reisen/kultur",
+  },
+  {
+    label: "Intensiv-Trekking",
+    href: "/reisen/trekking",
+  },
+  {
+    label: "Kyrchyn Tour",
+    href: "/reisen/kyrchyn",
+  },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [reisenOpen, setReisenOpen] = useState(false);
+
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+    };
 
     onScroll();
 
     window.addEventListener("scroll", onScroll);
 
-    return () =>
+    return () => {
       window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   const onHome = location.pathname === "/";
+
   const transparent =
     onHome && !scrolled && !mobileOpen;
 
@@ -49,7 +60,7 @@ const Navbar = () => {
     return () => window.clearTimeout(t);
   }, [location.pathname, location.hash]);
 
-  const handleNavClick = (
+  const handleSectionClick = (
     e: React.MouseEvent,
     href: string
   ) => {
@@ -60,12 +71,12 @@ const Navbar = () => {
     const id = href.slice(2);
 
     if (location.pathname === "/") {
-      const el = document.getElementById(id);
+      const element = document.getElementById(id);
 
-      if (el) {
+      if (element) {
         e.preventDefault();
 
-        el.scrollIntoView({
+        element.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
@@ -79,18 +90,18 @@ const Navbar = () => {
     }
   };
 
-  const linkClass = (href: string) =>
-    `whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 hover:text-[hsl(var(--gold))] ${
-      location.pathname === href
-        ? "text-[hsl(var(--gold))]"
-        : transparent
-          ? "text-white/90"
-          : "text-foreground/85"
-    }`;
+  const handleTravelClick = () => {
+    setReisenOpen(false);
+    setMobileOpen(false);
+  };
+
+  const isTravelPage =
+    location.pathname === "/reisen/kultur" ||
+    location.pathname === "/reisen/trekking" ||
+    location.pathname === "/reisen/kyrchyn";
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-
       <nav
         className={`w-full border-b transition-all duration-500 ease-out ${
           transparent
@@ -98,7 +109,6 @@ const Navbar = () => {
             : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
         }`}
       >
-
         <div className="container mx-auto flex w-full max-w-[1600px] items-center px-6 py-3.5 sm:py-4">
 
           {/* LOGO */}
@@ -106,6 +116,7 @@ const Navbar = () => {
             to="/"
             onClick={(e) => {
               setMobileOpen(false);
+              setReisenOpen(false);
 
               if (location.pathname === "/") {
                 e.preventDefault();
@@ -149,46 +160,127 @@ const Navbar = () => {
           </Link>
 
           {/* DESKTOP NAVIGATION */}
-          <div className="ml-auto hidden items-center gap-7 lg:flex">
+          <div className="ml-auto hidden items-center gap-8 lg:flex">
 
-            <ul className="flex items-center gap-5">
-              {navLinks.map((link) => (
-                <li
-                  key={link.label}
-                  className="relative"
+            <div className="flex items-center gap-7">
+
+              {/* REISEN DROPDOWN */}
+              <div
+                className="relative"
+                onMouseEnter={() => setReisenOpen(true)}
+                onMouseLeave={() => setReisenOpen(false)}
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setReisenOpen(!reisenOpen)
+                  }
+                  className={`flex items-center gap-1.5 whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
+                    isTravelPage
+                      ? "text-[hsl(var(--gold))]"
+                      : transparent
+                        ? "text-white/90"
+                        : "text-foreground/85"
+                  } hover:text-[hsl(var(--gold))]`}
+                  style={
+                    transparent
+                      ? {
+                          textShadow:
+                            "0 1px 10px rgba(0,0,0,0.5)",
+                        }
+                      : undefined
+                  }
+                  aria-expanded={reisenOpen}
+                  aria-haspopup="true"
                 >
-                  <Link
-                    to={link.href}
-                    onClick={(e) =>
-                      handleNavClick(
-                        e,
-                        link.href
-                      )
-                    }
-                    className={linkClass(
-                      link.href
-                    )}
-                    style={
-                      transparent
-                        ? {
-                            textShadow:
-                              "0 1px 10px rgba(0,0,0,0.5)",
-                          }
-                        : undefined
-                    }
-                  >
-                    {link.label}
-                  </Link>
+                  Reisen
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${
+                      reisenOpen
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </button>
 
-                  {link.label ===
-                    "Nomaden 2026" && (
-                    <span className="absolute -top-4 -right-4 rounded-full bg-[hsl(var(--gold))] px-2 py-0.5 text-[10px] font-bold text-[#062c26]">
-                      Neu
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
+                {/* DROPDOWN */}
+                {reisenOpen && (
+                  <div className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-4">
+                    <div className="overflow-hidden rounded-2xl border border-border/60 bg-white p-2 shadow-xl">
+
+                      {travelLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          to={link.href}
+                          onClick={handleTravelClick}
+                          className={`block rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                            location.pathname === link.href
+                              ? "bg-muted text-primary"
+                              : "text-foreground hover:bg-muted hover:text-primary"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ÜBER UNS */}
+              <Link
+                to="/#ueber-uns"
+                onClick={(e) =>
+                  handleSectionClick(
+                    e,
+                    "/#ueber-uns"
+                  )
+                }
+                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
+                  transparent
+                    ? "text-white/90"
+                    : "text-foreground/85"
+                } hover:text-[hsl(var(--gold))]`}
+                style={
+                  transparent
+                    ? {
+                        textShadow:
+                          "0 1px 10px rgba(0,0,0,0.5)",
+                      }
+                    : undefined
+                }
+              >
+                Über uns
+              </Link>
+
+              {/* KONTAKT */}
+              <Link
+                to="/#kontakt"
+                onClick={(e) =>
+                  handleSectionClick(
+                    e,
+                    "/#kontakt"
+                  )
+                }
+                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
+                  transparent
+                    ? "text-white/90"
+                    : "text-foreground/85"
+                } hover:text-[hsl(var(--gold))]`}
+                style={
+                  transparent
+                    ? {
+                        textShadow:
+                          "0 1px 10px rgba(0,0,0,0.5)",
+                      }
+                    : undefined
+                }
+              >
+                Kontakt
+              </Link>
+
+            </div>
 
             {/* BOOKING CTA */}
             <Link
@@ -216,9 +308,10 @@ const Navbar = () => {
                   }
                 : undefined
             }
-            onClick={() =>
-              setMobileOpen(!mobileOpen)
-            }
+            onClick={() => {
+              setMobileOpen(!mobileOpen);
+              setReisenOpen(false);
+            }}
             aria-label="Menü"
             aria-expanded={mobileOpen}
           >
@@ -235,43 +328,91 @@ const Navbar = () => {
         {mobileOpen && (
           <div className="lg:hidden border-t border-border/50 bg-white">
 
-            <ul className="flex flex-col px-6 py-3">
+            <div className="px-6 py-3">
 
-              {navLinks.map((link) => (
-                <li
-                  key={link.label}
-                  className="border-b border-border/50 last:border-0"
+              {/* REISEN */}
+              <div className="border-b border-border/50">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setReisenOpen(!reisenOpen)
+                  }
+                  className="flex w-full items-center justify-between py-3.5 text-base font-medium text-foreground"
                 >
-                  <Link
-                    to={link.href}
-                    onClick={(e) =>
-                      handleNavClick(
-                        e,
-                        link.href
-                      )
-                    }
-                    className="block py-3.5 text-base font-medium text-foreground transition-colors hover:text-[hsl(var(--gold))]"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+                  <span>Reisen</span>
 
-            </ul>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${
+                      reisenOpen
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </button>
 
+                {reisenOpen && (
+                  <div className="pb-3 pl-3">
+
+                    {travelLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        onClick={handleTravelClick}
+                        className="block py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+
+                  </div>
+                )}
+
+              </div>
+
+              {/* ÜBER UNS */}
+              <Link
+                to="/#ueber-uns"
+                onClick={(e) =>
+                  handleSectionClick(
+                    e,
+                    "/#ueber-uns"
+                  )
+                }
+                className="block border-b border-border/50 py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
+              >
+                Über uns
+              </Link>
+
+              {/* KONTAKT */}
+              <Link
+                to="/#kontakt"
+                onClick={(e) =>
+                  handleSectionClick(
+                    e,
+                    "/#kontakt"
+                  )
+                }
+                className="block py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
+              >
+                Kontakt
+              </Link>
+
+            </div>
+
+            {/* MOBILE BOOKING CTA */}
             <div className="px-6 pb-6 pt-3">
-
               <Link
                 to="/buchen"
-                onClick={() =>
-                  setMobileOpen(false)
-                }
+                onClick={() => {
+                  setMobileOpen(false);
+                  setReisenOpen(false);
+                }}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--gold))] px-6 py-3.5 text-sm font-semibold text-[#062c26] shadow-sm"
               >
                 Reise buchen
                 <ArrowRight className="h-4 w-4" />
               </Link>
-
             </div>
 
           </div>
