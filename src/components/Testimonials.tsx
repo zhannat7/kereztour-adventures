@@ -40,7 +40,7 @@ const Testimonials = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Gästestimmen</span>
-            <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground">
+            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
               Was unsere Reisenden <span className="italic text-primary">zurückschreiben</span>
             </h2>
           </div>
@@ -67,7 +67,7 @@ const Testimonials = () => {
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
                     loading="lazy"
-                    className="w-auto max-w-full max-h-[360px] sm:max-h-[430px] rounded-lg object-contain shadow-soft"
+                    className="w-auto max-w-full max-h-[320px] sm:max-h-[380px] rounded-lg object-contain shadow-soft"
                   />
                 </div>
               ) : (
