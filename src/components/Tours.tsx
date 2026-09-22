@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { ArrowRight, Clock, Users, Mountain } from "lucide-react";
+import { ArrowRight, Clock, Users } from "lucide-react";
 
 type Tour = {
   title: string;
@@ -119,14 +119,6 @@ const Tours = () => {
               </div>
             </Link>
           ))}
-        </div>
-
-        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-sand/70 px-5 py-4 text-sm text-muted-foreground">
-          <Mountain className="h-5 w-5 shrink-0 text-primary" />
-          <p>
-            Alle Reisen lassen sich auf Wunsch als private Tour für Familien oder
-            Freundesgruppen anpassen – Termine flexibel nach Absprache.
-          </p>
         </div>
       </div>
     </section>
