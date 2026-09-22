@@ -1,43 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
-import { format, parseISO } from "date-fns";
-import { supabase } from "@/integrations/supabase/client";
-
-type CultureDate = {
-  id: string;
-  startDate: string;
-  endDate: string;
-};
+import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
-  const [dates, setDates] = useState<CultureDate[]>([]);
-
-  useEffect(() => {
-    const loadDates = async () => {
-      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
-
-      if (error) {
-        setDates([]);
-        return;
-      }
-
-      setDates(
-        ((data as any[]) ?? [])
-          .filter((item: any) => item.tour === "Kultur Tour")
-          .map((item: any) => ({
-            id: item.id,
-            startDate: item.start_date,
-            endDate: item.end_date,
-          }))
-      );
-    };
-
-    loadDates();
-  }, []);
-
   return (
-    <section className="relative w-full h-[82vh] sm:h-[84vh] lg:h-[88vh] lg:max-h-[860px] lg:min-h-[650px] flex items-center overflow-hidden bg-background">
+    <section className="relative w-full h-[78vh] sm:h-[80vh] lg:h-[84vh] lg:max-h-[820px] lg:min-h-[600px] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
         <img
           src="/hero-wide.jpg"
@@ -86,39 +52,16 @@ const Hero = () => {
         </div>
       </div>
 
-      {dates.length > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-6 sm:px-10 sm:pb-7 lg:px-16 xl:px-24">
-          <div className="mx-auto max-w-[1120px] rounded-2xl border border-white/15 bg-black/20 px-5 py-4 backdrop-blur-[6px] sm:px-7 sm:py-5 lg:px-8 lg:py-5">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-              <div className="shrink-0 lg:w-[155px]">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-                  Kultur Tour
-                </p>
-                <p className="mt-1 text-xs text-white/70">
-                  Nächste Termine
-                </p>
-              </div>
-
-              <div className="grid flex-1 grid-cols-1 sm:grid-cols-3">
-                {dates.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`py-1 sm:px-5 ${index > 0 ? "border-t border-white/15 sm:border-l sm:border-t-0" : "sm:pl-0"}`}
-                  >
-                    <p className="text-base font-semibold tracking-tight text-white sm:text-lg">
-                      {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <p className="mt-3 border-t border-white/10 pt-3 text-[11px] leading-relaxed text-white/65 sm:text-xs lg:ml-[155px] lg:pl-5">
-              Für Intensiv-Trekking und Kyrchyn Tour stimmen wir den Reisetermin individuell mit dir ab.
-            </p>
-          </div>
+      <div className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2 sm:bottom-8">
+        <div className="flex items-center gap-2 text-xs font-medium tracking-wide text-primary-foreground/90">
+          <Star className="h-3.5 w-3.5 fill-gold text-gold" />
+          <span>5,0 / 5,0</span>
+          <span className="text-primary-foreground/50">·</span>
+          <span>Kleine Gruppen</span>
+          <span className="text-primary-foreground/50">·</span>
+          <span>Lokale Gastgeber</span>
         </div>
-      )}
+      </div>
     </section>
   );
 };
