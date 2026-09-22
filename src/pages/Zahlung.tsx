@@ -40,9 +40,9 @@ const Zahlung = () => {
         <div className="container mx-auto px-4 max-w-lg">
           <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm text-center space-y-6">
             <CheckCircle className="mx-auto h-16 w-16 text-primary" />
-            <h1 className="text-2xl md:text-3xl font-bold text-primary">Buchung eingegangen!</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-primary">Buchungsanfrage erhalten</h1>
             <p className="text-muted-foreground text-sm">
-              Wir melden uns in Kürze bei dir. Danke für dein Vertrauen! 🙏
+              Vielen Dank für deine Anfrage. Sarina prüft den gewünschten Termin und meldet sich zur Bestätigung bei dir.
             </p>
             <div className="text-left space-y-3 bg-muted rounded-xl p-4">
               <div className="flex justify-between">
@@ -58,7 +58,7 @@ const Zahlung = () => {
                 <span className="font-medium text-foreground">{booking.travelDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Reisetyp</span>
+                <span className="text-muted-foreground">Reisevariante</span>
                 <span className="font-medium text-foreground capitalize">{booking.tier}</span>
               </div>
               <div className="flex justify-between">
@@ -70,7 +70,7 @@ const Zahlung = () => {
                 <span className="font-bold text-primary">{booking.totalPrice.toLocaleString("de-DE")} €</span>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm">Zahlung wird in Kürze verfügbar sein.</p>
+            <p className="text-muted-foreground text-sm">Nach der Bestätigung erhältst du den Zahlungslink. Die Zahlung erfolgt erst, wenn der Termin von Sarina bestätigt wurde.</p>
             <Button onClick={() => navigate("/")} className="w-full">
               Zurück zur Startseite
             </Button>
