@@ -6,7 +6,6 @@ import NomadGames from "@/components/NomadGames";
 import About from "@/components/About";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
-import Pricing from "@/components/Pricing";
 import Faq from "@/components/Faq";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
@@ -22,7 +21,6 @@ const Index = () => (
       <About />
       <Gallery />
       <Testimonials />
-      <Pricing />
       <Faq />
       <CtaBand />
     </main>
