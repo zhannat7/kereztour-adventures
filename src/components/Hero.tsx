@@ -87,26 +87,33 @@ const Hero = () => {
       </div>
 
       {dates.length > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 sm:px-10 sm:pb-9 lg:px-16 xl:px-24">
-          <div className="mx-auto max-w-[1180px] border-t border-white/25 pt-5">
-            <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
-              Nächste Reisetermine · Kultur Tour
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-6 sm:px-10 sm:pb-7 lg:px-16 xl:px-24">
+          <div className="mx-auto max-w-[1120px] rounded-2xl border border-white/15 bg-black/20 px-5 py-4 backdrop-blur-[6px] sm:px-7 sm:py-5 lg:px-8 lg:py-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+              <div className="shrink-0 lg:w-[155px]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                  Kultur Tour
+                </p>
+                <p className="mt-1 text-xs text-white/70">
+                  Nächste Termine
+                </p>
+              </div>
+
+              <div className="grid flex-1 grid-cols-1 sm:grid-cols-3">
+                {dates.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`py-1 sm:px-5 ${index > 0 ? "border-t border-white/15 sm:border-l sm:border-t-0" : "sm:pl-0"}`}
+                  >
+                    <p className="text-base font-semibold tracking-tight text-white sm:text-lg">
+                      {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-0">
-              {dates.map((item, index) => (
-                <div
-                  key={item.id}
-                  className={`py-1 sm:px-6 ${index > 0 ? "border-t border-white/15 sm:border-l sm:border-t-0" : "sm:pl-0"} ${index === dates.length - 1 ? "sm:pr-0" : ""}`}
-                >
-                  <p className="text-lg font-semibold tracking-tight text-white sm:text-xl lg:text-2xl">
-                    {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-4 text-xs text-white/70 sm:text-sm">
+            <p className="mt-3 border-t border-white/10 pt-3 text-[11px] leading-relaxed text-white/65 sm:text-xs lg:ml-[155px] lg:pl-5">
               Für Intensiv-Trekking und Kyrchyn Tour stimmen wir den Reisetermin individuell mit dir ab.
             </p>
           </div>
