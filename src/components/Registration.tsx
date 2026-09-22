@@ -1,4 +1,5 @@
-import { FileCheck2 } from "lucide-react";
+import { FileCheck2, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Registration = () => (
   <section className="bg-muted/40 py-14 md:py-18">
@@ -10,21 +11,30 @@ const Registration = () => (
           </div>
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
-              Offiziell registriert
+              Offiziell registrierter Reiseveranstalter
             </p>
             <h2 className="mt-2 font-display text-2xl text-foreground md:text-3xl">
               Reiseveranstalter in Kirgisistan
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              KérezTour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt.
+              Kéreztour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt.
               Die Tätigkeit ist offiziell als „Tour operator activities“ registriert.
             </p>
           </div>
         </div>
 
-        <div className="shrink-0 border-t border-border pt-4 text-sm text-muted-foreground md:border-l md:border-t-0 md:pl-7 md:pt-0">
-          <p className="font-semibold text-foreground">Registriert seit 22.04.2024</p>
-          <p className="mt-1">Kirgisische Republik</p>
+        <div className="flex shrink-0 flex-col gap-3 border-t border-border pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0">
+          <div className="text-sm text-muted-foreground">
+            <p className="font-semibold text-foreground">Registriert seit 22.04.2024</p>
+            <p className="mt-1">Kirgisische Republik</p>
+          </div>
+          <Link
+            to="/registrierung"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            Zertifikat ansehen
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </div>
