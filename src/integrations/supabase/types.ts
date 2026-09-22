@@ -95,12 +95,54 @@ export type Database = {
         }
         Relationships: []
       }
+      tour_dates: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          max_participants: number
+          start_date: string
+          status: string
+          tour: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          max_participants?: number
+          start_date: string
+          status?: string
+          tour: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          max_participants?: number
+          start_date?: string
+          status?: string
+          tour?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_tour_date_availability: {
+        Args: never
+        Returns: {
+          available_places: number
+          confirmed_participants: number
+          end_date: string
+          id: string
+          max_participants: number
+          start_date: string
+          status: string
+          tour: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
