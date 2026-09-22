@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 import t1a from "@/assets/gallery/IMG_2518.jpg";
 import t1b from "@/assets/gallery/11.png";
@@ -102,7 +104,41 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
 };
 const Kultur = () => {
   const [activeDay, setActiveDay] = useState(0);
+  const [cultureDates, setCultureDates] = useState<Array<{
+    id: string;
+    date: string;
+    label: string;
+    maxParticipants: number;
+    availablePlaces: number;
+    status: string;
+  }>>([]);
   const dayRefs = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    const loadCultureDates = async () => {
+      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
+
+      if (error) {
+        setCultureDates([]);
+        return;
+      }
+
+      setCultureDates(
+        ((data as any[]) ?? [])
+          .filter((item: any) => item.tour === "Kultur Tour")
+          .map((item: any) => ({
+            id: item.id,
+            date: item.start_date,
+            label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
+            maxParticipants: Number(item.max_participants),
+            availablePlaces: Number(item.available_places),
+            status: item.status,
+          }))
+      );
+    };
+
+    loadCultureDates();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -244,28 +280,38 @@ const Kultur = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { date: "2026-09-25", label: "25.09.–04.10.2026", maxParticipants: 15 },
-              { date: "2026-10-09", label: "09.10.–18.10.2026", maxParticipants: 15 },
-              { date: "2026-10-23", label: "23.10.–01.11.2026", maxParticipants: 15 },
-            ].map((item) => (
-              <div key={item.date} className="rounded-xl border border-border bg-card p-5">
-                <p className="font-semibold text-foreground">{item.label}</p>
-                <p className="text-sm text-muted-foreground mt-1 mb-4">Gruppengröße bis {item.maxParticipants} Personen · Verfügbarkeit wird nach deiner Anfrage bestätigt.</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {tiers.map((tier) => (
-                    <Link
-                      key={tier.name}
-                      to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}&date=${item.date}`}
-                      className="inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground hover:border-primary hover:text-primary transition-colors"
-                    >
-                      {tier.name}
-                    </Link>
-                  ))}
-                </div>
+            {cultureDates.length > 0 ? (
+              cultureDates.map((item) => {
+                const isFull = item.status === "full" || item.availablePlaces <= 0;
+
+                return (
+                  <div key={item.id} className="rounded-xl border border-border bg-card p-5">
+                    <p className="font-semibold text-foreground">{item.label}</p>
+                    <p className="text-sm text-primary mt-1 mb-4">
+                      {isFull
+                        ? "Ausgebucht"
+                        : "Noch " + item.availablePlaces + " " + (item.availablePlaces === 1 ? "Platz" : "Plätze") + " verfügbar"}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {tiers.map((tier) => (
+                        <Link
+                          key={tier.name}
+                          to={isFull ? "#" : "/buchen?tour=kultur&tier=" + tier.name.toLowerCase() + "&date=" + item.date}
+                          aria-disabled={isFull}
+                          className={"inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors " + (isFull ? "pointer-events-none opacity-50" : "hover:border-primary hover:text-primary")}
+                        >
+                          {tier.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="md:col-span-3 rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
+                Aktuell sind keine Reisetermine verfügbar.
               </div>
-            ))}
-          </div>
+            )}        </div>
         </div>
 
         {/* Pakete */}
