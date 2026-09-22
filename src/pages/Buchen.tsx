@@ -139,6 +139,7 @@ const Buchen = () => {
 
   const tourParam = searchParams.get("tour");
   const tierParam = searchParams.get("tier");
+  const dateParam = searchParams.get("date");
   const [showTourPicker, setShowTourPicker] = useState(!tourParam);
 
   const validTour =
@@ -165,6 +166,7 @@ const Buchen = () => {
       tour: validTour,
       tier: validTour === "kultur" ? validTier : "",
       notes: "",
+      travelDate: dateParam ? new Date(`${dateParam}T12:00:00`) : undefined,
     },
   });
 
@@ -172,6 +174,12 @@ const Buchen = () => {
   const tourId = watch("tour") as TourId | "";
   const tier = watch("tier") as TierId | "";
   const travelDate = watch("travelDate");
+
+  const cultureDates = [
+    { value: "2026-09-25", label: "25.09.–04.10.2026", seats: 4 },
+    { value: "2026-10-09", label: "09.10.–18.10.2026", seats: 8 },
+    { value: "2026-10-23", label: "23.10.–01.11.2026", seats: 6 },
+  ];
 
   const selectedTour = TOURS.find(
     (tour) => tour.id === tourId
@@ -309,8 +317,7 @@ const Buchen = () => {
             </h1>
 
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Wähle deine Reise, gib deine Reisedaten ein
-              und sende uns deine Buchungsanfrage.
+              Wähle deine Reise und deinen Termin aus und sende uns deine unverbindliche Buchungsanfrage.
             </p>
           </div>
 
@@ -555,78 +562,83 @@ const Buchen = () => {
 
                 </div>
 
-                {/* DATUM */}
-                <div className="space-y-3">
+                {/* REISEDATUM */}
+                <div className="space-y-3 sm:col-span-2">
+                  <Label>Reisetermin *</Label>
 
-                  <Label>
-                    Reisedatum *
-                  </Label>
+                  {tourId === "kultur" ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {cultureDates.map((item) => {
+                        const selected =
+                          travelDate &&
+                          format(travelDate, "yyyy-MM-dd") === item.value;
 
-                  <Popover>
-
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full h-11 justify-start text-left font-normal",
-                          !travelDate &&
-                            "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-
-                        {travelDate
-                          ? format(
-                              travelDate,
-                              "PPP",
-                              { locale: de }
-                            )
-                          : "Datum wählen"}
-                      </Button>
-                    </PopoverTrigger>
-
-                    <PopoverContent
-                      className="w-auto p-0"
-                      align="start"
-                    >
-                      <Calendar
-                        mode="single"
-                        selected={travelDate}
-                        onSelect={(date) =>
-                          date &&
-                          setValue(
-                            "travelDate",
-                            date,
-                            {
-                              shouldValidate:
-                                true,
+                        return (
+                          <button
+                            key={item.value}
+                            type="button"
+                            onClick={() =>
+                              setValue(
+                                "travelDate",
+                                new Date(`${item.value}T12:00:00`),
+                                { shouldValidate: true, shouldDirty: true }
+                              )
                             }
-                          )
-                        }
-                        disabled={(date) =>
-                          date <
-                          new Date(
-                            new Date().setHours(
-                              0,
-                              0,
-                              0,
-                              0
-                            )
-                          )
-                        }
-                        initialFocus
-                        className="p-3 pointer-events-auto"
-                      />
-                    </PopoverContent>
-
-                  </Popover>
-
-                  {errors.travelDate && (
-                    <p className="text-sm text-destructive">
-                      {errors.travelDate.message}
-                    </p>
+                            className={cn(
+                              "rounded-xl border-2 p-4 text-left transition-all",
+                              selected
+                                ? "border-primary bg-primary/5 shadow-sm"
+                                : "border-border hover:border-primary/40"
+                            )}
+                          >
+                            <p className="font-semibold text-foreground">{item.label}</p>
+                            <p className="text-sm text-primary mt-1">
+                              Noch {item.seats} Plätze verfügbar
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full h-11 justify-start text-left font-normal",
+                            !travelDate && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {travelDate
+                            ? format(travelDate, "PPP", { locale: de })
+                            : "Datum wählen"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={travelDate}
+                          onSelect={(date) =>
+                            date &&
+                            setValue("travelDate", date, {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            })
+                          }
+                          disabled={(date) =>
+                            date < new Date(new Date().setHours(0, 0, 0, 0))
+                          }
+                          initialFocus
+                          className="p-3 pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   )}
 
+                  {errors.travelDate && (
+                    <p className="text-sm text-destructive">{errors.travelDate.message}</p>
+                  )}
                 </div>
 
               </div>
@@ -823,7 +835,7 @@ const Buchen = () => {
                   Wird gesendet...
                 </>
               ) : (
-                "Weiter zur Zahlung →"
+                "Buchungsanfrage senden →"
               )}
             </Button>
 
