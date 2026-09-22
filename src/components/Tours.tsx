@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users, Mountain } from "lucide-react";
 
-
-
 type Tour = {
-  badge: string;
   title: string;
   desc: string;
   duration: string;
@@ -18,9 +15,8 @@ type Tour = {
 
 const tours: Tour[] = [
   {
-    badge: "Bestseller",
     title: "Kultur Tour",
-    desc: "10 Tage durch die schönsten Orte des Landes – Adlerjagd, Jurtenbau, Thermalquellen und der türkisfarbene Issyk-Kul.",
+    desc: "10 Tage durch die schönsten Regionen Kirgisistans – Kultur, Natur, Traditionen und echte Begegnungen.",
     duration: "10 Tage",
     groupSize: "bis 12 Personen",
     price: "ab 990 €",
@@ -29,26 +25,24 @@ const tours: Tour[] = [
     imagePosition: "center 45%",
   },
   {
-    badge: "Einmaliges Event",
-    title: "Weltspiele der Nomaden 2026",
-    desc: "Reiterspiele, Adlerjagd-Wettbewerbe und internationale Festatmosphäre am Ufer des Issyk-Kul.",
-    duration: "8 Tage",
-    groupSize: "bis 12 Personen",
-    price: "1.200 €",
-    to: "/reisen/nomaden",
-    image: "/tour-nomaden.jpg",
-    imagePosition: "center 40%",
-  },
-  {
-    badge: "Für Aktive",
     title: "Intensiv-Trekking",
-    desc: "Song-Köl, Ala-Köl Pass auf 3.911 m und heiße Quellen – Kirgisistan von seiner wildesten Seite.",
+    desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
     duration: "10 Tage",
     groupSize: "bis 8 Personen",
     price: "1.200 €",
     to: "/reisen/trekking",
     image: "/tour-trekking.jpg",
     imagePosition: "center 35%",
+  },
+  {
+    title: "Kyrchyn Tour",
+    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
+    duration: "Nach Termin",
+    groupSize: "Individuell",
+    price: "1.300 €",
+    to: "/reisen/kyrchyn",
+    image: "/tour-nomaden.jpg",
+    imagePosition: "center 40%",
   },
 ];
 
@@ -65,8 +59,11 @@ const Tours = () => {
               Drei Wege, <span className="italic text-primary">Kirgisistan zu entdecken</span>
             </h2>
           </div>
-          <Link to="/buchen" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors">
-            Unsicher, welche passt? Frag uns <ArrowRight className="h-4 w-4" />
+          <Link
+            to="/buchen"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors"
+          >
+            Reise auswählen <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -85,14 +82,16 @@ const Tours = () => {
                   style={{ objectPosition: tour.imagePosition ?? "center" }}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <span className="absolute left-4 top-4 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
-                  {tour.badge}
-                </span>
               </div>
 
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-2xl text-foreground mb-2 leading-snug">{tour.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{tour.desc}</p>
+                <h3 className="font-display text-2xl text-foreground mb-2 leading-snug">
+                  {tour.title}
+                </h3>
+
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                  {tour.desc}
+                </p>
 
                 <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-6">
                   <span className="inline-flex items-center gap-1.5">
@@ -105,9 +104,14 @@ const Tours = () => {
 
                 <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
                   <div>
-                    <p className="font-display text-2xl text-primary leading-none">{tour.price}</p>
-                    <p className="text-xs text-muted-foreground mt-1">pro Person</p>
+                    <p className="font-display text-2xl text-primary leading-none">
+                      {tour.price}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      pro Person
+                    </p>
                   </div>
+
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-primary transition-colors duration-300 group-hover:bg-secondary group-hover:text-secondary-foreground">
                     <ArrowRight className="h-4 w-4" />
                   </span>
@@ -120,8 +124,8 @@ const Tours = () => {
         <div className="mt-8 flex items-center gap-3 rounded-2xl border border-border bg-sand/70 px-6 py-5 text-sm text-muted-foreground">
           <Mountain className="h-5 w-5 shrink-0 text-primary" />
           <p>
-            Alle Reisen lassen sich auf Wunsch als private Tour für Familien oder Freundesgruppen anpassen –
-            Termine flexibel nach Absprache.
+            Alle Reisen lassen sich auf Wunsch als private Tour für Familien oder
+            Freundesgruppen anpassen – Termine flexibel nach Absprache.
           </p>
         </div>
       </div>
