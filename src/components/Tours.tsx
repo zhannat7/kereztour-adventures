@@ -55,7 +55,7 @@ const Tours = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Unsere Reisen</span>
-            <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground">
+            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
               Drei Wege, <span className="italic text-primary">Kirgisistan zu entdecken</span>
             </h2>
           </div>
@@ -74,7 +74,7 @@ const Tours = () => {
               to={tour.to}
               className="stagger-child group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={tour.title}
@@ -84,8 +84,8 @@ const Tours = () => {
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-2xl text-foreground mb-2 leading-snug">
+              <div className="flex flex-1 flex-col p-5 md:p-6">
+                <h3 className="font-display text-xl md:text-2xl text-foreground mb-2 leading-snug">
                   {tour.title}
                 </h3>
 
