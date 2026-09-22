@@ -90,6 +90,7 @@ as $$
   from public.tour_dates td
   left join public.bookings b
     on b.travel_date = td.start_date
+    and b.tour = td.tour
   where td.status <> 'cancelled'
   group by td.id, td.tour, td.start_date, td.end_date, td.max_participants, td.status
   order by td.start_date;
