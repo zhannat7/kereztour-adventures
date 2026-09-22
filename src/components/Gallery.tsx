@@ -199,10 +199,10 @@ const Gallery = () => {
           {/* Header */}
           <div className="max-w-2xl mb-10">
             <span className="eyebrow mb-4 block">Echte Reisefotos</span>
-            <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
+            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-4">
               Eindrücke aus <span className="italic text-primary">Kirgisistan</span>
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
               Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle {images.length} Fotos zu sehen.
             </p>
           </div>
