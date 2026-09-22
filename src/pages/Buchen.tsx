@@ -213,7 +213,7 @@ const Buchen = () => {
           id: item.id,
           value: item.start_date,
           endDate: item.end_date,
-          label: \`\${format(parseISO(item.start_date), "dd.MM.")}–\${format(parseISO(item.end_date), "dd.MM.yyyy")}\`,
+          label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
           availablePlaces: Number(item.available_places),
           status: item.status === "full" ? "full" : "open",
