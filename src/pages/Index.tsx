@@ -8,6 +8,7 @@ import About from "@/components/About";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
+import Registration from "@/components/Registration";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 
@@ -24,6 +25,7 @@ const Index = () => (
       <Gallery />
       <Testimonials />
       <Faq />
+      <Registration />
       <CtaBand />
     </main>
     <Footer />
