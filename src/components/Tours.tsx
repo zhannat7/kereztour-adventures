@@ -93,12 +93,6 @@ const Tours = () => {
                   {tour.desc}
                 </p>
 
-                {tour.title === "Kultur Tour" && (
-                  <p className="text-xs text-primary font-medium mb-3">
-                    Nächste Termine: 25.09. · 09.10. · 23.10.2026
-                  </p>
-                )}
-
                 <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-4">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" /> {tour.duration}
