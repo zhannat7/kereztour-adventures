@@ -32,10 +32,10 @@ const Highlights = () => {
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Warum Kereztour</span>
-          <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-4">
             Mehr als <span className="italic text-primary">eine Reise</span>
           </h2>
-          <p className="text-foreground text-lg md:text-xl leading-relaxed">
+          <p className="text-foreground text-base md:text-lg leading-relaxed">
             Bei Kereztour geht es um persönliche Betreuung, kleine Gruppen und echte Nähe zu Land
             und Menschen.
           </p>
