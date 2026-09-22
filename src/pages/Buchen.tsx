@@ -326,7 +326,7 @@ const Buchen = () => {
         if (selectedDate.status === "full" || data.persons > availablePlaces) {
           throw new Error(
             availablePlaces > 0
-              ? \`Für diesen Termin sind aktuell nur noch \${availablePlaces} Plätze verfügbar.\`
+              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
               : "Dieser Reisetermin ist bereits ausgebucht."
           );
         }
@@ -335,7 +335,7 @@ const Buchen = () => {
       const { error } = await (supabase as any)
         .from("bookings")
         .insert({
-          name: \`\${data.vorname} \${data.nachname}\`,
+          name: `${data.vorname} ${data.nachname}`,
           email: data.email,
           phone: data.phone,
           persons: data.persons,
@@ -696,7 +696,7 @@ const Buchen = () => {
                                 <p className="text-sm mt-1 font-medium text-primary">
                                   {isFull
                                     ? "Ausgebucht"
-                                    : \`Noch \${item.availablePlaces} \${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar\`}
+                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                   Max. {item.maxParticipants} Personen · Anfrage ohne Zahlung
