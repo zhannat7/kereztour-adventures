@@ -176,9 +176,9 @@ const Buchen = () => {
   const travelDate = watch("travelDate");
 
   const cultureDates = [
-    { value: "2026-09-25", label: "25.09.–04.10.2026", seats: 4 },
-    { value: "2026-10-09", label: "09.10.–18.10.2026", seats: 8 },
-    { value: "2026-10-23", label: "23.10.–01.11.2026", seats: 6 },
+    { value: "2026-09-25", label: "25.09.–04.10.2026", maxParticipants: 15 },
+    { value: "2026-10-09", label: "09.10.–18.10.2026", maxParticipants: 15 },
+    { value: "2026-10-23", label: "23.10.–01.11.2026", maxParticipants: 15 },
   ];
 
   const selectedTour = TOURS.find(
@@ -592,8 +592,11 @@ const Buchen = () => {
                             )}
                           >
                             <p className="font-semibold text-foreground">{item.label}</p>
-                            <p className="text-sm text-primary mt-1">
-                              Noch {item.seats} Plätze verfügbar
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Gruppengröße bis {item.maxParticipants} Personen
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Verfügbarkeit wird nach deiner Anfrage bestätigt.
                             </p>
                           </button>
                         );
