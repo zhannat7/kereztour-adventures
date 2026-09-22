@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Buchen from "./pages/Buchen.tsx";
 import Zahlung from "./pages/Zahlung.tsx";
+import Certificate from "./pages/Certificate.tsx";
 
 import Nomaden from "./pages/reisen/Nomaden.tsx";
 import Kultur from "./pages/reisen/Kultur.tsx";
@@ -42,38 +43,18 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
-
           <Route path="/buchen" element={<Buchen />} />
           <Route path="/zahlung" element={<Zahlung />} />
+          <Route path="/registrierung" element={<Certificate />} />
 
-          <Route
-            path="/reisen/nomaden"
-            element={<Nomaden />}
-          />
+          <Route path="/reisen/nomaden" element={<Nomaden />} />
+          <Route path="/reisen/kultur" element={<Kultur />} />
+          <Route path="/reisen/trekking" element={<Trekking />} />
+          <Route path="/reisen/kyrchyn" element={<Kyrchyn />} />
 
-          <Route
-            path="/reisen/kultur"
-            element={<Kultur />}
-          />
-
-          <Route
-            path="/reisen/trekking"
-            element={<Trekking />}
-          />
-
-          <Route
-            path="/reisen/kyrchyn"
-            element={<Kyrchyn />}
-          />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route
-            path="*"
-            element={<NotFound />}
-          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-
     </TooltipProvider>
   </QueryClientProvider>
 );
