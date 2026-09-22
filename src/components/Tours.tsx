@@ -50,9 +50,9 @@ const Tours = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="reisen" className="py-16 md:py-24 bg-background">
+    <section id="reisen" className="py-12 md:py-16 bg-background">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Unsere Reisen</span>
             <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
@@ -74,7 +74,7 @@ const Tours = () => {
               to={tour.to}
               className="stagger-child group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+              <div className="relative aspect-[16/8.5] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={tour.title}
@@ -84,16 +84,16 @@ const Tours = () => {
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-5 md:p-6">
-                <h3 className="font-display text-xl md:text-2xl text-foreground mb-2 leading-snug">
+              <div className="flex flex-1 flex-col p-4 md:p-5">
+                <h3 className="font-display text-xl text-foreground mb-2 leading-snug">
                   {tour.title}
                 </h3>
 
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                <p className="text-sm text-muted-foreground leading-snug mb-4">
                   {tour.desc}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-6">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-4">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" /> {tour.duration}
                   </span>
@@ -102,7 +102,7 @@ const Tours = () => {
                   </span>
                 </div>
 
-                <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
+                <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
                   <div>
                     <p className="font-display text-2xl text-primary leading-none">
                       {tour.price}
@@ -121,7 +121,7 @@ const Tours = () => {
           ))}
         </div>
 
-        <div className="mt-8 flex items-center gap-3 rounded-2xl border border-border bg-sand/70 px-6 py-5 text-sm text-muted-foreground">
+        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-sand/70 px-5 py-4 text-sm text-muted-foreground">
           <Mountain className="h-5 w-5 shrink-0 text-primary" />
           <p>
             Alle Reisen lassen sich auf Wunsch als private Tour für Familien oder
