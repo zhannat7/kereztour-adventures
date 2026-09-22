@@ -50,8 +50,8 @@ const TourDates = () => {
       >
         <div className="text-center max-w-2xl mx-auto mb-9">
           <span className="eyebrow mb-3 block">Kultur Tour</span>
-          <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
-            Nächste <span className="italic text-primary">Reisetermine</span>
+          <h2 className="font-body text-3xl md:text-[2.35rem] font-semibold tracking-tight leading-tight text-foreground">
+            Nächste Reisetermine
           </h2>
         </div>
 
@@ -70,11 +70,11 @@ const TourDates = () => {
                       Termin {index + 1}
                     </p>
 
-                    <p className="font-display text-2xl md:text-[1.7rem] text-foreground leading-tight">
+                    <p className="font-body text-2xl md:text-[1.7rem] font-semibold tracking-tight text-foreground leading-tight">
                       {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
                     </p>
 
-                    <p className={`text-sm mt-2 ${isFull ? "text-muted-foreground" : "text-primary"}`}>
+                    <p className={`font-body text-sm mt-2 ${isFull ? "text-muted-foreground" : "text-primary"}`}>
                       {isFull
                         ? "Ausgebucht"
                         : `${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
@@ -87,19 +87,19 @@ const TourDates = () => {
             <div className="flex justify-center mt-7">
               <Link
                 to="/buchen?tour=kultur"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-body text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
               >
                 Termin auswählen
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <p className="text-center text-sm text-muted-foreground mt-4">
+            <p className="font-body text-center text-sm text-muted-foreground mt-4">
               Für Intensiv-Trekking und Kyrchyn Tour stimmen wir den Reisetermin individuell mit dir ab.
             </p>
           </>
         ) : (
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="font-body text-center text-sm text-muted-foreground">
             Aktuell sind keine Reisetermine verfügbar.
           </p>
         )}
