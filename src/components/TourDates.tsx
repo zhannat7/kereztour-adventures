@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarDays } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,12 +43,12 @@ const TourDates = () => {
   }, []);
 
   return (
-    <section className="py-10 md:py-12 bg-sand/40">
+    <section className="py-12 md:py-14 bg-background">
       <div
         ref={ref}
-        className="section-reveal container mx-auto px-6 max-w-[1400px]"
+        className="section-reveal container mx-auto px-6 max-w-[1180px]"
       >
-        <div className="text-center max-w-2xl mx-auto mb-7">
+        <div className="text-center max-w-2xl mx-auto mb-9">
           <span className="eyebrow mb-3 block">Kultur Tour</span>
           <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
             Nächste <span className="italic text-primary">Reisetermine</span>
@@ -57,40 +57,37 @@ const TourDates = () => {
 
         {dates.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {dates.map((item) => {
+            <div className="grid grid-cols-1 md:grid-cols-3 border-y border-border/70">
+              {dates.map((item, index) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
 
                 return (
                   <div
                     key={item.id}
-                    className="rounded-2xl border border-border bg-card px-5 py-4 shadow-soft"
+                    className={`px-5 py-6 md:px-7 md:py-7 ${index > 0 ? "border-t md:border-t-0 md:border-l border-border/70" : ""}`}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <CalendarDays className="h-5 w-5" />
-                      </span>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-3">
+                      Termin {index + 1}
+                    </p>
 
-                      <div>
-                        <p className="font-semibold text-foreground">
-                          {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
-                        </p>
-                        <p className="text-sm text-primary mt-0.5">
-                          {isFull
-                            ? "Ausgebucht"
-                            : `${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
-                        </p>
-                      </div>
-                    </div>
+                    <p className="font-display text-2xl md:text-[1.7rem] text-foreground leading-tight">
+                      {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
+                    </p>
+
+                    <p className={`text-sm mt-2 ${isFull ? "text-muted-foreground" : "text-primary"}`}>
+                      {isFull
+                        ? "Ausgebucht"
+                        : `${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
+                    </p>
                   </div>
                 );
               })}
             </div>
 
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-7">
               <Link
                 to="/buchen?tour=kultur"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
               >
                 Termin auswählen
                 <ArrowRight className="h-4 w-4" />
