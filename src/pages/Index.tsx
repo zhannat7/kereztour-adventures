@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import TourDates from "@/components/TourDates";
 import Highlights from "@/components/Highlights";
 import Tours from "@/components/Tours";
 import NomadGames from "@/components/NomadGames";
@@ -15,6 +16,7 @@ const Index = () => (
     <Navbar />
     <main>
       <Hero />
+      <TourDates />
       <Highlights />
       <Tours />
       <NomadGames />
