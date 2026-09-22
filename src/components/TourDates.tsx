@@ -37,25 +37,31 @@ const TourDates = () => {
   if (!dates.length) return null;
 
   return (
-    <div className="relative z-20 -mt-8 flex justify-center px-6 sm:-mt-10">
-      <div className="relative w-full max-w-[360px] rounded-[28px] border border-border/80 bg-card px-6 py-5 text-center shadow-lift">
-        <div className="absolute -top-3 left-1/2 h-6 w-px -translate-x-1/2 bg-border" />
-        <div className="absolute -top-[17px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border border-border bg-card" />
+    <div className="relative z-20 -mt-12 flex justify-center px-6 sm:-mt-14">
+      <div className="relative flex h-[190px] w-[190px] flex-col items-center justify-center rounded-full border border-border/80 bg-card px-5 text-center shadow-lift">
+        <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-border" />
+        <div className="absolute -top-[36px] left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-card ring-1 ring-border" />
 
-        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
-          Kultur Tour · Nächste Termine
+        <p className="font-body text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">
+          Kultur Tour
+        </p>
+        <p className="mt-1 font-body text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
+          Termine 2026
         </p>
 
-        <div className="mt-3 space-y-1">
+        <div className="my-3 w-full space-y-1.5">
           {dates.map((item) => (
-            <p key={item.id} className="font-body text-[15px] font-semibold tracking-tight text-foreground">
-              {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.yyyy")}
+            <p
+              key={item.id}
+              className="font-body text-[13px] font-semibold tracking-tight text-foreground"
+            >
+              {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.")}
             </p>
           ))}
         </div>
 
-        <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
-          Trekking & Kyrchyn: Termin nach Absprache
+        <p className="text-[8.5px] leading-tight text-muted-foreground">
+          Trekking & Kyrchyn nach Absprache
         </p>
       </div>
     </div>
