@@ -229,6 +229,45 @@ const Kultur = () => {
           </div>
         </div>
 
+        {/* Reisetermine */}
+        <div className="mb-16 rounded-2xl border border-border bg-sand/50 p-6 md:p-8">
+          <div className="mb-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">
+              Nächste Reisetermine
+            </p>
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+              Deinen <span className="italic text-primary">Termin auswählen</span>
+            </h2>
+            <p className="text-sm text-muted-foreground max-w-2xl">
+              Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt.
+              Erst danach erfolgt die Zahlung.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { date: "2026-09-25", label: "25.09.–04.10.2026", seats: 4 },
+              { date: "2026-10-09", label: "09.10.–18.10.2026", seats: 8 },
+              { date: "2026-10-23", label: "23.10.–01.11.2026", seats: 6 },
+            ].map((item) => (
+              <div key={item.date} className="rounded-xl border border-border bg-card p-5">
+                <p className="font-semibold text-foreground">{item.label}</p>
+                <p className="text-sm text-primary mt-1 mb-4">Noch {item.seats} Plätze verfügbar</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {tiers.map((tier) => (
+                    <Link
+                      key={tier.name}
+                      to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}&date=${item.date}`}
+                      className="inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground hover:border-primary hover:text-primary transition-colors"
+                    >
+                      {tier.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Pakete */}
         <div className="mb-16">
           <div className="mb-8">
