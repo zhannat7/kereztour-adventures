@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon,
@@ -56,6 +56,16 @@ const TOURS = [
 
 type TourId = (typeof TOURS)[number]["id"];
 type TierId = "economy" | "comfort";
+
+type CultureDate = {
+  id: string;
+  value: string;
+  endDate: string;
+  label: string;
+  maxParticipants: number;
+  availablePlaces: number;
+  status: "open" | "full";
+};
 
 const TIER_PRICES: Record<TierId, number> = {
   economy: 990,
@@ -175,11 +185,56 @@ const Buchen = () => {
   const tier = watch("tier") as TierId | "";
   const travelDate = watch("travelDate");
 
-  const cultureDates = [
-    { value: "2026-09-25", label: "25.09.–04.10.2026", maxParticipants: 15 },
-    { value: "2026-10-09", label: "09.10.–18.10.2026", maxParticipants: 15 },
-    { value: "2026-10-23", label: "23.10.–01.11.2026", maxParticipants: 15 },
-  ];
+  const [cultureDates, setCultureDates] = useState<CultureDate[]>([]);
+  const [isLoadingDates, setIsLoadingDates] = useState(false);
+
+  useEffect(() => {
+    if (tourId !== "kultur") return;
+
+    let active = true;
+
+    const loadCultureDates = async () => {
+      setIsLoadingDates(true);
+
+      const { data, error } = await (supabase as any)
+        .rpc("get_tour_date_availability");
+
+      if (!active) return;
+
+      if (error) {
+        setCultureDates([]);
+        setIsLoadingDates(false);
+        return;
+      }
+
+      const dates: CultureDate[] = (data ?? [])
+        .filter((item: any) => item.tour === "Kultur Tour")
+        .map((item: any) => ({
+          id: item.id,
+          value: item.start_date,
+          endDate: item.end_date,
+          label: \`\${format(parseISO(item.start_date), "dd.MM.")}–\${format(parseISO(item.end_date), "dd.MM.yyyy")}\`,
+          maxParticipants: Number(item.max_participants),
+          availablePlaces: Number(item.available_places),
+          status: item.status === "full" ? "full" : "open",
+        }));
+
+      setCultureDates(dates);
+      setIsLoadingDates(false);
+    };
+
+    loadCultureDates();
+
+    return () => {
+      active = false;
+    };
+  }, [tourId]);
+
+  const selectedCultureDate = cultureDates.find(
+    (item) =>
+      travelDate &&
+      format(travelDate, "yyyy-MM-dd") === item.value
+  );
 
   const selectedTour = TOURS.find(
     (tour) => tour.id === tourId
@@ -248,21 +303,48 @@ const Buchen = () => {
         ? data.tier
         : "standard";
 
-      const { error } = await supabase
+      const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
+
+      if (tour.id === "kultur") {
+        const { data: availability, error: availabilityError } = await (supabase as any)
+          .rpc("get_tour_date_availability");
+
+        if (availabilityError) throw availabilityError;
+
+        const selectedDate = (availability ?? []).find(
+          (item: any) =>
+            item.tour === "Kultur Tour" &&
+            item.start_date === travelDateValue
+        );
+
+        if (!selectedDate) {
+          throw new Error("Dieser Reisetermin ist nicht mehr verfügbar.");
+        }
+
+        const availablePlaces = Number(selectedDate.available_places);
+
+        if (selectedDate.status === "full" || data.persons > availablePlaces) {
+          throw new Error(
+            availablePlaces > 0
+              ? \`Für diesen Termin sind aktuell nur noch \${availablePlaces} Plätze verfügbar.\`
+              : "Dieser Reisetermin ist bereits ausgebucht."
+          );
+        }
+      }
+
+      const { error } = await (supabase as any)
         .from("bookings")
         .insert({
-          name: `${data.vorname} ${data.nachname}`,
+          name: \`\${data.vorname} \${data.nachname}\`,
           email: data.email,
           phone: data.phone,
           persons: data.persons,
-          travel_date: format(
-            data.travelDate,
-            "yyyy-MM-dd"
-          ),
+          travel_date: travelDateValue,
           tour: tour.label,
           tier: tierValue,
           notes: data.notes || null,
           total_price: total,
+          status: "pending",
         });
 
       if (error) {
@@ -272,10 +354,9 @@ const Buchen = () => {
       navigate("/zahlung", {
         state: {
           name: `${data.vorname} ${data.nachname}`,
-          travelDate: format(
-            data.travelDate,
-            "dd.MM.yyyy"
-          ),
+          travelDate: tour.id === "kultur" && selectedCultureDate
+            ? selectedCultureDate.label
+            : format(data.travelDate, "dd.MM.yyyy"),
           tour: tour.label,
           tier: tierValue,
           persons: data.persons,
@@ -288,7 +369,7 @@ const Buchen = () => {
 
       setSubmitError(
         message
-          ? `Buchung konnte nicht gesendet werden: ${message}`
+          ? `Buchungsanfrage konnte nicht gesendet werden: ${message}`
           : "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
       );
     } finally {
@@ -544,11 +625,18 @@ const Buchen = () => {
 
                     <button
                       type="button"
+                      disabled={
+                        tourId === "kultur" &&
+                        !!selectedCultureDate &&
+                        persons >= selectedCultureDate.availablePlaces
+                      }
                       onClick={() =>
                         setValue(
                           "persons",
                           Math.min(
-                            20,
+                            tourId === "kultur" && selectedCultureDate
+                              ? selectedCultureDate.availablePlaces
+                              : 20,
                             persons + 1
                           )
                         )
@@ -567,40 +655,57 @@ const Buchen = () => {
                   <Label>Reisetermin *</Label>
 
                   {tourId === "kultur" ? (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      {cultureDates.map((item) => {
-                        const selected =
-                          travelDate &&
-                          format(travelDate, "yyyy-MM-dd") === item.value;
+                    <div>
+                      {isLoadingDates ? (
+                        <div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">
+                          Reisetermine werden geladen …
+                        </div>
+                      ) : cultureDates.length === 0 ? (
+                        <div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">
+                          Aktuell sind keine Reisetermine verfügbar.
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          {cultureDates.map((item) => {
+                            const selected =
+                              travelDate &&
+                              format(travelDate, "yyyy-MM-dd") === item.value;
+                            const isFull = item.status === "full" || item.availablePlaces <= 0;
 
-                        return (
-                          <button
-                            key={item.value}
-                            type="button"
-                            onClick={() =>
-                              setValue(
-                                "travelDate",
-                                new Date(`${item.value}T12:00:00`),
-                                { shouldValidate: true, shouldDirty: true }
-                              )
-                            }
-                            className={cn(
-                              "rounded-xl border-2 p-4 text-left transition-all",
-                              selected
-                                ? "border-primary bg-primary/5 shadow-sm"
-                                : "border-border hover:border-primary/40"
-                            )}
-                          >
-                            <p className="font-semibold text-foreground">{item.label}</p>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              Gruppengröße bis {item.maxParticipants} Personen
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Verfügbarkeit wird nach deiner Anfrage bestätigt.
-                            </p>
-                          </button>
-                        );
-                      })}
+                            return (
+                              <button
+                                key={item.id}
+                                type="button"
+                                disabled={isFull}
+                                onClick={() =>
+                                  setValue(
+                                    "travelDate",
+                                    parseISO(item.value),
+                                    { shouldValidate: true, shouldDirty: true }
+                                  )
+                                }
+                                className={cn(
+                                  "rounded-xl border-2 p-4 text-left transition-all",
+                                  selected
+                                    ? "border-primary bg-primary/5 shadow-sm"
+                                    : "border-border hover:border-primary/40",
+                                  isFull && "cursor-not-allowed opacity-60 hover:border-border"
+                                )}
+                              >
+                                <p className="font-semibold text-foreground">{item.label}</p>
+                                <p className="text-sm mt-1 font-medium text-primary">
+                                  {isFull
+                                    ? "Ausgebucht"
+                                    : \`Noch \${item.availablePlaces} \${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar\`}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  Max. {item.maxParticipants} Personen · Anfrage ohne Zahlung
+                                </p>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <Popover>
