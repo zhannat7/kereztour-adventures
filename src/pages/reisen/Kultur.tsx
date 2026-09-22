@@ -64,7 +64,6 @@ const highlights = [
   "Festliches Abschiedsabendessen mit kirgisischer Livemusik",
 ];
 
-/* ── Foto Slider ── */
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
@@ -92,16 +91,13 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
             transition: "all 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)",
           }}
         >
-          <img
-            src={photo}
-            loading="lazy"
-           className="w-full h-full object-cover"
-          />
+          <img src={photo} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ))}
     </div>
   );
 };
+
 const Kultur = () => {
   const [activeDay, setActiveDay] = useState(0);
   const [cultureDates, setCultureDates] = useState<Array<{
@@ -163,223 +159,182 @@ const Kultur = () => {
   }, []);
 
   return (
-  
-  <>
-    <Navbar />
-    <main className="pt-20 md:pt-24 pb-20">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <>
+      <Navbar />
+      <main className="pt-20 md:pt-24 pb-20">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
+            <ArrowLeft className="h-4 w-4" /> Zurück
+          </Link>
 
-        <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
-          <ArrowLeft className="h-4 w-4" /> Zurück
-        </Link>
-
-        {/* Header */}
-        <div className="mb-16">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-            10 Tage · Gruppenreise
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            Kultur Tour
-            <span className="block text-2xl md:text-3xl italic text-primary mt-2">
-              Kirgisistan von seiner schönsten Seite
+          <div className="mb-16">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
+              10 Tage · Gruppenreise
             </span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
-            10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek
-            bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende
-            Natur und unvergessliche Begegnungen.
-          </p>
-        </div>
-
-        {/* Highlights */}
-        <div className="mb-20">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
-            Was dich <span className="italic text-primary">erwartet</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {highlights.map((h) => (
-              <div key={h} className="flex items-start gap-3 rounded-xl bg-card border border-border p-4">
-                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <p className="text-sm text-foreground leading-relaxed">{h}</p>
-              </div>
-            ))}
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
+              Kultur Tour
+              <span className="block text-2xl md:text-3xl italic text-primary mt-2">
+                Kirgisistan von seiner schönsten Seite
+              </span>
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
+              10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek
+              bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende
+              Natur und unvergessliche Begegnungen.
+            </p>
           </div>
-        </div>
 
-        {/* Timeline Reiseplan */}
-        <div className="mb-20">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-12">
-            Dein <span className="italic text-primary">Reiseplan</span>
-          </h2>
+          <div className="mb-20">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
+              Was dich <span className="italic text-primary">erwartet</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {highlights.map((h) => (
+                <div key={h} className="flex items-start gap-3 rounded-xl bg-card border border-border p-4">
+                  <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <p className="text-sm text-foreground leading-relaxed">{h}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-         <div className="relative">
-            {/* Vertikale Linie */}
-            <div className="absolute left-5 top-0 bottom-0 w-px bg-border md:left-8" />
+          <div className="mb-20">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-12">
+              Dein <span className="italic text-primary">Reiseplan</span>
+            </h2>
 
-            <div className="space-y-16">
-              {days.map((d, i) => (
-                <div
-                  key={d.day}
-                  className="relative flex gap-6 md:gap-10"
-                  ref={(el) => { if (el) dayRefs.current[i] = el; }}
-                >
-
-                  {/* Kreis mit Tag-Nummer */}
-                  <div className="relative z-10 flex-shrink-0">
-                    <div className={`flex h-11 w-11 items-center justify-center rounded-full font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
-                      {d.day}
+            <div className="relative">
+              <div className="absolute left-5 top-0 bottom-0 w-px bg-border md:left-8" />
+              <div className="space-y-16">
+                {days.map((d, i) => (
+                  <div
+                    key={d.day}
+                    className="relative flex gap-6 md:gap-10"
+                    ref={(el) => { if (el) dayRefs.current[i] = el; }}
+                  >
+                    <div className="relative z-10 flex-shrink-0">
+                      <div className={`flex h-11 w-11 items-center justify-center rounded-full font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
+                        {d.day}
+                      </div>
+                    </div>
+                    <div className="flex-1 pb-2">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">Tag {d.day}</p>
+                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{d.title}</h3>
+                      <div className="flex flex-col gap-3 mb-5">
+                        <p className="text-base text-muted-foreground leading-relaxed">{d.desc}</p>
+                        {d.stay && (
+                          <div className="inline-flex self-start items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
+                            Unterkunft: {d.stay}
+                          </div>
+                        )}
+                      </div>
+                      {d.photos.length > 0 && <PhotoSlider photos={d.photos} />}
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-                  {/* Inhalt */}
-                  <div className="flex-1 pb-2">
-                    {/* Tag Label + Titel */}
-                    <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">
-                      Tag {d.day}
-                    </p>
-                    <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">
-                      {d.title}
-                    </h3>
-
-                   {/* Foto + Text nebeneinander */}
-                 {/* Text */}
-                  <div className="flex flex-col gap-3 mb-5">
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                      {d.desc}
-                    </p>
-                    {d.stay && (
-                      <div className="inline-flex self-start items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
-                        Unterkunft: {d.stay}
+          <div className="mb-16 rounded-2xl border border-border bg-sand/50 p-6 md:p-8">
+            <div className="mb-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">Nächste Reisetermine</p>
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                Deinen <span className="italic text-primary">Termin auswählen</span>
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt. Erst danach erfolgt die Zahlung.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {cultureDates.length > 0 ? (
+                cultureDates.map((item) => {
+                  const isFull = item.status === "full" || item.availablePlaces <= 0;
+                  return (
+                    <div key={item.id} className="rounded-xl border border-border bg-card p-5">
+                      <p className="font-semibold text-foreground">{item.label}</p>
+                      <p className="text-sm text-primary mt-1 mb-4">
+                        {isFull ? "Ausgebucht" : "Noch " + item.availablePlaces + " " + (item.availablePlaces === 1 ? "Platz" : "Plätze") + " verfügbar"}
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {tiers.map((tier) => (
+                          <Link
+                            key={tier.name}
+                            to={isFull ? "#" : "/buchen?tour=kultur&tier=" + tier.name.toLowerCase() + "&date=" + item.date}
+                            aria-disabled={isFull}
+                            className={"inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors " + (isFull ? "pointer-events-none opacity-50" : "hover:border-primary hover:text-primary")}
+                          >
+                            {tier.name}
+                          </Link>
+                        ))}
                       </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="md:col-span-3 rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
+                  Aktuell sind keine Reisetermine verfügbar.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <div className="mb-8">
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                Deine <span className="italic text-primary">Reisevariante</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl leading-relaxed">
+                Das Reiseerlebnis bleibt gleich – du entscheidest, welche Unterkunft und welchen Komfort du bevorzugst.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {tiers.map((tier) => (
+                <div
+                  key={tier.name}
+                  className="rounded-2xl border border-border bg-card p-6 md:p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-soft"
+                >
+                  <div className="flex items-start justify-between gap-5 mb-6">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">{tier.tagline}</p>
+                      <h3 className="font-display text-2xl md:text-3xl text-foreground">{tier.name}</h3>
+                    </div>
+                    {tier.featured && (
+                      <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap">Mehr Komfort</span>
                     )}
                   </div>
 
-                  {/* Fotos unter dem Text – volle Breite */}
-                  {d.photos.length > 0 && (
-                    <PhotoSlider photos={d.photos} />
-                  )}
+                  <div className="flex items-baseline gap-2 border-b border-border pb-6 mb-6">
+                    <span className="font-display text-4xl md:text-5xl text-primary">{tier.price} €</span>
+                    <span className="text-sm text-muted-foreground">pro Person</span>
                   </div>
+
+                  <ul className="space-y-4 mb-7">
+                    {tier.details.map((d) => (
+                      <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
+                        <d.icon className="h-5 w-5 shrink-0 text-primary" />
+                        <span>{d.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
+                  >
+                    {tier.name} buchen
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               ))}
             </div>
           </div>
         </div>
-
-        {/* Reisetermine */}
-        <div className="mb-16 rounded-2xl border border-border bg-sand/50 p-6 md:p-8">
-          <div className="mb-7">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">
-              Nächste Reisetermine
-            </p>
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-              Deinen <span className="italic text-primary">Termin auswählen</span>
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-2xl">
-              Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt.
-              Erst danach erfolgt die Zahlung.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {cultureDates.length > 0 ? (
-              cultureDates.map((item) => {
-                const isFull = item.status === "full" || item.availablePlaces <= 0;
-
-                return (
-                  <div key={item.id} className="rounded-xl border border-border bg-card p-5">
-                    <p className="font-semibold text-foreground">{item.label}</p>
-                    <p className="text-sm text-primary mt-1 mb-4">
-                      {isFull
-                        ? "Ausgebucht"
-                        : "Noch " + item.availablePlaces + " " + (item.availablePlaces === 1 ? "Platz" : "Plätze") + " verfügbar"}
-                    </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {tiers.map((tier) => (
-                        <Link
-                          key={tier.name}
-                          to={isFull ? "#" : "/buchen?tour=kultur&tier=" + tier.name.toLowerCase() + "&date=" + item.date}
-                          aria-disabled={isFull}
-                          className={"inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors " + (isFull ? "pointer-events-none opacity-50" : "hover:border-primary hover:text-primary")}
-                        >
-                          {tier.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="md:col-span-3 rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
-                Aktuell sind keine Reisetermine verfügbar.
-              </div>
-            )}        </div>
-        </div>
-
-        {/* Pakete */}
-        <div className="mb-16">
-          <div className="mb-8">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-              Deine <span className="italic text-primary">Reisevariante</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl leading-relaxed">
-              Das Reiseprogramm bleibt gleich. Du entscheidest, wie komfortabel du unterwegs sein möchtest.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className="rounded-2xl border border-border bg-card p-6 md:p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-soft"
-              >
-                <div className="flex items-start justify-between gap-5 mb-6">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">
-                      {tier.tagline}
-                    </p>
-                    <h3 className="font-display text-2xl md:text-3xl text-foreground">
-                      {tier.name}
-                    </h3>
-                  </div>
-
-                  {tier.featured && (
-                    <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap">
-                      Mehr Komfort
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-baseline gap-2 border-b border-border pb-6 mb-6">
-                  <span className="font-display text-4xl md:text-5xl text-primary">
-                    {tier.price} €
-                  </span>
-                  <span className="text-sm text-muted-foreground">pro Person</span>
-                </div>
-
-                <ul className="space-y-4 mb-7">
-                  {tier.details.map((d) => (
-                    <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
-                      <d.icon className="h-5 w-5 shrink-0 text-primary" />
-                      <span>{d.text}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
-                >
-                  {tier.name} buchen
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </main>
-    <Footer />
-  </>
-);
+      </main>
+      <Footer />
+    </>
+  );
 };
+
 export default Kultur;
