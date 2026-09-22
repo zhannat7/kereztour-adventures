@@ -231,55 +231,60 @@ const Kultur = () => {
 
         {/* Pakete */}
         <div className="mb-16">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-            Wähle dein <span className="italic text-primary">Paket</span>
-          </h2>
-          <p className="text-muted-foreground mb-10">
-            Beide Pakete beinhalten dasselbe 10-Tage-Programm – der Unterschied liegt im Komfort.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          <div className="mb-8">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+              Deine <span className="italic text-primary">Reisevariante</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl leading-relaxed">
+              Das Reiseprogramm bleibt gleich. Du entscheidest, wie komfortabel du unterwegs sein möchtest.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {tiers.map((tier) => (
               <div
                 key={tier.name}
-                className={`relative rounded-3xl p-8 md:p-10 flex flex-col transition-all duration-500 hover:-translate-y-1 ${
-                  tier.featured
-                    ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/20 ring-1 ring-primary"
-                    : "bg-card border border-border hover:border-primary/30 hover:shadow-xl"
-                }`}
+                className="rounded-2xl border border-border bg-card p-6 md:p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-soft"
               >
-                {tier.featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-1.5 text-xs font-bold text-secondary-foreground uppercase tracking-wider shadow-lg">
-                    <Sparkles className="h-3 w-3" /> Empfohlen
+                <div className="flex items-start justify-between gap-5 mb-6">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">
+                      {tier.tagline}
+                    </p>
+                    <h3 className="font-display text-2xl md:text-3xl text-foreground">
+                      {tier.name}
+                    </h3>
                   </div>
-                )}
-                <p className={`text-sm font-medium mb-2 ${tier.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                  {tier.tagline}
-                </p>
-                <h3 className="font-display text-2xl md:text-3xl mb-1">{tier.name}</h3>
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-5xl md:text-6xl font-display">{tier.price}</span>
-                  <span className="text-lg">€</span>
-                  <span className={`text-sm ml-1 ${tier.featured ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                    pro Person
-                  </span>
+
+                  {tier.featured && (
+                    <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap">
+                      Mehr Komfort
+                    </span>
+                  )}
                 </div>
-                <ul className="space-y-4 mb-10 flex-1">
+
+                <div className="flex items-baseline gap-2 border-b border-border pb-6 mb-6">
+                  <span className="font-display text-4xl md:text-5xl text-primary">
+                    {tier.price} €
+                  </span>
+                  <span className="text-sm text-muted-foreground">pro Person</span>
+                </div>
+
+                <ul className="space-y-4 mb-7">
                   {tier.details.map((d) => (
-                    <li key={d.text} className="flex items-center gap-3 text-sm">
-                      <d.icon className={`h-5 w-5 shrink-0 ${tier.featured ? "text-secondary" : "text-primary"}`} />
+                    <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
+                      <d.icon className="h-5 w-5 shrink-0 text-primary" />
                       <span>{d.text}</span>
                     </li>
                   ))}
                 </ul>
+
                 <Link
                   to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
-                  className={`inline-flex items-center justify-center gap-2 rounded-full py-4 font-semibold transition-all duration-300 hover:scale-105 ${
-                    tier.featured
-                      ? "bg-secondary text-secondary-foreground shadow-lg"
-                      : "bg-primary text-primary-foreground shadow-lg"
-                  }`}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
                 >
-                  {tier.name} buchen <ArrowRight className="h-4 w-4" />
+                  {tier.name} buchen
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             ))}
