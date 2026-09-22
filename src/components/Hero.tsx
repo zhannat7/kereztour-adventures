@@ -3,7 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-[82vh] sm:h-[85vh] lg:h-[88vh] lg:max-h-[900px] lg:min-h-[600px] flex items-center overflow-hidden bg-background">
+    <section className="relative w-full h-[78vh] sm:h-[80vh] lg:h-[84vh] lg:max-h-[820px] lg:min-h-[600px] flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
         <img
           src="/hero-wide.jpg"
@@ -18,10 +18,10 @@ const Hero = () => {
 
 
       <div className="relative z-10 flex h-full w-full items-start">
-        <div className="w-full px-6 pt-[152px] sm:px-10 sm:pt-[124px] lg:px-16 lg:pt-[calc(26vh-72px)] xl:px-24">
+        <div className="w-full px-6 pt-[132px] sm:px-10 sm:pt-[110px] lg:px-16 lg:pt-[calc(24vh-68px)] xl:px-24">
           <div className="mx-auto max-w-[620px] text-center lg:max-w-[900px]">
 
-            <h1 className="mb-7 animate-slide-up font-display text-[48px] font-normal leading-[0.98] tracking-[0.015em] text-primary-foreground drop-shadow-lg sm:text-[68px] md:text-[82px] lg:mb-9 lg:text-[clamp(82px,7vw,112px)]">
+            <h1 className="mb-7 animate-slide-up font-display text-[42px] font-normal leading-[0.98] tracking-[0.015em] text-primary-foreground drop-shadow-lg sm:text-[58px] md:text-[68px] lg:mb-9 lg:text-[clamp(68px,6vw,92px)]">
               <span className="block">Kirgisistan</span>
               <span className="mt-2 block text-gold sm:mt-3 lg:whitespace-nowrap">
                 Authentisch erleben
@@ -30,7 +30,7 @@ const Hero = () => {
 
             <div className="mb-8 flex animate-fade-in items-center justify-center gap-4 px-6 sm:mb-10 lg:mb-12">
               <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
-              <p className="text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[14px] lg:text-[19px]">
+              <p className="text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[13px] lg:text-[16px]">
                 Kleine Gruppenreisen ins Herz Zentralasiens
               </p>
               <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
@@ -59,7 +59,7 @@ const Hero = () => {
       </div>
 
       <div className="absolute bottom-5 left-0 right-0 z-10 px-6 sm:bottom-7">
-        <p className="flex flex-wrap items-center justify-center gap-2 text-[14px] font-medium tracking-wide text-primary-foreground/95 sm:gap-3 sm:text-[16px] lg:text-[18px]">
+        <p className="flex flex-wrap items-center justify-center gap-2 text-[14px] font-medium tracking-wide text-primary-foreground/95 sm:gap-3 sm:text-[15px] lg:text-[16px]">
           <Star className="h-[18px] w-[18px] shrink-0 fill-gold text-gold sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
           <span className="font-semibold text-gold">5,0 / 5,0</span>
           <span>· Kleine Gruppen · Lokale Gastgeber</span>
