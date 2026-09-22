@@ -245,13 +245,13 @@ const Kultur = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { date: "2026-09-25", label: "25.09.–04.10.2026", seats: 4 },
-              { date: "2026-10-09", label: "09.10.–18.10.2026", seats: 8 },
-              { date: "2026-10-23", label: "23.10.–01.11.2026", seats: 6 },
+              { date: "2026-09-25", label: "25.09.–04.10.2026", maxParticipants: 15 },
+              { date: "2026-10-09", label: "09.10.–18.10.2026", maxParticipants: 15 },
+              { date: "2026-10-23", label: "23.10.–01.11.2026", maxParticipants: 15 },
             ].map((item) => (
               <div key={item.date} className="rounded-xl border border-border bg-card p-5">
                 <p className="font-semibold text-foreground">{item.label}</p>
-                <p className="text-sm text-primary mt-1 mb-4">Noch {item.seats} Plätze verfügbar</p>
+                <p className="text-sm text-muted-foreground mt-1 mb-4">Gruppengröße bis {item.maxParticipants} Personen · Verfügbarkeit wird nach deiner Anfrage bestätigt.</p>
                 <div className="grid grid-cols-2 gap-2">
                   {tiers.map((tier) => (
                     <Link
