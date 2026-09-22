@@ -777,16 +777,16 @@ const Buchen = () => {
                       </p>
                     )}
 
-                    <p className="text-primary-foreground/70 text-sm mt-3">
+                    {travelDate && (
+                      <p className="text-primary-foreground/80 text-sm mt-3">
+                        Reisetermin: {format(travelDate, "dd.MM.yyyy")}
+                      </p>
+                    )}
+
+                    <p className="text-primary-foreground/70 text-sm mt-1">
                       {persons}{" "}
-                      {persons === 1
-                        ? "Person"
-                        : "Personen"}{" "}
-                      ×{" "}
-                      {pricePerPerson.toLocaleString(
-                        "de-DE"
-                      )}{" "}
-                      €
+                      {persons === 1 ? "Person" : "Personen"}{" "}
+                      × {pricePerPerson.toLocaleString("de-DE")} €
                     </p>
 
                   </div>
