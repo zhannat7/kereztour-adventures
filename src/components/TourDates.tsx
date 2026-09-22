@@ -96,6 +96,10 @@ const TourDates = () => {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Für Intensiv-Trekking und Kyrchyn Tour stimmen wir den Reisetermin individuell mit dir ab.
+            </p>
           </>
         ) : (
           <p className="text-center text-sm text-muted-foreground">
