@@ -139,11 +139,11 @@ const CtaBand = () => {
         <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-primary px-8 py-12 md:px-14 md:py-16 shadow-lift">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
-              <h2 className="font-display text-3xl md:text-[2.6rem] leading-tight text-primary-foreground mb-4">
+              <h2 className="font-display text-3xl md:text-[2.3rem] leading-tight text-primary-foreground mb-4">
                 Erzähl mir, wovon du träumst
                 <span className="block italic">ich plane den Rest.</span>
               </h2>
-              <p className="text-primary-foreground/70 text-lg leading-relaxed max-w-xl">
+              <p className="text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-xl">
                 Die Anfrage ist kostenlos und unverbindlich. Ich antworte innerhalb von
                 24 Stunden – auch bei Fragen zu Reiseterminen, Flügen oder Gruppengrößen.
               </p>
