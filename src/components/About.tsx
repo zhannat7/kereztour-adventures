@@ -26,10 +26,10 @@ const About = () => {
 
           <div className="lg:col-span-7">
             <span className="eyebrow mb-4 block">Über uns</span>
-            <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-6">
+            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-6">
               Kirgisistan <span className="italic text-primary">persönlich erleben</span>
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-5">
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-5">
               Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt
               wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.
             </p>
