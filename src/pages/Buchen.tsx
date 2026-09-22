@@ -139,6 +139,7 @@ const Buchen = () => {
 
   const tourParam = searchParams.get("tour");
   const tierParam = searchParams.get("tier");
+  const [showTourPicker, setShowTourPicker] = useState(!tourParam);
 
   const validTour =
     tourParam && TOURS.some((tour) => tour.id === tourParam)
@@ -323,71 +324,86 @@ const Buchen = () => {
 
               <Step
                 n={1}
-                title="Welche Reise möchtest du buchen?"
+                title={validTour && !showTourPicker ? "Deine Reise" : "Welche Reise möchtest du buchen?"}
               />
 
-              <div className="space-y-3">
+              {validTour && !showTourPicker ? (
+                <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-1">
+                        Ausgewählte Reise
+                      </p>
+                      <p className="font-display text-xl text-foreground">
+                        {selectedTour?.label}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {selectedTour?.desc}
+                      </p>
+                    </div>
 
-                {TOURS.map((tour) => {
-                  const isSelected =
-                    tourId === tour.id;
-
-                  return (
                     <button
-                      key={tour.id}
                       type="button"
-                      onClick={() =>
-                        selectTour(tour.id)
-                      }
-                      className={cn(
-                        "w-full flex items-center gap-4 rounded-xl border-2 p-5 text-left transition-all duration-200",
-                        isSelected
-                          ? "border-primary bg-primary/5 shadow-sm"
-                          : "border-border hover:border-primary/40"
-                      )}
+                      onClick={() => setShowTourPicker(true)}
+                      className="shrink-0 text-sm font-semibold text-primary hover:underline"
                     >
+                      Ändern
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {TOURS.map((tour) => {
+                    const isSelected = tourId === tour.id;
 
-                      <div className="flex-1 min-w-0">
+                    return (
+                      <button
+                        key={tour.id}
+                        type="button"
+                        onClick={() => {
+                          selectTour(tour.id);
+                          setShowTourPicker(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center gap-4 rounded-xl border-2 p-5 text-left transition-all duration-200",
+                          isSelected
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border hover:border-primary/40"
+                        )}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold text-foreground">
+                              {tour.label}
+                            </p>
 
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-foreground">
-                            {tour.label}
+                            {isSelected && (
+                              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                <Check className="h-3 w-3" />
+                              </span>
+                            )}
+                          </div>
+
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {tour.desc}
                           </p>
-
-                          {isSelected && (
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                              <Check className="h-3 w-3" />
-                            </span>
-                          )}
                         </div>
 
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {tour.desc}
-                        </p>
-
-                      </div>
-
-                      <div className="text-right shrink-0">
-
-                        <p className="font-bold text-primary">
-                          {tour.hasTiers
-                            ? "ab 990 €"
-                            : `${tour.price?.toLocaleString(
-                                "de-DE"
-                              )} €`}
-                        </p>
-
-                        <p className="text-xs text-muted-foreground">
-                          pro Person
-                        </p>
-
-                      </div>
-
-                    </button>
-                  );
-                })}
-
-              </div>
+                        <div className="text-right shrink-0">
+                          <p className="font-bold text-primary">
+                            {tour.hasTiers
+                              ? "ab 990 €"
+                              : `${tour.price?.toLocaleString("de-DE")} €`}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            pro Person
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               {errors.tour && (
                 <p className="text-sm text-destructive mt-3">
