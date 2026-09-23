@@ -79,7 +79,7 @@ const Footer = () => (
             <a href="https://www.facebook.com/profile.php?id=61580882909583" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center rounded-sm border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:bg-primary-foreground/10 hover:text-secondary">
               <Facebook className="h-4 w-4" />
             </a>
-            <a href="https://www.instagram.com/sarinamam88/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center rounded-sm border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:bg-primary-foreground/10 hover:text-secondary">
+            <a href="https://www.instagram.com/kereztour/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center rounded-sm border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:bg-primary-foreground/10 hover:text-secondary">
               <Instagram className="h-4 w-4" />
             </a>
           </div>
