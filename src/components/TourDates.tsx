@@ -37,10 +37,10 @@ const TourDates = () => {
   if (!dates.length) return null;
 
   return (
-    <div className="relative z-20 -mt-12 flex justify-center px-6 sm:-mt-14">
-      <div className="relative flex h-[190px] w-[190px] flex-col items-center justify-center rounded-full border border-border/80 bg-card px-5 text-center shadow-lift">
-        <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-border" />
-        <div className="absolute -top-[36px] left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-card ring-1 ring-border" />
+    <div className="relative z-20 mx-auto -mt-12 flex w-full max-w-[1600px] justify-end px-6 sm:-mt-14 lg:px-16 xl:px-24">
+      <div className="relative mr-2 flex h-[200px] w-[200px] flex-col items-center justify-center rounded-full border border-gold/40 bg-card px-6 text-center shadow-lift sm:mr-6 lg:mr-12">
+        <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-gold/60" />
+        <div className="absolute -top-[37px] left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border border-gold/50 bg-card shadow-soft" />
 
         <p className="font-body text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">
           Kultur Tour
@@ -49,11 +49,11 @@ const TourDates = () => {
           Termine 2026
         </p>
 
-        <div className="my-3 w-full space-y-1.5">
+        <div className="my-3 w-full space-y-1.5 border-y border-border/70 py-3">
           {dates.map((item) => (
             <p
               key={item.id}
-              className="font-body text-[13px] font-semibold tracking-tight text-foreground"
+              className="font-body text-[13px] font-semibold text-foreground"
             >
               {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.")}
             </p>
