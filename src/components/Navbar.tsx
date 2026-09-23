@@ -400,21 +400,6 @@ const Navbar = () => {
 
             </div>
 
-            {/* MOBILE BOOKING CTA */}
-            <div className="px-6 pb-6 pt-3">
-              <Link
-                to="/buchen"
-                onClick={() => {
-                  setMobileOpen(false);
-                  setReisenOpen(false);
-                }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--gold))] px-6 py-3.5 text-sm font-semibold text-[#062c26] shadow-sm"
-              >
-                Reise buchen
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
           </div>
         )}
 

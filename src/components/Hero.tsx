@@ -52,8 +52,8 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2 sm:bottom-8">
-        <div className="flex items-center gap-2 text-xs font-medium tracking-wide text-primary-foreground/90">
+      <div className="absolute bottom-7 left-1/2 z-10 w-full -translate-x-1/2 px-4 sm:bottom-8">
+        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] font-medium tracking-wide text-primary-foreground/90 sm:gap-2 sm:text-sm">
           <Star className="h-3.5 w-3.5 fill-gold text-gold" />
           <span>5,0 / 5,0</span>
           <span className="text-primary-foreground/50">·</span>

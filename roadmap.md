@@ -11,4 +11,4 @@
 - [x] Globale Farben, Typografie, Formen und Bewegungen vereinheitlichen
 - [x] Alle Startseiten-Bereiche visuell neu gestalten
 - [x] Reiseseiten, Buchung, Registrierung und Zertifikat visuell prüfen
-- [ ] Desktop und Handy vollständig verifizieren
+- [x] Desktop und Handy vollständig verifizieren
