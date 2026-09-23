@@ -134,7 +134,7 @@ const CtaBand = () => {
   };
 
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-background py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="relative overflow-hidden border-y border-gold/35 bg-gradient-primary px-8 py-14 md:px-16 md:py-20 shadow-lift">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

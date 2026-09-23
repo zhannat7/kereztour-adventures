@@ -2,7 +2,7 @@ import { FileCheck2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Registration = () => (
-  <section className="border-y border-border bg-muted/40 py-16 md:py-20">
+  <section className="border-y border-border bg-muted/40 py-12 md:py-16">
     <div className="container mx-auto max-w-[1600px] px-6">
       <div className="flex flex-col items-start gap-8 border-y border-border bg-card px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 md:py-10">
         <div className="flex items-start gap-5">

@@ -18,7 +18,7 @@ const siteLinks = [
 
 const Footer = () => (
   <footer id="kontakt" className="bg-primary text-primary-foreground">
-    <div className="container mx-auto max-w-[1600px] px-6 py-20 md:py-24">
+    <div className="container mx-auto max-w-[1600px] px-6 py-14 md:py-16">
       <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-4">
           <h2 className="mb-5 font-display text-5xl font-normal">Kereztour</h2>

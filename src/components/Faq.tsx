@@ -34,7 +34,7 @@ const Faq = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="border-y border-border bg-sand/50 py-20 md:py-28">
+    <section id="faq" className="border-y border-border bg-sand/50 py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Häufige Fragen</span>

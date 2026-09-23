@@ -38,7 +38,7 @@ const Pricing = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="preise" className="border-y border-border bg-sand/50 py-20 md:py-28">
+    <section id="preise" className="border-y border-border bg-sand/50 py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <span className="eyebrow mb-4 justify-center before:hidden">Kultur Tour · Pakete</span>
