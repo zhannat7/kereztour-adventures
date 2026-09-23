@@ -42,10 +42,10 @@ const TourDates = () => {
         <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-gold/60" />
         <div className="absolute -top-[37px] left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border border-gold/50 bg-card shadow-soft" />
 
-        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-white/90">
           Kultur Tour
         </p>
-        <p className="mt-1 font-body text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="mt-1 font-body text-[10px] uppercase tracking-[0.16em] text-white/70">
           Termine 2026
         </p>
 
