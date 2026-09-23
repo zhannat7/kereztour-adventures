@@ -106,7 +106,7 @@ const Navbar = () => {
         className={`w-full border-b transition-all duration-500 ease-out ${
           transparent
             ? "bg-transparent border-transparent shadow-none"
-            : "bg-white/90 backdrop-blur-xl border-border/50 shadow-soft"
+            : "bg-card/95 backdrop-blur-xl border-border shadow-soft"
         }`}
       >
         <div className="container mx-auto flex w-full max-w-[1600px] items-center px-6 py-3.5 sm:py-4">
@@ -206,7 +206,7 @@ const Navbar = () => {
                 {/* DROPDOWN */}
                 {reisenOpen && (
                   <div className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-4">
-                    <div className="overflow-hidden rounded-2xl border border-border/60 bg-white p-2 shadow-xl">
+                    <div className="overflow-hidden rounded-sm border border-border/60 bg-card p-2 shadow-xl">
 
                       {travelLinks.map((link) => (
                         <Link
@@ -326,7 +326,7 @@ const Navbar = () => {
 
         {/* MOBILE NAVIGATION */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-border/50 bg-white">
+          <div className="border-t border-border/50 bg-card lg:hidden">
 
             <div className="px-6 py-3">
 
@@ -398,21 +398,6 @@ const Navbar = () => {
                 Kontakt
               </Link>
 
-            </div>
-
-            {/* MOBILE BOOKING CTA */}
-            <div className="px-6 pb-6 pt-3">
-              <Link
-                to="/buchen"
-                onClick={() => {
-                  setMobileOpen(false);
-                  setReisenOpen(false);
-                }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--gold))] px-6 py-3.5 text-sm font-semibold text-[#062c26] shadow-sm"
-              >
-                Reise buchen
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
 
           </div>

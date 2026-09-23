@@ -38,13 +38,13 @@ const Zahlung = () => {
       <Navbar />
       <main className="pt-24 pb-20 bg-background min-h-screen">
         <div className="container mx-auto px-4 max-w-lg">
-          <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm text-center space-y-6">
+          <div className="space-y-6 border-y border-border bg-card p-6 text-center shadow-soft md:p-10">
             <CheckCircle className="mx-auto h-16 w-16 text-primary" />
             <h1 className="text-2xl md:text-3xl font-bold text-primary">Buchungsanfrage erhalten</h1>
             <p className="text-muted-foreground text-sm">
               Vielen Dank für deine Anfrage. Sarina prüft den gewünschten Termin und meldet sich zur Bestätigung bei dir.
             </p>
-            <div className="text-left space-y-3 bg-muted rounded-xl p-4">
+            <div className="space-y-3 border-y border-border bg-muted p-5 text-left">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Name</span>
                 <span className="font-medium text-foreground">{booking.name}</span>

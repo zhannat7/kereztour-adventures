@@ -50,12 +50,12 @@ const Tours = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="reisen" className="py-12 md:py-16 bg-background">
+    <section id="reisen" className="bg-background py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Unsere Reisen</span>
-            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
+            <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
               Drei Wege, <span className="italic text-primary">Kirgisistan zu entdecken</span>
             </h2>
           </div>
@@ -67,14 +67,14 @@ const Tours = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {tours.map((tour) => (
             <Link
               key={tour.to}
               to={tour.to}
-              className="stagger-child group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
+              className="stagger-child group flex flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
-              <div className="relative aspect-[16/8.5] overflow-hidden bg-muted">
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={tour.title}
@@ -84,8 +84,8 @@ const Tours = () => {
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-4 md:p-5">
-                <h3 className="font-display text-xl text-foreground mb-2 leading-snug">
+              <div className="flex flex-1 flex-col p-6 md:p-7">
+                <h3 className="mb-3 font-display text-2xl leading-snug text-foreground md:text-3xl">
                   {tour.title}
                 </h3>
 
@@ -112,7 +112,7 @@ const Tours = () => {
                     </p>
                   </div>
 
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-primary transition-colors duration-300 group-hover:bg-secondary group-hover:text-secondary-foreground">
+                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-primary/20 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                     <ArrowRight className="h-4 w-4" />
                   </span>
                 </div>

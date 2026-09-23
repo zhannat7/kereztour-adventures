@@ -2,11 +2,11 @@ import { FileCheck2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Registration = () => (
-  <section className="bg-muted/40 py-14 md:py-18">
-    <div className="container mx-auto max-w-[1180px] px-6">
-      <div className="flex flex-col items-start gap-7 rounded-2xl border border-border bg-card px-6 py-7 shadow-soft md:flex-row md:items-center md:justify-between md:px-9 md:py-8">
+  <section className="border-y border-border bg-muted/40 py-16 md:py-20">
+    <div className="container mx-auto max-w-[1600px] px-6">
+      <div className="flex flex-col items-start gap-8 border-y border-border bg-card px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 md:py-10">
         <div className="flex items-start gap-5">
-          <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/15 bg-primary-soft text-primary">
+          <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-primary/20 bg-primary-soft text-primary">
             <FileCheck2 className="h-5 w-5" />
           </div>
           <div>

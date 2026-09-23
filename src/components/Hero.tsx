@@ -3,7 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-[78vh] sm:h-[80vh] lg:h-[84vh] lg:max-h-[820px] lg:min-h-[600px] flex items-center overflow-hidden bg-background">
+    <section className="relative flex h-[78vh] min-h-[620px] w-full items-center overflow-hidden bg-background sm:h-[82vh] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
         <img
           src="/hero-wide.jpg"
@@ -11,26 +11,26 @@ const Hero = () => {
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,30,26,0.42)_0%,rgba(5,30,26,0.18)_42%,rgba(5,30,26,0.72)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-veil" />
         <div className="absolute inset-0 bg-gradient-vignette" />
       </div>
 
       <div className="relative z-10 flex h-full w-full items-start">
-        <div className="w-full px-6 pt-[132px] sm:px-10 sm:pt-[110px] lg:px-16 lg:pt-[calc(24vh-68px)] xl:px-24">
-          <div className="mx-auto max-w-[620px] text-center lg:max-w-[900px]">
-            <h1 className="mb-7 animate-slide-up font-display text-[42px] font-normal leading-[0.98] tracking-[0.015em] text-primary-foreground drop-shadow-lg sm:text-[58px] md:text-[68px] lg:mb-9 lg:text-[clamp(68px,6vw,92px)]">
+        <div className="w-full px-6 pt-[132px] sm:px-10 sm:pt-[110px] lg:px-16 lg:pt-[calc(23vh-68px)] xl:px-24">
+          <div className="mx-auto max-w-[620px] text-center lg:max-w-[980px]">
+            <h1 className="mb-8 animate-slide-up font-display text-[44px] font-normal leading-[1.02] text-primary-foreground drop-shadow-lg sm:text-[62px] md:text-[76px] lg:mb-10 lg:text-[clamp(76px,6.8vw,106px)]">
               <span className="block">Kirgisistan</span>
-              <span className="mt-2 block text-gold sm:mt-3 lg:whitespace-nowrap">
+              <span className="mt-3 block text-gold sm:mt-4 lg:whitespace-nowrap">
                 Authentisch erleben
               </span>
             </h1>
 
-            <div className="mb-8 flex animate-fade-in items-center justify-center gap-4 px-6 sm:mb-10 lg:mb-12">
-              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
-              <p className="text-[12px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-primary-foreground/90 sm:text-[13px] lg:text-[16px]">
+            <div className="mb-9 flex animate-fade-in items-center justify-center gap-5 px-2 sm:mb-11 lg:mb-12">
+              <span className="hidden h-px w-16 bg-gold sm:block" aria-hidden="true" />
+              <p className="text-[12px] font-semibold uppercase leading-relaxed tracking-[0.25em] text-primary-foreground/90 sm:text-[14px] lg:text-[19px]">
                 Kleine Gruppenreisen ins Herz Zentralasiens
               </p>
-              <span className="hidden h-px w-12 bg-gold sm:block" aria-hidden="true" />
+              <span className="hidden h-px w-16 bg-gold sm:block" aria-hidden="true" />
             </div>
 
             <div
@@ -39,7 +39,7 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-md border border-gold bg-gold/20 px-8 py-4 text-[15px] font-semibold uppercase tracking-[0.12em] text-white shadow-lift backdrop-blur-sm transition-all duration-500 hover:bg-gold/35 hover:shadow-glow sm:px-9"
+                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-sm border border-gold bg-gold/20 px-9 py-4 text-[15px] font-semibold uppercase tracking-[0.16em] text-primary-foreground shadow-lift backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/35 hover:shadow-glow sm:px-10"
               >
                 <span className="absolute inset-0 translate-y-full bg-gold/25 transition-transform duration-500 ease-out group-hover:translate-y-0" />
                 <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
@@ -52,8 +52,8 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2 sm:bottom-8">
-        <div className="flex items-center gap-2 text-xs font-medium tracking-wide text-primary-foreground/90">
+      <div className="absolute bottom-7 left-1/2 z-10 w-full -translate-x-1/2 px-4 sm:bottom-8">
+        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] font-medium tracking-wide text-primary-foreground/90 sm:gap-2 sm:text-sm">
           <Star className="h-3.5 w-3.5 fill-gold text-gold" />
           <span>5,0 / 5,0</span>
           <span className="text-primary-foreground/50">·</span>

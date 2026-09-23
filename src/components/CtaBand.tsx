@@ -134,12 +134,12 @@ const CtaBand = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="bg-background py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-primary px-8 py-12 md:px-14 md:py-16 shadow-lift">
+        <div className="relative overflow-hidden border-y border-gold/35 bg-gradient-primary px-8 py-14 md:px-16 md:py-20 shadow-lift">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
-              <h2 className="font-display text-3xl md:text-[2.3rem] leading-tight text-primary-foreground mb-4">
+              <h2 className="mb-5 font-display text-4xl leading-tight text-primary-foreground md:text-6xl">
                 Erzähl mir, wovon du träumst
                 <span className="block italic">ich plane den Rest.</span>
               </h2>
@@ -162,7 +162,7 @@ const CtaBand = () => {
                 onClick={(e) => openWhatsApp(e, "Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+                 className="inline-flex w-full items-center justify-center gap-2 rounded-sm border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
               >
                 <MessageCircle className="h-4 w-4" /> Direkt auf WhatsApp
               </a>
@@ -176,7 +176,6 @@ const CtaBand = () => {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-secondary/25 blur-3xl" />
         </div>
       </div>
 

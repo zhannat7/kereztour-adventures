@@ -25,7 +25,7 @@ const Kyrchyn = () => {
     <>
       <Navbar />
 
-      <main className="pt-20 md:pt-24 pb-20">
+      <main className="bg-background pb-24 pt-24 md:pt-32">
 
         {/* HEADER */}
         <section className="container mx-auto px-6 max-w-5xl">
@@ -44,7 +44,7 @@ const Kyrchyn = () => {
               Kultur · Nomaden · Issyk-Kul
             </span>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-6">
+            <h1 className="mb-7 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
               Kyrchyn Tour
               <span className="block text-2xl md:text-3xl italic text-primary mt-3">
                 Kirgisistan erleben, wie es wirklich ist
@@ -66,7 +66,7 @@ const Kyrchyn = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            <div className="rounded-2xl bg-card border border-border p-6">
+            <div className="border-y border-border bg-card p-6">
               <MapPin className="h-5 w-5 text-primary mb-4" />
 
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
@@ -78,7 +78,7 @@ const Kyrchyn = () => {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-card border border-border p-6">
+            <div className="border-y border-border bg-card p-6">
               <CalendarDays className="h-5 w-5 text-primary mb-4" />
 
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
@@ -90,7 +90,7 @@ const Kyrchyn = () => {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-card border border-border p-6">
+            <div className="border-y border-border bg-card p-6">
               <Users className="h-5 w-5 text-primary mb-4" />
 
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
@@ -162,7 +162,7 @@ const Kyrchyn = () => {
             {highlights.map((highlight) => (
               <div
                 key={highlight}
-                className="flex items-start gap-3 rounded-xl bg-card border border-border p-5"
+                className="flex items-start gap-3 border-b border-border bg-card p-5"
               >
                 <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
 
@@ -179,7 +179,7 @@ const Kyrchyn = () => {
         {/* BOOKING */}
         <section className="container mx-auto px-6 max-w-5xl">
 
-          <div className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-12">
+          <div className="border-y border-gold/30 bg-primary p-8 text-primary-foreground md:p-12">
 
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
 
@@ -208,7 +208,7 @@ const Kyrchyn = () => {
 
                 <Link
                   to="/buchen?tour=kyrchyn"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary text-secondary-foreground px-7 py-4 font-semibold transition-all duration-300 hover:scale-[1.03]"
+                  className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-7 py-4 font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Reise buchen
                   <ArrowRight className="h-4 w-4" />

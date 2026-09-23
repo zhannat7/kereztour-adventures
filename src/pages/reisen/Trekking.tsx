@@ -87,8 +87,8 @@ const tips = [
 const Trekking = () => (
   <>
     <Navbar />
-    <main className="pt-20 md:pt-24 pb-20">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <main className="bg-background pb-24 pt-24 md:pt-32">
+      <div className="container mx-auto max-w-6xl px-6">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10"
@@ -97,7 +97,7 @@ const Trekking = () => (
         </Link>
 
         {/* Header */}
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
+        <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
           🥾 Intensiv-Trekking
           <span className="block text-2xl md:text-3xl italic text-primary mt-2">Bergseen Kirgistans – 10 Tage</span>
         </h1>
@@ -111,14 +111,14 @@ const Trekking = () => (
         </p>
 
         {/* Price Banner */}
-        <div className="rounded-2xl bg-primary text-primary-foreground p-6 mb-16 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mb-20 flex flex-col items-center justify-between gap-4 border-y border-gold/30 bg-primary p-7 text-primary-foreground sm:flex-row md:p-10">
           <div>
             <p className="text-primary-foreground/70 text-sm uppercase tracking-widest mb-1">Preis pro Person</p>
             <p className="font-display text-5xl">1.200 €</p>
           </div>
           <Link
             to="/buchen?tour=trekking"
-            className="inline-flex items-center gap-2 rounded-full bg-secondary px-8 py-4 font-semibold text-secondary-foreground shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 rounded-sm bg-secondary px-8 py-4 font-semibold text-secondary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
           >
             Jetzt buchen <ArrowRight className="h-4 w-4" />
           </Link>
@@ -132,9 +132,9 @@ const Trekking = () => (
           {days.map((d) => (
             <div
               key={d.day}
-              className="group rounded-2xl bg-card border border-border p-6 flex gap-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+              className="group flex gap-5 border-b border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-lg"
             >
-              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-lg">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-sm bg-primary text-lg font-bold text-primary-foreground">
                 {d.day}
               </div>
               <div>
@@ -155,8 +155,8 @@ const Trekking = () => (
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {tips.map((tip) => (
-            <div key={tip.title} className="rounded-2xl bg-card border border-border p-6 flex flex-col gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <div key={tip.title} className="flex flex-col gap-4 border border-border bg-card p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-primary text-primary-foreground">
                 <tip.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg text-foreground">{tip.title}</h3>
@@ -166,11 +166,11 @@ const Trekking = () => (
         </div>
 
         {/* CTA */}
-        <div className="rounded-2xl bg-muted/60 border border-border p-10 text-center">
+        <div className="border-y border-border bg-muted/60 p-10 text-center">
           <p className="font-display text-2xl text-foreground mb-6">Bereit für das Abenteuer deines Lebens?</p>
           <Link
             to="/buchen?tour=trekking"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-semibold text-primary-foreground shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 rounded-sm bg-primary px-10 py-4 font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
           >
             Jetzt Platz sichern <ArrowRight className="h-4 w-4" />
           </Link>

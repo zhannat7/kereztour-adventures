@@ -34,16 +34,16 @@ const Faq = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-16 md:py-24 bg-sand/60">
+    <section id="faq" className="border-y border-border bg-sand/50 py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Häufige Fragen</span>
-          <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
+          <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
             Alles, was du vor der <span className="italic text-primary">Anfrage wissen willst</span>
           </h2>
         </div>
 
-        <div className="divide-y divide-border rounded-2xl border border-border bg-card shadow-soft">
+        <div className="divide-y divide-border border-y border-border">
           {faqs.map((f, i) => {
             const isOpen = open === i;
             return (
@@ -51,15 +51,15 @@ const Faq = () => {
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left transition-colors hover:bg-muted/50"
+                  className="flex w-full items-center justify-between gap-6 px-1 py-6 text-left transition-colors hover:bg-card/70 sm:px-4"
                 >
                   <span className="font-display text-lg text-foreground">{f.q}</span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-primary/20 text-primary">
                     {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                   </span>
                 </button>
                 {isOpen && (
-                  <p className="px-6 pb-6 -mt-1 text-sm leading-relaxed text-muted-foreground max-w-3xl">
+                  <p className="-mt-1 max-w-3xl px-1 pb-7 text-sm leading-relaxed text-muted-foreground sm:px-4">
                     {f.a}
                   </p>
                 )}
