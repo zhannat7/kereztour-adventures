@@ -13,7 +13,7 @@ const siteLinks = [
   { label: "Preise", to: "/#preise" },
   { label: "Häufige Fragen", to: "/#faq" },
   { label: "Anfrage senden", to: "/buchen" },
-  { label: "Registrierung", to: "/registrierung" },
+  { label: "Registrierungsnachweis", to: "/registrierung" },
 ];
 
 const Footer = () => (
