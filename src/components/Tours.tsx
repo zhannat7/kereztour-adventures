@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users } from "lucide-react";
+import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
 
 type Tour = {
   title: string;
@@ -9,7 +10,8 @@ type Tour = {
   groupSize: string;
   price: string;
   to: string;
-  image: string;
+  image?: string;
+  video?: string;
   imagePosition?: string;
 };
 
@@ -25,6 +27,15 @@ const tours: Tour[] = [
     imagePosition: "center 45%",
   },
   {
+    title: "Kyrchyn Tour",
+    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
+    duration: "Nach Termin",
+    groupSize: "Individuell",
+    price: "1.300 €",
+    to: "/reisen/kyrchyn",
+    video: kyrchynVideo.url,
+  },
+  {
     title: "Intensiv-Trekking",
     desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
     duration: "10 Tage",
@@ -33,16 +44,6 @@ const tours: Tour[] = [
     to: "/reisen/trekking",
     image: "/tour-trekking.jpg",
     imagePosition: "center 35%",
-  },
-  {
-    title: "Kyrchyn Tour",
-    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
-    duration: "Nach Termin",
-    groupSize: "Individuell",
-    price: "1.300 €",
-    to: "/reisen/kyrchyn",
-    image: "/tour-kyrchyn.jpg",
-    imagePosition: "center 40%",
   },
 ];
 
@@ -75,13 +76,26 @@ const Tours = () => {
               className="stagger-child group flex flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                <img
-                  src={tour.image}
-                  alt={tour.title}
-                  loading="lazy"
-                  style={{ objectPosition: tour.imagePosition ?? "center" }}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                {tour.video ? (
+                  <video
+                    src={tour.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    aria-label={tour.title}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={tour.image}
+                    alt={tour.title}
+                    loading="lazy"
+                    style={{ objectPosition: tour.imagePosition ?? "center" }}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                )}
               </div>
 
               <div className="flex flex-1 flex-col p-6 md:p-7">
