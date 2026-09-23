@@ -41,7 +41,7 @@ const tours: Tour[] = [
     groupSize: "Individuell",
     price: "1.300 €",
     to: "/reisen/kyrchyn",
-    image: "/tour-nomaden.jpg",
+    image: "/tour-kyrchyn.jpg",
     imagePosition: "center 40%",
   },
 ];
