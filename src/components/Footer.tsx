@@ -14,6 +14,7 @@ const siteLinks = [
   { label: "Häufige Fragen", to: "/#faq" },
   { label: "Anfrage senden", to: "/buchen" },
   { label: "Registrierungsnachweis", to: "/registrierung" },
+  { label: "Impressum", to: "/impressum" },
 ];
 
 const Footer = () => (
@@ -87,7 +88,7 @@ const Footer = () => (
       </div>
 
       <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-primary-foreground/10 pt-8 text-xs text-primary-foreground/40 sm:flex-row">
-        <p>© 2025–2026 KérezTour Adventures</p>
+        <p>© 2025–2026 Kereztour</p>
         <p>Kleine Gruppen · Lokale Partner · Faire Preise</p>
       </div>
     </div>
