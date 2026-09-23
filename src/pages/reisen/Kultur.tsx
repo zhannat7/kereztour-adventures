@@ -161,8 +161,8 @@ const Kultur = () => {
   return (
     <>
       <Navbar />
-      <main className="pt-20 md:pt-24 pb-20">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="bg-background pb-24 pt-24 md:pt-32">
+        <div className="container mx-auto max-w-5xl px-6">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
             <ArrowLeft className="h-4 w-4" /> Zurück
           </Link>
@@ -171,7 +171,7 @@ const Kultur = () => {
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
               10 Tage · Gruppenreise
             </span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
+            <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
               Kultur Tour
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">
                 Kirgisistan von seiner schönsten Seite
@@ -190,7 +190,7 @@ const Kultur = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {highlights.map((h) => (
-                <div key={h} className="flex items-start gap-3 rounded-xl bg-card border border-border p-4">
+                <div key={h} className="flex items-start gap-3 border-b border-border bg-card p-4">
                   <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <p className="text-sm text-foreground leading-relaxed">{h}</p>
                 </div>
@@ -213,7 +213,7 @@ const Kultur = () => {
                     ref={(el) => { if (el) dayRefs.current[i] = el; }}
                   >
                     <div className="relative z-10 flex-shrink-0">
-                      <div className={`flex h-11 w-11 items-center justify-center rounded-full font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
+                      <div className={`flex h-11 w-11 items-center justify-center rounded-sm font-bold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
                         {d.day}
                       </div>
                     </div>
@@ -223,7 +223,7 @@ const Kultur = () => {
                       <div className="flex flex-col gap-3 mb-5">
                         <p className="text-base text-muted-foreground leading-relaxed">{d.desc}</p>
                         {d.stay && (
-                          <div className="inline-flex self-start items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
+                          <div className="inline-flex self-start items-center gap-2 rounded-sm bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
                             Unterkunft: {d.stay}
                           </div>
                         )}
@@ -236,7 +236,7 @@ const Kultur = () => {
             </div>
           </div>
 
-          <div className="mb-16 rounded-2xl border border-border bg-sand/50 p-6 md:p-8">
+          <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
             <div className="mb-7">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">Nächste Reisetermine</p>
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
@@ -251,7 +251,7 @@ const Kultur = () => {
                 cultureDates.map((item) => {
                   const isFull = item.status === "full" || item.availablePlaces <= 0;
                   return (
-                    <div key={item.id} className="rounded-xl border border-border bg-card p-5">
+                    <div key={item.id} className="border border-border bg-card p-5">
                       <p className="font-semibold text-foreground">{item.label}</p>
                       <p className="text-sm text-primary mt-1 mb-4">
                         {isFull ? "Ausgebucht" : "Noch " + item.availablePlaces + " " + (item.availablePlaces === 1 ? "Platz" : "Plätze") + " verfügbar"}
@@ -272,7 +272,7 @@ const Kultur = () => {
                   );
                 })
               ) : (
-                <div className="md:col-span-3 rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
+                <div className="border border-border bg-card p-5 text-sm text-muted-foreground md:col-span-3">
                   Aktuell sind keine Reisetermine verfügbar.
                 </div>
               )}
@@ -293,7 +293,7 @@ const Kultur = () => {
               {tiers.map((tier) => (
                 <div
                   key={tier.name}
-                  className="rounded-2xl border border-border bg-card p-6 md:p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-soft"
+                  className="border border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-soft md:p-7"
                 >
                   <div className="flex items-start justify-between gap-5 mb-6">
                     <div>
@@ -301,7 +301,7 @@ const Kultur = () => {
                       <h3 className="font-display text-2xl md:text-3xl text-foreground">{tier.name}</h3>
                     </div>
                     {tier.featured && (
-                      <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary whitespace-nowrap">Mehr Komfort</span>
+                      <span className="whitespace-nowrap rounded-sm bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Mehr Komfort</span>
                     )}
                   </div>
 
@@ -321,7 +321,7 @@ const Kultur = () => {
 
                   <Link
                     to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
                   >
                     {tier.name} buchen
                     <ArrowRight className="h-4 w-4" />

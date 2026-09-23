@@ -392,8 +392,8 @@ const Buchen = () => {
             ← Zurück
           </Button>
 
-          <div className="text-center mb-12">
-            <h1 className="font-display text-4xl md:text-5xl text-primary mb-3">
+          <div className="mb-14 text-center">
+            <h1 className="mb-4 font-display text-5xl text-primary md:text-7xl">
               Reise buchen
             </h1>
 
@@ -408,7 +408,7 @@ const Buchen = () => {
           >
 
             {/* SCHRITT 1 */}
-            <section className="bg-card rounded-2xl border border-border p-6 md:p-8">
+            <section className="border-y border-border bg-card p-6 md:p-9">
 
               <Step
                 n={1}
@@ -416,7 +416,7 @@ const Buchen = () => {
               />
 
               {validTour && !showTourPicker ? (
-                <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
+                <div className="rounded-sm border border-primary/30 bg-primary/5 p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-1">
@@ -453,7 +453,7 @@ const Buchen = () => {
                           setShowTourPicker(false);
                         }}
                         className={cn(
-                          "w-full flex items-center gap-4 rounded-xl border-2 p-5 text-left transition-all duration-200",
+                          "w-full flex items-center gap-4 rounded-sm border p-5 text-left transition-all duration-200",
                           isSelected
                             ? "border-primary bg-primary/5 shadow-sm"
                             : "border-border hover:border-primary/40"
@@ -526,7 +526,7 @@ const Buchen = () => {
                             selectTier(option)
                           }
                           className={cn(
-                            "relative rounded-xl border-2 p-5 text-left transition-all duration-200",
+                            "relative rounded-sm border p-5 text-left transition-all duration-200",
                             isSelected
                               ? "border-primary bg-primary/5 shadow-sm"
                               : "border-border hover:border-primary/40"
@@ -585,7 +585,7 @@ const Buchen = () => {
             </section>
 
             {/* SCHRITT 2 */}
-            <section className="bg-card rounded-2xl border border-border p-6 md:p-8">
+            <section className="border-y border-border bg-card p-6 md:p-9">
 
               <Step
                 n={2}
@@ -657,11 +657,11 @@ const Buchen = () => {
                   {tourId === "kultur" ? (
                     <div>
                       {isLoadingDates ? (
-                        <div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">
+                        <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
                           Reisetermine werden geladen …
                         </div>
                       ) : cultureDates.length === 0 ? (
-                        <div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">
+                        <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
                           Aktuell sind keine Reisetermine verfügbar.
                         </div>
                       ) : (
@@ -685,7 +685,7 @@ const Buchen = () => {
                                   )
                                 }
                                 className={cn(
-                                  "rounded-xl border-2 p-4 text-left transition-all",
+                                   "rounded-sm border p-4 text-left transition-all",
                                   selected
                                     ? "border-primary bg-primary/5 shadow-sm"
                                     : "border-border hover:border-primary/40",
@@ -754,7 +754,7 @@ const Buchen = () => {
             </section>
 
             {/* SCHRITT 3 */}
-            <section className="bg-card rounded-2xl border border-border p-6 md:p-8">
+            <section className="border-y border-border bg-card p-6 md:p-9">
 
               <Step
                 n={3}
@@ -863,7 +863,7 @@ const Buchen = () => {
 
             {/* ZUSAMMENFASSUNG */}
             {selectedTour && pricePerPerson > 0 && (
-              <section className="rounded-2xl bg-primary text-primary-foreground p-6 md:p-8">
+              <section className="border-y border-gold/30 bg-primary p-6 text-primary-foreground md:p-9">
 
                 <p className="text-primary-foreground/70 text-sm mb-2">
                   Deine Auswahl

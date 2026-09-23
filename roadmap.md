@@ -10,5 +10,5 @@
 - [x] Modernes Editorial-Redesign für die gesamte Website festlegen
 - [x] Globale Farben, Typografie, Formen und Bewegungen vereinheitlichen
 - [x] Alle Startseiten-Bereiche visuell neu gestalten
-- [ ] Reiseseiten, Buchung, Registrierung und Zertifikat visuell prüfen
+- [x] Reiseseiten, Buchung, Registrierung und Zertifikat visuell prüfen
 - [ ] Desktop und Handy vollständig verifizieren
