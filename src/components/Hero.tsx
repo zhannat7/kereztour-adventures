@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
+import TourDates from "@/components/TourDates";
 
 const Hero = () => {
   return (
@@ -51,6 +52,8 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      <TourDates />
 
       <div className="absolute bottom-7 left-1/2 z-10 w-full -translate-x-1/2 px-4 sm:bottom-8">
         <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] font-medium tracking-wide text-primary-foreground/90 sm:gap-2 sm:text-sm">
