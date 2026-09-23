@@ -5,7 +5,7 @@ import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
 const tourLinks = [
   { label: "Kultur Tour", to: "/reisen/kultur" },
   { label: "Intensiv-Trekking", to: "/reisen/trekking" },
-  { label: "Nomadenspiele 2026", to: "/reisen/nomaden" },
+  { label: "Kyrchyn Tour", to: "/reisen/kyrchyn" },
 ];
 
 const siteLinks = [
