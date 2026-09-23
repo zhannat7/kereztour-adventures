@@ -8,13 +8,16 @@ const tourLinks = [
   { label: "Kyrchyn Tour", to: "/reisen/kyrchyn" },
 ];
 
-const siteLinks = [
+const serviceLinks = [
   { label: "Über uns", to: "/#ueber-uns" },
   { label: "Preise", to: "/#preise" },
   { label: "Häufige Fragen", to: "/#faq" },
   { label: "Anfrage senden", to: "/buchen" },
-  { label: "Registrierungsnachweis", to: "/registrierung" },
+];
+
+const legalLinks = [
   { label: "Impressum", to: "/impressum" },
+  { label: "Registrierungsnachweis", to: "/registrierung" },
 ];
 
 const Footer = () => (
@@ -45,7 +48,20 @@ const Footer = () => (
         <div className="md:col-span-2">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Service</h3>
           <ul className="space-y-3 text-sm">
-            {siteLinks.map((l) => (
+            {serviceLinks.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="md:col-span-2">
+          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Rechtliches</h3>
+          <ul className="space-y-3 text-sm">
+            {legalLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
                   {l.label}
