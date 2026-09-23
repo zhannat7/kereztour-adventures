@@ -37,8 +37,8 @@ const TourDates = () => {
   if (!dates.length) return null;
 
   return (
-    <div className="relative z-20 mx-auto -mt-12 flex w-full max-w-[1600px] justify-end px-6 sm:-mt-14 lg:px-16 xl:px-24">
-      <div className="relative mr-2 flex h-[200px] w-[200px] flex-col items-center justify-center rounded-full border border-gold/40 bg-card px-6 text-center shadow-lift sm:mr-6 lg:mr-12">
+    <div className="relative z-20 mx-auto -mt-16 flex w-full max-w-[1600px] justify-end px-6 sm:-mt-20 lg:px-16 xl:px-24">
+      <div className="relative mr-2 flex h-[200px] w-[200px] flex-col items-center justify-center rounded-full border border-gold/40 bg-card/70 px-6 text-center shadow-lift backdrop-blur-sm sm:mr-6 lg:mr-12">
         <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-gold/60" />
         <div className="absolute -top-[37px] left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border border-gold/50 bg-card shadow-soft" />
 
