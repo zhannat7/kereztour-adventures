@@ -42,25 +42,25 @@ const TourDates = () => {
         <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-gold/60" />
         <div className="absolute -top-[37px] left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border border-gold/50 bg-card shadow-soft" />
 
-        <p className="font-body text-[9px] font-semibold uppercase tracking-[0.22em] text-primary">
+        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
           Kultur Tour
         </p>
-        <p className="mt-1 font-body text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="mt-1 font-body text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
           Termine 2026
         </p>
 
-        <div className="my-3 w-full space-y-1.5 border-y border-border/70 py-3">
+        <div className="my-3.5 w-full space-y-1.5 border-y border-border/70 py-3.5">
           {dates.map((item) => (
             <p
               key={item.id}
-              className="font-body text-[13px] font-semibold text-foreground"
+              className="font-body text-[14px] font-semibold tracking-[-0.01em] text-foreground"
             >
               {format(parseISO(item.startDate), "dd.MM.")}–{format(parseISO(item.endDate), "dd.MM.")}
             </p>
           ))}
         </div>
 
-        <p className="text-[8.5px] leading-tight text-muted-foreground">
+        <p className="px-1 text-[11px] font-medium leading-snug text-muted-foreground">
           Trekking & Kyrchyn nach Absprache
         </p>
       </div>
