@@ -4,7 +4,7 @@ const NomadGames = () => {
   const ref = useScrollReveal();
 
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-background py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="mx-auto max-w-[900px] text-center">
           <span className="eyebrow mb-5 justify-center before:hidden">Welt der Nomaden 2026</span>

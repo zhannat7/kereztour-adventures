@@ -10,7 +10,7 @@ const About = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="ueber-uns" className="border-y border-border bg-sand/35 py-20 md:py-32">
+    <section id="ueber-uns" className="border-y border-border bg-sand/35 py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">

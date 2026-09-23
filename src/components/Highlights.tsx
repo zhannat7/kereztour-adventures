@@ -28,7 +28,7 @@ const Highlights = () => {
   const ref = useScrollReveal();
 
   return (
-    <section className="border-b border-border bg-sand/50 py-24 md:py-32">
+    <section className="border-b border-border bg-sand/50 pt-10 md:pt-14 pb-14 md:pb-20">
       <div ref={ref} className="section-reveal container mx-auto max-w-[1600px] px-6">
         <div className="mb-16 flex flex-col justify-between gap-8 px-0 md:flex-row md:items-end md:px-4">
           <div className="max-w-3xl">
