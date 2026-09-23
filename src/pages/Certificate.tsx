@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Certificate = () => (
   <main className="min-h-screen bg-background">
-    <div className="container mx-auto max-w-4xl px-6 py-16 md:py-24">
+    <div className="container mx-auto max-w-5xl px-6 py-20 md:py-28">
       <Link
         to="/"
         className="mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -14,7 +14,7 @@ const Certificate = () => (
 
       <div className="mb-10">
         <span className="eyebrow mb-4 block">Registrierung</span>
-        <h1 className="font-display text-4xl leading-tight text-foreground md:text-5xl">
+        <h1 className="font-display text-5xl leading-tight text-foreground md:text-7xl">
           Offizieller Registrierungsnachweis
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
@@ -23,9 +23,9 @@ const Certificate = () => (
         </p>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-soft md:p-8">
+      <div className="border-y border-border bg-card p-6 md:p-10">
         <div className="flex items-start gap-4 border-b border-border pb-6">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-primary-soft text-primary">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
@@ -83,7 +83,7 @@ const Certificate = () => (
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             Vorschau des Zertifikats
           </p>
-          <div className="overflow-hidden rounded-xl border border-border shadow-soft">
+          <div className="overflow-hidden border border-border shadow-soft">
             <iframe
               src="/Certificate.pdf"
               title="Certificate of State Registration – Kereztour"

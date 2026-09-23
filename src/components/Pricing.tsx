@@ -38,11 +38,11 @@ const Pricing = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="preise" className="py-16 md:py-24 bg-sand/60">
+    <section id="preise" className="border-y border-border bg-sand/50 py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="eyebrow mb-4 block">Kultur Tour · Pakete</span>
-          <h2 className="font-display text-3xl md:text-[2.75rem] leading-tight text-foreground mb-4">
+        <div className="mx-auto mb-14 max-w-3xl text-center">
+          <span className="eyebrow mb-4 justify-center before:hidden">Kultur Tour · Pakete</span>
+          <h2 className="mb-5 font-display text-4xl leading-tight text-foreground md:text-6xl">
             Dasselbe Programm – <span className="italic text-primary">dein Komfort entscheidet</span>
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -54,14 +54,14 @@ const Pricing = () => {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`stagger-child relative flex flex-col rounded-[1.5rem] p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 ${
+              className={`stagger-child relative flex flex-col p-8 transition-all duration-500 hover:-translate-y-1 md:p-10 ${
                 plan.featured
                   ? "bg-gradient-primary text-primary-foreground shadow-lift"
                   : "bg-card border border-border shadow-soft hover:shadow-lift"
               }`}
             >
               {plan.featured && (
-                <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-secondary-foreground shadow-glow">
+                 <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 rounded-sm bg-secondary px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-secondary-foreground shadow-glow">
                   <Sparkles className="h-3 w-3" /> Beliebteste Wahl
                 </span>
               )}
@@ -89,7 +89,7 @@ const Pricing = () => {
 
               <Link
                 to="/buchen?tour=kultur"
-                className={`inline-flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all duration-300 hover:brightness-105 ${
+                className={`inline-flex items-center justify-center gap-2 rounded-sm py-3.5 text-sm font-semibold transition-all duration-300 hover:brightness-105 ${
                   plan.featured
                     ? "bg-secondary text-secondary-foreground shadow-glow"
                     : "bg-primary text-primary-foreground"
@@ -101,7 +101,7 @@ const Pricing = () => {
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl border border-border bg-card px-6 py-5 shadow-soft">
+        <div className="mt-8 border-y border-border bg-card px-6 py-6">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">
             In beiden Paketen enthalten
           </p>

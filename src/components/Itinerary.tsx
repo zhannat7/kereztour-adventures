@@ -37,10 +37,10 @@ const Itinerary = () => {
           {days.map((d) => (
             <div
               key={d.day}
-              className="stagger-child group relative rounded-2xl bg-card border border-border p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-500 hover:-translate-y-1 flex flex-col"
+              className="stagger-child group relative flex flex-col border border-border bg-card p-5 transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-bold transition-transform duration-300 group-hover:scale-110">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground transition-transform duration-300 group-hover:scale-110">
                   {d.day}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -60,7 +60,7 @@ const Itinerary = () => {
         <div className="mt-12 text-center">
           <Link
             to="/reisen/kultur"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+            className="inline-flex items-center gap-2 rounded-sm border border-primary px-8 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
           >
             Mehr zur Kultur Tour <ArrowRight className="h-4 w-4" />
           </Link>

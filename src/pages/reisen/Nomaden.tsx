@@ -6,8 +6,8 @@ import Footer from "@/components/Footer";
 const Nomaden = () => (
   <>
     <Navbar />
-    <main className="pt-20 md:pt-24 pb-20">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <main className="bg-background pb-24 pt-24 md:pt-32">
+      <div className="container mx-auto max-w-5xl px-6">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10"
@@ -15,7 +15,7 @@ const Nomaden = () => (
           <ArrowLeft className="h-4 w-4" /> Zurück
         </Link>
 
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-8">
+        <h1 className="mb-10 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
           Weltspiele der Nomaden 2026
           <span className="block text-2xl md:text-3xl italic text-primary mt-2">
             Ein unvergessliches Abenteuer
@@ -62,7 +62,7 @@ const Nomaden = () => (
         </div>
 
         {/* ADD PHOTOS HERE */}
-        <div className="mt-12 rounded-2xl bg-muted/60 border border-border p-12 text-center">
+        <div className="mt-14 border-y border-border bg-muted/60 p-12 text-center">
           <p className="text-muted-foreground text-sm">Bildergalerie – demnächst verfügbar</p>
         </div>
       </div>
