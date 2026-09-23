@@ -193,27 +193,27 @@ const Gallery = () => {
 
   return (
     <>
-      <section id="galerie" className="py-16 md:py-24 bg-background">
+       <section id="galerie" className="bg-primary py-20 text-primary-foreground md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
 
           {/* Header */}
           <div className="max-w-2xl mb-10">
             <span className="eyebrow mb-4 block">Echte Reisefotos</span>
-            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-4">
-              Eindrücke aus <span className="italic text-primary">Kirgisistan</span>
+             <h2 className="mb-4 font-display text-4xl leading-tight text-primary-foreground md:text-6xl">
+               Eindrücke aus <span className="italic text-gold">Kirgisistan</span>
             </h2>
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+             <p className="text-base leading-relaxed text-primary-foreground/65 md:text-lg">
               Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle {images.length} Fotos zu sehen.
             </p>
           </div>
 
           {/* Grid – 2 Zeilen à 6 Spalten */}
-          <div className="grid gap-1.5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 overflow-hidden rounded-2xl">
+          <div className="grid grid-cols-2 gap-1.5 overflow-hidden sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {images.slice(0, VISIBLE).map((img, i) => (
               <button
                 key={i}
                 onClick={() => openLightbox(i)}
-                className="group relative aspect-square overflow-hidden rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+                className="group relative aspect-square overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
               >
                 <img
                   src={img.src}
@@ -226,7 +226,7 @@ const Gallery = () => {
           </div>
 
           <div className="mt-6">
-            <p className="text-sm text-muted-foreground">
+             <p className="text-sm text-primary-foreground/55">
               {images.length} Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht
             </p>
           </div>

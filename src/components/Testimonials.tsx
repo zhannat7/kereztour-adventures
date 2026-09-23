@@ -35,16 +35,16 @@ const Testimonials = () => {
   const ref = useScrollReveal();
 
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="bg-background py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Gästestimmen</span>
-            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground">
+            <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
               Was unsere Reisenden <span className="italic text-primary">zurückschreiben</span>
             </h2>
           </div>
-          <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-5 py-3 shadow-soft">
+          <div className="inline-flex items-center gap-3 border-y border-border px-1 py-3">
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-secondary text-secondary" />
@@ -59,7 +59,7 @@ const Testimonials = () => {
           {reviews.map((r) => (
             <figure
               key={r.name}
-              className="stagger-child flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-500 hover:shadow-lift"
+              className="stagger-child flex flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
               {r.screenshot ? (
                 <div className="flex flex-1 items-center justify-center bg-secondary/10 p-5 sm:p-6">
@@ -67,7 +67,7 @@ const Testimonials = () => {
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
                     loading="lazy"
-                    className="w-auto max-w-full max-h-[320px] sm:max-h-[380px] rounded-lg object-contain shadow-soft"
+                  className="max-h-[320px] w-auto max-w-full rounded-sm object-contain shadow-soft sm:max-h-[380px]"
                   />
                 </div>
               ) : (
@@ -78,7 +78,7 @@ const Testimonials = () => {
                   </blockquote>
 
                   <figcaption className="mt-auto flex items-center gap-3 p-6">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-semibold text-sm text-primary">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary-soft text-sm font-semibold text-primary">
                       {r.initial}
                     </span>
                     <span>

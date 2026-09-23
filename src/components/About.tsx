@@ -10,11 +10,11 @@ const About = () => {
   const ref = useScrollReveal();
 
   return (
-    <section id="ueber-uns" className="py-16 md:py-24 bg-background">
+    <section id="ueber-uns" className="border-y border-border bg-sand/35 py-20 md:py-32">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          <div className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-[1.75rem] shadow-lift aspect-[4/3]">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
+          <div className="lg:col-span-6">
+            <div className="relative aspect-[5/4] overflow-hidden shadow-lift">
               <img
                 src="/about.jpg"
                 alt="Weite Landschaft Kirgisistans"
@@ -24,9 +24,9 @@ const About = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6 lg:max-w-2xl">
             <span className="eyebrow mb-4 block">Über uns</span>
-            <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-6">
+            <h2 className="mb-8 font-display text-4xl leading-tight text-foreground md:text-6xl">
               Kirgisistan <span className="italic text-primary">persönlich erleben</span>
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-5">
@@ -47,7 +47,7 @@ const About = () => {
             <ul className="space-y-3.5">
               {points.map((p) => (
                 <li key={p} className="flex items-start gap-3 text-sm text-foreground/85">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-primary text-primary-foreground">
                     <Check className="h-3 w-3" />
                   </span>
                   {p}

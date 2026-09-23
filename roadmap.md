@@ -6,3 +6,9 @@
 
 - [x] Äußere Breite aller Startseiten-Bereiche und der Navbar an die Galerie angleichen
 - [x] Desktop und Handy auf Ausrichtung und Überlauf prüfen
+
+- [x] Modernes Editorial-Redesign für die gesamte Website festlegen
+- [x] Globale Farben, Typografie, Formen und Bewegungen vereinheitlichen
+- [x] Alle Startseiten-Bereiche visuell neu gestalten
+- [ ] Reiseseiten, Buchung, Registrierung und Zertifikat visuell prüfen
+- [ ] Desktop und Handy vollständig verifizieren

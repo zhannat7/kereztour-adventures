@@ -28,29 +28,31 @@ const Highlights = () => {
   const ref = useScrollReveal();
 
   return (
-    <section className="py-16 md:py-24 bg-sand/60">
+    <section className="border-b border-border bg-sand/50 py-20 md:py-28">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="max-w-2xl mb-12">
+        <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
           <span className="eyebrow mb-4 block">Warum Kereztour</span>
-          <h2 className="font-display text-3xl md:text-[2.35rem] leading-tight text-foreground mb-4">
+          <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
             Mehr als <span className="italic text-primary">eine Reise</span>
           </h2>
-          <p className="text-foreground text-base md:text-lg leading-relaxed">
+          </div>
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg lg:col-span-5 lg:pb-1">
             Bei Kereztour geht es um persönliche Betreuung, kleine Gruppen und echte Nähe zu Land
             und Menschen.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 border-y border-border sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => (
             <div
               key={item.title}
-              className="stagger-child group rounded-2xl bg-card border border-border p-7 shadow-soft transition-all duration-500 hover:shadow-lift hover:-translate-y-1"
+              className="stagger-child group border-b border-border bg-transparent p-7 transition-colors duration-500 hover:bg-card sm:border-r lg:border-b-0"
             >
-              <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-soft text-primary transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
+              <div className="mb-8 flex h-11 w-11 items-center justify-center rounded-sm border border-primary/20 text-primary transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
                 <item.icon className="h-5 w-5" />
               </div>
-              <h3 className="font-display text-xl text-foreground mb-2">{item.title}</h3>
+              <h3 className="mb-3 font-display text-2xl text-foreground">{item.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
           ))}
