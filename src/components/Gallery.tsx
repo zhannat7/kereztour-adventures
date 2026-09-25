@@ -194,7 +194,7 @@ const Gallery = () => {
   return (
     <>
        <section id="galerie" className="bg-primary py-20 text-primary-foreground md:py-28">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
 
           {/* Header */}
           <div className="max-w-2xl mb-10">
