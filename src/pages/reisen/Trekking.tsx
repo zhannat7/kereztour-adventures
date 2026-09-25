@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 
 const days = [
@@ -25,7 +27,7 @@ const days = [
   {
     day: 4,
     title: "Nomadenleben am Song-Köl",
-    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. Kontakt mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
+    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. {t("Kontakt")} mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
     stay: "Jurtencamp am Song-Köl",
   },
   {
@@ -84,7 +86,7 @@ const tips = [
   },
 ];
 
-const Trekking = () => (
+const Trekking = () => {\n  const { t } = useLanguage();\n  return (
   <>
     <Navbar />
     <main className="bg-background pb-24 pt-24 md:pt-32">
@@ -93,7 +95,7 @@ const Trekking = () => (
           to="/"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10"
         >
-          <ArrowLeft className="h-4 w-4" /> Zurück
+          <ArrowLeft className="h-4 w-4" /> {t("Zurück")}
         </Link>
 
         {/* Header */}
