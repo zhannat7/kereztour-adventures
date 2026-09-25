@@ -116,6 +116,9 @@ const translations: Record<Language, Record<string, string>> = {
     "Kleine Gruppen · Lokale Partner · Faire Preise": "Small groups · Local partners · Fair prices",
     "Alle Rechte vorbehalten.": "All rights reserved.",
   },
+    "Drei Wege, ": "Three ways, ",
+    "Kéreztour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt. Die Tätigkeit ist offiziell als „Tour operator activities“ registriert.": "Kereztour is operated by an individual business registered in Kyrgyzstan. Its registered activity is “Tour operator activities.”",
+    "Persönlich geführte Reisen durch Kirgisistan – geplant von einer Einheimischen, gedacht für Menschen, die mehr sehen wollen als Sehenswürdigkeiten.": "Personally guided journeys through Kyrgyzstan – planned by a local for people who want to see more than the usual sights.",
   IT: {
     "Reisen": "Viaggi",
     "Über uns": "Chi siamo",
@@ -214,7 +217,13 @@ const translations: Record<Language, Record<string, string>> = {
     "Anfrage senden": "Invia richiesta",
     "Preise": "Prezzi",
     "Kleine Gruppen · Lokale Partner · Faire Preise": "Piccoli gruppi · Partner locali · Prezzi equi",
-    "Alle Rechte vorbehalten.": "Tutti i diritti riservati.",
+    "Alle Rechte vorbehalten.": "Tutti i diritti riservati.",    "Drei Wege, ": "Tre modi, ",
+    "Kéreztour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt. Die Tätigkeit ist offiziell als „Tour operator activities“ registriert.": "Kereztour è gestita da un'impresa individuale registrata in Kirghizistan. L'attività registrata è “Tour operator activities”.",
+    "Persönlich geführte Reisen durch Kirgisistan – geplant von einer Einheimischen, gedacht für Menschen, die mehr sehen wollen als Sehenswürdigkeiten.": "Viaggi guidati personalmente attraverso il Kirghizistan – organizzati da una persona del luogo per chi vuole vedere più delle normali attrazioni.",
+    "Erzähl uns kurz von deiner Wunschreise – wir antworten innerhalb von 24 Stunden.": "Raccontaci brevemente il viaggio che desideri – rispondiamo entro 24 ore.",
+    "Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.": "Abbiamo ricevuto la tua richiesta e ti risponderemo entro 24 ore.",
+    "Wünsche, Fragen, Anmerkungen...": "Desideri, domande, note...",
+
   },
 };
 
