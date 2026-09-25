@@ -11,8 +11,8 @@ const About = () => {
 
   return (
     <section id="ueber-uns" className="border-y border-border bg-sand/35 py-14 md:py-20">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
+      <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
+        <div className="grid grid-cols-1 items-center gap-8 md:gap-12 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">
             <div className="relative aspect-[5/4] overflow-hidden shadow-lift">
               <img
@@ -26,7 +26,7 @@ const About = () => {
 
           <div className="lg:col-span-6 lg:max-w-2xl">
             <span className="eyebrow mb-4 block">Über uns</span>
-            <h2 className="mb-8 font-display text-4xl leading-tight text-foreground md:text-6xl">
+            <h2 className="mb-8 font-display text-4xl leading-tight sm:text-5xl text-foreground md:text-6xl">
               Kirgisistan <span className="italic text-primary">persönlich erleben</span>
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-5">
