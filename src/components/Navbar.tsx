@@ -76,7 +76,7 @@ const Navbar = () => {
     location.pathname === "/reisen/kyrchyn";
 
   const languageMenu = (
-    <div className="relative z-[60]">
+    <div className="relative z-[100] shrink-0">
       <button
         type="button"
         onClick={(e) => {
@@ -85,7 +85,7 @@ const Navbar = () => {
           setReisenOpen(false);
           setLanguageOpen((open) => !open);
         }}
-        className={`relative z-[61] flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-colors duration-300 ${
+        className={`relative z-[61] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-300 ${
           transparent
             ? "text-white hover:bg-white/10"
             : "text-foreground hover:bg-muted"
@@ -94,13 +94,13 @@ const Navbar = () => {
         aria-expanded={languageOpen}
         aria-haspopup="menu"
       >
-        <Globe className="pointer-events-none h-[18px] w-[18px]" />
+        <Globe className="pointer-events-none h-5 w-5" strokeWidth={1.8} />
       </button>
 
       {languageOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-[62] mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl"
+          className="absolute right-0 top-full z-[102] mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl"
         >
           {languages.map((language) => (
             <button
