@@ -39,7 +39,7 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-sm border border-gold bg-gold/20 px-9 py-4 text-[15px] font-semibold uppercase tracking-[0.16em] text-primary-foreground shadow-lift backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/35 hover:shadow-glow sm:px-10"
+                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-sm border border-gold bg-transparent px-9 py-4 text-[15px] font-semibold uppercase tracking-[0.16em] text-primary-foreground shadow-none backdrop-blur-0 transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/20 hover:shadow-glow sm:bg-gold/20 sm:shadow-lift sm:backdrop-blur-sm sm:px-10 sm:hover:bg-gold/35"
               >
                 <span className="absolute inset-0 translate-y-full bg-gold/25 transition-transform duration-500 ease-out group-hover:translate-y-0" />
                 <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
