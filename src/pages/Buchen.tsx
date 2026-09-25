@@ -35,21 +35,21 @@ const TOURS = [
   {
     id: "kultur",
     label: "Kultur Tour",
-    desc: "{t("10 Tage durch die schönsten Regionen Kirgisistans – Kultur, Natur, Traditionen und echte Begegnungen.")}",
+    desc: "10 Tage durch die schönsten Regionen Kirgisistans – Kultur, Natur, Traditionen und echte Begegnungen.",
     price: null,
     hasTiers: true,
   },
   {
     id: "trekking",
     label: "Intensiv-Trekking",
-    desc: "{t("Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.")}",
+    desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
     price: 1200,
     hasTiers: false,
   },
   {
     id: "kyrchyn",
     label: "Kyrchyn Tour",
-    desc: "{t("Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.")}",
+    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
     price: 1300,
     hasTiers: false,
   },
@@ -482,7 +482,7 @@ const Buchen = () => {
                           </div>
 
                           <p className="text-sm text-muted-foreground mt-1">
-                            {tour.desc}
+                            {t(tour.desc)}
                           </p>
                         </div>
 
