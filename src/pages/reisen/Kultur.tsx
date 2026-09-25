@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -48,8 +50,8 @@ const days = [
 ];
 
 const tiers = [
-  { name: "Economy", price: "990", featured: false, tagline: "Authentisch & erschwinglich", details: [{ icon: Users, text: "Gruppe bis 12 Personen" }, { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" }, { icon: Star, text: "Standard Service" }] },
-  { name: "Comfort", price: "1.490", featured: true, tagline: "Exklusiv & komfortabel", details: [{ icon: Users, text: "Kleine Gruppe, max. 4 Personen" }, { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" }, { icon: Star, text: "Premium Service" }] },
+  { name: "Economy", price: "990", featured: false, tagline: "Authentisch & erschwinglich", details: [{ icon: Users, text: "Gruppe bis 12 {t("Personen")}" }, { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" }, { icon: Star, text: "Standard Service" }] },
+  { name: "Comfort", price: "1.490", featured: true, tagline: "Exklusiv & komfortabel", details: [{ icon: Users, text: "Kleine Gruppe, max. 4 {t("Personen")}" }, { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" }, { icon: Star, text: "Premium Service" }] },
 ];
 
 const highlights = [
@@ -98,7 +100,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
   );
 };
 
-const Kultur = () => {
+const Kultur = () => {\n  const { t } = useLanguage();
   const [activeDay, setActiveDay] = useState(0);
   const [cultureDates, setCultureDates] = useState<Array<{
     id: string;
@@ -164,7 +166,7 @@ const Kultur = () => {
       <main className="bg-background pb-24 pt-24 md:pt-32">
         <div className="container mx-auto max-w-5xl px-6">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
-            <ArrowLeft className="h-4 w-4" /> Zurück
+            <ArrowLeft className="h-4 w-4" /> {t("Zurück")}
           </Link>
 
           <div className="mb-16">
@@ -282,7 +284,7 @@ const Kultur = () => {
           <div className="mb-16">
             <div className="mb-8">
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                Deine <span className="italic text-primary">Reisevariante</span>
+                Deine <span className="italic text-primary">{t("Reisevariante")}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl leading-relaxed">
                 Das Reiseerlebnis bleibt gleich – du entscheidest, welche Unterkunft und welchen Komfort du bevorzugst.
