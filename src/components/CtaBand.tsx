@@ -176,7 +176,7 @@ const CtaBand = () => {
                   {t("Danke für deine Anfrage!")}
                 </DialogTitle>
                 <DialogDescription className="text-muted-foreground">
-                  {t("Wir haben deine {t("Nachricht")} erhalten und melden uns innerhalb von 24 Stunden bei dir.")}
+                  {t("Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.")}
                 </DialogDescription>
               </DialogHeader>
               <Button className="mt-6 btn-accent" onClick={() => setOpen(false)}>
@@ -200,7 +200,7 @@ const CtaBand = () => {
                   <Input
                     id="inquiry-name"
                     {...register("name")}
-                    placeholder="{t("Vor- und Nachname")}"
+                    placeholder={t("Vor- und Nachname")}
                   />
                   {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
                 </div>
@@ -220,7 +220,7 @@ const CtaBand = () => {
                   <Label>{t("Gewünschte Reise")} *</Label>
                   <Select value={tour} onValueChange={(v) => setValue("tour", v, { shouldValidate: true })}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="{t("Bitte wählen")}" />
+                      <SelectValue placeholder={t("Bitte wählen")} />
                     </SelectTrigger>
                     <SelectContent>
                       {TOUR_OPTIONS.map((t) => (
@@ -276,7 +276,7 @@ const CtaBand = () => {
                   <Textarea
                     id="inquiry-message"
                     {...register("message")}
-                    placeholder="{t("Wünsche, Fragen, Anmerkungen...")}"
+                    placeholder={t("Wünsche, Fragen, Anmerkungen...")}
                     rows={3}
                   />
                   {errors.message && <p className="text-sm text-destructive">{errors.message.message}</p>}
@@ -297,7 +297,7 @@ const CtaBand = () => {
                       Wird gesendet...
                     </>
                   ) : (
-                    "Anfrage senden"
+                    t("Anfrage senden")
                   )}
                 </Button>
               </form>
