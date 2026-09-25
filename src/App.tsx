@@ -39,6 +39,7 @@ const ScrollToTop = () => {
 };
 
 const App = () => (
+  <LanguageProvider>
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
