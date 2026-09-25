@@ -21,8 +21,8 @@ const META: Record<string, Meta> = {
     trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1200, image: "/tour-trekking.jpg" },
   },
   "/reisen/kyrchyn": {
-    title: "Kyrchyn Tour – Weltnomadenspiele Kirgisistan | Kereztour",
-    description: "Kyrchyn Tour zu den Weltnomadenspielen in Kirgisistan: Reiterspiele, Jurtenleben und Nomadenkultur hautnah – 1.300 € pro Person.",
+    title: "Kyrchyn Tour Kirgisistan – Nomadenkultur erleben | Kereztour",
+    description: "Kyrchyn Tour in Kirgisistan: Kyrchyn Jailoo, Jurtenleben und Nomadenkultur hautnah erleben – 1.300 € pro Person.",
     trip: { name: "Kyrchyn Tour Kirgisistan", price: 1300, image: "/tour-kyrchyn.jpg" },
   },
   "/reisen/nomaden": {
