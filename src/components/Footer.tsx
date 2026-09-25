@@ -39,7 +39,7 @@ const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
             {tourLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
-                  {l.label}
+                  {t(l.label)}
                 </Link>
               </li>
             ))}
@@ -52,7 +52,7 @@ const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
             {serviceLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
-                  {l.label}
+                  {t(l.label)}
                 </Link>
               </li>
             ))}
@@ -65,7 +65,7 @@ const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
             {legalLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
-                  {l.label}
+                  {t(l.label)}
                 </Link>
               </li>
             ))}
@@ -105,7 +105,7 @@ const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
       </div>
 
       <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-primary-foreground/10 pt-8 text-xs text-primary-foreground/40 sm:flex-row">
-        <p>© 2026 Kereztour. Alle Rechte vorbehalten.</p>
+        <p>© 2026 Kereztour. {t("Alle Rechte vorbehalten.")}</p>
         <p>{t("Kleine Gruppen · Lokale Partner · Faire Preise")}</p>
       </div>
     </div>
