@@ -3,6 +3,7 @@ import { Star, Quote } from "lucide-react";
 
 import reviewHelmut from "@/assets/333.png";
 import reviewHubert from "@/assets/666.png";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const reviews = [
   {
@@ -33,15 +34,16 @@ const reviews = [
 
 const Testimonials = () => {
   const ref = useScrollReveal();
+  const { t } = useLanguage();
 
   return (
     <section className="bg-background py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-[1400px]">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
-            <span className="eyebrow mb-4 block">Gästestimmen</span>
+            <span className="eyebrow mb-4 block">{t("Gästestimmen")}</span>
             <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
-              Was unsere Reisenden <span className="italic text-primary">zurückschreiben</span>
+              {t("Was unsere Reisenden ")}<span className="italic text-primary">{t("zurückschreiben")}</span>
             </h2>
           </div>
           <div className="inline-flex items-center gap-3 border-y border-border px-1 py-3">
@@ -51,7 +53,7 @@ const Testimonials = () => {
               ))}
             </div>
             <span className="text-sm font-semibold text-foreground">5,0 / 5,0</span>
-            <span className="text-xs text-muted-foreground">· verifiziert</span>
+            <span className="text-xs text-muted-foreground">· {t("verifiziert")}</span>
           </div>
         </div>
 
@@ -84,7 +86,7 @@ const Testimonials = () => {
                     <span>
                       <span className="block text-sm font-semibold text-foreground">{r.name}</span>
                       <span className="block text-xs text-muted-foreground">
-                        {r.country} · {r.tour}
+                        {t(r.country)} · {t(r.tour)}
                       </span>
                     </span>
                   </figcaption>
