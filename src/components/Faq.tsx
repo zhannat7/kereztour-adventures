@@ -35,7 +35,7 @@ const Faq = () => {
 
   return (
     <section id="faq" className="border-y border-border bg-sand/50 py-14 md:py-20">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
+      <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-[1400px]">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow mb-4 block">Häufige Fragen</span>
           <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
@@ -51,7 +51,7 @@ const Faq = () => {
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 px-1 py-6 text-left transition-colors hover:bg-card/70 sm:px-4"
+                  className="flex w-full items-center justify-between gap-4 px-1 py-5 sm:gap-6 sm:py-6 text-left transition-colors hover:bg-card/70 sm:px-4"
                 >
                   <span className="font-display text-lg text-foreground">{f.q}</span>
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-primary/20 text-primary">
