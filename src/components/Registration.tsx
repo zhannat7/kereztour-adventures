@@ -42,8 +42,6 @@ const Registration = () => {
       </div>
     </div>
   </section>
-);
-
   );
 };
 
