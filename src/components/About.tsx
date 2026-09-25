@@ -11,7 +11,7 @@ const About = () => {
 
   return (
     <section id="ueber-uns" className="border-y border-border bg-sand/35 py-14 md:py-20">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">
             <div className="relative aspect-[5/4] overflow-hidden shadow-lift">
