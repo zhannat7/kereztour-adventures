@@ -71,7 +71,7 @@ const Footer = () => (
           </ul>
         </div>
 
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-2">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Kontakt</h3>
           <ul className="space-y-3.5 text-sm">
             <li>
