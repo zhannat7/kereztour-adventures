@@ -47,8 +47,8 @@ const Navbar = () => {
     setMobileOpen(false);
     setLanguageOpen(false);
     if (!href.startsWith("/#")) return;
-    const id = href.slice(2);
 
+    const id = href.slice(2);
     if (location.pathname === "/") {
       const element = document.getElementById(id);
       if (element) {
@@ -67,7 +67,6 @@ const Navbar = () => {
 
   const selectLanguage = (code: string) => {
     setLanguageOpen(false);
-    // Language routing is prepared here; full page translations will be connected next.
     document.documentElement.lang = code.toLowerCase();
   };
 
@@ -77,14 +76,16 @@ const Navbar = () => {
     location.pathname === "/reisen/kyrchyn";
 
   const languageMenu = (
-    <div className="relative">
+    <div className="relative z-[60]">
       <button
         type="button"
-        onClick={() => {
-          setLanguageOpen(!languageOpen);
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
           setReisenOpen(false);
+          setLanguageOpen((open) => !open);
         }}
-        className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-300 ${
+        className={`relative z-[61] flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-colors duration-300 ${
           transparent
             ? "text-white hover:bg-white/10"
             : "text-foreground hover:bg-muted"
@@ -93,17 +94,25 @@ const Navbar = () => {
         aria-expanded={languageOpen}
         aria-haspopup="menu"
       >
-        <Globe className="h-[18px] w-[18px]" />
+        <Globe className="pointer-events-none h-[18px] w-[18px]" />
       </button>
 
       {languageOpen && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl">
+        <div
+          role="menu"
+          className="absolute right-0 top-full z-[62] mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl"
+        >
           {languages.map((language) => (
             <button
               key={language.code}
               type="button"
-              onClick={() => selectLanguage(language.code)}
-              className="flex w-full items-center justify-between rounded px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              role="menuitem"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                selectLanguage(language.code);
+              }}
+              className="flex w-full cursor-pointer items-center justify-between rounded px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
               <span>{language.label}</span>
               <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">
@@ -132,7 +141,6 @@ const Navbar = () => {
               setMobileOpen(false);
               setReisenOpen(false);
               setLanguageOpen(false);
-
               if (location.pathname === "/") {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -146,11 +154,7 @@ const Navbar = () => {
               className={`font-display text-[32px] font-medium sm:text-[36px] lg:text-[40px] leading-none tracking-[0.01em] transition-colors duration-700 ${
                 transparent ? "text-white" : "text-primary"
               }`}
-              style={
-                transparent
-                  ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" }
-                  : undefined
-              }
+              style={transparent ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" } : undefined}
             >
               Kereztour
             </span>
@@ -176,20 +180,12 @@ const Navbar = () => {
                         ? "text-white/90"
                         : "text-foreground/85"
                   } hover:text-[hsl(var(--gold))]`}
-                  style={
-                    transparent
-                      ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
-                      : undefined
-                  }
+                  style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
                   aria-expanded={reisenOpen}
                   aria-haspopup="true"
                 >
                   Reisen
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 ${
-                      reisenOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${reisenOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {reisenOpen && (
@@ -217,14 +213,8 @@ const Navbar = () => {
               <Link
                 to="/#ueber-uns"
                 onClick={(e) => handleSectionClick(e, "/#ueber-uns")}
-                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
-                  transparent ? "text-white/90" : "text-foreground/85"
-                } hover:text-[hsl(var(--gold))]`}
-                style={
-                  transparent
-                    ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
-                    : undefined
-                }
+                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${transparent ? "text-white/90" : "text-foreground/85"} hover:text-[hsl(var(--gold))]`}
+                style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
               >
                 Über uns
               </Link>
@@ -232,14 +222,8 @@ const Navbar = () => {
               <Link
                 to="/#kontakt"
                 onClick={(e) => handleSectionClick(e, "/#kontakt")}
-                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
-                  transparent ? "text-white/90" : "text-foreground/85"
-                } hover:text-[hsl(var(--gold))]`}
-                style={
-                  transparent
-                    ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
-                    : undefined
-                }
+                className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${transparent ? "text-white/90" : "text-foreground/85"} hover:text-[hsl(var(--gold))]`}
+                style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
               >
                 Kontakt
               </Link>
@@ -259,14 +243,8 @@ const Navbar = () => {
           <div className="ml-auto flex items-center gap-2 lg:hidden">
             {languageMenu}
             <button
-              className={`transition-colors duration-500 ${
-                transparent ? "text-white" : "text-primary"
-              }`}
-              style={
-                transparent
-                  ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
-                  : undefined
-              }
+              className={`transition-colors duration-500 ${transparent ? "text-white" : "text-primary"}`}
+              style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
               onClick={() => {
                 setMobileOpen(!mobileOpen);
                 setReisenOpen(false);
@@ -290,11 +268,7 @@ const Navbar = () => {
                   className="flex w-full items-center justify-between py-3.5 text-base font-medium text-foreground"
                 >
                   <span>Reisen</span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 ${
-                      reisenOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${reisenOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {reisenOpen && (
