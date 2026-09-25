@@ -1,7 +1,8 @@
 import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-const Certificate = () => (
+const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
   <main className="min-h-screen overflow-x-hidden bg-background">
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 md:py-28">
       <Link
@@ -9,13 +10,13 @@ const Certificate = () => (
         className="mb-6 inline-flex min-h-11 items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted md:mb-10 md:border-0 md:px-0 md:py-0 md:font-normal md:text-muted-foreground md:hover:bg-transparent md:hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" />
-        Zurück zu Kereztour
+        {t("Zurück")} zu Kereztour
       </Link>
 
       <div className="mb-8 md:mb-10">
-        <span className="eyebrow mb-4 block">Registrierung</span>
+        <span className="eyebrow mb-4 block">{t("{t("Registrierung")}")}</span>
         <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
-          Offizieller Registrierungsnachweis
+          {t("Offizieller Registrierungsnachweis")}
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
           Kereztour wird von einem in Kirgisistan registrierten Einzelunternehmen
@@ -40,7 +41,7 @@ const Certificate = () => (
 
         <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
           <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Full Name</dt>
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Full {t("Name")}</dt>
             <dd className="mt-1 text-sm text-foreground">Mambetalieva Ainagul Zaidovna</dd>
           </div>
           <div>
@@ -68,20 +69,20 @@ const Certificate = () => (
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Originalzertifikat ansehen
+            {t("Originalzertifikat ansehen")}
             <ExternalLink className="h-4 w-4" />
           </a>
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
           >
-            Zurück zur Website
+            {t("Zurück")} zur Website
           </Link>
         </div>
 
         <div className="mt-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            Vorschau des Zertifikats
+            {t("Vorschau des Zertifikats")}
           </p>
 
           <div className="md:hidden border border-border bg-muted/30 p-5">
@@ -94,7 +95,7 @@ const Certificate = () => (
               rel="noopener noreferrer"
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
-              Zertifikat öffnen
+              {t("Zertifikat öffnen")}
               <ExternalLink className="h-4 w-4" />
             </a>
           </div>
