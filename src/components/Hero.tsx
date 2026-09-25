@@ -3,7 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative flex h-[78vh] min-h-[620px] w-full items-center overflow-hidden bg-background sm:h-[82vh] lg:h-[86vh] lg:max-h-[880px]">
+    <section className="relative flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
         <img
           src="/hero-wide.jpg"
@@ -16,9 +16,9 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 flex h-full w-full items-start">
-        <div className="w-full px-6 pt-[132px] sm:px-10 sm:pt-[110px] lg:px-16 lg:pt-[calc(23vh-68px)] xl:px-24">
+        <div className="w-full px-4 pt-[116px] sm:px-10 sm:pt-[110px] lg:px-16 lg:pt-[calc(23vh-68px)] xl:px-24">
           <div className="mx-auto max-w-[620px] text-center lg:max-w-[980px]">
-            <h1 className="mb-8 animate-slide-up font-display text-[44px] font-normal leading-[1.02] text-primary-foreground drop-shadow-lg sm:text-[62px] md:text-[76px] lg:mb-10 lg:text-[clamp(76px,6.8vw,106px)]">
+            <h1 className="mb-8 animate-slide-up font-display text-[40px] font-normal leading-[1.02] text-primary-foreground drop-shadow-lg sm:text-[62px] md:text-[76px] lg:mb-10 lg:text-[clamp(76px,6.8vw,106px)]">
               <span className="block">Kirgisistan</span>
               <span className="mt-3 block text-gold sm:mt-4 lg:whitespace-nowrap">
                 Authentisch erleben
