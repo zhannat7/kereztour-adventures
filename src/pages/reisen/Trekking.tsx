@@ -101,7 +101,7 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
         {/* Header */}
         <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
           🥾 Intensiv-Trekking
-          <span className="block text-2xl md:text-3xl italic text-primary mt-2">Bergseen Kirgistans – 10 Tage</span>
+          <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 10 Tage")}</span>
         </h1>
         <p className="text-muted-foreground text-lg mb-4 max-w-3xl">
           Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die Herausforderung der Höhe suchen. Die
@@ -115,14 +115,14 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
         {/* Price Banner */}
         <div className="mb-20 flex flex-col items-center justify-between gap-4 border-y border-gold/30 bg-primary p-7 text-primary-foreground sm:flex-row md:p-10">
           <div>
-            <p className="text-primary-foreground/70 text-sm uppercase tracking-widest mb-1">Preis pro Person</p>
+            <p className="text-primary-foreground/70 text-sm uppercase tracking-widest mb-1">{t("Preis pro Person")}</p>
             <p className="font-display text-5xl">1.200 €</p>
           </div>
           <Link
             to="/buchen?tour=trekking"
             className="inline-flex items-center gap-2 rounded-sm bg-secondary px-8 py-4 font-semibold text-secondary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
           >
-            Jetzt buchen <ArrowRight className="h-4 w-4" />
+            {t("Jetzt buchen")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -143,9 +143,9 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                   Tag {d.day}
                 </p>
-                <h3 className="font-display text-lg text-foreground mb-1">{d.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
-                {d.stay && <p className="text-xs text-primary mt-2 font-medium">🏕️ {d.stay}</p>}
+                <h3 className="font-display text-lg text-foreground mb-1">{t(d.title)}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t(d.desc)}</p>
+                {d.stay && <p className="text-xs text-primary mt-2 font-medium">🏕️ {t(d.stay)}</p>}
               </div>
             </div>
           ))}
@@ -153,28 +153,28 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
 
         {/* Tips */}
         <h2 className="font-display text-3xl md:text-4xl text-foreground mb-8">
-          Wichtige <span className="italic text-primary">Hinweise</span>
+          {t("Wichtige")} <span className="italic text-primary">{t("Hinweise")}</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {tips.map((tip) => (
-            <div key={tip.title} className="flex flex-col gap-4 border border-border bg-card p-6">
+            <div key={t(tip.title)} className="flex flex-col gap-4 border border-border bg-card p-6">
               <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-primary text-primary-foreground">
                 <tip.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg text-foreground">{tip.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t(tip.desc)}</p>
             </div>
           ))}
         </div>
 
         {/* CTA */}
         <div className="border-y border-border bg-muted/60 p-10 text-center">
-          <p className="font-display text-2xl text-foreground mb-6">Bereit für das Abenteuer deines Lebens?</p>
+          <p className="font-display text-2xl text-foreground mb-6">{t("Bereit für das Abenteuer deines Lebens?")}</p>
           <Link
             to="/buchen?tour=trekking"
             className="inline-flex items-center gap-2 rounded-sm bg-primary px-10 py-4 font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
           >
-            Jetzt Platz sichern <ArrowRight className="h-4 w-4" />
+            {t("Jetzt Platz sichern")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
