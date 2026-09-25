@@ -14,7 +14,8 @@ interface BookingState {
   totalPrice: number;
 }
 
-const Zahlung = () => {\n  const { t } = useLanguage();
+const Zahlung = () => {
+  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const booking = location.state as BookingState | null;
