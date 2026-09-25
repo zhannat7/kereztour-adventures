@@ -1,5 +1,6 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Check } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const points = [
   "Unser Ziel ist einfach: Wir möchten Ihnen Kirgisistan persönlich zeigen – mit beeindruckenden Landschaften, echten Begegnungen und einer Reise, die zu Ihren Wünschen passt.",
@@ -8,6 +9,7 @@ const points = [
 
 const About = () => {
   const ref = useScrollReveal();
+  const { t } = useLanguage();
 
   return (
     <section id="ueber-uns" className="border-y border-border bg-sand/35 py-14 md:py-20">
@@ -25,9 +27,9 @@ const About = () => {
           </div>
 
           <div className="lg:col-span-6 lg:max-w-2xl">
-            <span className="eyebrow mb-4 block">Über uns</span>
+            <span className="eyebrow mb-4 block">{t("Über uns")}</span>
             <h2 className="mb-8 font-display text-4xl leading-tight sm:text-5xl text-foreground md:text-6xl">
-              Kirgisistan <span className="italic text-primary">persönlich erleben</span>
+              {t("Kirgisistan")} <span className="italic text-primary">{t("persönlich erleben")}</span>
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-5">
               Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt
