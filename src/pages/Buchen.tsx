@@ -303,7 +303,7 @@ const Buchen = () => {
       // with the existing bookings schema instead of writing a synthetic value.
       const tierValue = tour.hasTiers
         ? data.tier
-        : null;
+        : "standard";
 
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
 
