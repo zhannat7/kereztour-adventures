@@ -192,13 +192,13 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
         aria-label="Vorheriges Foto"
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
+        className="absolute left-2 top-1/2 sm:left-4 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
       >
         <ChevronLeft className="h-6 w-6" aria-hidden="true" />
       </button>
 
       {/* Hauptbild – immer vorne */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center px-16 pb-24">
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-3 pb-24 sm:px-16">
         <img
           src={images[index].src}
           alt={images[index].alt}
@@ -223,7 +223,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}
         aria-label="Nächstes Foto"
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
+        className="absolute right-2 top-1/2 sm:right-4 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
       >
         <ChevronRight className="h-6 w-6" aria-hidden="true" />
       </button>
@@ -263,7 +263,7 @@ const Gallery = () => {
   return (
     <>
        <section id="galerie" className="bg-primary py-20 text-primary-foreground md:py-28">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
+      <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
 
           {/* Header */}
           <div className="max-w-2xl mb-10">
