@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
+import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 
 const highlights = [
@@ -20,7 +22,7 @@ const highlights = [
   "Zeit für persönliche Erlebnisse und Entdeckungen",
 ];
 
-const Kyrchyn = () => {
+const Kyrchyn = () => {\n  const { t } = useLanguage();
   return (
     <>
       <Navbar />
@@ -35,7 +37,7 @@ const Kyrchyn = () => {
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10"
           >
             <ArrowLeft className="h-4 w-4" />
-            Zurück
+            {t("Zurück")}
           </Link>
 
           <div className="mb-16">
@@ -82,7 +84,7 @@ const Kyrchyn = () => {
               <CalendarDays className="h-5 w-5 text-primary mb-4" />
 
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                Reise
+                {t("Reise")}
               </p>
 
               <p className="font-semibold text-foreground">
@@ -112,7 +114,7 @@ const Kyrchyn = () => {
           <div className="max-w-3xl">
 
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
-              Eine Reise in die Welt der{" "}
+              Eine {t("Reise")} in die Welt der{" "}
               <span className="italic text-primary">
                 Nomaden
               </span>
@@ -128,7 +130,7 @@ const Kyrchyn = () => {
               </p>
 
               <p>
-                Die Reise verbindet kulturelle Erlebnisse mit
+                Die {t("Reise")} verbindet kulturelle Erlebnisse mit
                 der beeindruckenden Landschaft rund um den
                 Issyk-Kul. Dabei geht es nicht nur darum,
                 Sehenswürdigkeiten zu besuchen, sondern
@@ -190,11 +192,11 @@ const Kyrchyn = () => {
                 </p>
 
                 <h2 className="font-display text-3xl md:text-4xl mb-4">
-                  Deine Reise nach Kyrchyn
+                  Deine {t("Reise")} nach Kyrchyn
                 </h2>
 
                 <p className="text-primary-foreground/80 max-w-xl leading-relaxed">
-                  1.300 € pro Person. Wähle dein Reisedatum
+                  1.300 € pro Person. Wähle dein {t("Reisedatum")}
                   und sende uns deine Buchungsanfrage.
                 </p>
 
@@ -210,7 +212,7 @@ const Kyrchyn = () => {
                   to="/buchen?tour=kyrchyn"
                   className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-7 py-4 font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  Reise buchen
+                  {t("Reise")} buchen
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
