@@ -299,9 +299,11 @@ const Buchen = () => {
 
       const total = data.persons * price;
 
+      // Non-tier tours do not need a tier value. Keep this NULL-compatible
+      // with the existing bookings schema instead of writing a synthetic value.
       const tierValue = tour.hasTiers
         ? data.tier
-        : "standard";
+        : null;
 
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
 
