@@ -52,7 +52,7 @@ const Tours = () => {
 
   return (
     <section id="preise" className="bg-background py-14 md:py-20 scroll-mt-24">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
+      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
         <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Unsere Reisen</span>
