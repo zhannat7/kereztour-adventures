@@ -18,6 +18,8 @@ import Trekking from "./pages/reisen/Trekking.tsx";
 import Kyrchyn from "./pages/reisen/Kyrchyn.tsx";
 
 import NotFound from "./pages/NotFound.tsx";
+import { HelmetProvider } from "react-helmet-async";
+import RouteSeo from "./components/RouteSeo";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,7 @@ const ScrollToTop = () => {
 };
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -43,6 +46,7 @@ const App = () => (
 
       <BrowserRouter>
         <ScrollToTop />
+        <RouteSeo />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/buchen" element={<Buchen />} />
@@ -61,6 +65,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
