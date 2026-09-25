@@ -45,7 +45,7 @@ const Impressum = () => {\n  const { t } = useLanguage();
 
           <section>
             <h2 className="mb-5 font-display text-3xl md:text-4xl">
-              {t("{t("Registrierung")}")}
+              {t("Registrierung")}
             </h2>
             <dl className="grid gap-4 text-sm sm:grid-cols-[220px_1fr]">
               <dt className="font-medium text-foreground">
@@ -92,9 +92,7 @@ const Impressum = () => {\n  const { t } = useLanguage();
 
           <section className="border-t border-border pt-8">
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Kereztour ist die Bezeichnung des Reiseangebots und der Website.
-              Betreiberin des registrierten Einzelunternehmens ist Mambetalieva
-              Ainagul Zaidovna.
+              {t("Kereztour ist die Bezeichnung des Reiseangebots und der Website. Betreiberin des registrierten Einzelunternehmens ist Mambetalieva Ainagul Zaidovna.")}
             </p>
           </section>
 
