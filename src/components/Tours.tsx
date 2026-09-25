@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users } from "lucide-react";
 import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 type Tour = {
   title: string;
@@ -49,22 +50,23 @@ const tours: Tour[] = [
 
 const Tours = () => {
   const ref = useScrollReveal();
+  const { t } = useLanguage();
 
   return (
     <section id="preise" className="bg-background py-14 md:py-20 scroll-mt-24">
       <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <span className="eyebrow mb-4 block">Unsere Reisen</span>
+            <span className="eyebrow mb-4 block">{t("Unsere Reisen")}</span>
             <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
-              Drei Wege, <span className="italic text-primary">Kirgisistan zu entdecken</span>
+              {t("Drei Wege, ")}<span className="italic text-primary">{t("Kirgisistan zu entdecken")}</span>
             </h2>
           </div>
           <Link
             to="/buchen"
             className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors"
           >
-            Reise auswählen <ArrowRight className="h-4 w-4" />
+            {t("Reise auswählen")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -84,13 +86,13 @@ const Tours = () => {
                     muted
                     playsInline
                     preload="auto"
-                    aria-label={tour.title}
+                    aria-label={t(tour.title)}
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <img
                     src={tour.image}
-                    alt={tour.title}
+                    alt={t(tour.title)}
                     loading="lazy"
                     style={{ objectPosition: tour.imagePosition ?? "center" }}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -100,29 +102,29 @@ const Tours = () => {
 
               <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-7">
                 <h3 className="mb-3 font-display text-2xl leading-snug text-foreground md:text-3xl">
-                  {tour.title}
+                  {t(tour.title)}
                 </h3>
 
                 <p className="text-sm text-muted-foreground leading-snug mb-4">
-                  {tour.desc}
+                  {t(tour.desc)}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-4">
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> {tour.duration}
+                    <Clock className="h-3.5 w-3.5" /> {t(tour.duration)}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Users className="h-3.5 w-3.5" /> {tour.groupSize}
+                    <Users className="h-3.5 w-3.5" /> {t(tour.groupSize)}
                   </span>
                 </div>
 
                 <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
                   <div>
                     <p className="font-display text-2xl text-primary leading-none">
-                      {tour.price}
+                      {t(tour.price)}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      pro Person
+                      {t("pro Person")}
                     </p>
                   </div>
 
