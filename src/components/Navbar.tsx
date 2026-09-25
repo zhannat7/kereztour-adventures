@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ArrowRight, Globe } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const travelLinks = [
   { label: "Kultur Tour", href: "/reisen/kultur" },
@@ -20,6 +21,7 @@ const Navbar = () => {
   const [reisenOpen, setReisenOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -67,7 +69,7 @@ const Navbar = () => {
 
   const selectLanguage = (code: string) => {
     setLanguageOpen(false);
-    document.documentElement.lang = code.toLowerCase();
+    setLanguage(code as "DE" | "EN" | "IT");
   };
 
   const isTravelPage =
@@ -90,7 +92,7 @@ const Navbar = () => {
             ? "text-white hover:bg-white/10"
             : "text-foreground hover:bg-muted"
         }`}
-        aria-label="Sprache auswählen"
+        aria-label={t("Sprache auswählen")}
         aria-expanded={languageOpen}
         aria-haspopup="menu"
       >
@@ -114,7 +116,7 @@ const Navbar = () => {
               }}
               className="flex w-full cursor-pointer items-center justify-between rounded px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
-              <span>{language.label}</span>
+              <span>{t(language.label)}</span>
               <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">
                 {language.code}
               </span>
@@ -202,7 +204,7 @@ const Navbar = () => {
                               : "text-foreground hover:bg-muted hover:text-primary"
                           }`}
                         >
-                          {link.label}
+                          {t(link.label)}
                         </Link>
                       ))}
                     </div>
@@ -216,7 +218,7 @@ const Navbar = () => {
                 className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${transparent ? "text-white/90" : "text-foreground/85"} hover:text-[hsl(var(--gold))]`}
                 style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
               >
-                Über uns
+                {t("Über uns")}
               </Link>
 
               <Link
@@ -225,7 +227,7 @@ const Navbar = () => {
                 className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${transparent ? "text-white/90" : "text-foreground/85"} hover:text-[hsl(var(--gold))]`}
                 style={transparent ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" } : undefined}
               >
-                Kontakt
+                {t("Kontakt")}
               </Link>
             </div>
 
@@ -282,7 +284,7 @@ const Navbar = () => {
               to="/buchen"
               className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[hsl(var(--gold))] px-5 py-2.5 text-sm font-semibold text-[#062c26] shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-md"
             >
-              Reise buchen
+              {t("Reise buchen")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
