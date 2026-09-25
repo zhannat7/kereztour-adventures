@@ -43,13 +43,13 @@ const Kyrchyn = () => {\n  const { t } = useLanguage();
           <div className="mb-16">
 
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-              Kultur · Nomaden · Issyk-Kul
+              {t("Kultur · Nomaden · Issyk-Kul")}
             </span>
 
             <h1 className="mb-7 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
               Kyrchyn Tour
               <span className="block text-2xl md:text-3xl italic text-primary mt-3">
-                Kirgisistan erleben, wie es wirklich ist
+                {t("Kirgisistan erleben, wie es wirklich ist")}
               </span>
             </h1>
 
@@ -72,7 +72,7 @@ const Kyrchyn = () => {\n  const { t } = useLanguage();
               <MapPin className="h-5 w-5 text-primary mb-4" />
 
               <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                Reiseziel
+                {t("Reiseziel")}
               </p>
 
               <p className="font-semibold text-foreground">
@@ -88,7 +88,7 @@ const Kyrchyn = () => {\n  const { t } = useLanguage();
               </p>
 
               <p className="font-semibold text-foreground">
-                Kultur & Nomaden
+                {t("Kultur & Nomaden")}
               </p>
             </div>
 
@@ -212,7 +212,7 @@ const Kyrchyn = () => {\n  const { t } = useLanguage();
                   to="/buchen?tour=kyrchyn"
                   className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-7 py-4 font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  Reise buchen
+                  {t("Reise buchen")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
