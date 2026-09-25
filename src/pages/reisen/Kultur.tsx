@@ -172,12 +172,12 @@ const Kultur = () => {
 
           <div className="mb-16">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-              10 Tage · Gruppenreise
+              {t("10 Tage · Gruppenreise")}
             </span>
             <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
               Kultur Tour
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">
-                Kirgisistan von seiner schönsten Seite
+                {t("Kirgisistan von seiner schönsten Seite")}
               </span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
@@ -189,13 +189,13 @@ const Kultur = () => {
 
           <div className="mb-20">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
-              Was dich <span className="italic text-primary">erwartet</span>
+              {t("Was dich")} <span className="italic text-primary">{t("erwartet")}</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {highlights.map((h) => (
                 <div key={h} className="flex items-start gap-3 border-b border-border bg-card p-4">
                   <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-sm text-foreground leading-relaxed">{h}</p>
+                  <p className="text-sm text-foreground leading-relaxed">{t(h)}</p>
                 </div>
               ))}
             </div>
@@ -203,7 +203,7 @@ const Kultur = () => {
 
           <div className="mb-20">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-12">
-              Dein <span className="italic text-primary">Reiseplan</span>
+              {t("Dein")} <span className="italic text-primary">{t("Reiseplan")}</span>
             </h2>
 
             <div className="relative">
@@ -222,12 +222,12 @@ const Kultur = () => {
                     </div>
                     <div className="flex-1 pb-2">
                       <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">Tag {d.day}</p>
-                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{d.title}</h3>
+                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{t(d.title)}</h3>
                       <div className="flex flex-col gap-3 mb-5">
-                        <p className="text-base text-muted-foreground leading-relaxed">{d.desc}</p>
+                        <p className="text-base text-muted-foreground leading-relaxed">{t(d.desc)}</p>
                         {d.stay && (
                           <div className="inline-flex self-start items-center gap-2 rounded-sm bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
-                            Unterkunft: {d.stay}
+                            {t("Unterkunft:")} {t(d.stay)}
                           </div>
                         )}
                       </div>
@@ -241,9 +241,9 @@ const Kultur = () => {
 
           <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
             <div className="mb-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">Nächste Reisetermine</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">{t("Nächste Reisetermine")}</p>
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                Deinen <span className="italic text-primary">Termin auswählen</span>
+                {t("Deinen")} <span className="italic text-primary">{t("Termin auswählen")}</span>
               </h2>
               <p className="text-sm text-muted-foreground max-w-2xl">
                 Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt. Erst danach erfolgt die Zahlung.
@@ -285,7 +285,7 @@ const Kultur = () => {
           <div className="mb-16">
             <div className="mb-8">
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                Deine <span className="italic text-primary">{t("Reisevariante")}</span>
+                {t("Deine")} <span className="italic text-primary">{t("Reisevariante")}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl leading-relaxed">
                 Das Reiseerlebnis bleibt gleich – du entscheidest, welche Unterkunft und welchen Komfort du bevorzugst.
@@ -300,22 +300,22 @@ const Kultur = () => {
                 >
                   <div className="flex items-start justify-between gap-5 mb-6">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">{tier.tagline}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">{t(tier.tagline)}</p>
                       <h3 className="font-display text-2xl md:text-3xl text-foreground">{tier.name}</h3>
                     </div>
                     {tier.featured && (
-                      <span className="whitespace-nowrap rounded-sm bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Mehr Komfort</span>
+                      <span className="whitespace-nowrap rounded-sm bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">{t("Mehr Komfort")}</span>
                     )}
                   </div>
 
                   <div className="flex items-baseline gap-2 border-b border-border pb-6 mb-6">
                     <span className="font-display text-4xl md:text-5xl text-primary">{tier.price} €</span>
-                    <span className="text-sm text-muted-foreground">pro Person</span>
+                    <span className="text-sm text-muted-foreground">{t("pro Person")}</span>
                   </div>
 
                   <ul className="space-y-4 mb-7">
                     {tier.details.map((d) => (
-                      <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
+                      <li key={t(d.text)} className="flex items-center gap-3 text-sm text-foreground">
                         <d.icon className="h-5 w-5 shrink-0 text-primary" />
                         <span>{d.text}</span>
                       </li>
@@ -326,7 +326,7 @@ const Kultur = () => {
                     to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
                   >
-                    {tier.name} buchen
+                    {tier.name} {t("buchen")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
