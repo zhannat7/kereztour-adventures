@@ -2,7 +2,7 @@ import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const {t("Impressum")} = () => {\n  const { t } = useLanguage();
+const Impressum = () => {\n  const { t } = useLanguage();
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="border-b border-border bg-muted/30">
@@ -112,4 +112,4 @@ const {t("Impressum")} = () => {\n  const { t } = useLanguage();
   );
 };
 
-export default {t("Impressum")};
+export default Impressum;
