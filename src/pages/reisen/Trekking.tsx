@@ -141,7 +141,7 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
               </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  Tag {d.day}
+                  {t("Tag")} {d.day}
                 </p>
                 <h3 className="font-display text-lg text-foreground mb-1">{t(d.title)}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t(d.desc)}</p>
@@ -161,7 +161,7 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
               <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-primary text-primary-foreground">
                 <tip.icon className="h-6 w-6" />
               </div>
-              <h3 className="font-display text-lg text-foreground">{tip.title}</h3>
+              <h3 className="font-display text-lg text-foreground">{t(tip.title)}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t(tip.desc)}</p>
             </div>
           ))}
