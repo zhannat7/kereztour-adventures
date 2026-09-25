@@ -1,7 +1,8 @@
 import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-const Impressum = () => {
+const {t("Impressum")} = () => {\n  const { t } = useLanguage();
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="border-b border-border bg-muted/30">
@@ -11,12 +12,12 @@ const Impressum = () => {
             className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4" />
-            Zurück zur Startseite
+            {t("Zurück")} zur Startseite
           </Link>
 
-          <p className="eyebrow mb-4">Rechtliches</p>
+          <p className="eyebrow mb-4">{t("Rechtliches")}</p>
           <h1 className="font-display text-5xl leading-tight md:text-7xl">
-            Impressum
+            {t("Impressum")}
           </h1>
         </div>
       </section>
@@ -25,13 +26,13 @@ const Impressum = () => {
         <div className="space-y-12">
           <section>
             <h2 className="mb-5 font-display text-3xl md:text-4xl">
-              Anbieterin
+              {t("Anbieterin")}
             </h2>
             <div className="space-y-2 text-muted-foreground leading-relaxed">
               <p className="font-medium text-foreground">
                 Mambetalieva Ainagul Zaidovna
               </p>
-              <p>Einzelunternehmerin</p>
+              <p>{t("Einzelunternehmerin")}</p>
               <p>
                 Ak-Ordo Wohngebiet, Ak Bolpon Straße
                 <br />
@@ -44,22 +45,22 @@ const Impressum = () => {
 
           <section>
             <h2 className="mb-5 font-display text-3xl md:text-4xl">
-              Registrierung
+              {t("{t("Registrierung")}")}
             </h2>
             <dl className="grid gap-4 text-sm sm:grid-cols-[220px_1fr]">
               <dt className="font-medium text-foreground">
-                Registrierungsnummer
+                {t("Registrierungsnummer")}
               </dt>
               <dd className="text-muted-foreground">002-2024-169-3446</dd>
 
-              <dt className="font-medium text-foreground">Registrierung</dt>
+              <dt className="font-medium text-foreground">{t("{t("Registrierung")}")}</dt>
               <dd className="text-muted-foreground">22.04.2024</dd>
 
               <dt className="font-medium text-foreground">TIN</dt>
               <dd className="text-muted-foreground">11704196500548</dd>
 
               <dt className="font-medium text-foreground">
-                Wirtschaftliche Tätigkeit
+                {t("Wirtschaftliche Tätigkeit")}
               </dt>
               <dd className="text-muted-foreground">
                 79.12.0 – Tour operator activities
@@ -69,7 +70,7 @@ const Impressum = () => {
 
           <section>
             <h2 className="mb-5 font-display text-3xl md:text-4xl">
-              Kontakt
+              {t("Kontakt")}
             </h2>
             <div className="space-y-4 text-sm">
               <a
@@ -102,7 +103,7 @@ const Impressum = () => {
               to="/registrierung"
               className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-secondary"
             >
-              Registrierungsnachweis ansehen →
+              {t("Registrierungsnachweis ansehen →")}
             </Link>
           </div>
         </div>
@@ -111,4 +112,4 @@ const Impressum = () => {
   );
 };
 
-export default Impressum;
+export default {t("Impressum")};
