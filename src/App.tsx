@@ -10,6 +10,7 @@ import Buchen from "./pages/Buchen.tsx";
 import Zahlung from "./pages/Zahlung.tsx";
 import Certificate from "./pages/Certificate.tsx";
 import Impressum from "./pages/Impressum.tsx";
+import Admin from "./pages/Admin.tsx";
 
 import Nomaden from "./pages/reisen/Nomaden.tsx";
 import Kultur from "./pages/reisen/Kultur.tsx";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/zahlung" element={<Zahlung />} />
           <Route path="/registrierung" element={<Certificate />} />
           <Route path="/impressum" element={<Impressum />} />
+          <Route path="/admin" element={<Admin />} />
 
           <Route path="/reisen/nomaden" element={<Nomaden />} />
           <Route path="/reisen/kultur" element={<Kultur />} />
