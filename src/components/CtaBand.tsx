@@ -84,9 +84,8 @@ const CtaBand = () => {
   const onSubmit = async (data: InquiryForm) => {
     setSubmitError("");
     try {
-      const { error } = await supabase
-        .from("contact_messages" as unknown as "bookings")
-        .insert({
+      const { error } = await supabase.functions.invoke("create-contact-message", {
+        body: {
           name: data.name,
           email: data.email,
           tour: data.tour,
@@ -94,32 +93,18 @@ const CtaBand = () => {
           date_to: data.dateTo,
           persons: data.persons,
           message: data.message || null,
-        } as never);
+        },
+      });
 
-      if (error) throw error;
-
-      // E-Mail-Benachrichtigung – sendet automatisch, sobald der
-      // E-Mail-Versand freigeschaltet ist. Scheitert sie, bleibt die
-      // Anfrage trotzdem gespeichert.
-      try {
-        await supabase.functions.invoke("send-transactional-email", {
-          body: {
-            templateName: "contact-inquiry",
-            recipientEmail: OWNER_EMAIL,
-            idempotencyKey: `contact-inquiry-${crypto.randomUUID()}`,
-            templateData: {
-              name: data.name,
-              email: data.email,
-              tour: data.tour,
-              dateFrom: data.dateFrom,
-              dateTo: data.dateTo,
-              persons: data.persons,
-              message: data.message || "",
-            },
-          },
-        });
-      } catch (emailErr) {
-        console.warn("E-Mail-Versand noch nicht aktiv:", emailErr);
+      if (error) {
+        let detail = "Die Anfrage konnte nicht gesendet werden.";
+        try {
+          const context = await error.context?.json?.();
+          if (context?.error) detail = context.error;
+        } catch {
+          // Keep the generic message if the response cannot be read.
+        }
+        throw new Error(detail);
       }
 
       setSubmitted(true);
