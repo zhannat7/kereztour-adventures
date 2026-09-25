@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/i18n/LanguageContext";
 import {
   Dialog,
   DialogContent,
@@ -30,7 +31,6 @@ const OWNER_EMAIL = "sarinasadirovna@gmail.com";
 const TOUR_OPTIONS = [
   "Kultur Tour",
   "Intensiv-Trekking",
-  "Weltspiele der Nomaden 2026",
 ] as const;
 
 const inquirySchema = z.object({
@@ -58,6 +58,7 @@ const CtaBand = () => {
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const { t } = useLanguage();
 
   const {
     register,
@@ -125,12 +126,11 @@ const CtaBand = () => {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
               <h2 className="mb-5 font-display text-4xl leading-tight text-primary-foreground md:text-6xl">
-                Erzähl mir, wovon du träumst
-                <span className="block italic">ich plane den Rest.</span>
+                {t("Erzähl mir, wovon du träumst")}
+                <span className="block italic">{t("ich plane den Rest.")}</span>
               </h2>
               <p className="text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-xl">
-                Die Anfrage ist kostenlos und unverbindlich. Ich antworte innerhalb von
-                24 Stunden – auch bei Fragen zu Reiseterminen, Flügen oder Gruppengrößen.
+                {t("Die Anfrage ist kostenlos und unverbindlich. Ich antworte innerhalb von 24 Stunden – auch bei Fragen zu Reiseterminen, Flügen oder Gruppengrößen.")}
               </p>
             </div>
 
@@ -140,7 +140,7 @@ const CtaBand = () => {
                 onClick={openDialog}
                 className="btn-accent w-full"
               >
-                Anfrage per Formular <ArrowRight className="h-4 w-4" />
+                {t("Anfrage per Formular")} <ArrowRight className="h-4 w-4" />
               </button>
               <a
                 href={whatsappUrl("Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
@@ -149,7 +149,7 @@ const CtaBand = () => {
                 rel="noopener noreferrer"
                  className="inline-flex w-full items-center justify-center gap-2 rounded-sm border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
               >
-                <MessageCircle className="h-4 w-4" /> Direkt auf WhatsApp
+                <MessageCircle className="h-4 w-4" /> {t("Direkt auf WhatsApp")}
               </a>
 
               <a
@@ -173,42 +173,40 @@ const CtaBand = () => {
               </span>
               <DialogHeader>
                 <DialogTitle className="font-display text-2xl text-primary">
-                  Danke für deine Anfrage!
+                  {t("Danke für deine Anfrage!")}
                 </DialogTitle>
                 <DialogDescription className="text-muted-foreground">
-                  Wir haben deine Nachricht erhalten und melden uns innerhalb von
-                  24 Stunden bei dir.
+                  {t("Wir haben deine {t("Nachricht")} erhalten und melden uns innerhalb von 24 Stunden bei dir.")}
                 </DialogDescription>
               </DialogHeader>
               <Button className="mt-6 btn-accent" onClick={() => setOpen(false)}>
-                Schließen
+                {t("Schließen")}
               </Button>
             </div>
           ) : (
             <>
               <DialogHeader>
                 <DialogTitle className="font-display text-2xl text-primary">
-                  Unverbindliche Anfrage
+                  {t("Unverbindliche Anfrage")}
                 </DialogTitle>
                 <DialogDescription className="text-muted-foreground">
-                  Erzähl uns kurz von deiner Wunschreise – wir antworten innerhalb
-                  von 24 Stunden.
+                  {t("Erzähl uns kurz von deiner Wunschreise – wir antworten innerhalb von 24 Stunden.")}
                 </DialogDescription>
               </DialogHeader>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="inquiry-name">Name *</Label>
+                  <Label htmlFor="inquiry-name">{t("Name")} *</Label>
                   <Input
                     id="inquiry-name"
                     {...register("name")}
-                    placeholder="Vor- und Nachname"
+                    placeholder="{t("Vor- und Nachname")}"
                   />
                   {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="inquiry-email">E-Mail-Adresse *</Label>
+                  <Label htmlFor="inquiry-email">{t("E-Mail-Adresse")} *</Label>
                   <Input
                     id="inquiry-email"
                     type="email"
@@ -219,10 +217,10 @@ const CtaBand = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Gewünschte Reise *</Label>
+                  <Label>{t("Gewünschte Reise")} *</Label>
                   <Select value={tour} onValueChange={(v) => setValue("tour", v, { shouldValidate: true })}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Bitte wählen" />
+                      <SelectValue placeholder="{t("Bitte wählen")}" />
                     </SelectTrigger>
                     <SelectContent>
                       {TOUR_OPTIONS.map((t) => (
@@ -237,19 +235,19 @@ const CtaBand = () => {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="inquiry-from">Reisebeginn *</Label>
+                    <Label htmlFor="inquiry-from">{t("Reisebeginn")} *</Label>
                     <Input id="inquiry-from" type="date" {...register("dateFrom")} />
                     {errors.dateFrom && <p className="text-sm text-destructive">{errors.dateFrom.message}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="inquiry-to">Reiseende *</Label>
+                    <Label htmlFor="inquiry-to">{t("Reiseende")} *</Label>
                     <Input id="inquiry-to" type="date" {...register("dateTo")} />
                     {errors.dateTo && <p className="text-sm text-destructive">{errors.dateTo.message}</p>}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Anzahl der Personen *</Label>
+                  <Label>{t("Anzahl der Personen")} *</Label>
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
@@ -273,12 +271,12 @@ const CtaBand = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="inquiry-message">
-                    Nachricht <span className="text-muted-foreground font-normal">(optional)</span>
+                    {t("Nachricht")} <span className="text-muted-foreground font-normal">(optional)</span>
                   </Label>
                   <Textarea
                     id="inquiry-message"
                     {...register("message")}
-                    placeholder="Wünsche, Fragen, Anmerkungen..."
+                    placeholder="{t("Wünsche, Fragen, Anmerkungen...")}"
                     rows={3}
                   />
                   {errors.message && <p className="text-sm text-destructive">{errors.message.message}</p>}
