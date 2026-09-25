@@ -27,7 +27,7 @@ const days = [
   {
     day: 4,
     title: "Nomadenleben am Song-Köl",
-    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. {t("Kontakt")} mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
+    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. Kontakt mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
     stay: "Jurtencamp am Song-Köl",
   },
   {
@@ -181,6 +181,7 @@ const Trekking = () => {\n  const { t } = useLanguage();\n  return (
     </main>
     <Footer />
   </>
-);
+  );
+};
 
 export default Trekking;
