@@ -29,11 +29,11 @@ const Highlights = () => {
 
   return (
     <section className="border-b border-border bg-sand/50 pt-10 md:pt-14 pb-14 md:pb-20">
-      <div ref={ref} className="section-reveal container mx-auto max-w-[1600px] px-6">
+      <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="mb-16 flex flex-col justify-between gap-8 px-0 md:flex-row md:items-end md:px-4">
           <div className="max-w-3xl">
             <span className="eyebrow mb-5 block">Warum Kereztour</span>
-            <h2 className="font-display text-5xl font-normal leading-tight text-foreground md:text-6xl lg:text-7xl">
+            <h2 className="font-display text-4xl font-normal sm:text-5xl leading-tight text-foreground md:text-6xl lg:text-7xl">
               Mehr als <span className="italic text-primary">eine Reise</span>
             </h2>
           </div>
@@ -47,7 +47,7 @@ const Highlights = () => {
           {items.map((item) => (
             <div
               key={item.title}
-              className="stagger-child border-b border-border bg-transparent p-8 md:p-10 sm:[&:nth-child(odd)]:border-r lg:border-r lg:[&:nth-child(4)]:border-r-0"
+              className="stagger-child border-b border-border bg-transparent p-6 sm:p-8 md:p-10 sm:[&:nth-child(odd)]:border-r lg:border-r lg:[&:nth-child(4)]:border-r-0"
             >
               <div className="mb-8 flex h-10 w-10 items-center justify-center rounded-sm border border-border text-primary">
                 <item.icon className="h-5 w-5" />
