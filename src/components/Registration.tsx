@@ -2,7 +2,10 @@ import { FileCheck2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const Registration = () => {\n  const { t } = useLanguage();\n\n  return (
+const Registration = () => {
+  const { t } = useLanguage();
+
+  return (
   <section className="border-y border-border bg-muted/40 py-12 md:py-16">
     <div className="container mx-auto max-w-[1600px] px-6">
       <div className="flex flex-col items-start gap-8 border-y border-border bg-card px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 md:py-10">
@@ -18,8 +21,7 @@ const Registration = () => {\n  const { t } = useLanguage();\n\n  return (
               {t("Reiseveranstalter in Kirgisistan")}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Kéreztour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt.
-              Die Tätigkeit ist offiziell als „Tour operator activities“ registriert.
+              {t("Kéreztour wird von einem in Kirgisistan registrierten Einzelunternehmen geführt. Die Tätigkeit ist offiziell als „Tour operator activities“ registriert.")}
             </p>
           </div>
         </div>
@@ -41,5 +43,8 @@ const Registration = () => {\n  const { t } = useLanguage();\n\n  return (
     </div>
   </section>
 );
+
+  );
+};
 
 export default Registration;
