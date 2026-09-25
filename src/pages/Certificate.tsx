@@ -14,7 +14,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
       </Link>
 
       <div className="mb-8 md:mb-10">
-        <span className="eyebrow mb-4 block">{t("{t("Registrierung")}")}</span>
+        <span className="eyebrow mb-4 block">{t("Registrierung")}</span>
         <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
           {t("Offizieller Registrierungsnachweis")}
         </h1>
@@ -112,6 +112,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
       </div>
     </div>
   </main>
-);
+  );
+};
 
 export default Certificate;
