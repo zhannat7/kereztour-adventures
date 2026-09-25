@@ -231,55 +231,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div
-              className="relative z-[100] shrink-0"
-              onMouseEnter={() => setLanguageOpen(true)}
-              onMouseLeave={() => setLanguageOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setReisenOpen(false);
-                  setLanguageOpen((open) => !open);
-                }}
-                className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-transparent transition-colors ${
-                  transparent
-                    ? "text-white hover:bg-white/10 hover:border-white/20"
-                    : "text-foreground hover:bg-muted hover:border-border"
-                }`}
-                aria-label={t("Sprache auswählen")}
-                aria-expanded={languageOpen}
-                aria-haspopup="menu"
-              >
-                <Globe className="pointer-events-none h-5 w-5" strokeWidth={2} />
-              </button>
-
-              {languageOpen && (
-                <div
-                  role="menu"
-                  className="absolute right-0 top-full mt-2 w-40 rounded-lg border border-border bg-card p-1.5 shadow-xl"
-                >
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      role="menuitem"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        selectLanguage(lang.code);
-                      }}
-                      className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-muted hover:text-primary"
-                    >
-                      <span>{t(lang.label)}</span>
-                      <span className="text-[10px] font-semibold text-muted-foreground">{lang.code}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            {languageMenu}
 
             <Link
               to="/buchen"
