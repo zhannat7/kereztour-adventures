@@ -52,7 +52,7 @@ const Tours = () => {
 
   return (
     <section id="preise" className="bg-background py-14 md:py-20 scroll-mt-24">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1400px]">
+      <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Unsere Reisen</span>
@@ -68,7 +68,7 @@ const Tours = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {tours.map((tour) => (
             <Link
               key={tour.to}
@@ -98,7 +98,7 @@ const Tours = () => {
                 )}
               </div>
 
-              <div className="flex flex-1 flex-col p-6 md:p-7">
+              <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-7">
                 <h3 className="mb-3 font-display text-2xl leading-snug text-foreground md:text-3xl">
                   {tour.title}
                 </h3>
