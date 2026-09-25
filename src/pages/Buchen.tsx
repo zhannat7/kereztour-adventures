@@ -17,6 +17,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,21 +35,21 @@ const TOURS = [
   {
     id: "kultur",
     label: "Kultur Tour",
-    desc: "10 Tage durch Kirgisistans kulturelle und natürliche Highlights",
+    desc: "{t("10 Tage durch die schönsten Regionen Kirgisistans – Kultur, Natur, Traditionen und echte Begegnungen.")}",
     price: null,
     hasTiers: true,
   },
   {
     id: "trekking",
     label: "Intensiv-Trekking",
-    desc: "10 Tage Bergseen, Schluchten und Hochgebirge",
+    desc: "{t("Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.")}",
     price: 1200,
     hasTiers: false,
   },
   {
     id: "kyrchyn",
     label: "Kyrchyn Tour",
-    desc: "Kultur, Nomadentraditionen und das Kyrchyn Jailoo",
+    desc: "{t("Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.")}",
     price: 1300,
     hasTiers: false,
   },
@@ -142,6 +143,7 @@ const Step = ({
 
 const Buchen = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
 
   const [submitError, setSubmitError] = useState("");
@@ -240,7 +242,7 @@ const Buchen = () => {
     (tour) => tour.id === tourId
   );
 
-  const pricePerPerson = useMemo(() => {
+  const pricePer{t("Person")} = useMemo(() => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
@@ -251,7 +253,7 @@ const Buchen = () => {
     return selectedTour.price ?? 0;
   }, [selectedTour, tier]);
 
-  const totalPrice = persons * pricePerPerson;
+  const totalPrice = persons * pricePer{t("Person")};
 
   const selectTour = (id: TourId) => {
     setValue("tour", id, {
@@ -320,7 +322,7 @@ const Buchen = () => {
         );
 
         if (!selectedDate) {
-          throw new Error("Dieser Reisetermin ist nicht mehr verfügbar.");
+          throw new Error("Dieser Reisetermin ist nicht mehr {t("verfügbar")}.");
         }
 
         const availablePlaces = Number(selectedDate.available_places);
@@ -328,7 +330,7 @@ const Buchen = () => {
         if (selectedDate.status === "full" || data.persons > availablePlaces) {
           throw new Error(
             availablePlaces > 0
-              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
+              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} {t("Plätze")} {t("verfügbar")}.`
               : "Dieser Reisetermin ist bereits ausgebucht."
           );
         }
@@ -491,7 +493,7 @@ const Buchen = () => {
                               : `${tour.price?.toLocaleString("de-DE")} €`}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            pro Person
+                            pro {t("Person")}
                           </p>
                         </div>
                       </button>
@@ -511,7 +513,7 @@ const Buchen = () => {
                 <div className="mt-7 pt-7 border-t border-border">
 
                   <p className="font-semibold text-foreground mb-4">
-                    Wie möchtest du reisen?
+                    {t("Wie möchtest du reisen?")}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -557,8 +559,8 @@ const Buchen = () => {
 
                               <p className="text-sm text-muted-foreground mt-2">
                                 {isEconomy
-                                  ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 Personen."
-                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen."}
+                                  ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 {t("Person")}en."
+                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 {t("Person")}en."}
                               </p>
                             </div>
 
@@ -577,7 +579,7 @@ const Buchen = () => {
                               "de-DE"
                             )} €
                             <span className="text-sm text-muted-foreground font-sans ml-1">
-                              / Person
+                              / {t("Person")}
                             </span>
                           </p>
 
@@ -596,7 +598,7 @@ const Buchen = () => {
 
               <Step
                 n={2}
-                title="Wann und wie viele Personen?"
+                title="Wann und wie viele {t("Person")}en?"
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -605,7 +607,7 @@ const Buchen = () => {
                 <div className="space-y-3">
 
                   <Label>
-                    Anzahl der Personen
+                    {t("Anzahl der {t("Person")}en")}
                   </Label>
 
                   <div className="flex items-center gap-4">
@@ -659,17 +661,17 @@ const Buchen = () => {
 
                 {/* REISEDATUM */}
                 <div className="space-y-3 sm:col-span-2">
-                  <Label>Reisetermin *</Label>
+                  <Label>{t("Reisetermin")} *</Label>
 
                   {tourId === "kultur" ? (
                     <div>
                       {isLoadingDates ? (
                         <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                          Reisetermine werden geladen …
+                          {t("Reisetermine werden geladen …")}
                         </div>
                       ) : cultureDates.length === 0 ? (
                         <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                          Aktuell sind keine Reisetermine verfügbar.
+                          {t("Aktuell sind keine Reisetermine {t("verfügbar")}.")}
                         </div>
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -702,11 +704,11 @@ const Buchen = () => {
                                 <p className="font-semibold text-foreground">{item.label}</p>
                                 <p className="text-sm mt-1 font-medium text-primary">
                                   {isFull
-                                    ? "Ausgebucht"
-                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
+                                    ? "{t("Ausgebucht")}"
+                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "{t("Platz")}" : "{t("Plätze")}"} {t("verfügbar")}`}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                  Max. {item.maxParticipants} Personen · Anfrage ohne Zahlung
+                                  Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
                                 </p>
                               </button>
                             );
@@ -727,7 +729,7 @@ const Buchen = () => {
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {travelDate
                             ? format(travelDate, "PPP", { locale: de })
-                            : "Datum wählen"}
+                            : "{t("Datum wählen")}"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -765,7 +767,7 @@ const Buchen = () => {
 
               <Step
                 n={3}
-                title="Deine Kontaktdaten"
+                title="{t("Deine Kontaktdaten")}"
               />
 
               <div className="space-y-5">
@@ -774,7 +776,7 @@ const Buchen = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="vorname">
-                      Vorname *
+                      {t("Vorname")} *
                     </Label>
 
                     <Input
@@ -792,7 +794,7 @@ const Buchen = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="nachname">
-                      Nachname *
+                      {t("Nachname")} *
                     </Label>
 
                     <Input
@@ -812,7 +814,7 @@ const Buchen = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="email">
-                    E-Mail *
+                    {t("E-Mail")} *
                   </Label>
 
                   <Input
@@ -831,7 +833,7 @@ const Buchen = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">
-                    Telefonnummer *
+                    {t("Telefonnummer")} *
                   </Label>
 
                   <Input
@@ -850,7 +852,7 @@ const Buchen = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="notes">
-                    Besondere Wünsche{" "}
+                    {t("Besondere Wünsche")}{" "}
                     <span className="text-muted-foreground font-normal">
                       (optional)
                     </span>
@@ -869,11 +871,11 @@ const Buchen = () => {
             </section>
 
             {/* ZUSAMMENFASSUNG */}
-            {selectedTour && pricePerPerson > 0 && (
+            {selectedTour && pricePer{t("Person")} > 0 && (
               <section className="border-y border-gold/30 bg-primary p-6 text-primary-foreground md:p-9">
 
                 <p className="text-primary-foreground/70 text-sm mb-2">
-                  Deine Auswahl
+                  {t("Deine Auswahl")}
                 </p>
 
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
@@ -894,14 +896,14 @@ const Buchen = () => {
 
                     {travelDate && (
                       <p className="text-primary-foreground/80 text-sm mt-3">
-                        Reisetermin: {format(travelDate, "dd.MM.yyyy")}
+                        {t("Reisetermin:")} {format(travelDate, "dd.MM.yyyy")}
                       </p>
                     )}
 
                     <p className="text-primary-foreground/70 text-sm mt-1">
                       {persons}{" "}
-                      {persons === 1 ? "Person" : "Personen"}{" "}
-                      × {pricePerPerson.toLocaleString("de-DE")} €
+                      {persons === 1 ? "{t("Person")}" : "{t("Person")}en"}{" "}
+                      × {pricePer{t("Person")}.toLocaleString("de-DE")} €
                     </p>
 
                   </div>
@@ -909,7 +911,7 @@ const Buchen = () => {
                   <div className="sm:text-right">
 
                     <p className="text-primary-foreground/70 text-sm">
-                      Gesamtpreis
+                      {t("Gesamtpreis")}
                     </p>
 
                     <p className="font-display text-4xl md:text-5xl">
@@ -947,10 +949,10 @@ const Buchen = () => {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Wird gesendet...
+                  {t("Wird gesendet...")}
                 </>
               ) : (
-                "Buchungsanfrage senden →"
+                "{t("Buchungsanfrage senden →")}"
               )}
             </Button>
 
