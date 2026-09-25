@@ -288,8 +288,8 @@ const Admin = () => {
 
   useEffect(() => {
     if (!session) { setIsAdmin(null); return; }
-    supabase.from("user_roles").select("role").eq("user_id", session.user.id).eq("role", "admin").maybeSingle()
-      .then(({ data }) => setIsAdmin(!!data));
+    supabase.rpc("has_role", { _user_id: session.user.id, _role: "admin" })
+      .then(({ data, error }) => setIsAdmin(!error && data === true));
   }, [session]);
 
   if (!ready) return null;
