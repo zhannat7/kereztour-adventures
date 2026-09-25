@@ -348,7 +348,14 @@ const Buchen = () => {
       });
 
       if (error) {
-        throw error;
+        let detail = "Die Buchungsanfrage konnte nicht gespeichert werden.";
+        try {
+          const context = await error.context?.json?.();
+          if (context?.error) detail = context.error;
+        } catch {
+          // Keep the generic message if the function response cannot be read.
+        }
+        throw new Error(detail);
       }
 
       navigate("/zahlung", {
