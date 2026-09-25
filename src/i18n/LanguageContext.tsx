@@ -267,6 +267,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Tour operator activities": "Tour operator activities",
     "Zurück zur Startseite": "Back to homepage",
     "Zurück zur Website": "Back to website",
+    "Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.": "The PDF preview is not embedded on smartphones so that the certificate can be viewed completely without being cut off.",
   IT: {
     "Reisen": "Viaggi",
     "Über uns": "Chi siamo",
@@ -494,6 +495,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Tour operator activities": "Attività di tour operator",
     "Zurück zur Startseite": "Torna alla home page",
     "Zurück zur Website": "Torna al sito web",
+    "Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.": "L'anteprima PDF non viene incorporata sugli smartphone, così il certificato può essere visualizzato per intero senza essere tagliato.",
 
   },
 };
