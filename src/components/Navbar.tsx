@@ -175,7 +175,7 @@ const Navbar = () => {
                   onClick={() =>
                     setReisenOpen(!reisenOpen)
                   }
-                  className={`flex items-center gap-1.5 whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
+                  className={`flex items-center gap-1.5 whitespace-nowrap text-[15px] font-medium tracking-wide transition-colors duration-500 ${
                     isTravelPage
                       ? "text-[hsl(var(--gold))]"
                       : transparent
