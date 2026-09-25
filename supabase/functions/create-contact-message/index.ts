@@ -12,6 +12,40 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+const NOTIFY_EMAIL = "sarinasadirovna@gmail.com";
+
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
+async function sendNotificationEmail(subject: string, html: string) {
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is not configured – skipping notification email.");
+    return;
+  }
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        from: "Kereztour <onboarding@resend.dev>",
+        to: [NOTIFY_EMAIL],
+        subject,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error(`Resend error [${res.status}]: ${await res.text()}`);
+    }
+  } catch (error) {
+    console.error("Notification email failed:", error);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -47,6 +81,22 @@ Deno.serve(async (req) => {
     });
 
     if (error) throw error;
+
+    await sendNotificationEmail(
+      `Neue Kontaktanfrage von ${name}`,
+      `<h2>Neue Kontaktanfrage</h2>
+       <table cellpadding="6" style="border-collapse:collapse">
+         <tr><td><b>Name</b></td><td>${escapeHtml(name)}</td></tr>
+         <tr><td><b>E-Mail</b></td><td>${escapeHtml(email)}</td></tr>
+         <tr><td><b>Reise</b></td><td>${escapeHtml(typeof body.tour === "string" ? body.tour : "-")}</td></tr>
+         <tr><td><b>Zeitraum</b></td><td>${escapeHtml(typeof body.date_from === "string" ? body.date_from : "-")} bis ${escapeHtml(typeof body.date_to === "string" ? body.date_to : "-")}</td></tr>
+         <tr><td><b>Personen</b></td><td>${Number.isInteger(body.persons) ? body.persons : "-"}</td></tr>
+       </table>
+       <p><b>Nachricht:</b></p>
+       <p>${escapeHtml(message ?? "-").replace(/\n/g, "<br>")}</p>
+       <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
+    );
+
     return json({ success: true });
   } catch (error) {
     console.error("create-contact-message error:", error);
