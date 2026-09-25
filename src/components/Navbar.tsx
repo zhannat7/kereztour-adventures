@@ -229,7 +229,33 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {languageMenu}
+            <div className="flex items-center gap-2">
+              <Globe
+                className={`h-5 w-5 ${transparent ? "text-white" : "text-foreground"}`}
+                strokeWidth={1.8}
+              />
+              <div className={`flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold ${
+                transparent
+                  ? "border-white/30 text-white"
+                  : "border-border text-foreground"
+              }`}>
+                {languages.map((language, index) => (
+                  <span key={language.code} className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => selectLanguage(language.code)}
+                      className="rounded px-1.5 py-0.5 transition-colors hover:bg-muted hover:text-primary"
+                      aria-label={language.label}
+                    >
+                      {language.code}
+                    </button>
+                    {index < languages.length - 1 && (
+                      <span className={transparent ? "text-white/40" : "text-muted-foreground/50"}>/</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
 
             <Link
               to="/buchen"
