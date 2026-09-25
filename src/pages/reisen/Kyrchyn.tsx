@@ -212,7 +212,7 @@ const Kyrchyn = () => {\n  const { t } = useLanguage();
                   to="/buchen?tour=kyrchyn"
                   className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-7 py-4 font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  {t("Reise")} buchen
+                  Reise buchen
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
