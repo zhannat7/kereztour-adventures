@@ -334,20 +334,18 @@ const Buchen = () => {
         }
       }
 
-      const { error } = await (supabase as any)
-        .from("bookings")
-        .insert({
+      const { error } = await supabase.functions.invoke("create-booking", {
+        body: {
           name: `${data.vorname} ${data.nachname}`,
           email: data.email,
           phone: data.phone,
           persons: data.persons,
-          travel_date: travelDateValue,
-          tour: tour.label,
+          travelDate: travelDateValue,
+          tour: tour.id,
           tier: tierValue,
           notes: data.notes || null,
-          total_price: total,
-          status: "pending",
-        });
+        },
+      });
 
       if (error) {
         throw error;
