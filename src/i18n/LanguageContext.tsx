@@ -59,7 +59,6 @@ const translations: Record<Language, Record<string, string>> = {
     "Eindrücke aus Kirgisistan": "Impressions of Kyrgyzstan",
     "Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle 63 Fotos zu sehen.": "Photos from our guests – unedited. Click an image to see all 63 photos.",
     "Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht": "Travel photos from Kyrgyzstan 2025 · Click an image for full view",
-    "Über uns": "About us",
     "Kirgisistan persönlich erleben": "Experience Kyrgyzstan personally",
     "Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.": "Kereztour is a small family business from Kyrgyzstan run by my mother. She knows the country, its people and many special places from personal experience.",
     "Ich bin Sarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch, Italienisch und Kirgisisch.": "I am Sarina and live in Völs am Schlern in South Tyrol. I support my mother with communication and planning our trips for guests from Europe. I speak German, Italian and Kyrgyz.",
