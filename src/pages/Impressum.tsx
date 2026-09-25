@@ -53,7 +53,7 @@ const Impressum = () => {\n  const { t } = useLanguage();
               </dt>
               <dd className="text-muted-foreground">002-2024-169-3446</dd>
 
-              <dt className="font-medium text-foreground">{t("{t("Registrierung")}")}</dt>
+              <dt className="font-medium text-foreground">{t("Registrierung")}</dt>
               <dd className="text-muted-foreground">22.04.2024</dd>
 
               <dt className="font-medium text-foreground">TIN</dt>
