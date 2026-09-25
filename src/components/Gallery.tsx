@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 import img1 from "@/assets/gallery/IMG_2518.jpg";
 import img2 from "@/assets/gallery/IMG_2646.jpg";
@@ -254,6 +255,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
 const Gallery = () => {
   const ref = useScrollReveal();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const { t } = useLanguage();
 
   const openLightbox = useCallback((i: number) => setLightboxIdx(i), []);
   const closeLightbox = useCallback(() => setLightboxIdx(null), []);
@@ -267,12 +269,12 @@ const Gallery = () => {
 
           {/* Header */}
           <div className="max-w-2xl mb-10">
-            <span className="eyebrow mb-4 block">Echte Reisefotos</span>
+            <span className="eyebrow mb-4 block">{t("Echte Reisefotos")}</span>
              <h2 className="mb-4 font-display text-4xl leading-tight text-primary-foreground md:text-6xl">
-               Eindrücke aus <span className="italic text-gold">Kirgisistan</span>
+               {t("Eindrücke aus ")}<span className="italic text-gold">{t("Kirgisistan")}</span>
             </h2>
              <p className="text-base leading-relaxed text-primary-foreground/65 md:text-lg">
-              Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle {images.length} Fotos zu sehen.
+              {t("Aufnahmen unserer Reisegäste – unbearbeitet. Klicke auf ein Bild, um alle 63 Fotos zu sehen.")}
             </p>
           </div>
 
@@ -296,7 +298,7 @@ const Gallery = () => {
 
           <div className="mt-6">
              <p className="text-sm text-primary-foreground/55">
-              {images.length} Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht
+              {t("Reisefotos aus Kirgisistan 2025 · Klick auf ein Bild für die Vollansicht")}
             </p>
           </div>
         </div>
