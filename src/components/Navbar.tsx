@@ -1,91 +1,60 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Globe } from "lucide-react";
 
 const travelLinks = [
-  {
-    label: "Kultur Tour",
-    href: "/reisen/kultur",
-  },
-  {
-    label: "Intensiv-Trekking",
-    href: "/reisen/trekking",
-  },
-  {
-    label: "Kyrchyn Tour",
-    href: "/reisen/kyrchyn",
-  },
+  { label: "Kultur Tour", href: "/reisen/kultur" },
+  { label: "Intensiv-Trekking", href: "/reisen/trekking" },
+  { label: "Kyrchyn Tour", href: "/reisen/kyrchyn" },
+];
+
+const languages = [
+  { code: "DE", label: "Deutsch" },
+  { code: "EN", label: "English" },
+  { code: "IT", label: "Italiano" },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [reisenOpen, setReisenOpen] = useState(false);
-
+  const [languageOpen, setLanguageOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 24);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
-
     window.addEventListener("scroll", onScroll);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const onHome = location.pathname === "/";
-
-  const transparent =
-    onHome && !scrolled && !mobileOpen;
+  const transparent = onHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
     if (!location.hash) return;
-
     const id = location.hash.slice(1);
-
     const t = window.setTimeout(() => {
-      document
-        .getElementById(id)
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      document.getElementById(id)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }, 80);
-
     return () => window.clearTimeout(t);
   }, [location.pathname, location.hash]);
 
-  const handleSectionClick = (
-    e: React.MouseEvent,
-    href: string
-  ) => {
+  const handleSectionClick = (e: React.MouseEvent, href: string) => {
     setMobileOpen(false);
-
+    setLanguageOpen(false);
     if (!href.startsWith("/#")) return;
-
     const id = href.slice(2);
 
     if (location.pathname === "/") {
       const element = document.getElementById(id);
-
       if (element) {
         e.preventDefault();
-
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-
-        window.history.replaceState(
-          null,
-          "",
-          href
-        );
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState(null, "", href);
       }
     }
   };
@@ -93,12 +62,59 @@ const Navbar = () => {
   const handleTravelClick = () => {
     setReisenOpen(false);
     setMobileOpen(false);
+    setLanguageOpen(false);
+  };
+
+  const selectLanguage = (code: string) => {
+    setLanguageOpen(false);
+    // Language routing is prepared here; full page translations will be connected next.
+    document.documentElement.lang = code.toLowerCase();
   };
 
   const isTravelPage =
     location.pathname === "/reisen/kultur" ||
     location.pathname === "/reisen/trekking" ||
     location.pathname === "/reisen/kyrchyn";
+
+  const languageMenu = (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => {
+          setLanguageOpen(!languageOpen);
+          setReisenOpen(false);
+        }}
+        className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-300 ${
+          transparent
+            ? "text-white hover:bg-white/10"
+            : "text-foreground hover:bg-muted"
+        }`}
+        aria-label="Sprache auswählen"
+        aria-expanded={languageOpen}
+        aria-haspopup="menu"
+      >
+        <Globe className="h-[18px] w-[18px]" />
+      </button>
+
+      {languageOpen && (
+        <div className="absolute right-0 top-full z-50 mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl">
+          {languages.map((language) => (
+            <button
+              key={language.code}
+              type="button"
+              onClick={() => selectLanguage(language.code)}
+              className="flex w-full items-center justify-between rounded px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
+            >
+              <span>{language.label}</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">
+                {language.code}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
@@ -110,27 +126,17 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto flex w-full max-w-[1400px] items-center px-4 py-3 sm:px-6 sm:py-4">
-
-          {/* LOGO */}
           <Link
             to="/"
             onClick={(e) => {
               setMobileOpen(false);
               setReisenOpen(false);
+              setLanguageOpen(false);
 
               if (location.pathname === "/") {
                 e.preventDefault();
-
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-
-                window.history.replaceState(
-                  null,
-                  "",
-                  "/"
-                );
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                window.history.replaceState(null, "", "/");
               }
             }}
             className="flex shrink-0 flex-col items-start"
@@ -138,33 +144,23 @@ const Navbar = () => {
           >
             <span
               className={`font-display text-[32px] font-medium sm:text-[36px] lg:text-[40px] leading-none tracking-[0.01em] transition-colors duration-700 ${
-                transparent
-                  ? "text-white"
-                  : "text-primary"
+                transparent ? "text-white" : "text-primary"
               }`}
               style={
                 transparent
-                  ? {
-                      textShadow:
-                        "0 1px 14px rgba(0,0,0,0.45)",
-                    }
+                  ? { textShadow: "0 1px 14px rgba(0,0,0,0.45)" }
                   : undefined
               }
             >
               Kereztour
             </span>
-
             <span className="mt-1.5 hidden text-[19px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
               Kirgisistan
             </span>
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
-          <div className="ml-auto hidden items-center gap-8 lg:flex">
-
+          <div className="ml-auto hidden items-center gap-7 lg:flex">
             <div className="flex items-center gap-7">
-
-              {/* REISEN DROPDOWN */}
               <div
                 className="relative"
                 onMouseEnter={() => setReisenOpen(true)}
@@ -172,9 +168,7 @@ const Navbar = () => {
               >
                 <button
                   type="button"
-                  onClick={() =>
-                    setReisenOpen(!reisenOpen)
-                  }
+                  onClick={() => setReisenOpen(!reisenOpen)}
                   className={`flex items-center gap-1.5 whitespace-nowrap text-[15px] font-medium tracking-wide transition-colors duration-500 ${
                     isTravelPage
                       ? "text-[hsl(var(--gold))]"
@@ -184,10 +178,7 @@ const Navbar = () => {
                   } hover:text-[hsl(var(--gold))]`}
                   style={
                     transparent
-                      ? {
-                          textShadow:
-                            "0 1px 10px rgba(0,0,0,0.5)",
-                        }
+                      ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
                       : undefined
                   }
                   aria-expanded={reisenOpen}
@@ -196,18 +187,14 @@ const Navbar = () => {
                   Reisen
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 ${
-                      reisenOpen
-                        ? "rotate-180"
-                        : ""
+                      reisenOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
 
-                {/* DROPDOWN */}
                 {reisenOpen && (
                   <div className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-4">
                     <div className="overflow-hidden rounded-sm border border-border/60 bg-card p-2 shadow-xl">
-
                       {travelLinks.map((link) => (
                         <Link
                           key={link.href}
@@ -222,67 +209,44 @@ const Navbar = () => {
                           {link.label}
                         </Link>
                       ))}
-
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* ÜBER UNS */}
               <Link
                 to="/#ueber-uns"
-                onClick={(e) =>
-                  handleSectionClick(
-                    e,
-                    "/#ueber-uns"
-                  )
-                }
+                onClick={(e) => handleSectionClick(e, "/#ueber-uns")}
                 className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
-                  transparent
-                    ? "text-white/90"
-                    : "text-foreground/85"
+                  transparent ? "text-white/90" : "text-foreground/85"
                 } hover:text-[hsl(var(--gold))]`}
                 style={
                   transparent
-                    ? {
-                        textShadow:
-                          "0 1px 10px rgba(0,0,0,0.5)",
-                      }
+                    ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
                     : undefined
                 }
               >
                 Über uns
               </Link>
 
-              {/* KONTAKT */}
               <Link
                 to="/#kontakt"
-                onClick={(e) =>
-                  handleSectionClick(
-                    e,
-                    "/#kontakt"
-                  )
-                }
+                onClick={(e) => handleSectionClick(e, "/#kontakt")}
                 className={`whitespace-nowrap text-[17px] font-medium tracking-wide transition-colors duration-500 ${
-                  transparent
-                    ? "text-white/90"
-                    : "text-foreground/85"
+                  transparent ? "text-white/90" : "text-foreground/85"
                 } hover:text-[hsl(var(--gold))]`}
                 style={
                   transparent
-                    ? {
-                        textShadow:
-                          "0 1px 10px rgba(0,0,0,0.5)",
-                      }
+                    ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
                     : undefined
                 }
               >
                 Kontakt
               </Link>
-
             </div>
 
-            {/* BOOKING CTA */}
+            {languageMenu}
+
             <Link
               to="/buchen"
               className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[hsl(var(--gold))] px-5 py-2.5 text-sm font-semibold text-[#062c26] shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-md"
@@ -290,70 +254,51 @@ const Navbar = () => {
               Reise buchen
               <ArrowRight className="h-4 w-4" />
             </Link>
-
           </div>
 
-          {/* MOBILE MENU BUTTON */}
-          <button
-            className={`ml-auto lg:hidden transition-colors duration-500 ${
-              transparent
-                ? "text-white"
-                : "text-primary"
-            }`}
-            style={
-              transparent
-                ? {
-                    textShadow:
-                      "0 1px 10px rgba(0,0,0,0.5)",
-                  }
-                : undefined
-            }
-            onClick={() => {
-              setMobileOpen(!mobileOpen);
-              setReisenOpen(false);
-            }}
-            aria-label="Menü"
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? (
-              <X size={24} />
-            ) : (
-              <Menu size={24} />
-            )}
-          </button>
-
+          <div className="ml-auto flex items-center gap-2 lg:hidden">
+            {languageMenu}
+            <button
+              className={`transition-colors duration-500 ${
+                transparent ? "text-white" : "text-primary"
+              }`}
+              style={
+                transparent
+                  ? { textShadow: "0 1px 10px rgba(0,0,0,0.5)" }
+                  : undefined
+              }
+              onClick={() => {
+                setMobileOpen(!mobileOpen);
+                setReisenOpen(false);
+                setLanguageOpen(false);
+              }}
+              aria-label="Menü"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
-        {/* MOBILE NAVIGATION */}
         {mobileOpen && (
           <div className="border-t border-border/50 bg-card lg:hidden">
-
             <div className="px-6 py-3">
-
-              {/* REISEN */}
               <div className="border-b border-border/50">
-
                 <button
                   type="button"
-                  onClick={() =>
-                    setReisenOpen(!reisenOpen)
-                  }
+                  onClick={() => setReisenOpen(!reisenOpen)}
                   className="flex w-full items-center justify-between py-3.5 text-base font-medium text-foreground"
                 >
                   <span>Reisen</span>
-
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 ${
-                      reisenOpen
-                        ? "rotate-180"
-                        : ""
+                      reisenOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
 
                 {reisenOpen && (
                   <div className="pb-3 pl-3">
-
                     {travelLinks.map((link) => (
                       <Link
                         key={link.href}
@@ -364,45 +309,28 @@ const Navbar = () => {
                         {link.label}
                       </Link>
                     ))}
-
                   </div>
                 )}
-
               </div>
 
-              {/* ÜBER UNS */}
               <Link
                 to="/#ueber-uns"
-                onClick={(e) =>
-                  handleSectionClick(
-                    e,
-                    "/#ueber-uns"
-                  )
-                }
+                onClick={(e) => handleSectionClick(e, "/#ueber-uns")}
                 className="block border-b border-border/50 py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
               >
                 Über uns
               </Link>
 
-              {/* KONTAKT */}
               <Link
                 to="/#kontakt"
-                onClick={(e) =>
-                  handleSectionClick(
-                    e,
-                    "/#kontakt"
-                  )
-                }
+                onClick={(e) => handleSectionClick(e, "/#kontakt")}
                 className="block py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
               >
                 Kontakt
               </Link>
-
             </div>
-
           </div>
         )}
-
       </nav>
     </div>
   );
