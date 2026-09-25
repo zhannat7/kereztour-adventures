@@ -16,7 +16,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
       <div className="mb-8 md:mb-10">
         <span className="eyebrow mb-4 block">{t("Registrierung")}</span>
         <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
-          {t("Offizieller Registrierungsnachweis")}
+          {t("{t("Offizieller Registrierungsnachweis")}")}
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
           Kereztour wird von einem in Kirgisistan registrierten Einzelunternehmen
@@ -69,7 +69,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            {t("Originalzertifikat ansehen")}
+            {t("{t("Originalzertifikat ansehen")}")}
             <ExternalLink className="h-4 w-4" />
           </a>
           <Link
@@ -82,12 +82,12 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
 
         <div className="mt-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            {t("Vorschau des Zertifikats")}
+            {t("{t("Vorschau des Zertifikats")}")}
           </p>
 
           <div className="md:hidden border border-border bg-muted/30 p-5">
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.
+              {t("Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.")}
             </p>
             <a
               href="/Certificate.pdf"
