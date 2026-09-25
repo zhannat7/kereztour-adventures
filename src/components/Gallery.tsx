@@ -66,6 +66,72 @@ import img61 from "@/assets/gallery/81.png";
 import img62 from "@/assets/gallery/82.png";
 import img63 from "@/assets/gallery/91.png";
 
+const alts = [
+  "Gäste lauschen einer Musikeinlage in einer geschmückten Jurte",
+  "Reisende am hölzernen Tor einer Jurten-Lodge auf grüner Bergwiese",
+  "Wanderer mit Blick über ein weites Hochgebirgstal",
+  "Frisch gebackenes Traditionsgebäck mit Marmelade wird gereicht",
+  "Wäsche trocknet auf der Leine vor blauem Himmel und Bergen",
+  "Reich verzierter Jurten-Innenraum mit Teppichen und gedecktem Tisch",
+  "Gäste ruhen auf einer Bank vor einem bunten Wandgemälde",
+  "Gruppenfoto mit Adlerjäger und seinem Steppenadler in den Bergen",
+  "Grüner Flusslauf in einer schluchtenartigen Berglandschaft",
+  "Reiter auf seinem Pferd auf einem Dorfweg",
+  "Reisende mit ausgebreiteten Armen vor den roten Felswänden von Jeti-Ögüz",
+  "Wandergruppe an den rot-gestreiften Felsformationen von Jeti-Ögüz",
+  "Waldweg mit Blick auf schneebedeckte Gipfel",
+  "Wanderer auf einem Wurzelpfad durch Tannenwald",
+  "Panoramablick über ein grünes Tal mit Nadelwald",
+  "Wandergruppe rastet auf Baumstämmen im Wald",
+  "Paar wandert über eine Bergwiese mit Gipfeln im Hintergrund",
+  "Wanderer mit rotem Rucksack vor einem Bergpanorama",
+  "Rot dekoriertes Jurten-Innenzimmer mit festlich gedecktem Tisch",
+  "Die blau-bunte Holzmoschee von Karakol",
+  "Die Holzkirche von Karakol zwischen hohen Bäumen",
+  "Reisende überqueren eine rote Brücke über einen Gletscherfluss",
+  "Warmes Heilbad-Becken im Felsengarten einer Thermalquelle",
+  "Gruppe auf einem Ausflugsboot auf dem Issyk-Kul-See",
+  "Gemeinsames Abendessen der Reisegruppe im Speisesaal",
+  "Gruppe vor dem historischen Burana-Turm",
+  "Weiße Jurten auf einer grünen Hochgebirgsweide",
+  "Adlerjäger hält seinen goldenen Adler auf dem Arm",
+  "Reiter hebt den Hut vor einer markanten Bergkulisse",
+  "Wanderer auf einem Felsgrat im Gegenlicht der Sonne",
+  "Wanderin in der rot leuchtenden Schlucht Skazka",
+  "Kletterer auf einem roten Felsen über dem Tal",
+  "Wanderer zwischen bizarren roten Felsformationen",
+  "Sonnenuntergang über der Horizontlinie des Sees",
+  "Blumenbeete und Sonnenschirme am Ufer des Issyk-Kul",
+  "Reisende wandern durch die Canyonlandschaft Skazka",
+  "Reisende rastet auf einem Baumstamm vor rotem Fels",
+  "Jurten-Camp auf grüner Wiese mit historischem Holzwagen",
+  "Holzschaukel über einer saftigen Bergwiese",
+  "Pferdekarawane trägt Gepäck über eine Hochweide",
+  "Wasserfall stürzt in eine grüne Schlucht",
+  "Blick auf ein Flusstal mit schneebedeckten Gipfeln",
+  "Pferde grasen auf einer Hochfläche vor Schneegipfeln",
+  "Gast badet in einer natürlichen heißen Quelle im Fels",
+  "Gäste entspannen in einer Höhlenquelle mit Blick auf spitze Felsen",
+  "Petroglyphen – prähistorische Felszeichnungen von Cholpon-Ata",
+  "Familie isst zusammen in einem gemütlich eingerichteten Wohnzimmer",
+  "Verkäuferin an einem Marktstand mit Trockenfrüchten und Gewürzen",
+  "Karte der Reiseroute rund um den Issyk-Kul-See",
+  "Denkmal mit historischem Steinmühlstein",
+  "Gäste posieren vor einer bunt bemalten Jurten-Fassade",
+  "Alte Steinfiguren (Balbals) in einem Park",
+  "Reisegruppe bei einem kirgisischen Festmahl mit Brot und Speisen",
+  "Weiße Jurten-Reihe am Fuß grüner Berge",
+  "Blick durch ein Holzfenster auf ein grünes Bergtal",
+  "Paar vor den rot leuchtenden Felsen von Skazka",
+  "Fotografen an roten Felswänden im Sonnenlicht",
+  "Reisende macht ein Selfie vor der Felslandschaft Skazka",
+  "Wasserfall in einer steilen, nebligen Felsenschlucht",
+  "Gäste essen gemeinsam in einer rot dekorierten Jurte",
+  "Parkanlage mit Bänken und Jurten im Hintergrund",
+  "Marktstand mit getrockneten Früchten und Nüssen",
+  "Verkäuferin zwischen frischem Fladenbrot auf dem Basar",
+];
+
 const images = [
   img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
   img11, img12, img13, img14, img15, img16, img17, img18, img19, img20,
@@ -74,7 +140,7 @@ const images = [
   img41, img42, img43, img44, img45, img46, img47, img48, img49, img50,
   img51, img52, img53, img54, img55, img56, img57, img58, img59, img60,
   img61, img62, img63,
-].map((src, i) => ({ src, alt: `Kirgisistan ${i + 1}` }));
+].map((src, i) => ({ src, alt: alts[i] ?? `Reisefoto aus Kirgisistan ${i + 1}` }));
 
 const VISIBLE = 12; // 2 Zeilen · 6 Spalten · Instagram-große Fotos
 
@@ -116,17 +182,19 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
       {/* Close */}
       <button
         onClick={onClose}
+        aria-label="Fotogalerie schließen"
         className="absolute top-4 right-4 z-30 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition"
       >
-        <X className="h-6 w-6" />
+        <X className="h-6 w-6" aria-hidden="true" />
       </button>
 
       {/* Prev */}
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        aria-label="Vorheriges Foto"
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <ChevronLeft className="h-6 w-6" aria-hidden="true" />
       </button>
 
       {/* Hauptbild – immer vorne */}
@@ -154,9 +222,10 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
       {/* Next */}
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}
+        aria-label="Nächstes Foto"
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition"
       >
-        <ChevronRight className="h-6 w-6" />
+        <ChevronRight className="h-6 w-6" aria-hidden="true" />
       </button>
 
       {/* Thumbnails – ganz unten, unter dem Hauptbild */}
