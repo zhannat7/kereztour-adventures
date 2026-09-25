@@ -1,10 +1,17 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://kereztour.com",
+const allowedOrigins = new Set([
+  "https://kereztour.com",
+  "https://www.kereztour.com",
+]);
+
+const getCorsHeaders = (origin: string | null) => ({
+  "Access-Control-Allow-Origin": origin && allowedOrigins.has(origin)
+    ? origin
+    : "https://kereztour.com",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+});
 
 type BookingRequest = {
   name?: string;
@@ -17,10 +24,10 @@ type BookingRequest = {
   notes?: string | null;
 };
 
-const json = (body: unknown, status = 200) =>
+const json = (body: unknown, status = 200, origin: string | null = null) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    headers: { ...getCorsHeaders(origin), "Content-Type": "application/json" },
   });
 
 const NOTIFY_EMAIL = "sarinasadirovna@gmail.com";
@@ -61,12 +68,14 @@ const isDate = (value: unknown): value is string =>
   typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 
 Deno.serve(async (req) => {
+  const origin = req.headers.get("origin");
+
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: getCorsHeaders(origin) });
   }
 
   if (req.method !== "POST") {
-    return json({ error: "Method not allowed" }, 405);
+    return json({ error: "Method not allowed" }, 405, origin);
   }
 
   try {
@@ -81,15 +90,15 @@ Deno.serve(async (req) => {
     const tier = body.tier?.trim() || null;
     const notes = body.notes?.trim() || null;
 
-    if (name.length < 2 || name.length > 200) return json({ error: "Ungültiger Name." }, 400);
+    if (name.length < 2 || name.length > 200) return json({ error: "Ungültiger Name." }, 400, origin);
     if (email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return json({ error: "Ungültige E-Mail-Adresse." }, 400);
+      return json({ error: "Ungültige E-Mail-Adresse." }, 400, origin);
     }
-    if (phone.length < 3 || phone.length > 50) return json({ error: "Ungültige Telefonnummer." }, 400);
+    if (phone.length < 3 || phone.length > 50) return json({ error: "Ungültige Telefonnummer." }, 400, origin);
     if (!Number.isInteger(persons) || persons < 1 || persons > 20) {
-      return json({ error: "Ungültige Personenanzahl." }, 400);
+      return json({ error: "Ungültige Personenanzahl." }, 400, origin);
     }
-    if (!isDate(travelDate)) return json({ error: "Ungültiges Reisedatum." }, 400);
+    if (!isDate(travelDate)) return json({ error: "Ungültiges Reisedatum." }, 400, origin);
 
     const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
       kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
@@ -98,16 +107,16 @@ Deno.serve(async (req) => {
     };
 
     const selected = tours[tour];
-    if (!selected) return json({ error: "Ungültige Reise." }, 400);
+    if (!selected) return json({ error: "Ungültige Reise." }, 400, origin);
 
     let price = selected.price;
     if (selected.hasTiers) {
       if (tier !== "economy" && tier !== "comfort") {
-        return json({ error: "Bitte wähle eine Reiseoption." }, 400);
+        return json({ error: "Bitte wähle eine Reiseoption." }, 400, origin);
       }
       price = tier === "economy" ? 990 : 1490;
     } else if (tier !== "standard") {
-      return json({ error: "Ungültige Reiseoption." }, 400);
+      return json({ error: "Ungültige Reiseoption." }, 400, origin);
     }
 
     const totalPrice = persons * price;
@@ -115,7 +124,7 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceRoleKey) {
-      return json({ error: "Serverkonfiguration fehlt." }, 500);
+      return json({ error: "Serverkonfiguration fehlt." }, 500, origin);
     }
 
     const admin = createClient(supabaseUrl, serviceRoleKey, {
@@ -135,7 +144,7 @@ Deno.serve(async (req) => {
       );
 
       if (!selectedDate) {
-        return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409);
+        return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
       }
 
       const availablePlaces = Number(selectedDate.available_places);
@@ -144,7 +153,7 @@ Deno.serve(async (req) => {
           error: availablePlaces > 0
             ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
             : "Dieser Reisetermin ist bereits ausgebucht.",
-        }, 409);
+        }, 409, origin);
       }
     }
 
@@ -180,9 +189,9 @@ Deno.serve(async (req) => {
        <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
     );
 
-    return json({ success: true });
+    return json({ success: true }, 200, origin);
   } catch (error) {
     console.error("create-booking error:", error);
-    return json({ error: "Buchungsanfrage konnte nicht gesendet werden." }, 500);
+    return json({ error: "Buchungsanfrage konnte nicht gespeichert werden." }, 500, origin);
   }
 });
