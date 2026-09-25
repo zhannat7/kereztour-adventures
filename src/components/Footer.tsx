@@ -1,6 +1,7 @@
 import { Mail, Phone, MessageCircle, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const tourLinks = [
   { label: "Kultur Tour", to: "/reisen/kultur" },
@@ -20,7 +21,7 @@ const legalLinks = [
   { label: "Registrierungsnachweis", to: "/registrierung" },
 ];
 
-const Footer = () => (
+const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
   <footer id="kontakt" className="bg-primary text-primary-foreground">
     <div className="container mx-auto max-w-[1400px] px-4 sm:px-6 py-14 md:py-16">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
@@ -33,7 +34,7 @@ const Footer = () => (
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Reisen</h3>
+          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">{t("Reisen")}</h3>
           <ul className="space-y-3 text-sm">
             {tourLinks.map((l) => (
               <li key={l.to}>
@@ -46,7 +47,7 @@ const Footer = () => (
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Service</h3>
+          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">{t("Service")}</h3>
           <ul className="space-y-3 text-sm">
             {serviceLinks.map((l) => (
               <li key={l.to}>
@@ -59,7 +60,7 @@ const Footer = () => (
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Rechtliches</h3>
+          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">{t("Rechtliches")}</h3>
           <ul className="space-y-3 text-sm">
             {legalLinks.map((l) => (
               <li key={l.to}>
@@ -72,7 +73,7 @@ const Footer = () => (
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Kontakt</h3>
+          <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">{t("Kontakt")}</h3>
           <ul className="space-y-3.5 text-sm">
             <li>
               <a href="mailto:sarinasadirovna@gmail.com" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
@@ -105,7 +106,7 @@ const Footer = () => (
 
       <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-primary-foreground/10 pt-8 text-xs text-primary-foreground/40 sm:flex-row">
         <p>© 2026 Kereztour. Alle Rechte vorbehalten.</p>
-        <p>Kleine Gruppen · Lokale Partner · Faire Preise</p>
+        <p>{t("Kleine Gruppen · Lokale Partner · Faire Preise")}</p>
       </div>
     </div>
   </footer>
