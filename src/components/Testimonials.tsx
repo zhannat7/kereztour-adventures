@@ -36,7 +36,7 @@ const Testimonials = () => {
 
   return (
     <section className="bg-background py-14 md:py-20">
-      <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
+      <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-[1400px]">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">Gästestimmen</span>
@@ -55,7 +55,7 @@ const Testimonials = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reviews.map((r) => (
             <figure
               key={r.name}
