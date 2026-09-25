@@ -136,7 +136,7 @@ const CtaBand = () => {
   return (
     <section className="bg-background py-14 md:py-20">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-[1600px]">
-        <div className="relative overflow-hidden border-y border-gold/35 bg-gradient-primary px-8 py-14 md:px-16 md:py-20 shadow-lift">
+        <div className="relative overflow-hidden border-y border-gold/35 bg-gradient-primary px-5 py-10 sm:px-8 sm:py-14 md:px-16 md:py-20 shadow-lift">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
               <h2 className="mb-5 font-display text-4xl leading-tight text-primary-foreground md:text-6xl">
@@ -250,7 +250,7 @@ const CtaBand = () => {
                   {errors.tour && <p className="text-sm text-destructive">{errors.tour.message}</p>}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="inquiry-from">Reisebeginn *</Label>
                     <Input id="inquiry-from" type="date" {...register("dateFrom")} />
