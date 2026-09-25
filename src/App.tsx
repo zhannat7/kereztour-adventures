@@ -20,6 +20,7 @@ import Kyrchyn from "./pages/reisen/Kyrchyn.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { HelmetProvider } from "react-helmet-async";
 import RouteSeo from "./components/RouteSeo";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
   </HelmetProvider>
+  </LanguageProvider>
 );
 
 export default App;
