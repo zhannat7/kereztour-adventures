@@ -22,9 +22,9 @@ const legalLinks = [
 
 const Footer = () => (
   <footer id="kontakt" className="bg-primary text-primary-foreground">
-    <div className="container mx-auto max-w-[1600px] px-6 py-14 md:py-16">
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
-        <div className="md:col-span-4">
+    <div className="container mx-auto max-w-[1400px] px-4 sm:px-6 py-14 md:py-16">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-4">
           <h2 className="mb-5 font-display text-5xl font-normal">Kereztour</h2>
           <p className="max-w-sm text-sm leading-relaxed text-primary-foreground/60">
             Persönlich geführte Reisen durch Kirgisistan – geplant von einer Einheimischen,
@@ -32,7 +32,7 @@ const Footer = () => (
           </p>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Reisen</h3>
           <ul className="space-y-3 text-sm">
             {tourLinks.map((l) => (
@@ -45,7 +45,7 @@ const Footer = () => (
           </ul>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Service</h3>
           <ul className="space-y-3 text-sm">
             {serviceLinks.map((l) => (
@@ -58,7 +58,7 @@ const Footer = () => (
           </ul>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Rechtliches</h3>
           <ul className="space-y-3 text-sm">
             {legalLinks.map((l) => (
@@ -71,7 +71,7 @@ const Footer = () => (
           </ul>
         </div>
 
-        <div className="md:col-span-4">
+        <div className="lg:col-span-4">
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">Kontakt</h3>
           <ul className="space-y-3.5 text-sm">
             <li>
