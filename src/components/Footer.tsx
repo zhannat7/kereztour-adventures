@@ -21,15 +21,17 @@ const legalLinks = [
   { label: "Registrierungsnachweis", to: "/registrierung" },
 ];
 
-const Footer = () => {\n  const { t } = useLanguage();\n\n  return (
+const Footer = () => {
+  const { t } = useLanguage();
+
+  return (
   <footer id="kontakt" className="bg-primary text-primary-foreground">
     <div className="container mx-auto max-w-[1400px] px-4 sm:px-6 py-14 md:py-16">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-4">
           <h2 className="mb-5 font-display text-5xl font-normal">Kereztour</h2>
           <p className="max-w-sm text-sm leading-relaxed text-primary-foreground/60">
-            Persönlich geführte Reisen durch Kirgisistan – geplant von einer Einheimischen,
-            gedacht für Menschen, die mehr sehen wollen als Sehenswürdigkeiten.
+            {t("Persönlich geführte Reisen durch Kirgisistan – geplant von einer Einheimischen, gedacht für Menschen, die mehr sehen wollen als Sehenswürdigkeiten.")}
           </p>
         </div>
 
