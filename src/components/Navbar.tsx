@@ -109,7 +109,7 @@ const Navbar = () => {
             : "bg-card/95 backdrop-blur-xl border-border shadow-soft"
         }`}
       >
-        <div className="container mx-auto flex w-full max-w-[1600px] items-center px-6 py-3.5 sm:py-4">
+        <div className="container mx-auto flex w-full max-w-[1400px] items-center px-4 py-3 sm:px-6 sm:py-4">
 
           {/* LOGO */}
           <Link
@@ -137,7 +137,7 @@ const Navbar = () => {
             aria-label="Kereztour – zur Startseite"
           >
             <span
-              className={`font-display text-[40px] font-medium leading-none tracking-[0.01em] transition-colors duration-700 ${
+              className={`font-display text-[32px] font-medium sm:text-[36px] lg:text-[40px] leading-none tracking-[0.01em] transition-colors duration-700 ${
                 transparent
                   ? "text-white"
                   : "text-primary"
