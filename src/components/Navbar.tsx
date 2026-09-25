@@ -229,31 +229,52 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Globe
-                className={`h-5 w-5 ${transparent ? "text-white" : "text-foreground"}`}
-                strokeWidth={1.8}
-              />
-              <div className={`flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold ${
-                transparent
-                  ? "border-white/30 text-white"
-                  : "border-border text-foreground"
-              }`}>
-                {languages.map((language, index) => (
-                  <span key={language.code} className="flex items-center">
+            <div
+              className="group relative z-[100] shrink-0"
+              onMouseEnter={() => setLanguageOpen(true)}
+              onMouseLeave={() => setLanguageOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setReisenOpen(false);
+                  setLanguageOpen((open) => !open);
+                }}
+                className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors ${
+                  transparent
+                    ? "text-white hover:bg-white/10"
+                    : "text-foreground hover:bg-muted"
+                }`}
+                aria-label="Sprache auswählen"
+                aria-expanded={languageOpen}
+              >
+                <Globe className="h-5 w-5" strokeWidth={1.8} />
+              </button>
+
+              <div
+                className={`absolute right-0 top-full pt-2 transition-all duration-150 ${
+                  languageOpen
+                    ? "visible translate-y-0 opacity-100"
+                    : "invisible -translate-y-1 opacity-0"
+                }`}
+                role="menu"
+              >
+                <div className="min-w-[130px] rounded-lg border border-border bg-background p-1.5 shadow-lg">
+                  {languages.map((language) => (
                     <button
+                      key={language.code}
                       type="button"
                       onClick={() => selectLanguage(language.code)}
-                      className="rounded px-1.5 py-0.5 transition-colors hover:bg-muted hover:text-primary"
-                      aria-label={language.label}
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted hover:text-primary"
+                      role="menuitem"
                     >
-                      {language.code}
+                      <span className="w-7">{language.code}</span>
+                      <span>{language.label}</span>
                     </button>
-                    {index < languages.length - 1 && (
-                      <span className={transparent ? "text-white/40" : "text-muted-foreground/50"}>/</span>
-                    )}
-                  </span>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
