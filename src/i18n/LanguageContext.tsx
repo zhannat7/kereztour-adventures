@@ -354,6 +354,9 @@ const translations: Record<Language, Record<string, string>> = {
     "Anfrage konnte nicht gesendet werden: {message}": "Enquiry could not be sent: {message}",
     "Weniger Personen": "Fewer people",
     "Mehr Personen": "More people",
+    "Keine Buchungsdaten gefunden.": "No booking data found.",
+    "Certificate of State Registration of an": "Certificate of State Registration of an",
+    "Full": "Full",
   },
   IT: {
     "Reisen": "Viaggi",
@@ -706,6 +709,9 @@ const translations: Record<Language, Record<string, string>> = {
     "Anfrage konnte nicht gesendet werden: {message}": "Impossibile inviare la richiesta: {message}",
     "Weniger Personen": "Meno persone",
     "Mehr Personen": "Più persone",
+    "Keine Buchungsdaten gefunden.": "Dati di prenotazione non trovati.",
+    "Certificate of State Registration of an": "Certificato di registrazione statale di un",
+    "Full": "Completo",
   },
 };
 
