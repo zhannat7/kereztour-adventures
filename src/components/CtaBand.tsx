@@ -31,6 +31,7 @@ const OWNER_EMAIL = "sarinasadirovna@gmail.com";
 const TOUR_OPTIONS = [
   "Kultur Tour",
   "Intensiv-Trekking",
+  "Kyrchyn Tour",
 ] as const;
 
 const inquirySchema = (t: (text: string) => string) => z.object({
@@ -75,6 +76,15 @@ const CtaBand = () => {
 
   const persons = watch("persons");
   const tour = watch("tour");
+
+  const focusNextField = (id: string) => {
+    requestAnimationFrame(() => {
+      const element = document.getElementById(id) as HTMLElement | null;
+      if (!element) return;
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.setTimeout(() => element.focus(), 250);
+    });
+  };
 
   const openDialog = () => {
     setSubmitted(false);
@@ -201,6 +211,13 @@ const CtaBand = () => {
                   <Input
                     id="inquiry-name"
                     {...register("name")}
+                    enterKeyHint="next"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        focusNextField("inquiry-email");
+                      }
+                    }}
                     placeholder={t("Vor- und Nachname")}
                   />
                   {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
@@ -212,6 +229,13 @@ const CtaBand = () => {
                     id="inquiry-email"
                     type="email"
                     {...register("email")}
+                    enterKeyHint="next"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        focusNextField("inquiry-tour");
+                      }
+                    }}
                     placeholder="max@beispiel.de"
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
@@ -219,8 +243,14 @@ const CtaBand = () => {
 
                 <div className="space-y-2">
                   <Label>{t("Gewünschte Reise")} *</Label>
-                  <Select value={tour} onValueChange={(v) => setValue("tour", v, { shouldValidate: true })}>
-                    <SelectTrigger className="w-full">
+                  <Select
+                    value={tour}
+                    onValueChange={(v) => {
+                      setValue("tour", v, { shouldValidate: true });
+                      focusNextField("inquiry-from");
+                    }}
+                  >
+                    <SelectTrigger id="inquiry-tour" className="w-full">
                       <SelectValue placeholder={t("Bitte wählen")} />
                     </SelectTrigger>
                     <SelectContent>
@@ -237,12 +267,28 @@ const CtaBand = () => {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="inquiry-from">{t("Reisebeginn")} *</Label>
-                    <Input id="inquiry-from" type="date" {...register("dateFrom")} />
+                    <Input
+                      id="inquiry-from"
+                      type="date"
+                      {...register("dateFrom")}
+                      onChange={(event) => {
+                        register("dateFrom").onChange(event);
+                        if (event.target.value) focusNextField("inquiry-to");
+                      }}
+                    />
                     {errors.dateFrom && <p className="text-sm text-destructive">{errors.dateFrom.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="inquiry-to">{t("Reiseende")} *</Label>
-                    <Input id="inquiry-to" type="date" {...register("dateTo")} />
+                    <Input
+                      id="inquiry-to"
+                      type="date"
+                      {...register("dateTo")}
+                      onChange={(event) => {
+                        register("dateTo").onChange(event);
+                        if (event.target.value) focusNextField("inquiry-message");
+                      }}
+                    />
                     {errors.dateTo && <p className="text-sm text-destructive">{errors.dateTo.message}</p>}
                   </div>
                 </div>
