@@ -358,6 +358,9 @@ const translations: Record<Language, Record<string, string>> = {
     "Certificate of State Registration of an": "Certificate of State Registration of an",
     "Full": "Full",
     "Individual Entrepreneur": "Individual Entrepreneur",
+    "Der Alltag hat zwar wieder begonnen, aber ich denke noch oft an die beinahe unendliche Weite von Kirgistan, an Pferde und Jurten, vor allem aber an die freundlichen Menschen. Du hast die Reise perfekt geplant und organisiert – danke!": "Everyday life has started again, but I still often think about the almost endless vastness of Kyrgyzstan, the horses and yurts, and above all the friendly people. You planned and organised the trip perfectly – thank you!",
+    "Es war sehr schön und beeindruckend Deine Heimat kennen zu lernen. Unsere Bekannten waren sehr begeistert. Eure Gastfreundschaft ist großartig und tut gut unserem Herzen. Nochmals vielen Dank!": "It was wonderful and impressive to get to know your homeland. Our friends were very enthusiastic. Your hospitality is wonderful and warms our hearts. Thank you again!",
+    "Kirgisistan hat uns völlig überrascht – die Herzlichkeit der Menschen, die unberührte Natur, das köstliche Essen. Wir kommen definitiv wieder!": "Kyrgyzstan completely surprised us – the warmth of the people, the untouched nature and the delicious food. We will definitely come back!",
   },
   IT: {
     "Reisen": "Viaggi",
@@ -714,6 +717,9 @@ const translations: Record<Language, Record<string, string>> = {
     "Certificate of State Registration of an": "Certificato di registrazione statale di un",
     "Full": "Completo",
     "Individual Entrepreneur": "Imprenditore individuale",
+    "Der Alltag hat zwar wieder begonnen, aber ich denke noch oft an die beinahe unendliche Weite von Kirgistan, an Pferde und Jurten, vor allem aber an die freundlichen Menschen. Du hast die Reise perfekt geplant und organisiert – danke!": "La vita quotidiana è ricominciata, ma penso ancora spesso agli spazi quasi infiniti del Kirghizistan, ai cavalli e alle yurte e soprattutto alle persone così gentili. Hai organizzato e pianificato il viaggio perfettamente: grazie!",
+    "Es war sehr schön und beeindruckend Deine Heimat kennen zu lernen. Unsere Bekannten waren sehr begeistert. Eure Gastfreundschaft ist großartig und tut gut unserem Herzen. Nochmals vielen Dank!": "È stato bellissimo e impressionante conoscere la tua terra. I nostri amici ne sono rimasti entusiasti. La vostra ospitalità è meravigliosa e ci fa bene al cuore. Grazie ancora!",
+    "Kirgisistan hat uns völlig überrascht – die Herzlichkeit der Menschen, die unberührte Natur, das köstliche Essen. Wir kommen definitiv wieder!": "Il Kirghizistan ci ha sorpreso completamente: il calore delle persone, la natura incontaminata e il cibo delizioso. Torneremo sicuramente!",
   },
 };
 
