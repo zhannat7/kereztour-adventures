@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
@@ -73,12 +73,171 @@ const statusStyle: Record<string, string> = {
 };
 const statusLabel: Record<string, string> = { pending: "Offen", confirmed: "Bestätigt", cancelled: "Storniert", open: "Offen", full: "Ausgebucht" };
 
+const BookingMessageModal = ({
+  booking,
+  onClose,
+  onSent,
+}: {
+  booking: Booking;
+  onClose: () => void;
+  onSent: () => void;
+}) => {
+  const [subject, setSubject] = useState("Kereztour – deine Buchung ist bestätigt");
+  const [message, setMessage] = useState("");
+  const [confirmBooking, setConfirmBooking] = useState(true);
+  const [suggestAppointment, setSuggestAppointment] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const defaultMessage = useMemo(() => {
+    const greeting = `Hallo ${booking.name},`;
+    const intro = confirmBooking
+      ? "vielen Dank für deine Buchungsanfrage bei Kereztour. Wir freuen uns, dir mitteilen zu können, dass deine Buchung bestätigt ist."
+      : "vielen Dank für deine Buchungsanfrage bei Kereztour. Wir melden uns gerne mit den nächsten Schritten bei dir.";
+    const details = [
+      "",
+      "Deine Buchungsdetails:",
+      `Reise: ${booking.tour ?? "–"}`,
+      `Reisedatum: ${fmt(booking.travel_date)}`,
+      `Personen: ${booking.persons}`,
+      `Reisevariante: ${booking.tier === "standard" ? "Standard" : booking.tier}`,
+      `Gesamtpreis: ${booking.total_price.toLocaleString("de-DE")} €`,
+    ];
+    const appointment = suggestAppointment && appointmentDate && appointmentTime
+      ? [
+          "",
+          "Gerne würden wir noch einige Details mit dir besprechen.",
+          `Termin: ${fmt(appointmentDate)} um ${appointmentTime} Uhr`,
+          "Falls dieser Termin nicht passt, schlage uns gerne einen anderen Termin vor.",
+        ]
+      : [
+          "",
+          "Falls du noch Fragen hast oder weitere Details besprechen möchtest, melde dich gerne bei uns.",
+        ];
+    return [
+      greeting,
+      "",
+      intro,
+      ...details,
+      ...appointment,
+      "",
+      "Liebe Grüße",
+      "Sarina",
+      "Kereztour",
+    ].join("\n");
+  }, [booking, confirmBooking, suggestAppointment, appointmentDate, appointmentTime]);
+
+  useEffect(() => {
+    setMessage(defaultMessage);
+  }, [defaultMessage]);
+
+  const send = async () => {
+    if (!message.trim() || sending) return;
+    setSending(true);
+    const { error } = await supabase.functions.invoke("send-booking-email", {
+      body: {
+        bookingId: booking.id,
+        to: booking.email,
+        subject: subject.trim(),
+        message: message.trim(),
+        confirmBooking,
+      },
+    });
+    setSending(false);
+    if (error) {
+      let detail = "Die E-Mail konnte nicht gesendet werden.";
+      try {
+        const context = await error.context?.json?.();
+        if (context?.error) detail = context.error;
+      } catch {}
+      toast.error(detail);
+      return;
+    }
+    toast.success("E-Mail wurde gesendet");
+    onSent();
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-md border border-border bg-card shadow-xl">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <div>
+            <h2 className="font-display text-2xl text-primary">E-Mail an {booking.name}</h2>
+            <p className="text-sm text-muted-foreground">{booking.email}</p>
+          </div>
+          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Schließen">×</button>
+        </div>
+
+        <div className="space-y-4 p-6">
+          <div className="rounded-sm bg-muted p-3 text-sm">
+            <strong>{booking.tour ?? "Reise"}</strong> · {fmt(booking.travel_date)} · {booking.persons} Personen · {booking.total_price.toLocaleString("de-DE")} €
+          </div>
+
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input type="checkbox" checked={confirmBooking} onChange={(e) => setConfirmBooking(e.target.checked)} />
+            Buchung als bestätigt markieren
+          </label>
+
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input type="checkbox" checked={suggestAppointment} onChange={(e) => setSuggestAppointment(e.target.checked)} />
+            Gesprächstermin vorschlagen
+          </label>
+
+          {suggestAppointment && (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <label className="text-xs text-muted-foreground">
+                Datum
+                <input className={input} type="date" value={appointmentDate} onChange={(e) => setAppointmentDate(e.target.value)} />
+              </label>
+              <label className="text-xs text-muted-foreground">
+                Uhrzeit
+                <input className={input} type="time" value={appointmentTime} onChange={(e) => setAppointmentTime(e.target.value)} />
+              </label>
+            </div>
+          )}
+
+          <label className="block text-sm font-medium">
+            Betreff
+            <input className={`${input} mt-1`} value={subject} onChange={(e) => setSubject(e.target.value)} />
+          </label>
+
+          <label className="block text-sm font-medium">
+            Nachricht
+            <textarea
+              className={`${input} mt-1 min-h-[360px] resize-y leading-6`}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </label>
+
+          <p className="text-xs text-muted-foreground">
+            Du kannst die Nachricht vor dem Senden vollständig ändern. Die E-Mail wird erst nach Klick auf „E-Mail senden“ verschickt.
+          </p>
+
+          <div className="flex flex-wrap justify-end gap-2">
+            <button onClick={onClose} disabled={sending} className="rounded-sm border border-border px-4 py-2 text-sm">
+              Abbrechen
+            </button>
+            <button onClick={send} disabled={sending || !message.trim()} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
+              <Mail className="h-4 w-4" />
+              {sending ? "Wird gesendet…" : "E-Mail senden"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard = ({ session }: { session: Session }) => {
   const [tab, setTab] = useState<"bookings" | "messages" | "dates">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
   const [nd, setNd] = useState({ tour: "Kultur Tour", start_date: "", end_date: "", max_participants: 15 });
+  const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
 
   const load = async () => {
     const [b, m, d] = await Promise.all([
@@ -185,13 +344,13 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
                 {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <a
-                    href={`mailto:${b.email}?subject=${encodeURIComponent(`Kereztour – deine Buchungsanfrage`)}`}
-                    className="inline-flex items-center gap-2 rounded-sm border border-border bg-background px-3 py-1.5 text-sm hover:bg-muted"
+                  <button
+                    onClick={() => setMessageBooking(b)}
+                    className="inline-flex items-center gap-2 rounded-sm bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   >
                     <Mail className="h-4 w-4" />
-                    E-Mail schreiben
-                  </a>
+                    {b.status === "confirmed" ? "E-Mail schreiben" : "Bestätigen & E-Mail schreiben"}
+                  </button>
                   <a
                     href={whatsappUrl(b.phone, b.name)}
                     target="_blank"
@@ -200,7 +359,6 @@ const Dashboard = ({ session }: { session: Session }) => {
                   >
                     <MessageCircle className="h-4 w-4" />
                     WhatsApp
-                  </a>
                   {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground">Bestätigen</button>}
                   {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-sm border border-border px-3 py-1.5 text-sm">Auf offen setzen</button>}
                   {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-sm border border-destructive/40 px-3 py-1.5 text-sm text-destructive">Stornieren</button>}
@@ -292,6 +450,13 @@ const Dashboard = ({ session }: { session: Session }) => {
           </div>
         )}
       </main>
+      {messageBooking && (
+        <BookingMessageModal
+          booking={messageBooking}
+          onClose={() => setMessageBooking(null)}
+          onSent={load}
+        />
+      )}
     </div>
   );
 };
