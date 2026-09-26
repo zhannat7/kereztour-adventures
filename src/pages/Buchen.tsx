@@ -73,29 +73,29 @@ const TIER_PRICES: Record<TierId, number> = {
   comfort: 1490,
 };
 
-const bookingSchema = z.object({
+const bookingSchema = (t: (text: string) => string) => z.object({
   vorname: z
     .string()
     .trim()
-    .min(1, "Vorname ist erforderlich")
+    .min(1, t("Vorname ist erforderlich"))
     .max(100),
 
   nachname: z
     .string()
     .trim()
-    .min(1, "Nachname ist erforderlich")
+    .min(1, t("Nachname ist erforderlich"))
     .max(100),
 
   email: z
     .string()
     .trim()
-    .email("Bitte gib eine gültige E-Mail-Adresse ein")
+    .email(t("Bitte gib eine gültige E-Mail-Adresse ein"))
     .max(255),
 
   phone: z
     .string()
     .trim()
-    .min(1, "Telefonnummer ist erforderlich")
+    .min(1, t("Telefonnummer ist erforderlich"))
     .max(30),
 
   persons: z
@@ -104,12 +104,12 @@ const bookingSchema = z.object({
     .max(20),
 
   travelDate: z.date({
-    required_error: "Reisedatum ist erforderlich",
+    required_error: t("Reisedatum ist erforderlich"),
   }),
 
   tour: z
     .string()
-    .min(1, "Bitte wähle eine Reise"),
+    .min(1, t("Bitte wähle eine Reise")),
 
   tier: z
     .string()
@@ -121,7 +121,7 @@ const bookingSchema = z.object({
     .optional(),
 });
 
-type BookingForm = z.infer<typeof bookingSchema>;
+type BookingForm = z.infer<ReturnType<typeof bookingSchema>>;
 
 const Step = ({
   n,
@@ -154,6 +154,8 @@ const Buchen = () => {
   const dateParam = searchParams.get("date");
   const [showTourPicker, setShowTourPicker] = useState(!tourParam);
 
+  const schema = useMemo(() => bookingSchema(t), [t]);
+
   const validTour =
     tourParam && TOURS.some((tour) => tour.id === tourParam)
       ? tourParam
@@ -171,7 +173,7 @@ const Buchen = () => {
     setValue,
     formState: { errors },
   } = useForm<BookingForm>({
-    resolver: zodResolver(bookingSchema),
+    resolver: zodResolver(schema),
 
     defaultValues: {
       persons: 1,
@@ -287,11 +289,11 @@ const Buchen = () => {
       const tour = TOURS.find((item) => item.id === data.tour);
 
       if (!tour) {
-        throw new Error("Bitte wähle eine Reise.");
+        throw new Error(t("Bitte wähle eine Reise."));
       }
 
       if (tour.hasTiers && !data.tier) {
-        throw new Error("Bitte wähle eine Reiseoption.");
+        throw new Error(t("Bitte wähle eine Reiseoption."));
       }
 
       const price =
@@ -322,7 +324,7 @@ const Buchen = () => {
         );
 
         if (!selectedDate) {
-          throw new Error("Dieser Reisetermin ist nicht mehr verfügbar.");
+          throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
         }
 
         const availablePlaces = Number(selectedDate.available_places);
@@ -330,7 +332,7 @@ const Buchen = () => {
         if (selectedDate.status === "full" || data.persons > availablePlaces) {
           throw new Error(
             availablePlaces > 0
-              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
+              ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
               : "Dieser Reisetermin ist bereits ausgebucht."
           );
         }
@@ -350,7 +352,7 @@ const Buchen = () => {
       });
 
       if (error) {
-        let detail = "Die Buchungsanfrage konnte nicht gespeichert werden.";
+        let detail = t("Die Buchungsanfrage konnte nicht gespeichert werden.");
         try {
           const context = await error.context?.json?.();
           if (context?.error) detail = context.error;
@@ -378,7 +380,7 @@ const Buchen = () => {
 
       setSubmitError(
         message
-          ? `Buchungsanfrage konnte nicht gesendet werden: ${message}`
+          ? t("Buchungsanfrage konnte nicht gesendet werden: {message}").replace("{message}", message)
           : "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
       );
     } finally {
@@ -398,7 +400,7 @@ const Buchen = () => {
             onClick={() => navigate(-1)}
             className="mb-8 text-muted-foreground hover:text-primary"
           >
-            ← Zurück
+            ← {t("Zurück")}
           </Button>
 
           <div className="mb-14 text-center">
@@ -407,7 +409,7 @@ const Buchen = () => {
             </h1>
 
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Wähle deine Reise und deinen Termin aus und sende uns deine unverbindliche Buchungsanfrage.
+              {t("Wähle deine Reise und deinen Termin aus und sende uns deine unverbindliche Buchungsanfrage.")}
             </p>
           </div>
 
@@ -421,7 +423,7 @@ const Buchen = () => {
 
               <Step
                 n={1}
-                title={validTour && !showTourPicker ? "Deine Reise" : "Welche Reise möchtest du buchen?"}
+                title={t(validTour && !showTourPicker ? "Deine Reise" : "Welche Reise möchtest du buchen?")}
               />
 
               {validTour && !showTourPicker ? (
@@ -429,13 +431,13 @@ const Buchen = () => {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-1">
-                        Ausgewählte Reise
+                        {t("Ausgewählte Reise")}
                       </p>
                       <p className="font-display text-xl text-foreground">
-                        {selectedTour?.label}
+                        {selectedTour ? t(t(selectedTour.label)) : ""}
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {selectedTour?.desc}
+                        {selectedTour ? t(selectedTour.desc) : ""}
                       </p>
                     </div>
 
@@ -471,7 +473,7 @@ const Buchen = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <p className="font-semibold text-foreground">
-                              {tour.label}
+                              {t(tour.label)}
                             </p>
 
                             {isSelected && (
@@ -489,7 +491,7 @@ const Buchen = () => {
                         <div className="text-right shrink-0">
                           <p className="font-bold text-primary">
                             {tour.hasTiers
-                              ? "ab 990 €"
+                              ? t("ab 990 €")
                               : `${tour.price?.toLocaleString("de-DE")} €`}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -544,7 +546,7 @@ const Buchen = () => {
 
                           {option === "comfort" && (
                             <span className="absolute -top-3 right-4 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-                              Comfort
+                              {t("Comfort")}
                             </span>
                           )}
 
@@ -553,14 +555,14 @@ const Buchen = () => {
                             <div>
                               <p className="font-bold text-lg text-foreground">
                                 {isEconomy
-                                  ? "Economy"
-                                  : "Comfort"}
+                                  ? t("Economy")
+                                  : t("Comfort")}
                               </p>
 
                               <p className="text-sm text-muted-foreground mt-2">
                                 {isEconomy
-                                  ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 Personen."
-                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen."}
+                                  ? t("Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 Personen.")
+                                  : t("Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen.")}
                               </p>
                             </div>
 
@@ -598,7 +600,7 @@ const Buchen = () => {
 
               <Step
                 n={2}
-                title="Wann und wie viele Personen?"
+                title={t("Wann und wie viele Personen?")}
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -705,7 +707,7 @@ const Buchen = () => {
                                 <p className="text-sm mt-1 font-medium text-primary">
                                   {isFull
                                     ? "Ausgebucht"
-                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
+                                    : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                   Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
@@ -767,7 +769,7 @@ const Buchen = () => {
 
               <Step
                 n={3}
-                title="Deine Kontaktdaten"
+                title={t("Deine Kontaktdaten")}
               />
 
               <div className="space-y-5">
@@ -782,7 +784,7 @@ const Buchen = () => {
                     <Input
                       id="vorname"
                       {...register("vorname")}
-                      placeholder="Vorname"
+                      placeholder={t("Vorname")}
                     />
 
                     {errors.vorname && (
@@ -854,14 +856,14 @@ const Buchen = () => {
                   <Label htmlFor="notes">
                     {t("Besondere Wünsche")}{" "}
                     <span className="text-muted-foreground font-normal">
-                      (optional)
+                      {t("(optional)")}
                     </span>
                   </Label>
 
                   <Textarea
                     id="notes"
                     {...register("notes")}
-                    placeholder="Zum Beispiel besondere Wünsche oder Anforderungen..."
+                    placeholder={t("Zum Beispiel besondere Wünsche oder Anforderungen...")}
                     rows={4}
                   />
                 </div>
@@ -889,8 +891,8 @@ const Buchen = () => {
                     {selectedTour.hasTiers && tier && (
                       <p className="text-primary-foreground/80 mt-1">
                         {tier === "economy"
-                          ? "Economy"
-                          : "Comfort"}
+                          ? t("Economy")
+                          : t("Comfort")}
                       </p>
                     )}
 
@@ -902,7 +904,7 @@ const Buchen = () => {
 
                     <p className="text-primary-foreground/70 text-sm mt-1">
                       {persons}{" "}
-                      {persons === 1 ? "Person" : "Personen"}{" "}
+                      {persons === 1 ? t("Person") : t("Personen")}{" "}
                       × {pricePerPerson.toLocaleString("de-DE")} €
                     </p>
 
