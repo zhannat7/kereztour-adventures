@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -148,6 +148,21 @@ const Buchen = () => {
 
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const focusNextField = (id: string) => {
+    requestAnimationFrame(() => {
+      const element = document.getElementById(id) as HTMLElement | null;
+      if (!element) return;
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.setTimeout(() => element.focus(), 250);
+    });
+  };
+
+  const handleFieldEnter = (event: React.KeyboardEvent<HTMLInputElement>, nextId: string) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    focusNextField(nextId);
+  };
 
   const tourParam = searchParams.get("tour");
   const tierParam = searchParams.get("tier");
@@ -688,13 +703,14 @@ const Buchen = () => {
                                 key={item.id}
                                 type="button"
                                 disabled={isFull}
-                                onClick={() =>
+                                onClick={() => {
                                   setValue(
                                     "travelDate",
                                     parseISO(item.value),
                                     { shouldValidate: true, shouldDirty: true }
-                                  )
-                                }
+                                  );
+                                  focusNextField("vorname");
+                                }}
                                 className={cn(
                                    "rounded-sm border p-4 text-left transition-all",
                                   selected
@@ -738,13 +754,14 @@ const Buchen = () => {
                         <Calendar
                           mode="single"
                           selected={travelDate}
-                          onSelect={(date) =>
-                            date &&
+                          onSelect={(date) => {
+                            if (!date) return;
                             setValue("travelDate", date, {
                               shouldValidate: true,
                               shouldDirty: true,
-                            })
-                          }
+                            });
+                            focusNextField("vorname");
+                          }}
                           disabled={(date) =>
                             date < new Date(new Date().setHours(0, 0, 0, 0))
                           }
@@ -784,6 +801,7 @@ const Buchen = () => {
                     <Input
                       id="vorname"
                       {...register("vorname")}
+                      onKeyDown={(event) => handleFieldEnter(event, "nachname")}
                       placeholder={t("Vorname")}
                     />
 
@@ -802,6 +820,7 @@ const Buchen = () => {
                     <Input
                       id="nachname"
                       {...register("nachname")}
+                      onKeyDown={(event) => handleFieldEnter(event, "email")}
                       placeholder="Nachname"
                     />
 
@@ -823,6 +842,7 @@ const Buchen = () => {
                     id="email"
                     type="email"
                     {...register("email")}
+                    onKeyDown={(event) => handleFieldEnter(event, "phone")}
                     placeholder="name@beispiel.de"
                   />
 
@@ -842,6 +862,7 @@ const Buchen = () => {
                     id="phone"
                     type="tel"
                     {...register("phone")}
+                    onKeyDown={(event) => handleFieldEnter(event, "notes")}
                     placeholder="+49 123 456789"
                   />
 
