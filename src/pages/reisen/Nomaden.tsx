@@ -26,13 +26,7 @@ const Nomaden = () => {
         </h1>
 
         <div className="prose prose-lg max-w-none text-muted-foreground space-y-6">
-          <p>
-            {t("Erleben Sie eines der faszinierendsten Kultur- und Sportevents der")}
-            {t("Welt: die VI. Weltspiele der Nomaden in Kirgisistan. Tauchen Sie ein")}
-            in die jahrhundertealte Tradition der Nomaden und entdecken Sie eine
-            einzigartige Mischung aus spektakulären Wettkämpfen, beeindruckender
-            Natur und lebendiger Kultur.
-          </p>
+          <p>{t("Erleben Sie eines der faszinierendsten Kultur- und Sportevents der Welt: die VI. Weltspiele der Nomaden in Kirgisistan. Tauchen Sie ein in die jahrhundertealte Tradition der Nomaden und entdecken Sie eine einzigartige Mischung aus spektakulären Wettkämpfen, beeindruckender Natur und lebendiger Kultur.")}</p>
           <p>
             {t("Die feierliche Eröffnung erwartet Sie in Bischkek, während das Herz")}
             {t("der Spiele am traumhaften Ufer des Issyk-Kul-See schlägt – umgeben")}
@@ -50,16 +44,14 @@ const Nomaden = () => {
           </ul>
 
           <p className="text-foreground font-semibold text-xl mt-8">
-            Diese Reise ist mehr als nur ein Urlaub – sie ist eine Reise in eine
-            andere Welt.
+            {t("Diese Reise ist mehr als nur ein Urlaub – sie ist eine Reise in eine andere Welt.")}
           </p>
           <div className="mt-10 pt-8 border-t border-border text-center">
             <Link
               to="/buchen"
               className="inline-flex items-center gap-2 text-primary font-bold text-lg md:text-xl hover:underline underline-offset-4 decoration-2 transition-all duration-300 hover:gap-3"
             >
-              {t("Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden")}
-              {t("2026!") } <ArrowRight className="h-5 w-5" />
+              {t("Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden 2026!")} <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
         </div>
