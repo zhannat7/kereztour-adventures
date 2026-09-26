@@ -68,6 +68,17 @@ const RouteSeo = () => {
     }),
   };
 
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Startseite", item: BASE },
+    ...(path !== "/" ? [{ "@type": "ListItem", position: 2, name: m.title.split(" | ")[0], item: url }] : []),
+  ];
+
+  const breadcrumbLd = !m.noindex && {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems,
+  };
+
   return (
     <Helmet>
       <title>{m.title}</title>
@@ -82,6 +93,7 @@ const RouteSeo = () => {
       <meta name="twitter:description" content={m.description} />
       <meta name="twitter:image" content={image} />
       {tripLd && <script type="application/ld+json">{JSON.stringify(tripLd)}</script>}
+      {breadcrumbLd && <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>}
     </Helmet>
   );
 };
