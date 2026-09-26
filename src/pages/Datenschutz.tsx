@@ -88,7 +88,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "9. Rechtsgrundlagen",
         paragraphs: [
-          "Die Verarbeitung personenbezogener Daten erfolgt je nach Zweck auf Grundlage der jeweils anwendbaren Datenschutzvorschriften. Soweit die Datenschutz-Grundverordnung (DSGVO) anwendbar ist, kommen insbesondere folgende Rechtsgrundlagen in Betracht:",
+          "Die Verarbeitung personenbezogener Daten erfolgt nach den jeweils anwendbaren Datenschutzvorschriften. Für Kereztour gelten insbesondere die Datenschutzvorschriften der Kirgisischen Republik. Soweit die Datenschutz-Grundverordnung (DSGVO) aufgrund ihres räumlichen Anwendungsbereichs auf bestimmte Verarbeitungsvorgänge Anwendung findet, erfolgt die Verarbeitung auf einer entsprechenden Rechtsgrundlage nach Art. 6 DSGVO. Dazu können insbesondere gehören:",
         ],
         bullets: [
           "Art. 6 Abs. 1 lit. b DSGVO für die Bearbeitung vorvertraglicher Maßnahmen und die Durchführung eines Vertrags.",
@@ -208,7 +208,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "9. Legal bases",
         paragraphs: [
-          "Depending on the purpose, personal data is processed on the basis of the applicable data-protection rules. Where the GDPR applies, the relevant legal bases may include:",
+          "Personal data is processed in accordance with the applicable data-protection rules. Kereztour is primarily subject to the data-protection rules applicable in the Kyrgyz Republic. Where the GDPR applies to a particular processing activity because of its territorial scope, the processing is based on an applicable legal basis under Article 6 GDPR. These may include:",
         ],
         bullets: [
           "Article 6(1)(b) GDPR for pre-contractual measures and contract performance.",
@@ -321,7 +321,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "9. Basi giuridiche",
         paragraphs: [
-          "A seconda dello scopo, i dati personali vengono trattati sulla base delle norme applicabili in materia di protezione dei dati. Quando il GDPR è applicabile, possono essere rilevanti in particolare le seguenti basi giuridiche:",
+          "I dati personali vengono trattati secondo le norme applicabili in materia di protezione dei dati. Per Kereztour si applicano in particolare le norme sulla protezione dei dati della Repubblica del Kirghizistan. Quando il GDPR si applica a uno specifico trattamento in base al suo ambito territoriale, il trattamento si basa su una delle basi giuridiche previste dall'art. 6 GDPR. Possono essere rilevanti in particolare:",
         ],
         bullets: [
           "Art. 6(1)(b) GDPR per misure precontrattuali e per l'esecuzione di un contratto.",
