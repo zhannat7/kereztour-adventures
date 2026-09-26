@@ -44,7 +44,8 @@ const META: Record<string, Meta> = {
   },
   "/datenschutz": {
     title: "Datenschutz | Kereztour",
-    description: "Datenschutzerklärung von Kereztour: Informationen zur Verarbeitung von Buchungs-, Kontakt- und technischen Daten.",
+    description: "Datenschutzerklärung von Kereztour: Informationen zum Umgang mit personenbezogenen Daten.",
+    noindex: true,
   },
   "/zahlung": { title: "Zahlung | Kereztour", description: "Zahlungsinformationen zu deiner Kereztour-Buchung.", noindex: true },
   "/admin": { title: "Admin | Kereztour", description: "Admin-Bereich.", noindex: true },
