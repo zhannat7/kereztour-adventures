@@ -6,7 +6,6 @@ import { z } from "zod";
 import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import {
-  CalendarIcon,
   Check,
   Loader2,
   Minus,
@@ -23,12 +22,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const TOURS = [
@@ -58,7 +51,7 @@ const TOURS = [
 type TourId = (typeof TOURS)[number]["id"];
 type TierId = "economy" | "comfort";
 
-type CultureDate = {
+type TourDateAvailability = {
   id: string;
   value: string;
   endDate: string;
@@ -204,15 +197,18 @@ const Buchen = () => {
   const tier = watch("tier") as TierId | "";
   const travelDate = watch("travelDate");
 
-  const [cultureDates, setCultureDates] = useState<CultureDate[]>([]);
+  const [tourDates, setTourDates] = useState<TourDateAvailability[]>([]);
   const [isLoadingDates, setIsLoadingDates] = useState(false);
 
   useEffect(() => {
-    if (tourId !== "kultur") return;
+    if (!tourId) {
+      setTourDates([]);
+      return;
+    }
 
     let active = true;
 
-    const loadCultureDates = async () => {
+    const loadTourDates = async () => {
       setIsLoadingDates(true);
 
       const { data, error } = await (supabase as any)
@@ -221,35 +217,40 @@ const Buchen = () => {
       if (!active) return;
 
       if (error) {
-        setCultureDates([]);
+        setTourDates([]);
         setIsLoadingDates(false);
         return;
       }
 
-      const dates: CultureDate[] = (data ?? [])
-        .filter((item: any) => item.tour === "Kultur Tour")
+      const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
+
+      const dates: TourDateAvailability[] = (data ?? [])
+        .filter((item: any) => item.tour === selectedTourLabel)
         .map((item: any) => ({
           id: item.id,
           value: item.start_date,
           endDate: item.end_date,
-          label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
+          label:
+            format(parseISO(item.start_date), "dd.MM.") +
+            "–" +
+            format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
           availablePlaces: Number(item.available_places),
           status: item.status === "full" ? "full" : "open",
         }));
 
-      setCultureDates(dates);
+      setTourDates(dates);
       setIsLoadingDates(false);
     };
 
-    loadCultureDates();
+    loadTourDates();
 
     return () => {
       active = false;
     };
   }, [tourId]);
 
-  const selectedCultureDate = cultureDates.find(
+  const selectedTourDate = tourDates.find(
     (item) =>
       travelDate &&
       format(travelDate, "yyyy-MM-dd") === item.value
@@ -274,6 +275,10 @@ const Buchen = () => {
 
   const selectTour = (id: TourId) => {
     setValue("tour", id, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("travelDate", undefined, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -326,31 +331,29 @@ const Buchen = () => {
 
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
 
-      if (tour.id === "kultur") {
-        const { data: availability, error: availabilityError } = await (supabase as any)
-          .rpc("get_tour_date_availability");
+      const { data: availability, error: availabilityError } = await (supabase as any)
+        .rpc("get_tour_date_availability");
 
-        if (availabilityError) throw availabilityError;
+      if (availabilityError) throw availabilityError;
 
-        const selectedDate = (availability ?? []).find(
-          (item: any) =>
-            item.tour === "Kultur Tour" &&
-            item.start_date === travelDateValue
+      const selectedDate = (availability ?? []).find(
+        (item: any) =>
+          item.tour === tour.label &&
+          item.start_date === travelDateValue
+      );
+
+      if (!selectedDate) {
+        throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
+      }
+
+      const availablePlaces = Number(selectedDate.available_places);
+
+      if (selectedDate.status === "full" || data.persons > availablePlaces) {
+        throw new Error(
+          availablePlaces > 0
+            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
+            : t("Dieser Reisetermin ist bereits ausgebucht.")
         );
-
-        if (!selectedDate) {
-          throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
-        }
-
-        const availablePlaces = Number(selectedDate.available_places);
-
-        if (selectedDate.status === "full" || data.persons > availablePlaces) {
-          throw new Error(
-            availablePlaces > 0
-              ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
-              : t("Dieser Reisetermin ist bereits ausgebucht.")
-          );
-        }
       }
 
       const { error } = await supabase.functions.invoke("create-booking", {
@@ -380,8 +383,8 @@ const Buchen = () => {
       navigate("/zahlung", {
         state: {
           name: `${data.vorname} ${data.nachname}`,
-          travelDate: tour.id === "kultur" && selectedCultureDate
-            ? selectedCultureDate.label
+          travelDate: selectedTourDate
+            ? selectedTourDate.label
             : format(data.travelDate, "dd.MM.yyyy"),
           tour: tour.label,
           tier: tierValue,
@@ -653,15 +656,15 @@ const Buchen = () => {
                       type="button"
                       disabled={
                         tourId === "kultur" &&
-                        !!selectedCultureDate &&
-                        persons >= selectedCultureDate.availablePlaces
+                        !!selectedTourDate &&
+                        persons >= selectedTourDate.availablePlaces
                       }
                       onClick={() =>
                         setValue(
                           "persons",
                           Math.min(
-                            tourId === "kultur" && selectedCultureDate
-                              ? selectedCultureDate.availablePlaces
+                            tourId === "kultur" && selectedTourDate
+                              ? selectedTourDate.availablePlaces
                               : 20,
                             persons + 1
                           )
@@ -680,96 +683,65 @@ const Buchen = () => {
                 <div className="space-y-3 sm:col-span-2">
                   <Label>{t("Reisetermin")} *</Label>
 
-                  {tourId === "kultur" ? (
-                    <div>
-                      {isLoadingDates ? (
-                        <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                          {t("Reisetermine werden geladen …")}
-                        </div>
-                      ) : cultureDates.length === 0 ? (
-                        <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                          {t("Aktuell sind keine Reisetermine verfügbar.")}
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                          {cultureDates.map((item) => {
-                            const selected =
-                              travelDate &&
-                              format(travelDate, "yyyy-MM-dd") === item.value;
-                            const isFull = item.status === "full" || item.availablePlaces <= 0;
-
-                            return (
-                              <button
-                                key={item.id}
-                                type="button"
-                                disabled={isFull}
-                                onClick={() => {
-                                  setValue(
-                                    "travelDate",
-                                    parseISO(item.value),
-                                    { shouldValidate: true, shouldDirty: true }
-                                  );
-                                  focusNextField("vorname");
-                                }}
-                                className={cn(
-                                   "rounded-sm border p-4 text-left transition-all",
-                                  selected
-                                    ? "border-primary bg-primary/5 shadow-sm"
-                                    : "border-border hover:border-primary/40",
-                                  isFull && "cursor-not-allowed opacity-60 hover:border-border"
-                                )}
-                              >
-                                <p className="font-semibold text-foreground">{item.label}</p>
-                                <p className="text-sm mt-1 font-medium text-primary">
-                                  {isFull
-                                    ? "Ausgebucht"
-                                    : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
-                                </p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
+                  {!tourId ? (
+                    <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
+                      {t("Bitte wähle zuerst eine Reise aus.")}
+                    </div>
+                  ) : isLoadingDates ? (
+                    <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
+                      {t("Reisetermine werden geladen …")}
+                    </div>
+                  ) : tourDates.length === 0 ? (
+                    <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
+                      {t("Aktuell sind für diese Reise keine Reisetermine verfügbar.")}
                     </div>
                   ) : (
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full h-11 justify-start text-left font-normal",
-                            !travelDate && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {travelDate
-                            ? format(travelDate, "PPP", { locale: de })
-                            : "Datum wählen"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={travelDate}
-                          onSelect={(date) => {
-                            if (!date) return;
-                            setValue("travelDate", date, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            });
-                            focusNextField("vorname");
-                          }}
-                          disabled={(date) =>
-                            date < new Date(new Date().setHours(0, 0, 0, 0))
-                          }
-                          initialFocus
-                          className="p-3 pointer-events-auto"
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {tourDates.map((item) => {
+                        const selected =
+                          travelDate &&
+                          format(travelDate, "yyyy-MM-dd") === item.value;
+                        const isFull = item.status === "full" || item.availablePlaces <= 0;
+
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            disabled={isFull}
+                            onClick={() => {
+                              setValue(
+                                "travelDate",
+                                parseISO(item.value),
+                                { shouldValidate: true, shouldDirty: true }
+                              );
+                              focusNextField("vorname");
+                            }}
+                            className={cn(
+                              "rounded-sm border p-4 text-left transition-all",
+                              selected
+                                ? "border-primary bg-primary/5 shadow-sm"
+                                : "border-border hover:border-primary/40",
+                              isFull && "cursor-not-allowed opacity-60 hover:border-border"
+                            )}
+                          >
+                            <p className="font-semibold text-foreground">{item.label}</p>
+                            <p className="text-sm mt-1 font-medium text-primary">
+                              {isFull
+                                ? t("Ausgebucht")
+                                : t("Noch {count} {placeWord} verfügbar")
+                                    .replace("{count}", String(item.availablePlaces))
+                                    .replace(
+                                      "{placeWord}",
+                                      item.availablePlaces === 1 ? t("Platz") : t("Plätze")
+                                    )}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
                   )}
 
                   {errors.travelDate && (
