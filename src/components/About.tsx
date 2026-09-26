@@ -32,18 +32,13 @@ const About = () => {
               {t("Kirgisistan")} <span className="italic text-primary">{t("persönlich erleben")}</span>
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-5">
-              Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt
-              wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.
+              {t("Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-5">
-              Ich bin Sarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der
-              Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch,
-              Italienisch und Kirgisisch.
+              {t("Ich bin Sarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch, Italienisch und Kirgisisch.")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Gemeinsam haben wir bereits mehrere Reisen für Gäste organisiert. Dabei sind schöne Erlebnisse
-              und persönliche Begegnungen entstanden. Genau diese Erfahrungen möchten wir immer wieder mit
-              unseren Gästen teilen.
+              {t("Gemeinsam haben wir bereits mehrere Reisen für Gäste organisiert. Dabei sind schöne Erlebnisse und persönliche Begegnungen entstanden. Genau diese Erfahrungen möchten wir immer wieder mit unseren Gästen teilen.")}
             </p>
 
             <ul className="space-y-3.5">
@@ -52,7 +47,7 @@ const About = () => {
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-primary text-primary-foreground">
                     <Check className="h-3 w-3" />
                   </span>
-                  {p}
+                  {t(p)}
                 </li>
               ))}
             </ul>
