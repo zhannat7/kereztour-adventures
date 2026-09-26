@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -40,19 +40,10 @@ const Nomaden = () => {
           </ul>
 
           <p className="text-foreground font-semibold text-xl mt-8">
-            {t("Diese Reise ist mehr als nur ein Urlaub – sie ist eine Reise in eine andere Welt.")}
+            {t("Dieses besondere Erlebnis verbindet Sport, Kultur und die einzigartige Welt der Nomaden.")}
           </p>
-          <div className="mt-10 pt-8 border-t border-border text-center">
-            <Link
-              to="/buchen"
-              className="inline-flex items-center gap-2 text-primary font-bold text-lg md:text-xl hover:underline underline-offset-4 decoration-2 transition-all duration-300 hover:gap-3"
-            >
-              {t("Sichern Sie sich jetzt Ihren Platz für die Weltspiele der Nomaden 2026!")} <ArrowRight className="h-5 w-5" />
-            </Link>
-          </div>
         </div>
 
-        {/* ADD PHOTOS HERE */}
         <div className="mt-14 border-y border-border bg-muted/60 p-12 text-center">
           <p className="text-muted-foreground text-sm">{t("Bildergalerie – demnächst verfügbar")}</p>
         </div>
