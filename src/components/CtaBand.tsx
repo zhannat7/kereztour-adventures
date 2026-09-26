@@ -33,25 +33,25 @@ const TOUR_OPTIONS = [
   "Intensiv-Trekking",
 ] as const;
 
-const inquirySchema = z.object({
+const inquirySchema = (t: (text: string) => string) => z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Bitte gib deinen Namen ein")
-    .max(100, "Maximal 100 Zeichen"),
+    .min(1, t("Bitte gib deinen Namen ein"))
+    .max(100, t("Maximal 100 Zeichen")),
   email: z
     .string()
     .trim()
-    .email("Bitte gib eine gültige E-Mail-Adresse ein")
-    .max(255, "Maximal 255 Zeichen"),
-  tour: z.string().min(1, "Bitte wähle eine Reise"),
-  dateFrom: z.string().min(1, "Bitte gib den Reisebeginn an"),
-  dateTo: z.string().min(1, "Bitte gib das Reiseende an"),
+    .email(t("Bitte gib eine gültige E-Mail-Adresse ein"))
+    .max(255, t("Maximal 255 Zeichen")),
+  tour: z.string().min(1, t("Bitte wähle eine Reise")),
+  dateFrom: z.string().min(1, t("Bitte gib den Reisebeginn an")),
+  dateTo: z.string().min(1, t("Bitte gib das Reiseende an")),
   persons: z.number().min(1).max(20),
-  message: z.string().trim().max(1000, "Maximal 1000 Zeichen").optional(),
+  message: z.string().trim().max(1000, t("Maximal 1000 Zeichen")).optional(),
 });
 
-type InquiryForm = z.infer<typeof inquirySchema>;
+type InquiryForm = z.infer<ReturnType<typeof inquirySchema>>;
 
 const CtaBand = () => {
   const ref = useScrollReveal();
@@ -59,6 +59,7 @@ const CtaBand = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const { t } = useLanguage();
+  const schema = inquirySchema(t);
 
   const {
     register,
@@ -68,7 +69,7 @@ const CtaBand = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<InquiryForm>({
-    resolver: zodResolver(inquirySchema),
+    resolver: zodResolver(schema),
     defaultValues: { persons: 2, tour: "", dateFrom: "", dateTo: "", message: "" },
   });
 
@@ -98,7 +99,7 @@ const CtaBand = () => {
       });
 
       if (error) {
-        let detail = "Die Anfrage konnte nicht gesendet werden.";
+        let detail = t("Die Anfrage konnte nicht gesendet werden.");
         try {
           const context = await error.context?.json?.();
           if (context?.error) detail = context.error;
@@ -113,8 +114,8 @@ const CtaBand = () => {
       const message = err instanceof Error ? err.message : "";
       setSubmitError(
         message
-          ? `Anfrage konnte nicht gesendet werden: ${message}`
-          : "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+          ? t("Anfrage konnte nicht gesendet werden: {message}").replace("{message}", message)
+          : t("Ein Fehler ist aufgetreten. Bitte versuche es erneut."),
       );
     }
   };
@@ -253,7 +254,7 @@ const CtaBand = () => {
                       type="button"
                       onClick={() => setValue("persons", Math.max(1, (persons || 1) - 1), { shouldValidate: true })}
                       className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
-                      aria-label="Weniger Personen"
+                      aria-label={t("Weniger Personen")}
                     >
                       –
                     </button>
@@ -262,7 +263,7 @@ const CtaBand = () => {
                       type="button"
                       onClick={() => setValue("persons", Math.min(20, (persons || 1) + 1), { shouldValidate: true })}
                       className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
-                      aria-label="Mehr Personen"
+                      aria-label={t("Mehr Personen")}
                     >
                       +
                     </button>
