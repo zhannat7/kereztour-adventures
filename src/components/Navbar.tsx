@@ -78,19 +78,17 @@ const Navbar = () => {
     location.pathname === "/reisen/kyrchyn";
 
   const languageMenu = (
-    <div className="relative z-[100] shrink-0">
+    <div className="relative z-[200] shrink-0">
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
+        onClick={() => {
           setReisenOpen(false);
           setLanguageOpen((open) => !open);
         }}
-        className={`relative z-[61] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-300 ${
+        className={`relative z-[201] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-transparent transition-colors ${
           transparent
-            ? "text-white hover:bg-white/10"
-            : "text-foreground hover:bg-muted"
+            ? "text-white hover:bg-white/10 hover:border-white/20"
+            : "text-foreground hover:bg-muted hover:border-border"
         }`}
         aria-label={t("Sprache auswählen")}
         aria-expanded={languageOpen}
@@ -102,23 +100,21 @@ const Navbar = () => {
       {languageOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-[102] mt-2 w-36 overflow-hidden rounded-md border border-border bg-card p-1 shadow-xl"
+          className="absolute right-0 top-full z-[202] mt-2 w-40 rounded-lg border border-border bg-card p-1.5 shadow-xl"
         >
-          {languages.map((language) => (
+          {languages.map((lang) => (
             <button
-              key={language.code}
+              key={lang.code}
               type="button"
               role="menuitem"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                selectLanguage(language.code);
-              }}
-              className="flex w-full cursor-pointer items-center justify-between rounded px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              onClick={() => selectLanguage(lang.code)}
+              className={`flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors hover:bg-muted hover:text-primary ${
+                language === lang.code ? "bg-muted text-primary" : "text-foreground"
+              }`}
             >
-              <span>{t(language.label)}</span>
+              <span>{lang.label}</span>
               <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">
-                {language.code}
+                {lang.code}
               </span>
             </button>
           ))}
@@ -186,8 +182,7 @@ const Navbar = () => {
                   aria-expanded={reisenOpen}
                   aria-haspopup="true"
                 >
-                  Reisen
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${reisenOpen ? "rotate-180" : ""}`} />
+                  {t("Reisen")}                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${reisenOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {reisenOpen && (
@@ -269,7 +264,7 @@ const Navbar = () => {
                   onClick={() => setReisenOpen(!reisenOpen)}
                   className="flex w-full items-center justify-between py-3.5 text-base font-medium text-foreground"
                 >
-                  <span>Reisen</span>
+                  <span>{t("Reisen")}</span>
                   <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${reisenOpen ? "rotate-180" : ""}`} />
                 </button>
 
@@ -282,7 +277,7 @@ const Navbar = () => {
                         onClick={handleTravelClick}
                         className="block py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                       >
-                        {link.label}
+                        {t(link.label)}
                       </Link>
                     ))}
                   </div>
@@ -294,16 +289,14 @@ const Navbar = () => {
                 onClick={(e) => handleSectionClick(e, "/#ueber-uns")}
                 className="block border-b border-border/50 py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
               >
-                Über uns
-              </Link>
+                {t("Über uns")}              </Link>
 
               <Link
                 to="/#kontakt"
                 onClick={(e) => handleSectionClick(e, "/#kontakt")}
                 className="block py-3.5 text-base font-medium text-foreground transition-colors hover:text-primary"
               >
-                Kontakt
-              </Link>
+                {t("Kontakt")}              </Link>
             </div>
           </div>
         )}
