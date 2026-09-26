@@ -30,7 +30,7 @@ const json = (body: unknown, status = 200, origin: string | null = null) =>
     headers: { ...getCorsHeaders(origin), "Content-Type": "application/json" },
   });
 
-const NOTIFY_EMAIL = "sarinasadirovna@gmail.com";
+const NOTIFY_EMAIL = Deno.env.get("NOTIFY_EMAIL") ?? "sarinasadirovna@gmail.com";
 
 const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -50,7 +50,7 @@ async function sendNotificationEmail(subject: string, html: string) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: "Kereztour <onboarding@resend.dev>",
+        from: Deno.env.get("RESEND_FROM_EMAIL") ?? "Kereztour <onboarding@resend.dev>",
         to: [NOTIFY_EMAIL],
         subject,
         html,
