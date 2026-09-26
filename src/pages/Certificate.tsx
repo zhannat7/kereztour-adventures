@@ -34,7 +34,7 @@ const Certificate = () => {
           </div>
           <div className="min-w-0">
             <h2 className="font-display text-xl leading-snug text-foreground sm:text-2xl">
-              Certificate of State Registration of an {t("Individual Entrepreneur")}
+              {t("Certificate of State Registration of an")} {t("Individual Entrepreneur")}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               State Tax Service of the Kyrgyz Republic
@@ -44,7 +44,7 @@ const Certificate = () => {
 
         <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
           <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Full {t("Name")}</dt>
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("Full")} {t("Name")}</dt>
             <dd className="mt-1 text-sm text-foreground">Mambetalieva Ainagul Zaidovna</dd>
           </div>
           <div>
