@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Mail, MessageCircle } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -19,6 +20,14 @@ type TourDate = {
 
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
+
+const whatsappUrl = (phone: string, name: string) => {
+  const number = phone.replace(/\\D/g, "");
+  const message = encodeURIComponent(
+    `Hallo ${name}, vielen Dank für deine Buchungsanfrage bei Kereztour. Wir melden uns bezüglich deines gewünschten Reisetermins bei dir.`
+  );
+  return `https://wa.me/${number}?text=${message}`;
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -176,6 +185,22 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
                 {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
                 <div className="mt-4 flex flex-wrap gap-2">
+                  <a
+                    href={`mailto:${b.email}?subject=${encodeURIComponent(`Kereztour – deine Buchungsanfrage`)}`}
+                    className="inline-flex items-center gap-2 rounded-sm border border-border bg-background px-3 py-1.5 text-sm hover:bg-muted"
+                  >
+                    <Mail className="h-4 w-4" />
+                    E-Mail schreiben
+                  </a>
+                  <a
+                    href={whatsappUrl(b.phone, b.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-sm bg-[#25D366] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    WhatsApp
+                  </a>
                   {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground">Bestätigen</button>}
                   {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-sm border border-border px-3 py-1.5 text-sm">Auf offen setzen</button>}
                   {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-sm border border-destructive/40 px-3 py-1.5 text-sm text-destructive">Stornieren</button>}
@@ -193,7 +218,16 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <div className="flex flex-wrap justify-between gap-2">
                   <div>
                     <h3 className="font-semibold">{m.name}</h3>
-                    <a href={`mailto:${m.email}`} className="text-sm text-muted-foreground hover:text-primary">{m.email}</a>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Kereztour – deine Anfrage")}`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
+                        <Mail className="h-4 w-4" />
+                        {m.email}
+                      </a>
+                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Kereztour – deine Anfrage")}`} className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 text-xs font-medium hover:bg-muted">
+                        <Mail className="h-3.5 w-3.5" />
+                        E-Mail schreiben
+                      </a>
+                    </div>
                   </div>
                   <span className="text-xs text-muted-foreground">{fmt(m.created_at)}</span>
                 </div>
