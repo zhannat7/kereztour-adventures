@@ -101,13 +101,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "11. Rechtsgrundlagen",
         paragraphs: [
-          "Die Verarbeitung personenbezogener Daten erfolgt nach den jeweils anwendbaren Datenschutzvorschriften. Für Kereztour gelten insbesondere die Datenschutzvorschriften der Kirgisischen Republik. Die DSGVO gilt für Kereztour nicht allein deshalb, weil die Website aus der EU erreichbar ist. Soweit die DSGVO aufgrund ihres räumlichen Anwendungsbereichs auf einen konkreten Verarbeitungsvorgang Anwendung findet, erfolgt die Verarbeitung auf einer entsprechenden Rechtsgrundlage nach Art. 6 DSGVO. Dazu können insbesondere gehören:",
-        ],
-        bullets: [
-          "Art. 6 Abs. 1 lit. b DSGVO für die Bearbeitung vorvertraglicher Maßnahmen und die Durchführung eines Vertrags.",
-          "Art. 6 Abs. 1 lit. c DSGVO, soweit eine gesetzliche Verpflichtung besteht.",
-          "Art. 6 Abs. 1 lit. f DSGVO für berechtigte Interessen, beispielsweise für die sichere und ordnungsgemäße Bereitstellung unserer Website und die Bearbeitung von Anfragen.",
-          "Art. 6 Abs. 1 lit. a DSGVO, soweit wir für einen bestimmten Verarbeitungsvorgang eine Einwilligung einholen.",
+          "Die Verarbeitung personenbezogener Daten erfolgt auf Grundlage der jeweils anwendbaren Datenschutzvorschriften der Kirgisischen Republik.",
+          "Soweit für einzelne Verarbeitungsvorgänge weitere Datenschutzvorschriften, insbesondere die DSGVO, anwendbar sind, erfolgt die Verarbeitung auf der jeweils geltenden gesetzlichen Grundlage.",
         ],
       },
       {
@@ -228,13 +223,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "11. Legal bases",
         paragraphs: [
-          "Personal data is processed in accordance with the applicable data-protection rules. Kereztour is primarily subject to the data-protection rules applicable in the Kyrgyz Republic. Where the GDPR applies to a particular processing activity because of its territorial scope, the processing is based on an applicable legal basis under Article 6 GDPR. These may include:",
-        ],
-        bullets: [
-          "Article 6(1)(b) GDPR for pre-contractual measures and contract performance.",
-          "Article 6(1)(c) GDPR where processing is required by law.",
-          "Article 6(1)(f) GDPR for legitimate interests, such as secure and proper operation of the website and handling enquiries.",
-          "Article 6(1)(a) GDPR where consent is obtained for a specific processing activity.",
+          "Personal data is processed on the basis of the applicable data-protection rules of the Kyrgyz Republic.",
+          "Where additional data-protection rules, including the GDPR, apply to a particular processing activity, the processing is carried out on the applicable legal basis.",
         ],
       },
       {
@@ -347,13 +337,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "11. Basi giuridiche",
         paragraphs: [
-          "I dati personali vengono trattati secondo le norme applicabili in materia di protezione dei dati. Per Kereztour si applicano in particolare le norme sulla protezione dei dati della Repubblica del Kirghizistan. Quando il GDPR si applica a uno specifico trattamento in base al suo ambito territoriale, il trattamento si basa su una delle basi giuridiche previste dall'art. 6 GDPR. Possono essere rilevanti in particolare:"
-        ],
-        bullets: [
-          "Art. 6(1)(b) GDPR per misure precontrattuali e per l'esecuzione di un contratto.",
-          "Art. 6(1)(c) GDPR quando il trattamento è richiesto dalla legge.",
-          "Art. 6(1)(f) GDPR per interessi legittimi, come il funzionamento sicuro e corretto del sito e la gestione delle richieste.",
-          "Art. 6(1)(a) GDPR quando viene richiesto il consenso per una specifica attività di trattamento.",
+          "I dati personali vengono trattati sulla base delle norme applicabili in materia di protezione dei dati della Repubblica del Kirghizistan.",
+          "Quando ulteriori norme sulla protezione dei dati, incluso il GDPR, si applicano a una specifica attività di trattamento, il trattamento viene effettuato sulla base giuridica applicabile.",
         ],
       },
       {
