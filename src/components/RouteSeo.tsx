@@ -7,8 +7,8 @@ type Meta = { title: string; description: string; noindex?: boolean; trip?: { na
 
 const META: Record<string, Meta> = {
   "/": {
-    title: "Kereztour – Reisen nach Kirgisistan | Kyrgyzstan",
-    description: "Persönliche Reisen nach Kirgisistan (Kyrgyzstan): Kultur Tour, Intensiv-Trekking und Kyrchyn Tour in kleinen Gruppen mit lokalen Gastgebern.",
+    title: "Kirgistan & Kyrgyzstan Reisen | Kereztour",
+    description: "Persönliche Reisen nach Kirgisistan (Kirgistan, Kyrgyzstan): Rundreisen, Kultur, Trekking und Nomadenreisen in kleinen Gruppen mit lokalen Gastgebern.",
   },
   "/reisen/kultur": {
     title: "Kultur Tour Kirgisistan – 10 Tage Rundreise | Kereztour",
