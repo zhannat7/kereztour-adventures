@@ -272,7 +272,7 @@ const CtaBand = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="inquiry-message">
-                    {t("Nachricht")} <span className="text-muted-foreground font-normal">(optional)</span>
+                    {t("Nachricht")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span>
                   </Label>
                   <Textarea
                     id="inquiry-message"
