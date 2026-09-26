@@ -85,7 +85,9 @@ const Tours = () => {
                     loop
                     muted
                     playsInline
-                    preload="auto"
+                    preload="none"
+                    loading="lazy"
+                    poster="/tour-kyrchyn.jpg"
                     aria-label={t(tour.title)}
                     className="h-full w-full object-cover"
                   />
@@ -94,6 +96,7 @@ const Tours = () => {
                     src={tour.image}
                     alt={t(tour.title)}
                     loading="lazy"
+                    decoding="async"
                     style={{ objectPosition: tour.imagePosition ?? "center" }}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
