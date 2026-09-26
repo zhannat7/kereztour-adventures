@@ -193,8 +193,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "6. Email delivery",
         paragraphs: [
-          "We use Resend to send emails related to booking and contact requests.",
-          "When an email is sent through our website, information required for delivery, including the email address, name and content of the relevant message, may be transmitted to Resend. Depending on the technical setup, processing may also take place outside the Kyrgyz Republic."
+          "We use the external email service Resend to process and send emails related to booking and contact requests.",
+          "The data required for sending these emails may be processed for this purpose."
         ],
       },
       {
