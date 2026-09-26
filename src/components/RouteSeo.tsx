@@ -42,6 +42,10 @@ const META: Record<string, Meta> = {
     title: "Impressum | Kereztour",
     description: "Impressum und rechtliche Angaben von Kereztour – Reisen nach Kirgisistan.",
   },
+  "/datenschutz": {
+    title: "Datenschutz | Kereztour",
+    description: "Datenschutzerklärung von Kereztour: Informationen zur Verarbeitung von Buchungs-, Kontakt- und technischen Daten.",
+  },
   "/zahlung": { title: "Zahlung | Kereztour", description: "Zahlungsinformationen zu deiner Kereztour-Buchung.", noindex: true },
   "/admin": { title: "Admin | Kereztour", description: "Admin-Bereich.", noindex: true },
 };
