@@ -362,6 +362,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Es war sehr schön und beeindruckend Deine Heimat kennen zu lernen. Unsere Bekannten waren sehr begeistert. Eure Gastfreundschaft ist großartig und tut gut unserem Herzen. Nochmals vielen Dank!": "It was wonderful and impressive to get to know your homeland. Our friends were very enthusiastic. Your hospitality is wonderful and warms our hearts. Thank you again!",
     "Kirgisistan hat uns völlig überrascht – die Herzlichkeit der Menschen, die unberührte Natur, das köstliche Essen. Wir kommen definitiv wieder!": "Kyrgyzstan completely surprised us – the warmth of the people, the untouched nature and the delicious food. We will definitely come back!",
     "Hallo Kereztour, ich habe eine Frage zu euren Reisen.": "Hello Kereztour, I have a question about your trips.",
+    "Registrierungsnachweis": "Registration certificate",
   },
   IT: {
     "Reisen": "Viaggi",
@@ -722,6 +723,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Es war sehr schön und beeindruckend Deine Heimat kennen zu lernen. Unsere Bekannten waren sehr begeistert. Eure Gastfreundschaft ist großartig und tut gut unserem Herzen. Nochmals vielen Dank!": "È stato bellissimo e impressionante conoscere la tua terra. I nostri amici ne sono rimasti entusiasti. La vostra ospitalità è meravigliosa e ci fa bene al cuore. Grazie ancora!",
     "Kirgisistan hat uns völlig überrascht – die Herzlichkeit der Menschen, die unberührte Natur, das köstliche Essen. Wir kommen definitiv wieder!": "Il Kirghizistan ci ha sorpreso completamente: il calore delle persone, la natura incontaminata e il cibo delizioso. Torneremo sicuramente!",
     "Hallo Kereztour, ich habe eine Frage zu euren Reisen.": "Ciao Kereztour, ho una domanda sui vostri viaggi.",
+    "Registrierungsnachweis": "Certificato di registrazione",
   },
 };
 
