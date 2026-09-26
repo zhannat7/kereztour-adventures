@@ -44,12 +44,12 @@ const Hero = () => {
             >
               <Link
                 to="/buchen"
-                className="group relative inline-flex min-h-14 items-center justify-center overflow-hidden rounded-sm border border-gold bg-transparent px-9 py-4 text-[15px] font-semibold uppercase tracking-[0.16em] text-primary-foreground shadow-none backdrop-blur-0 transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/20 hover:shadow-glow sm:px-10"
+                className="group relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-sm border border-gold bg-transparent px-7 py-3 text-[13px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-none backdrop-blur-0 transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/20 hover:shadow-glow sm:min-h-13 sm:px-8 sm:py-3.5 sm:text-[14px]"
               >
                 <span className="absolute inset-0 translate-y-full bg-gold/25 transition-transform duration-500 ease-out group-hover:translate-y-0" />
                 <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
                   {t("Beginne Deine Reise")}
-                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-4.5 sm:w-4.5" />
                 </span>
               </Link>
             </div>
