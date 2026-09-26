@@ -599,7 +599,6 @@ const translations: Record<Language, Record<string, string>> = {
     "Die Kultur Tour und die Nomadenspiele sind ohne besondere Kondition machbar. Für das Intensiv-Trekking solltest du mehrtägige Bergwanderungen und Höhen bis 3.900 m gewohnt sein.": "Il Tour culturale e i Giochi Nomadi non richiedono una particolare preparazione fisica. Per il trekking intensivo dovresti essere abituato a escursioni di più giorni e ad altitudini fino a 3.900 m.",
     "Eine Mischung aus geprüften Hotels in den Städten und Jurten oder Gästehäusern auf dem Land. Bei der Kultur Tour kannst du zwischen Economy und Comfort wählen.": "Un mix di hotel selezionati nelle città e yurte o guesthouse in campagna. Nel Tour culturale puoi scegliere tra Economy e Comfort.",
     "Ja, das ist der Normalfall. Du reist in einer kleinen Gruppe mit, teilst dir auf Wunsch ein Zimmer oder buchst gegen Aufpreis ein Einzelzimmer.": "Sì, è la soluzione abituale. Viaggi in un piccolo gruppo, puoi condividere una camera oppure prenotare una camera singola con un supplemento.",
-    "Drei Wege, ": "Tre modi, ",
     "Reisetermin ist erforderlich": "La data del viaggio è obbligatoria",
     "Bitte wähle eine Reise": "Seleziona un viaggio",
     "Bitte wähle eine Reiseoption.": "Seleziona un'opzione di viaggio.",
