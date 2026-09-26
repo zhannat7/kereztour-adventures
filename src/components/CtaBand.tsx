@@ -144,8 +144,8 @@ const CtaBand = () => {
                 {t("Anfrage per Formular")} <ArrowRight className="h-4 w-4" />
               </button>
               <a
-                href={whatsappUrl("Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
-                onClick={(e) => openWhatsApp(e, "Hallo Kereztour, ich habe eine Frage zu euren Reisen.")}
+                href={whatsappUrl(t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))}
+                onClick={(e) => openWhatsApp(e, t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))}
                 target="_blank"
                 rel="noopener noreferrer"
                  className="inline-flex w-full items-center justify-center gap-2 rounded-sm border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
