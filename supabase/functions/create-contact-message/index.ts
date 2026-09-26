@@ -23,10 +23,10 @@ const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
-async function sendNotificationEmail(subject: string, html: string) {
+async function sendEmail(to: string, subject: string, html: string) {
   const apiKey = Deno.env.get("RESEND_API_KEY");
   if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured – skipping notification email.");
+    console.error("RESEND_API_KEY is not configured – skipping email.");
     return;
   }
   try {
@@ -38,16 +38,16 @@ async function sendNotificationEmail(subject: string, html: string) {
       },
       body: JSON.stringify({
         from: Deno.env.get("RESEND_FROM_EMAIL") ?? "Kereztour <onboarding@resend.dev>",
-        to: [NOTIFY_EMAIL],
+        to: [to],
         subject,
         html,
       }),
     });
     if (!res.ok) {
-      console.error(`Resend error [${res.status}]: ${await res.text()}`);
+      console.error(`Resend error [${res.status}] for ${to}: ${await res.text()}`);
     }
   } catch (error) {
-    console.error("Notification email failed:", error);
+    console.error(`Email failed for ${to}:`, error);
   }
 }
 
@@ -88,7 +88,8 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    await sendNotificationEmail(
+    await sendEmail(
+      NOTIFY_EMAIL,
       `Neue Kontaktanfrage von ${name}`,
       `<h2>Neue Kontaktanfrage</h2>
        <table cellpadding="6" style="border-collapse:collapse">
@@ -101,6 +102,21 @@ Deno.serve(async (req) => {
        <p><b>Nachricht:</b></p>
        <p>${escapeHtml(message ?? "-").replace(/\n/g, "<br>")}</p>
        <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
+    );
+
+    await sendEmail(
+      email,
+      `Deine Anfrage bei Kereztour`,
+      `<h2>Vielen Dank für deine Anfrage!</h2>
+       <p>Hallo ${escapeHtml(name)},</p>
+       <p>vielen Dank für deine Anfrage bei Kereztour. Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.</p>
+       <p><b>Deine Anfrage:</b></p>
+       <table cellpadding="6" style="border-collapse:collapse">
+         <tr><td><b>Reise</b></td><td>${escapeHtml(typeof body.tour === "string" ? body.tour : "-")}</td></tr>
+         <tr><td><b>Zeitraum</b></td><td>${escapeHtml(typeof body.date_from === "string" ? body.date_from : "-")} bis ${escapeHtml(typeof body.date_to === "string" ? body.date_to : "-")}</td></tr>
+         <tr><td><b>Personen</b></td><td>${Number.isInteger(body.persons) ? body.persons : "-"}</td></tr>
+       </table>
+       <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
     );
 
     return json({ success: true }, 200, origin);
