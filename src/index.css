@@ -147,9 +147,9 @@
 }
 
 @layer components {
-  .section-reveal {
-    opacity: 0;
-    transform: translateY(32px);
+   .section-reveal {
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -158,9 +158,9 @@
     transform: translateY(0);
   }
 
-  .stagger-child {
-    opacity: 0;
-    transform: translateY(20px);
+   .stagger-child {
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
