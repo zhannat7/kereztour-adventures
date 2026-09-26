@@ -4,7 +4,6 @@ import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle,
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
-import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 
