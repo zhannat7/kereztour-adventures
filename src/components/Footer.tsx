@@ -88,7 +88,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href={whatsappUrl("Hallo Kereztour, ich habe eine Frage zu euren Reisen.")} onClick={(e) => openWhatsApp(e, "Hallo Kereztour, ich habe eine Frage zu euren Reisen.")} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
+              <a href={whatsappUrl(t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))} onClick={(e) => openWhatsApp(e, t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
                 <MessageCircle className="h-4 w-4 shrink-0" /> WhatsApp
                 <ArrowUpRight className="h-3 w-3 opacity-50" />
               </a>
