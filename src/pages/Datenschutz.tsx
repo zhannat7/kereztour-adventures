@@ -61,7 +61,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         title: "5. Datenbank und technische Infrastruktur",
         paragraphs: [
           "Für die Speicherung und technische Verarbeitung von Buchungs- und Kontaktanfragen verwenden wir Supabase. Die übermittelten Daten werden dort in den für die Website erforderlichen Datenbankstrukturen gespeichert.",
-          "Supabase kann dabei als technischer Dienstleister personenbezogene Daten in unserem Auftrag verarbeiten. Es gelten zusätzlich die Datenschutzinformationen des jeweiligen Anbieters.",
+          "Supabase kann dabei als technischer Dienstleister personenbezogene Daten in unserem Auftrag verarbeiten. Je nach technischer Konfiguration können Daten dabei auch außerhalb der Kirgisischen Republik verarbeitet werden. Maßgeblich sind die jeweils eingesetzten Dienste und deren aktuelle Datenschutz- und Sicherheitsbedingungen.",
         ],
       },
       {
@@ -79,16 +79,23 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "8. WhatsApp und andere externe Links",
+        title: "9. Datenübermittlung und externe Dienste",
+        paragraphs: [
+          "Für den Betrieb der Website nutzen wir externe technische Dienste wie Supabase und Resend sowie Links bzw. eingebettete Inhalte von Drittanbietern. Dabei können personenbezogene Daten an diese Anbieter übermittelt oder durch diese verarbeitet werden.",
+          "Soweit anwendbares Datenschutzrecht Anforderungen an die Übermittlung personenbezogener Daten in andere Staaten stellt, werden die jeweils erforderlichen gesetzlichen Voraussetzungen und Schutzmaßnahmen berücksichtigt.",
+        ],
+      },
+      {
+        title: "10. WhatsApp und andere externe Links",
         paragraphs: [
           "Unsere Website enthält Links zu WhatsApp sowie zu unseren Social-Media-Profilen. Wenn du einen solchen Link anklickst, verlässt du unsere Website und gelangst zum jeweiligen externen Dienst.",
           "Ab diesem Zeitpunkt gelten die Datenschutzbestimmungen des jeweiligen Anbieters. Wir haben keinen Einfluss auf die Datenverarbeitung durch diese externen Dienste.",
         ],
       },
       {
-        title: "9. Rechtsgrundlagen",
+        title: "11. Rechtsgrundlagen",
         paragraphs: [
-          "Die Verarbeitung personenbezogener Daten erfolgt nach den jeweils anwendbaren Datenschutzvorschriften. Für Kereztour gelten insbesondere die Datenschutzvorschriften der Kirgisischen Republik. Soweit die Datenschutz-Grundverordnung (DSGVO) aufgrund ihres räumlichen Anwendungsbereichs auf bestimmte Verarbeitungsvorgänge Anwendung findet, erfolgt die Verarbeitung auf einer entsprechenden Rechtsgrundlage nach Art. 6 DSGVO. Dazu können insbesondere gehören:",
+          "Die Verarbeitung personenbezogener Daten erfolgt nach den jeweils anwendbaren Datenschutzvorschriften. Für Kereztour gelten insbesondere die Datenschutzvorschriften der Kirgisischen Republik. Die DSGVO gilt für Kereztour nicht allein deshalb, weil die Website aus der EU erreichbar ist. Soweit die DSGVO aufgrund ihres räumlichen Anwendungsbereichs auf einen konkreten Verarbeitungsvorgang Anwendung findet, erfolgt die Verarbeitung auf einer entsprechenden Rechtsgrundlage nach Art. 6 DSGVO. Dazu können insbesondere gehören:",
         ],
         bullets: [
           "Art. 6 Abs. 1 lit. b DSGVO für die Bearbeitung vorvertraglicher Maßnahmen und die Durchführung eines Vertrags.",
@@ -98,14 +105,14 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "10. Speicherdauer",
+        title: "12. Speicherdauer",
         paragraphs: [
           "Wir speichern personenbezogene Daten nur so lange, wie sie für den jeweiligen Zweck erforderlich sind oder gesetzliche Aufbewahrungspflichten bestehen.",
-          "Die konkrete Speicherdauer hängt von der Art der Anfrage und den jeweils anwendbaren gesetzlichen Aufbewahrungspflichten ab. Daten werden gelöscht, sobald sie für den jeweiligen Zweck nicht mehr erforderlich sind und keine gesetzliche Pflicht zur weiteren Speicherung besteht.",
+          "Die konkrete Speicherdauer hängt von der Art der Anfrage, dem weiteren Verlauf der Geschäftsbeziehung und den jeweils anwendbaren gesetzlichen Aufbewahrungspflichten ab. Wir legen keine einheitliche Frist für alle Daten fest. Daten werden gelöscht oder anonymisiert, sobald sie für den jeweiligen Zweck nicht mehr erforderlich sind und keine gesetzliche Pflicht zur weiteren Speicherung besteht.",
         ],
       },
       {
-        title: "11. Deine Rechte",
+        title: "13. Deine Rechte",
         paragraphs: [
           "Soweit die DSGVO oder anderes anwendbares Datenschutzrecht gilt, hast du insbesondere das Recht auf:",
         ],
@@ -119,19 +126,19 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "12. Beschwerderecht",
+        title: "14. Beschwerderecht",
         paragraphs: [
           "Du hast das Recht, dich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren, wenn du der Ansicht bist, dass die Verarbeitung deiner personenbezogenen Daten gegen anwendbares Datenschutzrecht verstößt.",
         ],
       },
       {
-        title: "13. Datensicherheit",
+        title: "15. Datensicherheit",
         paragraphs: [
           "Wir treffen angemessene technische und organisatorische Maßnahmen, um personenbezogene Daten vor Verlust, Missbrauch, unbefugtem Zugriff und unbefugter Veränderung zu schützen.",
         ],
       },
       {
-        title: "14. Änderungen dieser Datenschutzerklärung",
+        title: "16. Änderungen dieser Datenschutzerklärung",
         paragraphs: [
           "Wir können diese Datenschutzerklärung ändern, wenn sich unsere Website, die eingesetzten technischen Dienste oder die rechtlichen Anforderungen ändern. Es gilt jeweils die auf dieser Website veröffentlichte aktuelle Fassung.",
         ],
@@ -180,15 +187,15 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "5. Database and technical infrastructure",
         paragraphs: [
-          "We use Supabase to store and technically process booking and contact requests. The submitted information is stored in the database structures required for the website.",
-          "Supabase may process personal data on our behalf as a technical service provider. The provider's own privacy information also applies.",
+          "We use Supabase to store and technically process booking and contact requests. The submitted information is stored in the database structures required for the website. Depending on the technical configuration, data may also be processed outside the Kyrgyz Republic."",
+          "Supabase may process personal data on our behalf as a technical service provider. Depending on the technical configuration, data may also be processed outside the Kyrgyz Republic. The services and their current privacy and security terms determine the applicable processing arrangements."
         ],
       },
       {
         title: "6. Email delivery",
         paragraphs: [
           "We use Resend to send emails related to booking and contact requests.",
-          "When an email is sent through our website, information required for delivery, including the email address, name and content of the relevant message, may be transmitted to Resend.",
+          "When an email is sent through our website, information required for delivery, including the email address, name and content of the relevant message, may be transmitted to Resend. Depending on the technical setup, processing may also take place outside the Kyrgyz Republic."
         ],
       },
       {
@@ -206,7 +213,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "9. Legal bases",
+        title: "11. Legal bases",
         paragraphs: [
           "Personal data is processed in accordance with the applicable data-protection rules. Kereztour is primarily subject to the data-protection rules applicable in the Kyrgyz Republic. Where the GDPR applies to a particular processing activity because of its territorial scope, the processing is based on an applicable legal basis under Article 6 GDPR. These may include:",
         ],
@@ -218,33 +225,33 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "10. Retention",
+        title: "12. Retention",
         paragraphs: [
           "We retain personal data only for as long as it is necessary for the relevant purpose or as required by applicable retention obligations.",
-          "The specific retention period depends on the type of request and the applicable legal requirements. Data is deleted when it is no longer necessary for the relevant purpose and no legal retention obligation applies.",
+          "The specific retention period depends on the type of request, the further course of the business relationship and applicable legal requirements. We do not use one fixed retention period for all data. Data is deleted or anonymised when it is no longer necessary for the relevant purpose and no legal retention obligation applies."
         ],
       },
       {
-        title: "11. Your rights",
+        title: "13. Your rights",
         paragraphs: [
           "Where the GDPR or other applicable data-protection law applies, you may have the right to:",
         ],
         bullets: ["Access your personal data", "Correct inaccurate data", "Request deletion where legally applicable", "Request restriction of processing where legally applicable", "Object to certain processing where legally applicable", "Data portability where the legal requirements are met"],
       },
       {
-        title: "12. Right to complain",
+        title: "14. Right to complain",
         paragraphs: [
           "You have the right to lodge a complaint with a competent data-protection supervisory authority if you believe that the processing of your personal data violates applicable data-protection law.",
         ],
       },
       {
-        title: "13. Data security",
+        title: "15. Data security",
         paragraphs: [
           "We take appropriate technical and organisational measures to protect personal data against loss, misuse, unauthorised access and unauthorised alteration.",
         ],
       },
       {
-        title: "14. Changes to this policy",
+        title: "16. Changes to this policy",
         paragraphs: [
           "We may update this privacy policy when our website, technical services or legal requirements change. The current version published on this website applies.",
         ],
@@ -293,8 +300,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "5. Database e infrastruttura tecnica",
         paragraphs: [
-          "Utilizziamo Supabase per la conservazione e il trattamento tecnico delle richieste di prenotazione e di contatto. I dati inviati vengono conservati nelle strutture del database necessarie al funzionamento del sito.",
-          "Supabase può trattare dati personali per nostro conto in qualità di fornitore tecnico. Si applicano inoltre le informazioni sulla privacy del relativo fornitore.",
+          "Utilizziamo Supabase per la conservazione e il trattamento tecnico delle richieste di prenotazione e di contatto. I dati inviati vengono conservati nelle strutture del database necessarie al funzionamento del sito. A seconda della configurazione tecnica, i dati possono essere trattati anche al di fuori della Repubblica del Kirghizistan."
+          "Supabase può trattare dati personali per nostro conto in qualità di fornitore tecnico. Sono determinanti i servizi effettivamente utilizzati e le relative condizioni aggiornate in materia di privacy e sicurezza."
         ],
       },
       {
@@ -319,9 +326,9 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "9. Basi giuridiche",
+        title: "11. Basi giuridiche",
         paragraphs: [
-          "I dati personali vengono trattati secondo le norme applicabili in materia di protezione dei dati. Per Kereztour si applicano in particolare le norme sulla protezione dei dati della Repubblica del Kirghizistan. Quando il GDPR si applica a uno specifico trattamento in base al suo ambito territoriale, il trattamento si basa su una delle basi giuridiche previste dall'art. 6 GDPR. Possono essere rilevanti in particolare:",
+          "I dati personali vengono trattati secondo le norme applicabili in materia di protezione dei dati. Per Kereztour si applicano in particolare le norme sulla protezione dei dati della Repubblica del Kirghizistan. Quando il GDPR si applica a uno specifico trattamento in base al suo ambito territoriale, il trattamento si basa su una delle basi giuridiche previste dall'art. 6 GDPR. Possono essere rilevanti in particolare:"
         ],
         bullets: [
           "Art. 6(1)(b) GDPR per misure precontrattuali e per l'esecuzione di un contratto.",
@@ -331,33 +338,33 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
-        title: "10. Conservazione dei dati",
+        title: "12. Conservazione dei dati",
         paragraphs: [
           "Conserviamo i dati personali solo per il tempo necessario allo scopo previsto o per il periodo richiesto dagli obblighi di conservazione applicabili.",
-          "Il periodo concreto dipende dal tipo di richiesta e dagli obblighi di legge applicabili. I dati vengono cancellati quando non sono più necessari allo scopo e non sussiste un obbligo legale di conservarli.",
+          "Il periodo concreto dipende dal tipo di richiesta, dall'ulteriore rapporto commerciale e dagli obblighi di legge applicabili. Non utilizziamo un unico periodo di conservazione per tutti i dati. I dati vengono cancellati o anonimizzati quando non sono più necessari allo scopo e non sussiste un obbligo legale di conservarli."
         ],
       },
       {
-        title: "11. I tuoi diritti",
+        title: "13. I tuoi diritti",
         paragraphs: [
           "Quando si applica il GDPR o un'altra normativa sulla protezione dei dati, puoi avere il diritto di:",
         ],
         bullets: ["ottenere l'accesso ai tuoi dati personali", "chiedere la correzione di dati inesatti", "chiedere la cancellazione nei casi previsti dalla legge", "chiedere la limitazione del trattamento nei casi previsti dalla legge", "opporti a determinati trattamenti nei casi previsti dalla legge", "ottenere la portabilità dei dati quando sono soddisfatti i requisiti di legge"],
       },
       {
-        title: "12. Diritto di reclamo",
+        title: "14. Diritto di reclamo",
         paragraphs: [
           "Hai il diritto di presentare un reclamo a un'autorità di controllo competente in materia di protezione dei dati se ritieni che il trattamento dei tuoi dati personali violi la normativa applicabile.",
         ],
       },
       {
-        title: "13. Sicurezza dei dati",
+        title: "15. Sicurezza dei dati",
         paragraphs: [
           "Adottiamo misure tecniche e organizzative adeguate per proteggere i dati personali da perdita, uso improprio, accesso non autorizzato e modifica non autorizzata.",
         ],
       },
       {
-        title: "14. Modifiche alla presente informativa",
+        title: "16. Modifiche alla presente informativa",
         paragraphs: [
           "Possiamo aggiornare la presente informativa quando cambiano il sito, i servizi tecnici utilizzati o i requisiti di legge. Si applica la versione attualmente pubblicata su questo sito.",
         ],
