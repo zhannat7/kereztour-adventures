@@ -18,11 +18,21 @@ const serviceLinks = [
 
 const legalLinks = [
   { label: "Impressum", to: "/impressum" },
+  { label: "Datenschutz", to: "/datenschutz" },
   { label: "Registrierungsnachweis", to: "/registrierung" },
 ];
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  const legalLabel = (label: string) => {
+    if (label !== "Datenschutz") return t(label);
+    return language === "EN"
+      ? "Privacy Policy"
+      : language === "IT"
+        ? "Informativa sulla privacy"
+        : "Datenschutz";
+  };
 
   return (
   <footer id="kontakt" className="bg-primary text-primary-foreground">
@@ -67,7 +77,7 @@ const Footer = () => {
             {legalLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-primary-foreground/80 transition-colors hover:text-secondary">
-                  {t(l.label)}
+                  {legalLabel(l.label)}
                 </Link>
               </li>
             ))}
