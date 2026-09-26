@@ -22,7 +22,7 @@ const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") :
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
 const whatsappUrl = (phone: string, name: string) => {
-  const number = phone.replace(/\\D/g, "");
+  const number = phone.replace(/\D/g, "");
   const message = encodeURIComponent(
     `Hallo ${name}, vielen Dank für deine Buchungsanfrage bei Kereztour. Wir melden uns bezüglich deines gewünschten Reisetermins bei dir.`
   );
