@@ -29,34 +29,7 @@ const whatsappUrl = (phone: string, name: string) => {
   return `https://wa.me/${number}?text=${message}`;
 };
 
-const bookingEmailUrl = (booking: Booking) => {
-  const subject = booking.status === "confirmed"
-    ? "Kereztour – deine Buchung"
-    : "Kereztour – deine Buchungsanfrage";
-  const body = [
-    `Hallo ${booking.name},`,
-    "",
-    "vielen Dank für deine Buchungsanfrage bei Kereztour.",
-    "",
-    "Deine Buchungsdetails:",
-    `Reise: ${booking.tour ?? "–"}`,
-    `Reisedatum: ${fmt(booking.travel_date)}`,
-    `Personen: ${booking.persons}`,
-    `Reisevariante: ${booking.tier === "standard" ? "Standard" : booking.tier}`,
-    `Gesamtpreis: ${booking.total_price.toLocaleString("de-DE")} €`,
-    "",
-    booking.status === "confirmed"
-      ? "Deine Buchung ist bestätigt. Wenn du noch Fragen hast oder weitere Details besprechen möchtest, melde dich gerne bei uns."
-      : "Wir prüfen deine Anfrage und melden uns schnellstmöglich mit der Bestätigung und den nächsten Schritten bei dir.",
-    "",
-    "Falls du noch Fragen hast oder einen Gesprächstermin vereinbaren möchtest, kannst du uns gerne antworten.",
-    "",
-    "Liebe Grüße",
-    "Sarina",
-    "Kereztour",
-  ].join("\n");
-  return `mailto:${booking.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-};
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -373,13 +346,13 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
                 {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <a
-                    href={bookingEmailUrl(b)}
+                  <button
+                    onClick={() => setMessageBooking(b)}
                     className="inline-flex items-center gap-2 rounded-sm bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   >
                     <Mail className="h-4 w-4" />
-                    {b.status === "confirmed" ? "E-Mail schreiben" : "E-Mail schreiben"}
-                  </a>
+                    E-Mail schreiben
+                  </button>
                   <a
                     href={whatsappUrl(b.phone, b.name)}
                     target="_blank"
