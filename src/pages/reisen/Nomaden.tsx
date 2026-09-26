@@ -27,11 +27,7 @@ const Nomaden = () => {
 
         <div className="prose prose-lg max-w-none text-muted-foreground space-y-6">
           <p>{t("Erleben Sie eines der faszinierendsten Kultur- und Sportevents der Welt: die VI. Weltspiele der Nomaden in Kirgisistan. Tauchen Sie ein in die jahrhundertealte Tradition der Nomaden und entdecken Sie eine einzigartige Mischung aus spektakulären Wettkämpfen, beeindruckender Natur und lebendiger Kultur.")}</p>
-          <p>
-            {t("Die feierliche Eröffnung erwartet Sie in Bischkek, während das Herz")}
-            {t("der Spiele am traumhaften Ufer des Issyk-Kul-See schlägt – umgeben")}
-            {t("von majestätischen Bergen und unberührter Landschaft.")}
-          </p>
+          <p>{t("Die feierliche Eröffnung erwartet Sie in Bischkek, während das Herz der Spiele am traumhaften Ufer des Issyk-Kul-See schlägt – umgeben von majestätischen Bergen und unberührter Landschaft.")}</p>
 
           <h2 className="font-display text-2xl md:text-3xl text-foreground mt-10 mb-4">
             {t("Freuen Sie sich auf:")}
