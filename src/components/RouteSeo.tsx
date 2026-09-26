@@ -7,32 +7,32 @@ type Meta = { title: string; description: string; noindex?: boolean; trip?: { na
 
 const META: Record<string, Meta> = {
   "/": {
-    title: "Kirgistan & Kyrgyzstan Reisen | Kereztour",
-    description: "Persönliche Reisen nach Kirgisistan (Kirgistan, Kyrgyzstan): Rundreisen, Kultur, Trekking und Nomadenreisen in kleinen Gruppen mit lokalen Gastgebern.",
+    title: "Kirgisistan Reise & Kyrgyzstan Reisen | Kereztour",
+    description: "Kirgisistan Reise, Kirgistan Reise und Kyrgyzstan Reisen: Rundreisen, Kultur, Trekking und Nomadenreisen in kleinen Gruppen mit lokalen Gastgebern.",
   },
   "/reisen/kultur": {
-    title: "Kultur Tour Kirgisistan – 10 Tage Rundreise | Kereztour",
-    description: "10 Tage Kultur Tour durch Kirgisistan: Bischkek, Burana-Turm, Issyk-Kul, Karakol, Jurtencamps und Adlerjäger – ab 990 € in kleinen Gruppen.",
+    title: "Kirgisistan Rundreise – Kultur Tour 10 Tage | Kereztour",
+    description: "Kirgisistan Rundreise mit Bischkek, Burana-Turm, Issyk-Kul, Karakol, Jurtencamps und Adlerjägern – 10 Tage ab 990 € in kleiner Gruppe.",
     trip: { name: "Kultur Tour Kirgisistan – 10 Tage", price: 990, image: "/tour-kultur.jpg" },
   },
   "/reisen/trekking": {
-    title: "Intensiv-Trekking Kirgisistan – 10 Tage Bergseen | Kereztour",
-    description: "10 Tage Intensiv-Trekking in Kirgisistan zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 1.200 € pro Person mit lokalen Guides.",
+    title: "Kirgisistan Trekking – 10 Tage im Tian-Shan | Kereztour",
+    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 10 Tage mit lokalen Guides für 1.200 € pro Person.",
     trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1200, image: "/tour-trekking.jpg" },
   },
   "/reisen/kyrchyn": {
-    title: "Kyrchyn Tour Kirgisistan – Nomadenkultur erleben | Kereztour",
-    description: "Kyrchyn Tour in Kirgisistan: Kyrchyn Jailoo, Jurtenleben und Nomadenkultur hautnah erleben – 1.300 € pro Person.",
+    title: "Kirgisistan Reise – Kyrchyn Tour & Nomadenkultur | Kereztour",
+    description: "Kirgisistan Reise zur Kyrchyn Jailoo: Jurtenleben, Nomadenkultur und traditionelle Pferdespiele hautnah erleben – 1.300 € pro Person.",
     trip: { name: "Kyrchyn Tour Kirgisistan", price: 1300, image: "/tour-kyrchyn.jpg" },
   },
   "/reisen/nomaden": {
-    title: "Welt der Nomaden 2026 – Reise nach Kirgisistan | Kereztour",
-    description: "Welt der Nomaden 2026: Erlebe traditionelle Nomadenkultur, Pferdespiele und Jurtenleben in Kirgisistan mit Kereztour.",
+    title: "Kirgisistan Reise – Welt der Nomaden 2026 | Kereztour",
+    description: "Reise nach Kirgisistan zur Welt der Nomaden 2026: traditionelle Nomadenkultur, Pferdespiele und Jurtenleben mit Kereztour.",
     trip: { name: "Welt der Nomaden 2026", image: "/tour-nomaden.jpg" },
   },
   "/buchen": {
-    title: "Reise nach Kirgisistan buchen | Kereztour",
-    description: "Buche deine Kirgisistan-Reise mit Kereztour: Tour, Termin und Tarif wählen, Preis sofort sehen und unverbindlich anfragen.",
+    title: "Kirgisistan Reise buchen | Kereztour",
+    description: "Kirgisistan Reise buchen: Tour, Termin und Tarif auswählen und deine Reise nach Kirgisistan unverbindlich bei Kereztour anfragen.",
   },
   "/registrierung": {
     title: "Registrierung & Zertifikat | Kereztour",
