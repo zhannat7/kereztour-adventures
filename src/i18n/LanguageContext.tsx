@@ -765,7 +765,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error("useLanguage must be used inside LanguageProvider");
+    // Fallback (e.g. after hot reload) instead of crashing the whole page
+    return {
+      language: "DE" as Language,
+      setLanguage: () => {},
+      t: (text: string) => translations.DE[text] ?? text,
+    };
   }
   return context;
 };
