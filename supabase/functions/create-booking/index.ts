@@ -36,10 +36,10 @@ const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
-async function sendNotificationEmail(subject: string, html: string) {
+async function sendEmail(to: string, subject: string, html: string) {
   const apiKey = Deno.env.get("RESEND_API_KEY");
   if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured – skipping notification email.");
+    console.error("RESEND_API_KEY is not configured – skipping email.");
     return;
   }
   try {
@@ -51,16 +51,16 @@ async function sendNotificationEmail(subject: string, html: string) {
       },
       body: JSON.stringify({
         from: Deno.env.get("RESEND_FROM_EMAIL") ?? "Kereztour <onboarding@resend.dev>",
-        to: [NOTIFY_EMAIL],
+        to: [to],
         subject,
         html,
       }),
     });
     if (!res.ok) {
-      console.error(`Resend error [${res.status}]: ${await res.text()}`);
+      console.error(`Resend error [${res.status}] for ${to}: ${await res.text()}`);
     }
   } catch (error) {
-    console.error("Notification email failed:", error);
+    console.error(`Email failed for ${to}:`, error);
   }
 }
 
@@ -172,7 +172,8 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    await sendNotificationEmail(
+    await sendEmail(
+      NOTIFY_EMAIL,
       `Neue Buchungsanfrage: ${selected.label} (${name})`,
       `<h2>Neue Buchungsanfrage</h2>
        <table cellpadding="6" style="border-collapse:collapse">
@@ -187,6 +188,23 @@ Deno.serve(async (req) => {
          <tr><td><b>Anmerkungen</b></td><td>${escapeHtml(notes ?? "-")}</td></tr>
        </table>
        <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
+    );
+
+    await sendEmail(
+      email,
+      `Deine Buchungsanfrage bei Kereztour`,
+      `<h2>Vielen Dank für deine Buchungsanfrage!</h2>
+       <p>Hallo ${escapeHtml(name)},</p>
+       <p>vielen Dank für deine Buchungsanfrage bei Kereztour. Wir haben deine Anfrage erhalten und prüfen jetzt den gewünschten Termin. Sarina meldet sich zur Bestätigung bei dir.</p>
+       <table cellpadding="6" style="border-collapse:collapse">
+         <tr><td><b>Reise</b></td><td>${escapeHtml(selected.label)}</td></tr>
+         <tr><td><b>Reisedatum</b></td><td>${escapeHtml(travelDate)}</td></tr>
+         <tr><td><b>Reisevariante</b></td><td>${escapeHtml(tier ?? "-")}</td></tr>
+         <tr><td><b>Personen</b></td><td>${persons}</td></tr>
+         <tr><td><b>Gesamtpreis</b></td><td>${totalPrice} &euro;</td></tr>
+       </table>
+       <p>Die Zahlung erfolgt erst, nachdem Sarina deinen Reisetermin bestätigt hat.</p>
+       <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
     );
 
     return json({ success: true }, 200, origin);
