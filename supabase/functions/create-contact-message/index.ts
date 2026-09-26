@@ -62,15 +62,15 @@ Deno.serve(async (req) => {
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     const message = typeof body.message === "string" ? body.message.trim() : null;
 
-    if (name.length < 2 || name.length > 200) return json({ error: "Ungültiger Name." }, 400);
+    if (name.length < 2 || name.length > 200) return json({ error: "Ungültiger Name." }, 400, origin);
     if (email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return json({ error: "Ungültige E-Mail-Adresse." }, 400);
+      return json({ error: "Ungültige E-Mail-Adresse." }, 400, origin);
     }
-    if (message && message.length > 5000) return json({ error: "Nachricht ist zu lang." }, 400);
+    if (message && message.length > 5000) return json({ error: "Nachricht ist zu lang." }, 400, origin);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!supabaseUrl || !serviceRoleKey) return json({ error: "Serverkonfiguration fehlt." }, 500);
+    if (!supabaseUrl || !serviceRoleKey) return json({ error: "Serverkonfiguration fehlt." }, 500, origin);
 
     const admin = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
@@ -103,9 +103,9 @@ Deno.serve(async (req) => {
        <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
     );
 
-    return json({ success: true });
+    return json({ success: true }, 200, origin);
   } catch (error) {
     console.error("create-contact-message error:", error);
-    return json({ error: "Anfrage konnte nicht gesendet werden." }, 500);
+    return json({ error: "Anfrage konnte nicht gesendet werden." }, 500, origin);
   }
 });
