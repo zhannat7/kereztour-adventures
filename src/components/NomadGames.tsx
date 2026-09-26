@@ -20,7 +20,7 @@ const NomadGames = () => {
             <iframe
               className="absolute inset-0 h-full w-full"
               src="https://www.youtube-nocookie.com/embed/YBRknUnMIE0?rel=0"
-              title="{t("Welt der Nomaden 2026")} – Kirgisistan in Bewegung"
+              title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen

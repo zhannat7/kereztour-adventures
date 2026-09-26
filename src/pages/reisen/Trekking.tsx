@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 
 const days = [
@@ -86,7 +85,9 @@ const tips = [
   },
 ];
 
-const Trekking = () => {\n  const { t } = useLanguage();\n  return (
+const Trekking = () => {
+  const { t } = useLanguage();
+  return (
   <>
     <Navbar />
     <main className="bg-background pb-24 pt-24 md:pt-32">

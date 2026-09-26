@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
-import { useLanguage } from "@/i18n/LanguageContext";
 import Footer from "@/components/Footer";
 
 const highlights = [
@@ -22,7 +21,8 @@ const highlights = [
   "Zeit für persönliche Erlebnisse und Entdeckungen",
 ];
 
-const Kyrchyn = () => {\n  const { t } = useLanguage();
+const Kyrchyn = () => {
+  const { t } = useLanguage();
   return (
     <>
       <Navbar />

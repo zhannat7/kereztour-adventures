@@ -2,7 +2,10 @@ import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
+const Certificate = () => {
+  const { t } = useLanguage();
+
+  return (
   <main className="min-h-screen overflow-x-hidden bg-background">
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 md:py-28">
       <Link
@@ -16,7 +19,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
       <div className="mb-8 md:mb-10">
         <span className="eyebrow mb-4 block">{t("Registrierung")}</span>
         <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
-          {t("{t("Offizieller Registrierungsnachweis")}")}
+          {t("Offizieller Registrierungsnachweis")}
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
           Kereztour wird von einem in Kirgisistan registrierten Einzelunternehmen
@@ -69,7 +72,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            {t("{t("Originalzertifikat ansehen")}")}
+            {t("Originalzertifikat ansehen")}
             <ExternalLink className="h-4 w-4" />
           </a>
           <Link
@@ -82,7 +85,7 @@ const Certificate = () => {\n  const { t } = useLanguage();\n\n  return (
 
         <div className="mt-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            {t("{t("Vorschau des Zertifikats")}")}
+            {t("Vorschau des Zertifikats")}
           </p>
 
           <div className="md:hidden border border-border bg-muted/30 p-5">

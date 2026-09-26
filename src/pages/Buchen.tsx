@@ -242,7 +242,7 @@ const Buchen = () => {
     (tour) => tour.id === tourId
   );
 
-  const pricePer{t("Person")} = useMemo(() => {
+  const pricePerPerson = useMemo(() => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
@@ -253,7 +253,7 @@ const Buchen = () => {
     return selectedTour.price ?? 0;
   }, [selectedTour, tier]);
 
-  const totalPrice = persons * pricePer{t("Person")};
+  const totalPrice = persons * pricePerPerson;
 
   const selectTour = (id: TourId) => {
     setValue("tour", id, {
@@ -322,7 +322,7 @@ const Buchen = () => {
         );
 
         if (!selectedDate) {
-          throw new Error("Dieser Reisetermin ist nicht mehr {t("verfügbar")}.");
+          throw new Error("Dieser Reisetermin ist nicht mehr verfügbar.");
         }
 
         const availablePlaces = Number(selectedDate.available_places);
@@ -330,7 +330,7 @@ const Buchen = () => {
         if (selectedDate.status === "full" || data.persons > availablePlaces) {
           throw new Error(
             availablePlaces > 0
-              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} {t("Plätze")} {t("verfügbar")}.`
+              ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
               : "Dieser Reisetermin ist bereits ausgebucht."
           );
         }
@@ -559,8 +559,8 @@ const Buchen = () => {
 
                               <p className="text-sm text-muted-foreground mt-2">
                                 {isEconomy
-                                  ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 {t("Person")}en."
-                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 {t("Person")}en."}
+                                  ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 Personen."
+                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen."}
                               </p>
                             </div>
 
@@ -598,7 +598,7 @@ const Buchen = () => {
 
               <Step
                 n={2}
-                title="Wann und wie viele {t("Person")}en?"
+                title="Wann und wie viele Personen?"
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -607,7 +607,7 @@ const Buchen = () => {
                 <div className="space-y-3">
 
                   <Label>
-                    {t("Anzahl der {t("Person")}en")}
+                    {t("Anzahl der Personen")}
                   </Label>
 
                   <div className="flex items-center gap-4">
@@ -671,7 +671,7 @@ const Buchen = () => {
                         </div>
                       ) : cultureDates.length === 0 ? (
                         <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                          {t("Aktuell sind keine Reisetermine {t("verfügbar")}.")}
+                          {t("Aktuell sind keine Reisetermine verfügbar.")}
                         </div>
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -704,8 +704,8 @@ const Buchen = () => {
                                 <p className="font-semibold text-foreground">{item.label}</p>
                                 <p className="text-sm mt-1 font-medium text-primary">
                                   {isFull
-                                    ? "{t("Ausgebucht")}"
-                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "{t("Platz")}" : "{t("Plätze")}"} {t("verfügbar")}`}
+                                    ? "Ausgebucht"
+                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "Platz" : "Plätze"} verfügbar`}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                   Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
@@ -729,7 +729,7 @@ const Buchen = () => {
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {travelDate
                             ? format(travelDate, "PPP", { locale: de })
-                            : "{t("Datum wählen")}"}
+                            : "Datum wählen"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -767,7 +767,7 @@ const Buchen = () => {
 
               <Step
                 n={3}
-                title="{t("Deine Kontaktdaten")}"
+                title="Deine Kontaktdaten"
               />
 
               <div className="space-y-5">
@@ -871,7 +871,7 @@ const Buchen = () => {
             </section>
 
             {/* ZUSAMMENFASSUNG */}
-            {selectedTour && pricePer{t("Person")} > 0 && (
+            {selectedTour && pricePerPerson > 0 && (
               <section className="border-y border-gold/30 bg-primary p-6 text-primary-foreground md:p-9">
 
                 <p className="text-primary-foreground/70 text-sm mb-2">
@@ -902,8 +902,8 @@ const Buchen = () => {
 
                     <p className="text-primary-foreground/70 text-sm mt-1">
                       {persons}{" "}
-                      {persons === 1 ? "{t("Person")}" : "{t("Person")}en"}{" "}
-                      × {pricePer{t("Person")}.toLocaleString("de-DE")} €
+                      {persons === 1 ? "Person" : "Personen"}{" "}
+                      × {pricePerPerson.toLocaleString("de-DE")} €
                     </p>
 
                   </div>
@@ -952,7 +952,7 @@ const Buchen = () => {
                   {t("Wird gesendet...")}
                 </>
               ) : (
-                "{t("Buchungsanfrage senden →")}"
+                "Buchungsanfrage senden →"
               )}
             </Button>
 
