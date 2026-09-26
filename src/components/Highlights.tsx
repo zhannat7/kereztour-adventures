@@ -40,8 +40,7 @@ const Highlights = () => {
             </h2>
           </div>
           <p className="max-w-md text-base leading-relaxed text-muted-foreground md:pb-1 md:text-lg">
-            Bei Kereztour geht es um persönliche Betreuung, kleine Gruppen und echte Nähe zu Land
-            und Menschen.
+            {t("Bei Kereztour geht es um persönliche Betreuung, kleine Gruppen und echte Nähe zu Land und Menschen.")}
           </p>
         </div>
 
