@@ -211,20 +211,42 @@ const Buchen = () => {
     const loadTourDates = async () => {
       setIsLoadingDates(true);
 
+      const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
+
+      // The admin dashboard stores the selected dates in tour_dates.
+      // Prefer the availability RPC (it also calculates remaining places),
+      // but fall back to the source table so an RPC/deployment problem does
+      // not make all admin-created dates disappear from the booking page.
+      let availabilityData: any[] | null = null;
       const { data, error } = await (supabase as any)
         .rpc("get_tour_date_availability");
 
-      if (!active) return;
+      if (!error && Array.isArray(data)) {
+        availabilityData = data;
+      } else {
+        const { data: rawDates, error: rawError } = await supabase
+          .from("tour_dates")
+          .select("id, tour, start_date, end_date, max_participants, status")
+          .eq("tour", selectedTourLabel)
+          .order("start_date", { ascending: true });
 
-      if (error) {
-        setTourDates([]);
-        setIsLoadingDates(false);
-        return;
+        if (rawError) {
+          if (active) {
+            setTourDates([]);
+            setIsLoadingDates(false);
+          }
+          return;
+        }
+
+        availabilityData = (rawDates ?? []).map((item: any) => ({
+          ...item,
+          available_places: Number(item.max_participants),
+        }));
       }
 
-      const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
+      if (!active) return;
 
-      const dates: TourDateAvailability[] = (data ?? [])
+      const dates: TourDateAvailability[] = (availabilityData ?? [])
         .filter((item: any) => item.tour === selectedTourLabel)
         .map((item: any) => ({
           id: item.id,
@@ -235,8 +257,8 @@ const Buchen = () => {
             "–" +
             format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
-          availablePlaces: Number(item.available_places),
-          status: item.status === "full" ? "full" : "open",
+          availablePlaces: Math.max(0, Number(item.available_places)),
+          status: item.status === "full" || item.status === "cancelled" ? "full" : "open",
         }));
 
       setTourDates(dates);
