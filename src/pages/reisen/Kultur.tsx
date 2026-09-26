@@ -101,7 +101,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
 };
 
 const Kultur = () => {
-  const { t } = useLanguage();\n  const { t } = useLanguage();
+  const { t } = useLanguage();
   const [activeDay, setActiveDay] = useState(0);
   const [cultureDates, setCultureDates] = useState<Array<{
     id: string;

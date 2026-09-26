@@ -322,7 +322,7 @@ const Buchen = () => {
         );
 
         if (!selectedDate) {
-          throw new Error("Dieser Reisetermin ist nicht mehr {t("verfügbar")}.");
+          throw new Error("Dieser Reisetermin ist nicht mehr verfügbar.");
         }
 
         const availablePlaces = Number(selectedDate.available_places);
