@@ -26,7 +26,7 @@ const Zahlung = () => {
         <Navbar />
         <main className="pt-24 pb-20 bg-background min-h-screen flex items-center justify-center">
           <div className="text-center space-y-4">
-            <p className="text-muted-foreground">Keine Buchungsdaten gefunden.</p>
+            <p className="text-muted-foreground">{t("Keine Buchungsdaten gefunden.")}</p>
             <Button onClick={() => navigate("/")}>{t("Zurück")} zur Startseite</Button>
           </div>
         </main>
