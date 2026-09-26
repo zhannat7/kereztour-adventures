@@ -357,6 +357,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Keine Buchungsdaten gefunden.": "No booking data found.",
     "Certificate of State Registration of an": "Certificate of State Registration of an",
     "Full": "Full",
+    "Individual Entrepreneur": "Individual Entrepreneur",
   },
   IT: {
     "Reisen": "Viaggi",
@@ -712,6 +713,7 @@ const translations: Record<Language, Record<string, string>> = {
     "Keine Buchungsdaten gefunden.": "Dati di prenotazione non trovati.",
     "Certificate of State Registration of an": "Certificato di registrazione statale di un",
     "Full": "Completo",
+    "Individual Entrepreneur": "Imprenditore individuale",
   },
 };
 
