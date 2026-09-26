@@ -26,9 +26,8 @@ const META: Record<string, Meta> = {
     trip: { name: "Kyrchyn Tour Kirgisistan", price: 1300, image: "/tour-kyrchyn.jpg" },
   },
   "/reisen/nomaden": {
-    title: "Kirgisistan Reise – Welt der Nomaden 2026 | Kereztour",
-    description: "Reise nach Kirgisistan zur Welt der Nomaden 2026: traditionelle Nomadenkultur, Pferdespiele und Jurtenleben mit Kereztour.",
-    trip: { name: "Welt der Nomaden 2026", image: "/tour-nomaden.jpg" },
+    title: "Kirgisistan – Welt der Nomaden 2026 | Kereztour",
+    description: "Informationen zu den Weltspielen der Nomaden 2026 in Kirgisistan: Nomadenkultur, Pferdespiele, traditionelle Wettkämpfe und die Region rund um den Issyk-Kul.",
   },
   "/buchen": {
     title: "Kirgisistan Reise buchen | Kereztour",
