@@ -333,7 +333,7 @@ const Buchen = () => {
           throw new Error(
             availablePlaces > 0
               ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
-              : "Dieser Reisetermin ist bereits ausgebucht."
+              : t("Dieser Reisetermin ist bereits ausgebucht.")
           );
         }
       }
@@ -381,7 +381,7 @@ const Buchen = () => {
       setSubmitError(
         message
           ? t("Buchungsanfrage konnte nicht gesendet werden: {message}").replace("{message}", message)
-          : "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
+          : t("Ein Fehler ist aufgetreten. Bitte versuche es erneut.")
       );
     } finally {
       setIsSubmitting(false);
