@@ -78,6 +78,13 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         ],
       },
       {
+        title: "8. WhatsApp und andere externe Links",
+        paragraphs: [
+          "Unsere Website enthält Links zu WhatsApp sowie zu unseren Social-Media-Profilen. Wenn du einen solchen Link anklickst, verlässt du unsere Website und gelangst zum jeweiligen externen Dienst.",
+          "Ab diesem Zeitpunkt gelten die Datenschutzbestimmungen des jeweiligen Anbieters. Wir haben keinen Einfluss auf die Datenverarbeitung durch diese externen Dienste.",
+        ],
+      },
+      {
         title: "9. Datenübermittlung und externe Dienste",
         paragraphs: [
           "Für den Betrieb der Website nutzen wir externe technische Dienste wie Supabase und Resend sowie Links bzw. eingebettete Inhalte von Drittanbietern. Dabei können personenbezogene Daten an diese Anbieter übermittelt oder durch diese verarbeitet werden.",
@@ -186,8 +193,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "5. Database and technical infrastructure",
         paragraphs: [
-          "We use Supabase to store and technically process booking and contact requests. The submitted information is stored in the database structures required for the website. Depending on the technical configuration, data may also be processed outside the Kyrgyz Republic."",
-          "Supabase may process personal data on our behalf as a technical service provider. Depending on the technical configuration, data may also be processed outside the Kyrgyz Republic. The services and their current privacy and security terms determine the applicable processing arrangements."
+          "We use external technical service providers, including Supabase, to operate our website and handle booking and contact requests. The personal data you provide may be processed to the extent necessary for these purposes.",
+          "We select the services with regard to appropriate protection of personal data and take the applicable legal requirements into account.",
         ],
       },
       {
@@ -202,6 +209,13 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         paragraphs: [
           "Our website contains an embedded YouTube video. We use the privacy-enhanced domain youtube-nocookie.com.",
           "Loading or using the embedded video may establish a connection with YouTube or Google, and technical information may be processed.",
+        ],
+      },
+      {
+        title: "9. Data transfers and external services",
+        paragraphs: [
+          "We use external technical services such as Supabase and Resend, as well as links or embedded content from third parties. Personal data may therefore be transmitted to or processed by these providers.",
+          "Where applicable data-protection law requires safeguards for transfers of personal data to other countries, the legally required conditions and safeguards are taken into account.",
         ],
       },
       {
@@ -299,8 +313,8 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "5. Database e infrastruttura tecnica",
         paragraphs: [
-          "Utilizziamo Supabase per la conservazione e il trattamento tecnico delle richieste di prenotazione e di contatto. I dati inviati vengono conservati nelle strutture del database necessarie al funzionamento del sito. A seconda della configurazione tecnica, i dati possono essere trattati anche al di fuori della Repubblica del Kirghizistan."
-          "Supabase può trattare dati personali per nostro conto in qualità di fornitore tecnico. Sono determinanti i servizi effettivamente utilizzati e le relative condizioni aggiornate in materia di privacy e sicurezza."
+          "Per il funzionamento del sito e la gestione delle richieste di prenotazione e di contatto utilizziamo servizi tecnici esterni, tra cui Supabase. I dati personali forniti possono essere trattati nella misura necessaria a tali scopi.",
+          "Selezioniamo i servizi tenendo conto di un'adeguata protezione dei dati personali e delle norme di legge applicabili.",
         ],
       },
       {
@@ -314,6 +328,13 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         paragraphs: [
           "Il nostro sito contiene un video YouTube incorporato. Utilizziamo il dominio più rispettoso della privacy youtube-nocookie.com.",
           "Il caricamento o l'utilizzo del video incorporato può stabilire una connessione con YouTube o Google e comportare il trattamento di informazioni tecniche.",
+        ],
+      },
+      {
+        title: "9. Trasferimento dei dati e servizi esterni",
+        paragraphs: [
+          "Utilizziamo servizi tecnici esterni come Supabase e Resend, nonché link o contenuti incorporati di terze parti. I dati personali possono pertanto essere trasmessi a questi fornitori o trattati da essi.",
+          "Quando la normativa applicabile sulla protezione dei dati richiede garanzie per il trasferimento di dati personali verso altri Paesi, vengono considerate le condizioni e le misure di protezione richieste dalla legge.",
         ],
       },
       {
