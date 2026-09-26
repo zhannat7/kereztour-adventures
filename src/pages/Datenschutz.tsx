@@ -60,15 +60,14 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "5. Datenbank und technische Infrastruktur",
         paragraphs: [
-          "Für die Speicherung und technische Verarbeitung von Buchungs- und Kontaktanfragen verwenden wir Supabase. Die übermittelten Daten werden dort in den für die Website erforderlichen Datenbankstrukturen gespeichert.",
-          "Supabase kann dabei als technischer Dienstleister personenbezogene Daten in unserem Auftrag verarbeiten. Je nach technischer Konfiguration können Daten dabei auch außerhalb der Kirgisischen Republik verarbeitet werden. Maßgeblich sind die jeweils eingesetzten Dienste und deren aktuelle Datenschutz- und Sicherheitsbedingungen.",
+          "Für den Betrieb unserer Website und die Bearbeitung von Buchungs- und Kontaktanfragen nutzen wir externe technische Dienstleister, darunter Supabase. Dabei können die von dir übermittelten personenbezogenen Daten im erforderlichen Umfang verarbeitet werden.",
+          "Wir wählen die eingesetzten Dienste mit Blick auf einen angemessenen Schutz personenbezogener Daten aus und berücksichtigen die jeweils geltenden gesetzlichen Anforderungen.",
         ],
       },
       {
         title: "6. E-Mail-Versand",
         paragraphs: [
-          "Für den Versand von E-Mails im Zusammenhang mit Buchungs- und Kontaktanfragen verwenden wir Resend.",
-          "Wenn eine E-Mail über unsere Website versendet wird, können die für den Versand erforderlichen Daten, insbesondere E-Mail-Adresse, Name und der Inhalt der jeweiligen Nachricht, an Resend übermittelt werden.",
+          "Für die Bearbeitung und den Versand von E-Mails im Zusammenhang mit Buchungs- und Kontaktanfragen nutzen wir einen externen E-Mail-Dienst, darunter Resend. Dabei können die für den Versand erforderlichen Daten verarbeitet werden.",
         ],
       },
       {
@@ -307,8 +306,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
       {
         title: "6. Invio delle e-mail",
         paragraphs: [
-          "Utilizziamo Resend per l'invio delle e-mail relative alle richieste di prenotazione e di contatto.",
-          "Quando viene inviata un'e-mail tramite il sito, i dati necessari alla consegna, tra cui indirizzo e-mail, nome e contenuto del relativo messaggio, possono essere trasmessi a Resend.",
+          "Per la gestione e l'invio delle e-mail relative alle richieste di prenotazione e di contatto utilizziamo un servizio e-mail esterno, tra cui Resend. I dati necessari per l'invio possono essere trattati a tale scopo.",
         ],
       },
       {
