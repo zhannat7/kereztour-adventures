@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
       return json({ error: "Serverkonfiguration für E-Mail-Versand fehlt." }, 500, origin);
     }
 
-    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY") ?? "", {
+    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY") ?? serviceRoleKey, {
       global: { headers: { Authorization: authHeader } },
       auth: { persistSession: false, autoRefreshToken: false },
     });
