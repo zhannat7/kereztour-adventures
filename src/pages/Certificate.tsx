@@ -105,10 +105,9 @@ const Certificate = () => {
 
           <div className="hidden overflow-hidden border border-border shadow-soft md:block">
             <iframe
-              src="/Certificate.pdf"
+              src="/Certificate.pdf#view=FitH"
               title="Certificate of State Registration – Kereztour"
               className="h-[80vh] min-h-[500px] w-full bg-muted"
-              loading="lazy"
             />
           </div>
         </div>
