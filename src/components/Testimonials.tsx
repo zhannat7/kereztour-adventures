@@ -76,7 +76,7 @@ const Testimonials = () => {
                 <>
                   <blockquote className="flex-1 p-7 pb-0">
                     <Quote className="h-6 w-6 text-secondary/40 mb-4" />
-                    <p className="font-display text-lg leading-relaxed text-foreground/90">„{r.text}"</p>
+                    <p className="font-display text-lg leading-relaxed text-foreground/90">„{t(r.text)}"</p>
                   </blockquote>
 
                   <figcaption className="mt-auto flex items-center gap-3 p-6">
