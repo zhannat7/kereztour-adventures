@@ -12,6 +12,8 @@ const Hero = () => {
           src="/hero-wide.jpg"
           alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
           loading="eager"
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
         />
         <div className="absolute inset-0 bg-gradient-veil" />
