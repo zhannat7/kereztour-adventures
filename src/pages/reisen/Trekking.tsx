@@ -86,7 +86,9 @@ const tips = [
   },
 ];
 
-const Trekking = () => {\n  const { t } = useLanguage();\n  return (
+const Trekking = () => {
+  const { t } = useLanguage();
+  return (
   <>
     <Navbar />
     <main className="bg-background pb-24 pt-24 md:pt-32">

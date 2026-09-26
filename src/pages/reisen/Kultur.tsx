@@ -50,8 +50,8 @@ const days = [
 ];
 
 const tiers = [
-  { name: "Economy", price: "990", featured: false, tagline: "Authentisch & erschwinglich", details: [{ icon: Users, text: "Gruppe bis 12 {t("Personen")}" }, { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" }, { icon: Star, text: "Standard Service" }] },
-  { name: "Comfort", price: "1.490", featured: true, tagline: "Exklusiv & komfortabel", details: [{ icon: Users, text: "Kleine Gruppe, max. 4 {t("Personen")}" }, { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" }, { icon: Star, text: "Premium Service" }] },
+  { name: "Economy", price: "990", featured: false, tagline: "Authentisch & erschwinglich", details: [{ icon: Users, text: "Gruppe bis 12 Personen" }, { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" }, { icon: Star, text: "Standard Service" }] },
+  { name: "Comfort", price: "1.490", featured: true, tagline: "Exklusiv & komfortabel", details: [{ icon: Users, text: "Kleine Gruppe, max. 4 Personen" }, { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" }, { icon: Star, text: "Premium Service" }] },
 ];
 
 const highlights = [

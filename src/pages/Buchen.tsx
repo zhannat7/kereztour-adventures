@@ -242,7 +242,7 @@ const Buchen = () => {
     (tour) => tour.id === tourId
   );
 
-  const pricePer{t("Person")} = useMemo(() => {
+  const pricePerPerson = useMemo(() => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
@@ -253,7 +253,7 @@ const Buchen = () => {
     return selectedTour.price ?? 0;
   }, [selectedTour, tier]);
 
-  const totalPrice = persons * pricePer{t("Person")};
+  const totalPrice = persons * pricePerPerson;
 
   const selectTour = (id: TourId) => {
     setValue("tour", id, {
@@ -560,7 +560,7 @@ const Buchen = () => {
                               <p className="text-sm text-muted-foreground mt-2">
                                 {isEconomy
                                   ? "Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 {t("Person")}en."
-                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 {t("Person")}en."}
+                                  : "Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen."}
                               </p>
                             </div>
 
@@ -705,7 +705,7 @@ const Buchen = () => {
                                 <p className="text-sm mt-1 font-medium text-primary">
                                   {isFull
                                     ? "{t("Ausgebucht")}"
-                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "{t("Platz")}" : "{t("Plätze")}"} {t("verfügbar")}`}
+                                    : `Noch ${item.availablePlaces} ${item.availablePlaces === 1 ? "{t("Platz")}" : "Plätze"} {t("verfügbar")}`}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                   Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
@@ -729,7 +729,7 @@ const Buchen = () => {
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {travelDate
                             ? format(travelDate, "PPP", { locale: de })
-                            : "{t("Datum wählen")}"}
+                            : "Datum wählen"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -871,7 +871,7 @@ const Buchen = () => {
             </section>
 
             {/* ZUSAMMENFASSUNG */}
-            {selectedTour && pricePer{t("Person")} > 0 && (
+            {selectedTour && pricePerPerson > 0 && (
               <section className="border-y border-gold/30 bg-primary p-6 text-primary-foreground md:p-9">
 
                 <p className="text-primary-foreground/70 text-sm mb-2">
@@ -902,8 +902,8 @@ const Buchen = () => {
 
                     <p className="text-primary-foreground/70 text-sm mt-1">
                       {persons}{" "}
-                      {persons === 1 ? "{t("Person")}" : "{t("Person")}en"}{" "}
-                      × {pricePer{t("Person")}.toLocaleString("de-DE")} €
+                      {persons === 1 ? "{t("Person")}" : "Personen"}{" "}
+                      × {pricePerPerson.toLocaleString("de-DE")} €
                     </p>
 
                   </div>
