@@ -39,7 +39,7 @@ const Hero = () => {
             </div>
 
             <div
-              className="relative top-[76px] flex animate-fade-in-up flex-col items-center justify-center gap-5 sm:top-12 sm:flex-row sm:items-stretch sm:gap-6"
+              className="relative top-[76px] flex animate-fade-in-up flex-col items-center justify-center gap-5 sm:top-[-12px] sm:flex-row sm:items-stretch sm:gap-6"
               style={{ animationDelay: "0.25s" }}
             >
               <Link
