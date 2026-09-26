@@ -129,7 +129,7 @@ const Trekking = () => {
 
         {/* Itinerary */}
         <h2 className="font-display text-3xl md:text-4xl text-foreground mb-8">
-          Dein <span className="italic text-primary">Reiseplan</span>
+          {t("Dein")} <span className="italic text-primary">{t("Reiseplan")}</span>
         </h2>
         <div className="space-y-4 mb-20">
           {days.map((d) => (
