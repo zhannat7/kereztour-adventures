@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const days = [
   { day: 1, title: "Ankunft in Bischkek", desc: "Ankunft am Flughafen Manas, Transfer ins Hotel. Stadttour: Ala-Too-Platz, Eichenpark und historisches Museum. Abendessen im traditionellen Restaurant Supara." },
@@ -17,19 +18,20 @@ const days = [
 
 const Itinerary = () => {
   const ref = useScrollReveal();
+  const { t } = useLanguage();
 
   return (
     <section id="reiseplan" className="py-24 md:py-32 bg-muted/40 relative">
       <div ref={ref} className="section-reveal container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-16">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-            Kultur Tour · Tag für Tag
+            {t("Kultur Tour · Tag für Tag")}
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground">
-            Dein <span className="italic text-primary">Reiseplan</span>
+            {t("Dein")} <span className="italic text-primary">{t("Reiseplan")}</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
-            10 unvergessliche Tage durch Kirgisistans schönste Orte – Kultur, Natur und echte Begegnungen.
+            {t("10 unvergessliche Tage durch Kirgisistans schönste Orte – Kultur, Natur und echte Begegnungen.")}
           </p>
         </div>
 
@@ -44,14 +46,14 @@ const Itinerary = () => {
                   {d.day}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Tag {d.day}
+                  {t("Tag")} {d.day}
                 </span>
               </div>
               <h3 className="font-display text-base md:text-lg text-foreground mb-2 leading-snug">
-                {d.title}
+                {t(d.title)}
               </h3>
               <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mt-auto">
-                {d.desc}
+                {t(d.desc)}
               </p>
             </div>
           ))}
@@ -62,7 +64,7 @@ const Itinerary = () => {
             to="/reisen/kultur"
             className="inline-flex items-center gap-2 rounded-sm border border-primary px-8 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
           >
-            Mehr zur Kultur Tour <ArrowRight className="h-4 w-4" />
+            {t("Mehr zur Kultur Tour")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
