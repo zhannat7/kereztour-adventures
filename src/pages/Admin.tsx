@@ -266,9 +266,6 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
   const addDate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (nd.max_participants < 12 || nd.max_participants > 15) {
-      return toast.error("Max. Plätze muss zwischen 12 und 15 liegen.");
-    }
     if (nd.end_date < nd.start_date) {
       return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
     }
@@ -428,8 +425,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <input
                   className={input}
                   type="number"
-                  min={12}
-                  max={15}
+                  min={1}
                   required
                   value={nd.max_participants}
                   onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })}
