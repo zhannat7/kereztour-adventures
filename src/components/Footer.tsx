@@ -88,8 +88,8 @@ const Footer = () => {
           <h3 className="mb-5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground/40">{t("Kontakt")}</h3>
           <ul className="space-y-3.5 text-sm">
             <li>
-              <a href="mailto:sarinasadirovna@gmail.com" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
-                <Mail className="h-4 w-4 shrink-0" /> sarinasadirovna@gmail.com
+              <a href="mailto:kereztour@hotmail.com" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
+                <Mail className="h-4 w-4 shrink-0" /> kereztour@hotmail.com
               </a>
             </li>
             <li>
