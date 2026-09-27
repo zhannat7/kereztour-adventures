@@ -266,6 +266,13 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
   const addDate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (nd.max_participants < 12 || nd.max_participants > 15) {
+      return toast.error("Max. Plätze muss zwischen 12 und 15 liegen.");
+    }
+    if (nd.end_date < nd.start_date) {
+      return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
+    }
+
     const { error } = await supabase.from("tour_dates").insert(nd);
     if (error) return toast.error(error.message);
     toast.success("Termin hinzugefügt");
@@ -418,7 +425,15 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <input className={input} type="date" required value={nd.end_date} onChange={(e) => setNd({ ...nd, end_date: e.target.value })} />
               </label>
               <label className="text-xs text-muted-foreground">Max. Plätze
-                <input className={input} type="number" min={1} required value={nd.max_participants} onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })} />
+                <input
+                  className={input}
+                  type="number"
+                  min={12}
+                  max={15}
+                  required
+                  value={nd.max_participants}
+                  onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })}
+                />
               </label>
               <button className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Termin hinzufügen</button>
             </form>
