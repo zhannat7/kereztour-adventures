@@ -477,7 +477,7 @@ const Buchen = () => {
 
           <div className="mb-14 text-center">
             <h1 className="mb-4 font-display text-5xl text-primary md:text-7xl">
-              Reise buchen
+              {t("Reise buchen")}
             </h1>
 
             <p className="text-muted-foreground max-w-xl mx-auto">
@@ -518,7 +518,7 @@ const Buchen = () => {
                       onClick={() => setShowTourPicker(true)}
                       className="shrink-0 text-sm font-semibold text-primary hover:underline"
                     >
-                      Ändern
+                      {t("Ändern")}
                     </button>
                   </div>
                 </div>
@@ -802,7 +802,7 @@ const Buchen = () => {
                                     )}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
-                              Max. {itemMaxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
+                              Max. {itemMaxParticipants} {itemMaxParticipants === 1 ? t("Person") : t("Personen")} · {t("Anfrage ohne Zahlung")}
                             </p>
                           </button>
                         );
@@ -859,7 +859,7 @@ const Buchen = () => {
                       id="nachname"
                       {...register("nachname")}
                       onKeyDown={(event) => handleFieldEnter(event, "email")}
-                      placeholder="Nachname"
+                      placeholder={t("Nachname")}
                     />
 
                     {errors.nachname && (
@@ -881,7 +881,7 @@ const Buchen = () => {
                     type="email"
                     {...register("email")}
                     onKeyDown={(event) => handleFieldEnter(event, "phone")}
-                    placeholder="name@beispiel.de"
+                    placeholder={t("name@beispiel.de")}
                   />
 
                   {errors.email && (
@@ -901,7 +901,7 @@ const Buchen = () => {
                     type="tel"
                     {...register("phone")}
                     onKeyDown={(event) => handleFieldEnter(event, "notes")}
-                    placeholder="+49 123 456789"
+                    placeholder={t("+49 123 456789")}
                   />
 
                   {errors.phone && (
@@ -944,7 +944,7 @@ const Buchen = () => {
                   <div>
 
                     <h3 className="font-display text-2xl md:text-3xl">
-                      {selectedTour.label}
+                      {t(selectedTour.label)}
                     </h3>
 
                     {selectedTour.hasTiers && tier && (
@@ -1013,7 +1013,7 @@ const Buchen = () => {
                   {t("Wird gesendet...")}
                 </>
               ) : (
-                "Buchungsanfrage senden →"
+                {t("Buchungsanfrage senden →")}
               )}
             </Button>
 
