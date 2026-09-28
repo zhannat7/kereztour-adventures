@@ -244,15 +244,13 @@ const Kultur = () => {
               {t("10 Tage · Gruppenreise")}
             </span>
             <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
-              Kultur Tour
+              {t("Kultur Tour")}
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">
                 {t("Kirgisistan von seiner schönsten Seite")}
               </span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
-              10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek
-              bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende
-              Natur und unvergessliche Begegnungen.
+              {t("10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende Natur und unvergessliche Begegnungen.")}
             </p>
           </div>
 
