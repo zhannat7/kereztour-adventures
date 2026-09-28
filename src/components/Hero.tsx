@@ -45,9 +45,9 @@ const Hero = () => {
   return (
     <>
       <style>{`
-        @keyframes hero-slow-zoom {
-          from { transform: translate3d(0, 0, 0) scale(1); }
-          to { transform: translate3d(0, 0, 0) scale(1.015); }
+        @keyframes hero-continuous-drift {
+          from { transform: translate3d(-0.08%, 0, 0) scale(1.008); }
+          to { transform: translate3d(0.08%, -0.08%, 0) scale(1.018); }
         }
       `}</style>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
@@ -73,7 +73,6 @@ const Hero = () => {
               style={{
                 objectPosition: "center center",
                 transform: "translate3d(0, 0, 0)",
-                animation: activeImage === index ? "hero-slow-zoom 14s ease-out forwards" : "none",
               }}
             />
           </div>
