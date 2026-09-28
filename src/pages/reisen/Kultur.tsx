@@ -369,50 +369,76 @@ const Kultur = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7">
               {tiers.map((tier) => (
                 <div
                   key={tier.name}
-                  className="border border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-soft md:p-7"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-sm border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lift md:p-8"
                 >
-                  <div className="flex items-start justify-between gap-5 mb-6">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">{t(tier.tagline)}</p>
-                      <h3 className="font-display text-2xl md:text-3xl text-foreground">{t(tier.name)}</h3>
+                  <div className="mb-7">
+                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-secondary">
+                      {t(tier.tagline)}
+                    </p>
+                    <div className="flex items-end justify-between gap-4">
+                      <h3 className="font-display text-3xl leading-none text-foreground md:text-4xl">
+                        {t(tier.name)}
+                      </h3>
+                      {tier.name === "VIP" && (
+                        <span className="rounded-full border border-secondary/40 bg-secondary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-secondary">
+                          Privat
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <div className="border-b border-border pb-6 mb-6">
+                  <div className="mb-7 rounded-sm bg-sand/40 p-5">
                     {tier.name === "VIP" ? (
-                      <>
-                        <div className="font-display text-3xl md:text-4xl text-primary">2.700 €</div>
-                        <div className="text-sm text-muted-foreground mt-1">{t("pro Person bei 2 Personen")}</div>
-                        <div className="font-display text-3xl md:text-4xl text-primary mt-3">1.700 €</div>
-                        <div className="text-sm text-muted-foreground mt-1">{t("pro Person bei 4 Personen")}</div>
-                      </>
+                      <div className="grid grid-cols-2 divide-x divide-border">
+                        <div className="pr-4">
+                          <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                            {t("2 Personen")}
+                          </p>
+                          <p className="font-display text-3xl leading-none text-primary md:text-4xl">2.700 €</p>
+                          <p className="mt-2 text-xs text-muted-foreground">{t("pro Person")}</p>
+                        </div>
+                        <div className="pl-5">
+                          <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                            {t("4 Personen")}
+                          </p>
+                          <p className="font-display text-3xl leading-none text-primary md:text-4xl">1.700 €</p>
+                          <p className="mt-2 text-xs text-muted-foreground">{t("pro Person")}</p>
+                        </div>
+                      </div>
                     ) : (
-                      <>
-                        <span className="font-display text-4xl md:text-5xl text-primary">1.300 €</span>
-                        <span className="text-sm text-muted-foreground ml-2">{t("pro Person")}</span>
-                      </>
+                      <div className="flex items-end gap-3">
+                        <span className="font-display text-5xl leading-none text-primary md:text-6xl">1.300 €</span>
+                        <span className="pb-1 text-sm text-muted-foreground">{t("pro Person")}</span>
+                      </div>
                     )}
                   </div>
 
-                  <ul className="space-y-4 mb-7">
-                    {tier.details.map((d) => (
-                      <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
-                        <d.icon className="h-5 w-5 shrink-0 text-primary" />
-                        <span>{t(d.text)}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="mb-8 flex-1">
+                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {t("Enthaltene Vorteile")}
+                    </p>
+                    <ul className="space-y-4">
+                      {tier.details.map((d) => (
+                        <li key={d.text} className="flex items-start gap-3 text-sm leading-relaxed text-foreground">
+                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                            <d.icon className="h-3.5 w-3.5 text-primary" />
+                          </span>
+                          <span>{t(d.text)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                   <Link
                     to={`/buchen?tour=kultur&tier=${tier.name === "VIP" ? "comfort" : "economy"}`}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-4 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
                   >
                     {t(tier.name)} {t("buchen")}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               ))}
