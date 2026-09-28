@@ -232,7 +232,7 @@ const Kultur = () => {
                         )}
                       </div>
                       {d.video && (
-                        <div className="mb-4 max-w-[620px] overflow-hidden rounded-xl border border-border bg-black">
+                        <div className="mb-4 max-w-[620px] overflow-hidden rounded-xl border border-border">
                           <video
                             src={d.video}
                             controls
