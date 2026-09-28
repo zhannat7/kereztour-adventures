@@ -987,8 +987,8 @@ const Buchen = () => {
                     {selectedTour.hasTiers && tier && (
                       <p className="text-primary-foreground/80 mt-1">
                         {tier === "economy"
-                          ? t("Economy")
-                          : t("Comfort")}
+                          ? t("Standard")
+                          : t("VIP")}
                       </p>
                     )}
 
