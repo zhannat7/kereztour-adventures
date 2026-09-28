@@ -425,7 +425,6 @@ const Dashboard = ({ session }: { session: Session }) => {
                   onChange={(e) => setNd({ ...nd, tour: e.target.value })}
                 >
                   <option>Kultur Tour</option>
-                  <option>Kyrchyn Tour</option>
                   <option>Intensiv-Trekking</option>
                 </select>
               </label>
