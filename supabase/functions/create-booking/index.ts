@@ -92,14 +92,16 @@ Deno.serve(async (req) => {
     const persons = Number(body.persons);
     const travelDate = body.travelDate;
     const tour = body.tour?.trim() ?? "";
-    // Accept internal IDs and public labels from older preview builds.
+    // Kultur pricing is determined by the allowed group size, so never
+    // reject a valid Kultur booking just because an older preview sends a
+    // missing or differently named tier value.
     let tier = body.tier?.trim() || null;
     if (tour === "kultur") {
-      if (tier === "standard") tier = "economy";
-      if (tier === "vip") tier = "comfort";
-      // Infer the Kultur option if an older preview omitted the internal ID.
-      if (!tier && (persons === 2 || persons === 4)) tier = "comfort";
-      if (!tier && persons >= 6 && persons <= 8) tier = "economy";
+      if (persons === 2 || persons === 4) {
+        tier = "comfort";
+      } else if (persons >= 6 && persons <= 8) {
+        tier = "economy";
+      }
     }
     const notes = body.notes?.trim() || null;
 
