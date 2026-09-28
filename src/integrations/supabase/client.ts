@@ -6,13 +6,25 @@ import { brokeredPreviewStorage } from './previewAuthStorage';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
+// Lovable preview can briefly start before the environment variables are injected.
+// Never let Supabase client construction crash the whole React application.
+const FALLBACK_SUPABASE_URL = 'https://placeholder.supabase.co';
+const FALLBACK_SUPABASE_KEY = 'placeholder-anon-key';
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    storage: brokeredPreviewStorage(),
-    persistSession: true,
-    autoRefreshToken: true,
-  }
-});
+const hasSupabaseConfig =
+  typeof SUPABASE_URL === 'string' &&
+  SUPABASE_URL.length > 0 &&
+  typeof SUPABASE_PUBLISHABLE_KEY === 'string' &&
+  SUPABASE_PUBLISHABLE_KEY.length > 0;
+
+export const supabase = createClient<Database>(
+  hasSupabaseConfig ? SUPABASE_URL : FALLBACK_SUPABASE_URL,
+  hasSupabaseConfig ? SUPABASE_PUBLISHABLE_KEY : FALLBACK_SUPABASE_KEY,
+  {
+    auth: {
+      storage: brokeredPreviewStorage(),
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  },
+);
