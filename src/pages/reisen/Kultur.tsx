@@ -114,7 +114,7 @@ const DayEightMedia = ({
   ];
 
   return (
-    <div className="mt-7 w-full max-w-[460px] mx-auto">
+    <div className="mt-7 w-full max-w-[620px] mx-auto">
       <div className="mb-3 aspect-[4/3] w-full max-w-[460px] self-center overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
         <video
           src={video}
