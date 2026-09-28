@@ -45,7 +45,7 @@ const Hero = () => {
   return (
     <>
       <style>{`
-        @keyframes hero-continuous-drift {
+        @keyframes hero-gentle-drift {
           from { transform: translate3d(-0.08%, 0, 0) scale(1.008); }
           to { transform: translate3d(0.08%, -0.08%, 0) scale(1.018); }
         }
