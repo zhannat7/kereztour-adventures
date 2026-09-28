@@ -5,9 +5,14 @@ const allowedOrigins = new Set([
   "https://www.kereztour.com",
 ]);
 
+const isAllowedOrigin = (origin: string | null) =>
+  !!origin && (allowedOrigins.has(origin) ||
+    /^https:\/\/[a-z0-9-]+\.lovable\.app$/.test(origin) ||
+    /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/.test(origin));
+
 const getCorsHeaders = (origin: string | null) => ({
-  "Access-Control-Allow-Origin": origin && allowedOrigins.has(origin)
-    ? origin
+  "Access-Control-Allow-Origin": isAllowedOrigin(origin)
+    ? origin!
     : "https://kereztour.com",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
