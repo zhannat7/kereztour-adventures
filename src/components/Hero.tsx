@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
-import yurtInterior from "@/assets/yurt-interior.png.asset.json";
+import heroYurt from "@/assets/gallery/IMG_3310.jpg";
 
 const heroImages = [
   {
@@ -15,7 +15,7 @@ const heroImages = [
     alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
   {
-    src: yurtInterior.url,
+    src: heroYurt,
     alt: "Gemeinsames Essen in einer traditionellen Jurte in Kirgisistan",
   },
 ];
