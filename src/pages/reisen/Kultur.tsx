@@ -133,7 +133,7 @@ const DayEightMedia = ({
         {photos.map((photo, index) => (
           <div
             key={photo}
-            className="group aspect-[4/3] overflow-hidden rounded-md border border-border bg-muted shadow-soft"
+            className="group aspect-[4/3] overflow-hidden rounded-xl bg-muted"
           >
             <img
               src={photo}
