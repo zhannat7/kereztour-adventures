@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users } from "lucide-react";
-import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 type Tour = {
@@ -59,7 +58,7 @@ const Tours = () => {
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">{t("Unsere Reisen")}</span>
             <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
-              {t("Drei Wege, ")}<span className="italic text-primary">{t("Kirgisistan zu entdecken")}</span>
+              {t("Zwei Wege, ")}<span className="italic text-primary">{t("Kirgisistan zu entdecken")}</span>
             </h2>
           </div>
           <Link
