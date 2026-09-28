@@ -66,7 +66,12 @@ const Hero = () => {
           <div className="mx-auto max-w-[620px] text-center lg:max-w-[980px]">
             <h1 className="mb-8 animate-slide-up font-display text-[40px] font-normal leading-[1.02] text-primary-foreground drop-shadow-lg sm:text-[62px] md:text-[76px] lg:mb-10 lg:text-[clamp(76px,6.8vw,106px)]">
               <span className="block">{t("Kirgisistan")}</span>
-              <span className="mt-3 block text-gold sm:mt-4 lg:whitespace-nowrap">
+              <span
+                className="mt-3 block text-gold sm:mt-4 lg:whitespace-nowrap"
+                style={{
+                  WebkitTextStroke: activeImage === 1 ? "0.7px rgba(35, 22, 14, 0.72)" : "0 transparent",
+                }}
+              >
                 {t("Authentisch erleben")}
               </span>
             </h1>
