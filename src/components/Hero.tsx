@@ -46,13 +46,13 @@ const Hero = () => {
     <>
       <style>{`
         @keyframes hero-gentle-drift {
-          from { transform: translate3d(-0.08%, 0, 0) scale(1.008); }
-          to { transform: translate3d(0.08%, -0.08%, 0) scale(1.018); }
+          from { transform: translate3d(-0.15%, 0, 0) scale(1); }
+          to { transform: translate3d(0.15%, -0.12%, 0) scale(1.035); }
         }
       `}</style>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ animation: "hero-gentle-drift 50s ease-in-out infinite alternate", transformOrigin: "center center", willChange: "transform" }}>
+        <div className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ animation: "hero-gentle-drift 30s ease-in-out infinite alternate", transformOrigin: "center center", willChange: "transform" }}>
         {heroImages.map((image, index) => (
           <div
             key={image.src}
