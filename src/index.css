@@ -146,20 +146,6 @@
   }
 }
 
-@keyframes hero-slow-move {
-  0% {
-    transform: scale(1.04) translate3d(0, 0, 0);
-  }
-  100% {
-    transform: scale(1.11) translate3d(-0.7%, -0.4%, 0);
-  }
-}
-
-.hero-slow-move {
-  animation: hero-slow-move 16s ease-in-out infinite alternate;
-  will-change: transform, opacity;
-}
-
 @layer components {
    .section-reveal {
     opacity: 1;
