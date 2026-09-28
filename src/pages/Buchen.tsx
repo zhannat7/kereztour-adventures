@@ -412,27 +412,21 @@ const Buchen = () => {
 
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
 
-      const { data: availability, error: availabilityError } = await (supabase as any)
-        .rpc("get_tour_date_availability");
+      // The selected date has already been loaded and validated in Step 2.
+      // Reuse that state here instead of making a second availability RPC call
+      // when the user presses the booking button.
+      const selectedDate = selectedTourDate;
 
-      if (availabilityError) throw availabilityError;
-
-      const selectedDate = (availability ?? []).find(
-        (item: any) =>
-          item.tour === tour.label &&
-          item.start_date === travelDateValue
-      );
-
-      if (!selectedDate) {
+      if (!selectedDate || selectedDate.value !== travelDateValue) {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
 
       const availablePlaces =
-        tour.hasTiers && data.tier === "economy"
-          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
-          : tour.hasTiers && data.tier === "comfort"
-            ? Number(selectedDate.comfort_available_places ?? selectedDate.available_places)
-            : Number(selectedDate.available_places);
+        tour.hasTiers && resolvedTier === "economy"
+          ? selectedDate.economyAvailablePlaces
+          : tour.hasTiers && resolvedTier === "comfort"
+            ? selectedDate.comfortAvailablePlaces
+            : selectedDate.availablePlaces;
 
       if (availablePlaces <= 0 || data.persons > availablePlaces) {
         throw new Error(
@@ -531,6 +525,10 @@ const Buchen = () => {
               (formErrors) => {
                 const firstError = Object.keys(formErrors)[0];
                 if (firstError) {
+                  const errorMessage =
+                    (formErrors as any)[firstError]?.message ||
+                    t("Bitte prüfe die markierten Felder.");
+                  setSubmitError(String(errorMessage));
                   focusNextField(firstError);
                 }
               }
