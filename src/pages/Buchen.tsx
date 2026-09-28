@@ -58,11 +58,6 @@ type TourDateAvailability = {
   status: "open" | "full";
 };
 
-const TIER_PRICES: Record<TierId, number> = {
-  economy: 1300,
-  comfort: 1700,
-};
-
 const getCulturePrice = (tier: TierId, persons: number) => {
   if (tier === "comfort") return persons === 2 ? 2700 : 1700;
   return 1300;
@@ -796,7 +791,12 @@ const Buchen = () => {
                               ? item.economyMaxParticipants
                               : item.comfortMaxParticipants
                             : item.maxParticipants;
-                        const isFull = item.status === "full" || itemAvailablePlaces <= 0;
+                        const isFull =
+                          item.status === "full" ||
+                          itemAvailablePlaces <= 0 ||
+                          (tourId === "kultur" &&
+                            ((tier === "economy" && itemAvailablePlaces < 6) ||
+                              (tier === "comfort" && itemAvailablePlaces < 2)));
 
                         return (
                           <button
