@@ -85,8 +85,9 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from: "Kereztour <onboarding@resend.dev>",
         to: [booking.email],
+        reply_to: "kereztour@hotmail.com",
         subject,
-        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;max-width:680px">${html}</div>`,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;max-width:680px">${html}<br><br><div style="font-size:13px;color:#6b7280">Antworten bitte direkt an Sarina: kereztour@hotmail.com</div></div>`,
       }),
     });
 
@@ -94,6 +95,15 @@ Deno.serve(async (req) => {
       console.error("Resend error:", await res.text());
       return json({ error: "E-Mail konnte nicht versendet werden." }, 502, origin);
     }
+
+    const { error: logError } = await admin.from("booking_email_log").insert({
+      booking_id: booking.id,
+      sent_by: user.id,
+      recipient: booking.email,
+      subject,
+      message,
+    });
+    if (logError) console.error("Booking email log error:", logError);
 
     if (confirmBooking && booking.status !== "confirmed") {
       const { error: updateError } = await admin

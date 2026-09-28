@@ -19,6 +19,9 @@ type TourDate = {
   id: string; tour: string; start_date: string; end_date: string; max_participants: number;
   economy_max_participants: number; comfort_max_participants: number; status: string;
 };
+type BookingEmailLog = {
+  id: string; booking_id: string; recipient: string; subject: string; message: string; sent_at: string;
+};
 
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
@@ -125,6 +128,8 @@ const BookingMessageModal = ({
       intro,
       ...details,
       ...appointment,
+      "",
+      "Bei Fragen kannst du direkt an Sarina antworten: kereztour@hotmail.com",
       "",
       "Liebe Grüße",
       "Sarina",
@@ -240,6 +245,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
+  const [emailLogs, setEmailLogs] = useState<Record<string, BookingEmailLog[]>>({});
   const [nd, setNd] = useState({
     tour: "Kultur Tour",
     start_date: "",
@@ -259,14 +265,21 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [previewKey, setPreviewKey] = useState(0);
 
   const load = async () => {
-    const [b, m, d] = await Promise.all([
+    const [b, m, d, e] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
       (supabase as any).from("tour_dates").select("*").order("start_date"),
+      (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
     setDates((d.data as TourDate[] | null) ?? []);
+    const grouped: Record<string, BookingEmailLog[]> = {};
+    for (const row of (e.data ?? []) as BookingEmailLog[]) {
+      (grouped[row.booking_id] ??= []).push(row);
+    }
+    setEmailLogs(grouped);
+    if (e.error) console.error("Booking email log could not be loaded:", e.error);
   };
   useEffect(() => { load(); }, []);
 
@@ -517,6 +530,25 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <Info l="Personen" v={String(b.persons)} /><Info l="Tarif" v={b.tier} />
                 </div>
                 {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
+                {(emailLogs[b.id] ?? []).length > 0 && (
+                  <details className="mt-4 rounded-sm border border-border bg-muted/30">
+                    <summary className="cursor-pointer px-3 py-2 text-sm font-medium">
+                      Gesendete E-Mails ({emailLogs[b.id].length})
+                    </summary>
+                    <div className="space-y-3 border-t border-border p-3">
+                      {emailLogs[b.id].map((log) => (
+                        <div key={log.id} className="rounded-sm border border-border bg-card p-3 text-sm">
+                          <div className="flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+                            <span>{new Date(log.sent_at).toLocaleString("de-DE")}</span>
+                            <span>Gesendet an: {log.recipient}</span>
+                          </div>
+                          <div className="mt-2 font-semibold">{log.subject}</div>
+                          <p className="mt-2 whitespace-pre-wrap leading-6 text-muted-foreground">{log.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                )}
                 <div className="mt-4 flex flex-wrap gap-2">
                   <button
                     onClick={() => setMessageBooking(b)}
