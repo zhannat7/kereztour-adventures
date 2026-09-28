@@ -380,7 +380,7 @@ const Buchen = () => {
 
       const price =
         tour.hasTiers && data.tier
-          ? TIER_PRICES[data.tier as TierId]
+          ? getCulturePrice(data.tier as TierId, data.persons)
           : tour.price ?? 0;
 
       if (tour.id === "kultur") {
