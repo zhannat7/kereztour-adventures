@@ -17,7 +17,7 @@ const json = (body: unknown, status = 200, origin: string | null = null) =>
     headers: { ...corsHeaders(origin), "Content-Type": "application/json" },
   });
 
-const NOTIFY_EMAIL = Deno.env.get("NOTIFY_EMAIL") ?? "sarinasadirovna@gmail.com";
+const NOTIFY_EMAIL = Deno.env.get("NOTIFY_EMAIL") ?? "kereztour@hotmail.com";
 
 const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
