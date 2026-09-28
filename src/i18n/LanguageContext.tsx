@@ -748,8 +748,10 @@ export type EditableTextEntry = {
   fallback: string;
 };
 
-export const getEditableTextEntries = (): EditableTextEntry[] =>
-  Object.keys(translations.DE).map((key) => ({ key, fallback: translations.DE[key] ?? key }));
+export const getEditableTextEntries = (): EditableTextEntry[] => {
+  const keys = new Set(Object.values(translations).flatMap((items) => Object.keys(items)));
+  return Array.from(keys).map((key) => ({ key, fallback: key }));
+};
 
 type LanguageContextValue = {
   language: Language;
