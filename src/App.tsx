@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -16,7 +16,6 @@ import Admin from "./pages/Admin.tsx";
 import Nomaden from "./pages/reisen/Nomaden.tsx";
 import Kultur from "./pages/reisen/Kultur.tsx";
 import Trekking from "./pages/reisen/Trekking.tsx";
-import Kyrchyn from "./pages/reisen/Kyrchyn.tsx";
 
 import NotFound from "./pages/NotFound.tsx";
 import { HelmetProvider } from "react-helmet-async";
@@ -62,7 +61,7 @@ const App = () => (
           <Route path="/reisen/nomaden" element={<Nomaden />} />
           <Route path="/reisen/kultur" element={<Kultur />} />
           <Route path="/reisen/trekking" element={<Trekking />} />
-          <Route path="/reisen/kyrchyn" element={<Kyrchyn />} />
+          <Route path="/reisen/kyrchyn" element={<Navigate to="/reisen/kultur" replace />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
