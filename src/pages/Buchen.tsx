@@ -1042,7 +1042,7 @@ const Buchen = () => {
                   {t("Wird gesendet...")}
                 </>
               ) : (
-                {t("Buchungsanfrage senden →")}
+                t("Buchungsanfrage senden →")
               )}
             </Button>
 
