@@ -147,12 +147,16 @@ Deno.serve(async (req) => {
         return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
       }
 
-      const availablePlaces = Number(selectedDate.available_places);
-      if (selectedDate.status === "full" || persons > availablePlaces) {
+      const availablePlaces =
+        tier === "economy"
+          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
+          : Number(selectedDate.comfort_available_places ?? selectedDate.available_places);
+
+      if (availablePlaces <= 0 || persons > availablePlaces) {
         return json({
           error: availablePlaces > 0
-            ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
-            : "Dieser Reisetermin ist bereits ausgebucht.",
+            ? `Für diese Reisevariante sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
+            : "Diese Reisevariante ist für den gewählten Termin bereits ausgebucht.",
         }, 409, origin);
       }
     }
