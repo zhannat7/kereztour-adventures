@@ -80,6 +80,7 @@ const Hero = () => {
         ))}
         <div className="absolute inset-0 bg-gradient-veil" />
         <div className="absolute inset-0 bg-gradient-vignette" />
+        </div>
       </div>
 
       <div className="relative z-10 flex h-full w-full items-start">
