@@ -103,7 +103,6 @@ Deno.serve(async (req) => {
     const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
       kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
       trekking: { label: "Intensiv-Trekking", price: 1200, hasTiers: false },
-      kyrchyn: { label: "Kyrchyn Tour", price: 1300, hasTiers: false },
     };
 
     const selected = tours[tour];
