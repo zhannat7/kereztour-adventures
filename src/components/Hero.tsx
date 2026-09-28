@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
 
 const heroImages = [
   {
@@ -9,7 +10,7 @@ const heroImages = [
     alt: "Jurten-Lager im Tian Shan Gebirge von Kirgisistan",
   },
   {
-    src: new URL("../assets/gallery/IMG_3432.jpg", import.meta.url).href,
+    src: karakolMosque,
     alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
   {
