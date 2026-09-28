@@ -235,10 +235,12 @@ const Kultur = () => {
                         <div className="mb-4 max-w-[620px] overflow-hidden rounded-xl border border-border aspect-[4/3]">
                           <video
                             src={d.video}
-                            controls
+                            autoPlay
+                            loop
+                            muted
                             playsInline
-                            preload="metadata"
-                            className="mx-auto h-auto max-h-[320px] w-auto max-w-full object-contain"
+                            preload="auto"
+                            className="h-full w-full object-cover"
                             aria-label={t("Kyrchyn Jailoo Video")}
                           />
                         </div>
