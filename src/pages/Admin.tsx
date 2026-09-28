@@ -256,6 +256,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [textDirty, setTextDirty] = useState<Record<string, boolean>>({});
   const [textHistory, setTextHistory] = useState<Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>>>({});
   const [savingText, setSavingText] = useState<string | null>(null);
+  const [previewKey, setPreviewKey] = useState(0);
 
   const load = async () => {
     const [b, m, d] = await Promise.all([
@@ -365,6 +366,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     }));
     setTextValues((current) => ({ ...current, [key]: value }));
     setTextDirty((current) => ({ ...current, [key]: false }));
+    setPreviewKey((current) => current + 1);
     toast.success("Text gespeichert");
   };
 
@@ -544,6 +546,54 @@ const Dashboard = ({ session }: { session: Session }) => {
         {tab === "texts" && (
           <div className="space-y-6">
             <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+              <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h2 className="font-display text-2xl text-primary">Website-Texte bearbeiten</h2>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Sarina sieht links direkt die normale Website und rechts die Texte, die sie bearbeiten kann.
+                  </p>
+                </div>
+                <a
+                  href="/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Website in neuem Tab öffnen ↗
+                </a>
+              </div>
+
+              <div className="grid gap-5 xl:grid-cols-[minmax(360px,0.9fr)_minmax(0,1.4fr)]">
+                <div className="overflow-hidden rounded-lg border border-border bg-muted">
+                  <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
+                    <div>
+                      <p className="text-sm font-semibold">Website-Vorschau</p>
+                      <p className="text-[11px] text-muted-foreground">So sieht die normale Kereztour-Seite aus.</p>
+                    </div>
+                    <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">Live</span>
+                  </div>
+                  <iframe
+                    key={previewKey}
+                    title="Kereztour Website-Vorschau"
+                    src="/"
+                    className="h-[620px] w-full bg-background"
+                  />
+                </div>
+
+                <div className="min-w-0">
+                  <div className="mb-4 rounded-md border border-primary/20 bg-primary/5 p-4">
+                    <p className="text-sm font-semibold text-foreground">So arbeitet Sarina</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      Einen Text links auf der Website wiedererkennen → rechts die passende Textkarte suchen → „Vorherigen Text übernehmen“ klicken → nur die gewünschte Stelle ändern → „Änderung speichern“.
+                      Bei Unsicherheit kann sie den bisherigen Text stehen lassen oder eine frühere Version übernehmen.
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg border border-border bg-card p-5">
+
               <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-2">
@@ -611,6 +661,31 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <p className="mt-3 text-center text-[11px] text-muted-foreground">
                   Hinweis: Die Vorschau ist zum Anschauen gedacht. Änderungen werden unten im Textbereich vorgenommen.
                 </p>
+              </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
+              <div className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h3 className="font-display text-xl text-primary">Bearbeitbare Texte</h3>
+                  <p className="text-xs text-muted-foreground">Nur die hier aufgeführten Texte können direkt über den Admin-Bereich geändert werden.</p>
+                </div>
+                <div className="flex flex-wrap gap-1 rounded-md border border-border bg-background p-1">
+                  {(["DE", "EN", "IT"] as Language[]).map((code) => (
+                    <button key={code} type="button" onClick={() => setTextLanguage(code)}
+                      className={\`rounded-sm px-4 py-2 text-sm font-medium transition-colors \${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}\`}>
+                      {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="relative mb-4">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input className="w-full rounded-sm border border-border bg-background px-3 py-2.5 pl-9 text-sm"
+                  value={textSearch} onChange={(e) => setTextSearch(e.target.value)} placeholder="Text suchen…" />
               </div>
             </div>
 
