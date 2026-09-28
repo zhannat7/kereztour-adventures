@@ -146,6 +146,15 @@
   }
 }
 
+@keyframes hero-slow-move {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.10) translate3d(-0.35%, -0.25%, 0);
+  }
+}
+
 @layer components {
    .section-reveal {
     opacity: 1;
