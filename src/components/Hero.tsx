@@ -24,6 +24,11 @@ const Hero = () => {
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
+    heroImages.slice(1).forEach((image) => {
+      const preload = new Image();
+      preload.src = image.src;
+    });
+
     const timer = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % heroImages.length);
     }, 8000);
@@ -42,10 +47,10 @@ const Hero = () => {
             loading={index === 0 ? "eager" : "lazy"}
             fetchPriority={index === 0 ? "high" : "auto"}
             decoding="async"
-            className={`absolute inset-0 h-full w-full object-cover object-[center_45%] transition-opacity duration-[2000ms] ease-in-out ${activeImage === index ? "hero-slow-move" : ""}`}
+            className={`absolute inset-0 h-full w-full object-cover object-[center_45%] transition-opacity duration-[2500ms] ease-in-out ${activeImage === index ? "hero-slow-move" : ""}`}
             style={{
               opacity: activeImage === index ? 1 : 0,
-              transform: "scale(1.04) translate3d(0, 0, 0)",
+              animationDelay: activeImage === index ? "0ms" : "0ms",
             }}
             aria-hidden={activeImage !== index}
           />
