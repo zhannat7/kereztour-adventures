@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
@@ -114,14 +114,7 @@ const DayEightMedia = ({
   ];
 
   return (
-    <div className="mt-7 max-w-[720px] border border-border bg-card p-3 shadow-soft sm:p-5">
-      <div className="mb-5 flex items-center gap-2 border-l-2 border-secondary bg-muted/70 px-3 py-2.5 sm:px-4">
-        <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-        <p className="text-xs font-semibold uppercase text-foreground sm:text-[13px]">
-          Unterkunft: Hotel an der Nordküste
-        </p>
-      </div>
-
+    <div className="mt-7 max-w-[720px]">
       <div className="mb-3 aspect-[4/3] w-full max-w-[500px] self-center overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
         <video
           src={video}
