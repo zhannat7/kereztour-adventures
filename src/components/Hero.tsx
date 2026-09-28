@@ -24,6 +24,10 @@ const Hero = () => {
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent("kereztour-hero-image", { detail: activeImage }));
+  }, [activeImage]);
+
+  useEffect(() => {
     heroImages.slice(1).forEach((image) => {
       const preload = new Image();
       preload.src = image.src;
