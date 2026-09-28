@@ -51,7 +51,8 @@ const Hero = () => {
         }
       `}</style>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ animation: "hero-gentle-drift 50s ease-in-out infinite alternate", transformOrigin: "center center", willChange: "transform" }}>
         {heroImages.map((image, index) => (
           <div
             key={image.src}
