@@ -19,8 +19,19 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [reisenOpen, setReisenOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [heroImage, setHeroImage] = useState(0);
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    const handleHeroImageChange = (event: Event) => {
+      const customEvent = event as CustomEvent<number>;
+      setHeroImage(customEvent.detail);
+    };
+
+    window.addEventListener("kereztour-hero-image", handleHeroImageChange);
+    return () => window.removeEventListener("kereztour-hero-image", handleHeroImageChange);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -154,7 +165,14 @@ const Navbar = () => {
             >
               Kereztour
             </span>
-            <span className="mt-1.5 hidden text-[19px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block">
+            <span
+              className="mt-1.5 hidden text-[19px] font-semibold uppercase leading-none tracking-[0.3em] text-[hsl(var(--gold))] sm:block"
+              style={
+                heroImage === 1
+                  ? { WebkitTextStroke: "0.45px rgba(35, 22, 14, 0.72)" }
+                  : undefined
+              }
+            >
               Kirgisistan
             </span>
           </Link>
