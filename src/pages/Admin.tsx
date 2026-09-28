@@ -253,11 +253,11 @@ const Dashboard = ({ session }: { session: Session }) => {
     const [b, m, d] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
-      supabase.from("tour_dates").select("*").order("start_date"),
+      (supabase as any).from("tour_dates").select("*").order("start_date"),
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
-    setDates((d.data as TourDate[]) ?? []);
+    setDates((d.data as TourDate[] | null) ?? []);
   };
   useEffect(() => { load(); }, []);
 
@@ -268,7 +268,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     load();
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
-    const { error } = await supabase.from("tour_dates").update(patch).eq("id", id);
+    const { error } = await (supabase as any).from("tour_dates").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
     load();
   };
@@ -278,7 +278,7 @@ const Dashboard = ({ session }: { session: Session }) => {
       return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
     }
 
-    const { error } = await supabase.from("tour_dates").insert(nd);
+    const { error } = await (supabase as any).from("tour_dates").insert(nd);
     if (error) return toast.error(error.message);
     toast.success("Termin hinzugefügt");
     setNd({ ...nd, start_date: "", end_date: "" });

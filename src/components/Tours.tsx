@@ -76,7 +76,6 @@ const Tours = () => {
                     muted
                     playsInline
                     preload="none"
-                    loading="lazy"
                     poster="/tour-kyrchyn.jpg"
                     aria-label={t(tour.title)}
                     className="h-full w-full object-cover"
