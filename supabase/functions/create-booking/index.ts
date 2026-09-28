@@ -198,7 +198,20 @@ Deno.serve(async (req) => {
         details: error.details,
         hint: error.hint,
       });
-      return json({ error: "Buchungsanfrage konnte nicht gespeichert werden." }, 500, origin);
+
+      const diagnostic =
+        error.code === "42703" || error.code === "42P01"
+          ? "BOOKING_DATABASE_SCHEMA"
+          : error.code === "23514"
+            ? "BOOKING_DATABASE_CONSTRAINT"
+            : error.code === "23502"
+              ? "BOOKING_DATABASE_REQUIRED_FIELD"
+              : "BOOKING_DATABASE_INSERT";
+
+      return json({
+        error: "Buchungsanfrage konnte nicht gespeichert werden.",
+        diagnostic,
+      }, 500, origin);
     }
 
     await sendEmail(
