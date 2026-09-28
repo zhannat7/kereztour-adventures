@@ -743,6 +743,67 @@ const translations: Record<Language, Record<string, string>> = {
   },
 };
 
+
+/* Culture Tour package and detail translations added for the current tour presentation. */
+Object.assign(translations.EN, {
+  "Standard": "Standard",
+  "VIP": "VIP",
+  "Kleingruppe mit 6 bis 8 Personen": "Small group with 6 to 8 people",
+  "Privatreise mit Jeep": "Private jeep journey",
+  "Gruppengröße: 6 bis 8 Personen": "Group size: 6 to 8 people",
+  "3-Sterne-Hotels und komfortable Jurten mit WC/Dusche": "3-star hotels and comfortable yurts with toilet/shower",
+  "Erfahrener professioneller Guide während der gesamten Reise": "Experienced professional guide throughout the journey",
+  "2 Personen: 2.700 € pro Person": "2 people: €2,700 per person",
+  "4 Personen: 1.700 € pro Person": "4 people: €1,700 per person",
+  "Privatreise im Jeep": "Private journey by jeep",
+  "2 Personen": "2 people",
+  "4 Personen": "4 people",
+  "Enthaltene Vorteile": "Included benefits",
+  "Privat": "Private",
+  "Kultur Tour · Pakete": "Culture Tour · Packages",
+  "Im Preis inklusive": "Included in the price",
+  "Unterkunft: Doppelzimmer-Belegung in gemütlichen 3-Sterne-Hotels sowie traditionelle Jurten mit WC und Dusche.": "Accommodation: double rooms in comfortable 3-star hotels and traditional yurts with toilet and shower.",
+  "Transfer: Alle Fahrten entlang der Route im komfortablen Fahrzeug.": "Transfers: all journeys along the route in a comfortable vehicle.",
+  "Reiseleitung: Begleitung durch einen erfahrenen, professionellen Guide während der gesamten Reise.": "Tour guide: an experienced professional guide accompanies you throughout the journey.",
+  "Verpflegung: 3-mal tägliche Vollpension.": "Meals: full board three times a day.",
+  "Traditionelles Abendessen oder Mittagessen bei einer kirgisischen Familie.": "Traditional dinner or lunch with a Kyrgyz family.",
+  "Stimmungsvolles Picknick in der Natur.": "A memorable picnic in nature.",
+  "Getränke: 1 Bier pro Person ist inklusive.": "Drinks: 1 beer per person is included.",
+  "Aktivitäten: Alle im Programm beschriebenen Exkursionen, Eintrittsgelder und Freizeitaktivitäten.": "Activities: all excursions, admission fees and leisure activities described in the programme.",
+  "Reservierung & Stornierung": "Reservation & cancellation",
+  "Für die Reservierung ist eine Anzahlung von 100 € erforderlich.": "A €100 deposit is required to reserve your place.",
+  "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
+});
+Object.assign(translations.IT, {
+  "Standard": "Standard",
+  "VIP": "VIP",
+  "Kleingruppe mit 6 bis 8 Personen": "Piccolo gruppo da 6 a 8 persone",
+  "Privatreise mit Jeep": "Viaggio privato in jeep",
+  "Gruppengröße: 6 bis 8 Personen": "Dimensione del gruppo: da 6 a 8 persone",
+  "3-Sterne-Hotels und komfortable Jurten mit WC/Dusche": "Hotel 3 stelle e yurte confortevoli con bagno/doccia",
+  "Erfahrener professioneller Guide während der gesamten Reise": "Guida professionale ed esperta per tutta la durata del viaggio",
+  "2 Personen: 2.700 € pro Person": "2 persone: 2.700 € a persona",
+  "4 Personen: 1.700 € pro Person": "4 persone: 1.700 € a persona",
+  "Privatreise im Jeep": "Viaggio privato in jeep",
+  "2 Personen": "2 persone",
+  "4 Personen": "4 persone",
+  "Enthaltene Vorteile": "Vantaggi inclusi",
+  "Privat": "Privato",
+  "Kultur Tour · Pakete": "Tour culturale · Pacchetti",
+  "Im Preis inklusive": "Incluso nel prezzo",
+  "Unterkunft: Doppelzimmer-Belegung in gemütlichen 3-Sterne-Hotels sowie traditionelle Jurten mit WC und Dusche.": "Alloggio: camere doppie in confortevoli hotel 3 stelle e yurte tradizionali con bagno e doccia.",
+  "Transfer: Alle Fahrten entlang der Route im komfortablen Fahrzeug.": "Trasferimenti: tutti gli spostamenti lungo il percorso in un veicolo confortevole.",
+  "Reiseleitung: Begleitung durch einen erfahrenen, professionellen Guide während der gesamten Reise.": "Guida: accompagnamento da parte di una guida professionale ed esperta per tutto il viaggio.",
+  "Verpflegung: 3-mal tägliche Vollpension.": "Pasti: pensione completa tre volte al giorno.",
+  "Traditionelles Abendessen oder Mittagessen bei einer kirgisischen Familie.": "Cena o pranzo tradizionale presso una famiglia kirghisa.",
+  "Stimmungsvolles Picknick in der Natur.": "Piacevole picnic nella natura.",
+  "Getränke: 1 Bier pro Person ist inklusive.": "Bevande: 1 birra a persona è inclusa.",
+  "Aktivitäten: Alle im Programm beschriebenen Exkursionen, Eintrittsgelder und Freizeitaktivitäten.": "Attività: tutte le escursioni, gli ingressi e le attività descritte nel programma.",
+  "Reservierung & Stornierung": "Prenotazione e cancellazione",
+  "Für die Reservierung ist eine Anzahlung von 100 € erforderlich.": "Per la prenotazione è richiesto un acconto di 100 €.",
+  "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "La cancellazione gratuita con rimborso completo è possibile fino a un mese prima della data del viaggio.",
+});
+
 export type EditableTextEntry = {
   key: string;
   fallback: string;
