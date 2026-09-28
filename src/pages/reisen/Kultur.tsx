@@ -51,8 +51,28 @@ const days = [
 ];
 
 const tiers = [
-  { name: "Economy", price: "990", featured: false, tagline: "Authentisch & erschwinglich", details: [{ icon: Users, text: "Gruppe bis 12 Personen" }, { icon: Home, text: "Hostel & Jurte, Mehrbettzimmer" }, { icon: Star, text: "Standard Service" }] },
-  { name: "Comfort", price: "1.490", featured: true, tagline: "Exklusiv & komfortabel", details: [{ icon: Users, text: "Kleine Gruppe, max. 4 Personen" }, { icon: Hotel, text: "Luxushotel, Einzel-/Doppelzimmer" }, { icon: Star, text: "Premium Service" }] },
+  {
+    name: "Standard",
+    price: "1.300",
+    featured: true,
+    tagline: "Kleingruppe mit 6 bis 8 Personen",
+    details: [
+      { icon: Users, text: "Gruppengröße: 6 bis 8 Personen" },
+      { icon: Hotel, text: "3-Sterne-Hotels und komfortable Jurten mit WC/Dusche" },
+      { icon: Star, text: "Erfahrener professioneller Guide während der gesamten Reise" },
+    ],
+  },
+  {
+    name: "VIP",
+    price: "2.700",
+    featured: false,
+    tagline: "Privatreise mit Jeep",
+    details: [
+      { icon: Users, text: "2 Personen: 2.700 € pro Person" },
+      { icon: Users, text: "4 Personen: 1.700 € pro Person" },
+      { icon: Star, text: "Privatreise im Jeep" },
+    ],
+  },
 ];
 
 const highlights = [
@@ -299,7 +319,7 @@ const Kultur = () => {
                 {t("Deinen")} <span className="italic text-primary">{t("Termin auswählen")}</span>
               </h2>
               <p className="text-sm text-muted-foreground max-w-2xl">
-                Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt. Erst danach erfolgt die Zahlung.
+                {t("Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt. Erst danach erfolgt die Zahlung.")}
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -310,7 +330,11 @@ const Kultur = () => {
                     <div key={item.id} className="border border-border bg-card p-5">
                       <p className="font-semibold text-foreground">{item.label}</p>
                       <p className="text-sm text-primary mt-1 mb-4">
-                        {isFull ? "Ausgebucht" : "Noch " + item.availablePlaces + " " + (item.availablePlaces === 1 ? "Platz" : "Plätze") + " verfügbar"}
+                        {isFull
+                          ? t("Ausgebucht")
+                          : t("Noch {count} {placeWord} verfügbar")
+                              .replace("{count}", String(item.availablePlaces))
+                              .replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}
                       </p>
                       <div className="grid grid-cols-2 gap-2">
                         {tiers.map((tier) => (
@@ -329,7 +353,7 @@ const Kultur = () => {
                 })
               ) : (
                 <div className="border border-border bg-card p-5 text-sm text-muted-foreground md:col-span-3">
-                  Aktuell sind keine Reisetermine verfügbar.
+                  {t("Aktuell sind keine Reisetermine verfügbar.")}
                 </div>
               )}
             </div>
@@ -341,7 +365,7 @@ const Kultur = () => {
                 {t("Deine")} <span className="italic text-primary">{t("Reisevariante")}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl leading-relaxed">
-                Das Reiseerlebnis bleibt gleich – du entscheidest, welche Unterkunft und welchen Komfort du bevorzugst.
+                {t("Das Reiseerlebnis bleibt gleich – die Standardreise findet als Kleingruppe mit 6 bis 8 Personen statt. Das VIP-Paket ist als private Jeep-Reise für 2 oder 4 Personen verfügbar.")}
               </p>
             </div>
 
@@ -354,32 +378,40 @@ const Kultur = () => {
                   <div className="flex items-start justify-between gap-5 mb-6">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">{t(tier.tagline)}</p>
-                      <h3 className="font-display text-2xl md:text-3xl text-foreground">{tier.name}</h3>
+                      <h3 className="font-display text-2xl md:text-3xl text-foreground">{t(tier.name)}</h3>
                     </div>
-                    {tier.featured && (
-                      <span className="whitespace-nowrap rounded-sm bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">{t("Mehr Komfort")}</span>
-                    )}
                   </div>
 
-                  <div className="flex items-baseline gap-2 border-b border-border pb-6 mb-6">
-                    <span className="font-display text-4xl md:text-5xl text-primary">{tier.price} €</span>
-                    <span className="text-sm text-muted-foreground">{t("pro Person")}</span>
+                  <div className="border-b border-border pb-6 mb-6">
+                    {tier.name === "VIP" ? (
+                      <>
+                        <div className="font-display text-3xl md:text-4xl text-primary">2.700 €</div>
+                        <div className="text-sm text-muted-foreground mt-1">{t("pro Person bei 2 Personen")}</div>
+                        <div className="font-display text-3xl md:text-4xl text-primary mt-3">1.700 €</div>
+                        <div className="text-sm text-muted-foreground mt-1">{t("pro Person bei 4 Personen")}</div>
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-display text-4xl md:text-5xl text-primary">1.300 €</span>
+                        <span className="text-sm text-muted-foreground ml-2">{t("pro Person")}</span>
+                      </>
+                    )}
                   </div>
 
                   <ul className="space-y-4 mb-7">
                     {tier.details.map((d) => (
-                      <li key={t(d.text)} className="flex items-center gap-3 text-sm text-foreground">
+                      <li key={d.text} className="flex items-center gap-3 text-sm text-foreground">
                         <d.icon className="h-5 w-5 shrink-0 text-primary" />
-                        <span>{d.text}</span>
+                        <span>{t(d.text)}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Link
-                    to={`/buchen?tour=kultur&tier=${tier.name.toLowerCase()}`}
+                    to={`/buchen?tour=kultur&tier=${tier.name === "VIP" ? "comfort" : "economy"}`}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90"
                   >
-                    {tier.name} {t("buchen")}
+                    {t(tier.name)} {t("buchen")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
