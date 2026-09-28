@@ -69,10 +69,10 @@ const highlights = [
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
-  const itemW = photos.length <= 2 ? 220 : photos.length <= 4 ? 140 : 110;
-  const itemH = photos.length <= 2 ? 140 : photos.length <= 4 ? 100 : 80;
-  const activeW = 280;
-  const activeH = 200;
+  const itemW = 220;
+  const itemH = 165;
+  const activeW = 220;
+  const activeH = 165;
 
   return (
     <div
