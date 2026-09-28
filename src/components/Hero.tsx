@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
-import heroYurt from "@/assets/gallery/IMG_3310.jpg";
+import yurtInterior from "@/assets/yurt-interior.png.asset.json";
 
 const heroImages = [
   {
