@@ -26,7 +26,7 @@ const Hero = () => {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % heroImages.length);
-    }, 7000);
+    }, 8000);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -42,8 +42,14 @@ const Hero = () => {
             loading={index === 0 ? "eager" : "lazy"}
             fetchPriority={index === 0 ? "high" : "auto"}
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover object-[center_45%] transition-opacity duration-[2200ms] ease-in-out"
-            style={{ opacity: activeImage === index ? 1 : 0 }}
+            className="absolute inset-0 h-full w-full object-cover object-[center_45%] transition-[opacity,transform] duration-[2000ms] ease-in-out"
+            style={{
+              opacity: activeImage === index ? 1 : 0,
+              transform: activeImage === index
+                ? "scale(1) translate3d(0, 0, 0)"
+                : "scale(1.045) translate3d(0.4%, 0.3%, 0)",
+              transitionDuration: activeImage === index ? "8000ms, 8000ms" : "2000ms, 8000ms",
+            }}
             aria-hidden={activeImage !== index}
           />
         ))}
