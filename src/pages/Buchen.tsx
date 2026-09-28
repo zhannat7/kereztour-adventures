@@ -508,7 +508,15 @@ const Buchen = () => {
           </div>
 
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(
+              onSubmit,
+              (formErrors) => {
+                const firstError = Object.keys(formErrors)[0];
+                if (firstError) {
+                  focusNextField(firstError);
+                }
+              }
+            )}
             className="space-y-6"
           >
 
@@ -1030,11 +1038,7 @@ const Buchen = () => {
             <Button
               type="submit"
               className="w-full h-14 text-base rounded-xl"
-              disabled={
-                isSubmitting ||
-                !selectedTour ||
-                (selectedTour.hasTiers && !tier)
-              }
+              disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
