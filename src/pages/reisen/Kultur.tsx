@@ -122,7 +122,7 @@ const DayEightMedia = ({
         </p>
       </div>
 
-      <div className="mb-3 aspect-[4/3] w-full max-w-[545px] overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
+      <div className="mb-3 aspect-[4/3] w-full max-w-[545px] self-center overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
         <video
           src={video}
           autoPlay
