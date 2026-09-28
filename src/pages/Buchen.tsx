@@ -809,7 +809,7 @@ const Buchen = () => {
                                     )}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
-                              Max. {item.maxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
+                              Max. {itemMaxParticipants} {t("Person")}en · {t("Anfrage ohne Zahlung")}
                             </p>
                           </button>
                         );
