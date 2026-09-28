@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
-import heroYurt from "@/assets/gallery/51.png";
 
 const heroImages = [
   {
@@ -11,8 +10,8 @@ const heroImages = [
     alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
-    src: heroYurt,
-    alt: "Gäste essen gemeinsam in einer rot dekorierten Jurte in Kirgisistan",
+    src: "/tour-kultur.jpg",
+    alt: "Kulturreise in Kirgisistan",
   },
   {
     src: karakolMosque,
