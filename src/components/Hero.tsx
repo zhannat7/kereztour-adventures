@@ -37,7 +37,7 @@ const Hero = () => {
 
     const timer = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % heroImages.length);
-    }, 8000);
+    }, 15000);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -56,7 +56,7 @@ const Hero = () => {
         {heroImages.map((image, index) => (
           <div
             key={image.src}
-            className="absolute inset-0 transform-gpu transition-opacity duration-[6000ms] ease-in-out [backface-visibility:hidden]"
+            className="absolute inset-0 transform-gpu transition-opacity duration-[8000ms] ease-in-out [backface-visibility:hidden]"
             style={{
               opacity: activeImage === index ? 1 : 0,
               transform: "translate3d(0, 0, 0)",
