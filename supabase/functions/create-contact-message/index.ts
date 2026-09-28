@@ -6,7 +6,7 @@ const allowedOrigins = new Set([
 ]);
 
 const corsHeaders = (origin: string | null) => ({
-  "Access-Control-Allow-Origin": origin && allowedOrigins.has(origin) ? origin : "https://kereztour.com",
+  "Access-Control-Allow-Origin": origin && (allowedOrigins.has(origin) || /^https:\/\/[a-z0-9-]+\.lovable\.app$/.test(origin) || /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/.test(origin)) ? origin : "https://kereztour.com",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 });
