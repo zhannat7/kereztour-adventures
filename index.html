@@ -39,6 +39,8 @@
   </head>
 
   <body>
+    <!-- Compatibility guard for stale Lovable preview bundles that still reference the removed Kyrchyn video variable. -->
+    <script>var kyrchynVideo = "";</script>
     <div id="root"></div>
     <!-- Force Lovable to pick up the latest GitHub source after the external commit. -->
     <script type="module" src="/src/main.tsx"></script>
