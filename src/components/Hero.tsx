@@ -62,7 +62,7 @@ const Hero = () => {
               loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden]"
+              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] transition-transform duration-[8000ms] ease-out"
               style={{
                 objectPosition: "center center",
                 transform: "translate3d(0, 0, 0)",
