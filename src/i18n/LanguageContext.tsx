@@ -843,6 +843,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let cancelled = false;
 
+    // The public preview can run before the optional site_content migration exists
+    // in Lovable Cloud. Only the admin editor needs this table directly.
+    if (window.location.pathname !== "/admin") return;
+
     const loadContent = async () => {
       const { data, error } = await (supabase as any)
         .from("site_content")
