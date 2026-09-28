@@ -1,21 +1,51 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
+const heroImages = [
+  {
+    src: "/hero-wide.jpg",
+    alt: "Jurten-Lager im Tian Shan Gebirge von Kirgisistan",
+  },
+  {
+    src: new URL("../assets/gallery/IMG_3432.jpg", import.meta.url).href,
+    alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
+  },
+  {
+    src: "/tour-trekking.jpg",
+    alt: "Trekking in den Bergen von Kirgisistan",
+  },
+];
+
 const Hero = () => {
   const { t } = useLanguage();
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveImage((current) => (current + 1) % heroImages.length);
+    }, 7000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
     <section className="relative flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
-        <img
-          src="/hero-wide.jpg"
-          alt="Jurten-Lager im Tian Shan Gebirge von Kirgisistan"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
-        />
+        {heroImages.map((image, index) => (
+          <img
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-[center_45%] transition-opacity duration-[2200ms] ease-in-out"
+            style={{ opacity: activeImage === index ? 1 : 0 }}
+            aria-hidden={activeImage !== index}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-veil" />
         <div className="absolute inset-0 bg-gradient-vignette" />
       </div>
