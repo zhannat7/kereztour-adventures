@@ -1,0 +1,7 @@
+import { describe, expect, test } from "vitest";
+import { calculateTotalPrice, getAvailablePlaces, getCulturePrice, isBookingAvailable, isValidCultureGroupSize } from "../src/lib/bookingRules";
+describe("booking rules",()=>{
+ test("prices",()=>{expect(getCulturePrice("economy",6)).toBe(1300);expect(getCulturePrice("comfort",2)).toBe(2700);expect(getCulturePrice("comfort",4)).toBe(1700);expect(calculateTotalPrice(2700,2)).toBe(5400);expect(calculateTotalPrice(1700,4)).toBe(6800);expect(calculateTotalPrice(1300,6)).toBe(7800);});
+ test("group sizes",()=>{expect(isValidCultureGroupSize("economy",5)).toBe(false);expect(isValidCultureGroupSize("economy",6)).toBe(true);expect(isValidCultureGroupSize("economy",8)).toBe(true);expect(isValidCultureGroupSize("economy",9)).toBe(false);expect(isValidCultureGroupSize("comfort",1)).toBe(false);expect(isValidCultureGroupSize("comfort",2)).toBe(true);expect(isValidCultureGroupSize("comfort",4)).toBe(true);expect(isValidCultureGroupSize("comfort",5)).toBe(false);});
+ test("availability",()=>{const a={available_places:12,economy_available_places:6,comfort_available_places:2};expect(getAvailablePlaces(true,"economy",a)).toBe(6);expect(getAvailablePlaces(true,"comfort",a)).toBe(2);expect(getAvailablePlaces(false,null,{available_places:8})).toBe(8);expect(isBookingAvailable(2,2)).toBe(true);expect(isBookingAvailable(2,1)).toBe(false);});
+});
