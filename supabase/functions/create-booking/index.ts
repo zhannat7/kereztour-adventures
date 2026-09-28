@@ -113,9 +113,27 @@ Deno.serve(async (req) => {
       if (tier !== "economy" && tier !== "comfort") {
         return json({ error: "Bitte wähle eine Reiseoption." }, 400, origin);
       }
-      price = tier === "economy" ? 990 : 1490;
-    } else if (tier !== "standard") {
-      return json({ error: "Ungültige Reiseoption." }, 400, origin);
+
+      if (tour === "kultur") {
+        if (tier === "economy") {
+          if (persons < 6 || persons > 8) {
+            return json({ error: "Die Standardreise ist für 6 bis 8 Personen buchbar." }, 400, origin);
+          }
+          price = 1300;
+        } else {
+          if (persons !== 2 && persons !== 4) {
+            return json({ error: "Das VIP-Paket ist für 2 oder 4 Personen buchbar." }, 400, origin);
+          }
+          price = persons === 2 ? 2700 : 1700;
+        }
+      }
+    } else if (tour === "trekking") {
+      // The database stores the booking option as a required text field.
+      // Trekking has no tier, so "standard" is used consistently.
+      if (tier !== "standard") {
+        return json({ error: "Ungültige Reiseoption." }, 400, origin);
+      }
+      price = 1200;
     }
 
     const totalPrice = persons * price;
@@ -173,7 +191,15 @@ Deno.serve(async (req) => {
       status: "pending",
     });
 
-    if (error) throw error;
+    if (error) {
+      console.error("Booking insert failed:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+      return json({ error: "Buchungsanfrage konnte nicht gespeichert werden." }, 500, origin);
+    }
 
     await sendEmail(
       NOTIFY_EMAIL,
