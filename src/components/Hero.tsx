@@ -73,7 +73,9 @@ const Hero = () => {
               <span
                 className="mt-3 block text-gold sm:mt-4 lg:whitespace-nowrap"
                 style={{
-                  WebkitTextStroke: activeImage === 1 ? "0.7px rgba(35, 22, 14, 0.72)" : "0 transparent",
+                  color: activeImage === 1 ? "hsl(var(--gold))" : undefined,
+                  WebkitTextStroke: activeImage === 1 ? "1px rgba(35, 22, 14, 0.78)" : "0 transparent",
+                  textShadow: activeImage === 1 ? "0 1px 2px rgba(35, 22, 14, 0.22)" : undefined,
                 }}
               >
                 {t("Authentisch erleben")}
