@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const OWNER_EMAIL = "sarinasadirovna@gmail.com";
+const OWNER_EMAIL = "kereztour@hotmail.com";
 
 const TOUR_OPTIONS = [
   "Kultur Tour",
