@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, Users, Home, Hotel, Star, CheckCircle, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
@@ -96,6 +96,61 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           <img src={photo} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ))}
+    </div>
+  );
+};
+
+const DayEightMedia = ({
+  video,
+  photos,
+}: {
+  video: string;
+  photos: string[];
+}) => {
+  const photoDescriptions = [
+    "Historische Petroglyphen bei Tscholpon-Ata",
+    "Bootsfahrt auf dem Issyk-Kul-See",
+    "Besuch des Kulturzentrums Ruh Ordo",
+  ];
+
+  return (
+    <div className="mt-7 max-w-[720px] border border-border bg-card p-3 shadow-soft sm:p-5">
+      <div className="mb-5 flex items-center gap-2 border-l-2 border-secondary bg-muted/70 px-3 py-2.5 sm:px-4">
+        <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+        <p className="text-xs font-semibold uppercase text-foreground sm:text-[13px]">
+          Unterkunft: Hotel an der Nordküste
+        </p>
+      </div>
+
+      <div className="mb-3 aspect-[16/10] overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
+        <video
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="h-full w-full object-cover"
+          aria-label="Kyrchyn Jailoo – Nomadenkultur und Landschaft"
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        {photos.map((photo, index) => (
+          <div
+            key={photo}
+            className="group aspect-[4/3] overflow-hidden rounded-md border border-border bg-muted shadow-soft"
+          >
+            <img
+              src={photo}
+              alt={photoDescriptions[index] ?? "Impression von Tag 8 der Kultur Tour"}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -225,27 +280,17 @@ const Kultur = () => {
                       <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{t(d.title)}</h3>
                       <div className="flex flex-col gap-3 mb-5">
                         <p className="text-base text-muted-foreground leading-relaxed">{t(d.desc)}</p>
-                        {d.stay && (
+                        {d.stay && d.day !== 8 && (
                           <div className="inline-flex self-start items-center gap-2 rounded-sm bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
                             {t("Unterkunft:")} {t(d.stay)}
                           </div>
                         )}
                       </div>
-                      {d.video && (
-                        <div className="mb-4 max-w-[620px] overflow-hidden rounded-xl border border-border aspect-[4/3]">
-                          <video
-                            src={d.video}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="auto"
-                            className="h-full w-full object-cover"
-                            aria-label={t("Kyrchyn Jailoo Video")}
-                          />
-                        </div>
+                      {d.day === 8 && d.video ? (
+                        <DayEightMedia video={d.video} photos={d.photos} />
+                      ) : (
+                        d.photos.length > 0 && <PhotoSlider photos={d.photos} />
                       )}
-                      {d.photos.length > 0 && <PhotoSlider photos={d.photos} />}
                     </div>
                   </div>
                 ))}
