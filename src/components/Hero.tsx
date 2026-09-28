@@ -6,7 +6,7 @@ import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
 
 const heroImages = [
   {
-    src: "/hero-wide.jpg",
+    src: "/hero-wide.jpg?hero=20260928",
     alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
@@ -38,7 +38,7 @@ const Hero = () => {
 
     const timer = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % heroImages.length);
-    }, 15000);
+    }, 8000);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -74,7 +74,7 @@ const Hero = () => {
         {heroImages.map((image, index) => (
           <div
             key={image.src}
-            className="absolute inset-0 transform-gpu transition-opacity duration-[8000ms] ease-in-out [backface-visibility:hidden]"
+            className="absolute inset-0 transform-gpu transition-opacity duration-[4000ms] ease-in-out [backface-visibility:hidden]"
             style={{
               opacity: activeImage === index ? 1 : 0,
               transform: "translate3d(0, 0, 0)",
