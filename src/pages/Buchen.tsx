@@ -358,6 +358,7 @@ const Buchen = () => {
     });
   };
 
+  // Preview-sync marker: Kultur booking submit normalizes the selected tier before invoking create-booking.
   const onSubmit = async (data: BookingForm) => {
     setSubmitError("");
     setIsSubmitting(true);
