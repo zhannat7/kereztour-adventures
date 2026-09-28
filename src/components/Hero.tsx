@@ -47,10 +47,10 @@ const Hero = () => {
             loading={index === 0 ? "eager" : "lazy"}
             fetchPriority={index === 0 ? "high" : "auto"}
             decoding="async"
-            className={`absolute inset-0 h-full w-full object-cover object-[center_45%] transition-opacity duration-[2500ms] ease-in-out ${activeImage === index ? "hero-slow-move" : ""}`}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[2500ms] ease-in-out ${activeImage === index ? "hero-slow-move" : ""}`}
             style={{
               opacity: activeImage === index ? 1 : 0,
-              animationDelay: activeImage === index ? "0ms" : "0ms",
+              objectPosition: index === 1 ? "center 18%" : "center 45%",
             }}
             aria-hidden={activeImage !== index}
           />
