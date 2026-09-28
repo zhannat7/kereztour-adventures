@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, Save, FileText } from "lucide-react";
+import { Mail, MessageCircle, Search, Save, FileText, RotateCcw, History, CheckCircle2 } from "lucide-react";
 import { getEditableTextEntries, getEditableTextFallback, type Language } from "@/i18n/LanguageContext";
 
 type Booking = {
@@ -542,43 +542,48 @@ const Dashboard = ({ session }: { session: Session }) => {
         )}
 
         {tab === "texts" && (
-          <div className="space-y-5">
-            <div className="rounded-md border border-border bg-card p-5">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
+          <div className="space-y-6">
+            <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                <div className="max-w-2xl">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
-                    <h2 className="font-display text-2xl text-primary">Website-Texte</h2>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                      <FileText className="h-4 w-4 text-primary" />
+                    </span>
+                    <div>
+                      <h2 className="font-display text-2xl text-primary">Website-Texte</h2>
+                      <p className="text-sm text-muted-foreground">Texte bearbeiten, speichern und frühere Versionen nachvollziehen.</p>
+                    </div>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Nur Texte können hier geändert werden. Bilder, Design und technische Einstellungen bleiben geschützt.
-                  </p>
+                  <div className="mt-4 rounded-md border border-border bg-muted/40 p-3 text-xs leading-5 text-muted-foreground">
+                    <strong className="text-foreground">So funktioniert es:</strong> Links siehst du den aktuell veröffentlichten Text. Rechts kannst du eine neue Version erstellen. Mit „Vorherigen Text übernehmen“ kannst du den bestehenden Text kopieren, nur einzelne Stellen ändern und anschließend speichern. Für diese Änderung ist kein Code-Deployment notwendig.
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex shrink-0 flex-wrap gap-1 rounded-md border border-border bg-background p-1">
                   {(["DE", "EN", "IT"] as Language[]).map((code) => (
-                    <button
-                      key={code}
-                      type="button"
-                      onClick={() => setTextLanguage(code)}
-                      className={`rounded-sm border px-3 py-1.5 text-sm ${textLanguage === code ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}
-                    >
+                    <button key={code} type="button" onClick={() => setTextLanguage(code)}
+                      className={`rounded-sm px-4 py-2 text-sm font-medium transition-colors ${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
                       {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="relative mt-4 max-w-xl">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  className={`${input} pl-9`}
-                  value={textSearch}
-                  onChange={(e) => setTextSearch(e.target.value)}
-                  placeholder="Text suchen…"
-                />
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <div className="relative flex-1">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <input className="w-full rounded-sm border border-border bg-background px-3 py-2.5 pl-9 text-sm"
+                    value={textSearch} onChange={(e) => setTextSearch(e.target.value)} placeholder="Nach Text oder Schlüssel suchen…" />
+                </div>
+                <div className="flex items-center rounded-sm border border-border px-3 text-xs text-muted-foreground">
+                  {getEditableTextEntries().filter(({ key, fallback }) => {
+                    const q = textSearch.trim().toLowerCase();
+                    return !q || key.toLowerCase().includes(q) || fallback.toLowerCase().includes(q);
+                  }).length} Texte
+                </div>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {getEditableTextEntries()
                 .filter(({ key, fallback }) => {
                   const q = textSearch.trim().toLowerCase();
@@ -589,80 +594,109 @@ const Dashboard = ({ session }: { session: Session }) => {
                   const value = textValues[key] ?? previous;
                   const dirty = textDirty[key] === true;
                   const history = textHistory[key] ?? [];
+                  const changed = value !== previous;
                   return (
-                    <div key={key} className="rounded-md border border-border bg-card p-4">
-                      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Text</div>
-                        <div className="text-xs text-muted-foreground">Schlüssel: {key}</div>
-                      </div>
-                      <div className="grid gap-4 lg:grid-cols-2">
+                    <section key={key} className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+                      <div className="flex flex-col gap-2 border-b border-border bg-muted/20 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Vorher</div>
-                          <div className="min-h-[110px] whitespace-pre-wrap rounded-sm border border-border bg-muted/60 p-3 text-sm leading-6">{previous}</div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-semibold text-foreground">{key}</h3>
+                            {changed ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-secondary/15 px-2.5 py-1 text-[11px] font-semibold text-secondary">
+                                <span className="h-1.5 w-1.5 rounded-full bg-secondary" />Ungespeicherte Änderung
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary">
+                                <CheckCircle2 className="h-3 w-3" />Gespeichert
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-xs text-muted-foreground">Dieser Text wird auf der öffentlichen Website verwendet.</p>
                         </div>
-                        <div>
-                          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-primary">Nachher</div>
-                          <textarea
-                            className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm min-h-[110px] resize-y leading-6"
-                            maxLength={5000}
-                            value={value}
-                            onChange={(e) => {
-                              setTextValues((current) => ({ ...current, [key]: e.target.value }));
-                              setTextDirty((current) => ({ ...current, [key]: e.target.value !== previous }));
-                            }}
-                          />
-                        </div>
+                        <span className="text-xs text-muted-foreground">{value.length} / 5.000 Zeichen</span>
                       </div>
-                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-xs text-muted-foreground">{value.length} / 5.000 Zeichen</span>
-                          <button
-                            type="button"
+
+                      <div className="grid gap-0 lg:grid-cols-2">
+                        <div className="border-b border-border p-5 lg:border-b-0 lg:border-r">
+                          <div className="mb-2 flex items-center justify-between">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Vorher</p>
+                              <p className="mt-0.5 text-[11px] text-muted-foreground">Aktuell veröffentlicht</p>
+                            </div>
+                            <span className="rounded-sm border border-border px-2 py-1 text-[10px] uppercase tracking-wide text-muted-foreground">Nur Lesen</span>
+                          </div>
+                          <div className="min-h-[140px] whitespace-pre-wrap rounded-md border border-border bg-muted/40 p-4 text-sm leading-6 text-foreground">{previous}</div>
+                          <button type="button"
                             onClick={() => {
                               setTextValues((current) => ({ ...current, [key]: previous }));
                               setTextDirty((current) => ({ ...current, [key]: false }));
                             }}
-                            className="rounded-sm border border-border px-3 py-1.5 text-xs hover:bg-muted"
-                          >
-                            Vorherigen Text übernehmen
+                            className="mt-3 inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium hover:bg-muted">
+                            <RotateCcw className="h-3.5 w-3.5" />Vorherigen Text übernehmen
                           </button>
                         </div>
-                        <div className="flex gap-2">
-                          {value !== getEditableTextFallback(textLanguage, key) && (
-                            <button
-                              type="button"
-                              onClick={() => resetText(key)}
-                              className="rounded-sm border border-border px-3 py-1.5 text-xs hover:bg-muted"
-                            >
-                              Original wiederherstellen
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            disabled={!dirty || savingText === key}
-                            onClick={() => saveText(key)}
-                            className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-40"
-                          >
-                            <Save className="h-3.5 w-3.5" />
-                            {savingText === key ? "Speichert…" : "Speichern"}
-                          </button>
+
+                        <div className="p-5">
+                          <div className="mb-2 flex items-center justify-between">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Nachher</p>
+                              <p className="mt-0.5 text-[11px] text-muted-foreground">Neue Version bearbeiten</p>
+                            </div>
+                            {dirty && <span className="text-[11px] font-medium text-secondary">Bereit zum Speichern</span>}
+                          </div>
+                          <textarea className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm min-h-[140px] resize-y leading-6"
+                            maxLength={5000} value={value}
+                            onChange={(e) => {
+                              setTextValues((current) => ({ ...current, [key]: e.target.value }));
+                              setTextDirty((current) => ({ ...current, [key]: e.target.value !== previous }));
+                            }} />
+                          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                            <div className="text-xs text-muted-foreground">Änderungen werden erst mit „Speichern“ öffentlich übernommen.</div>
+                            <div className="flex gap-2">
+                              {value !== getEditableTextFallback(textLanguage, key) && (
+                                <button type="button" onClick={() => resetText(key)} disabled={savingText === key}
+                                  className="inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium hover:bg-muted disabled:opacity-50">
+                                  <RotateCcw className="h-3.5 w-3.5" />Original
+                                </button>
+                              )}
+                              <button type="button" disabled={!dirty || savingText === key} onClick={() => saveText(key)}
+                                className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-40">
+                                <Save className="h-3.5 w-3.5" />{savingText === key ? "Speichert…" : "Änderung speichern"}
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
+
                       {history.length > 0 && (
-                        <details className="mt-4 rounded-sm border border-border bg-background p-3">
-                          <summary className="cursor-pointer text-xs font-semibold">Versionshistorie ({history.length})</summary>
-                          <div className="mt-3 space-y-3">
+                        <details className="border-t border-border bg-muted/10">
+                          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground">
+                            <History className="h-3.5 w-3.5" />Versionshistorie ({history.length})
+                          </summary>
+                          <div className="space-y-3 border-t border-border px-5 py-4">
                             {history.slice(0, 5).map((version) => (
-                              <div key={version.id} className="border-l-2 border-border pl-3 text-xs">
-                                <div className="text-muted-foreground">{new Date(version.changed_at).toLocaleString("de-DE")}</div>
-                                <div className="mt-1"><span className="font-semibold">Vorher:</span> {version.previous_value}</div>
-                                <div className="mt-1"><span className="font-semibold text-primary">Nachher:</span> {version.new_value}</div>
+                              <div key={version.id} className="rounded-md border border-border bg-card p-3">
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <span className="text-[11px] font-medium text-muted-foreground">{new Date(version.changed_at).toLocaleString("de-DE")}</span>
+                                  <button type="button"
+                                    onClick={() => {
+                                      setTextValues((current) => ({ ...current, [key]: version.new_value }));
+                                      setTextDirty((current) => ({ ...current, [key]: version.new_value !== previous }));
+                                    }}
+                                    className="rounded-sm border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-muted">
+                                    Version übernehmen
+                                  </button>
+                                </div>
+                                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                                  <div className="rounded-sm bg-muted/50 p-2.5 text-xs leading-5"><span className="font-semibold">Vorher:</span> {version.previous_value}</div>
+                                  <div className="rounded-sm bg-primary/5 p-2.5 text-xs leading-5"><span className="font-semibold text-primary">Nachher:</span> {version.new_value}</div>
+                                </div>
                               </div>
                             ))}
                           </div>
                         </details>
                       )}
-                    </div>
+                    </section>
                   );
                 })}
             </div>
