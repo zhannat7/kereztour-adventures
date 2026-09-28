@@ -128,7 +128,7 @@ const DayEightMedia = ({
         />
       </div>
 
-      <div className="grid -translate-x-6 grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid -translate-x-10 grid-cols-3 gap-2 sm:gap-3">
         {photos.map((photo, index) => (
           <div
             key={photo}
