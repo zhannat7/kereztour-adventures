@@ -27,15 +27,6 @@ const tours: Tour[] = [
     imagePosition: "center 45%",
   },
   {
-    title: "Kyrchyn Tour",
-    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
-    duration: "Nach Termin",
-    groupSize: "Individuell",
-    price: "1.300 €",
-    to: "/reisen/kyrchyn",
-    video: kyrchynVideo.url,
-  },
-  {
     title: "Intensiv-Trekking",
     desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
     duration: "10 Tage",
