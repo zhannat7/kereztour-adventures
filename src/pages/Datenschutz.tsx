@@ -22,7 +22,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         paragraphs: [
           "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist:",
           "Mambetalieva Ainagul Zaidovna\nEinzelunternehmerin\nAk-Ordo Wohngebiet, Ak Bolpon Straße\nLeninsky District, Bishkek\nKyrgyz Republic",
-          "E-Mail: sarinasadirovna@gmail.com\nTelefon: +39 347 486 7408",
+          "E-Mail: kereztour@hotmail.com\nTelefon: +39 347 486 7408",
           "Kereztour ist die Bezeichnung des Reiseangebots und der Website.",
         ],
       },
@@ -159,7 +159,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         paragraphs: [
           "The person responsible for processing personal data on this website is:",
           "Mambetalieva Ainagul Zaidovna\nIndividual entrepreneur\nAk-Ordo residential area, Ak Bolpon Street\nLeninsky District, Bishkek\nKyrgyz Republic",
-          "Email: sarinasadirovna@gmail.com\nPhone: +39 347 486 7408",
+          "Email: kereztour@hotmail.com\nPhone: +39 347 486 7408",
           "Kereztour is the name of the travel service and website.",
         ],
       },
@@ -274,7 +274,7 @@ const CONTENT: Record<Language, { eyebrow: string; title: string; back: string; 
         paragraphs: [
           "La responsabile del trattamento dei dati personali su questo sito è:",
           "Mambetalieva Ainagul Zaidovna\nImprenditrice individuale\nAk-Ordo residential area, Ak Bolpon Street\nLeninsky District, Bishkek\nKyrgyz Republic",
-          "E-mail: sarinasadirovna@gmail.com\nTelefono: +39 347 486 7408",
+          "E-mail: kereztour@hotmail.com\nTelefono: +39 347 486 7408",
           "Kereztour è il nome dell'offerta di viaggio e del sito web.",
         ],
       },
@@ -433,11 +433,11 @@ const Datenschutz = () => {
             </h2>
             <div className="space-y-4 text-sm">
               <a
-                href="mailto:sarinasadirovna@gmail.com"
+                href="mailto:kereztour@hotmail.com"
                 className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
               >
                 <Mail className="h-4 w-4 shrink-0 text-primary" />
-                sarinasadirovna@gmail.com
+                kereztour@hotmail.com
               </a>
               <a
                 href="tel:+393474867408"
