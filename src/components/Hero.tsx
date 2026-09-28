@@ -40,20 +40,35 @@ const Hero = () => {
     <section className="relative flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => (
-          <img
+          <div
             key={image.src}
-            src={image.src}
-            alt={image.alt}
-            loading={index === 0 ? "eager" : "lazy"}
-            fetchPriority={index === 0 ? "high" : "auto"}
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[4000ms] ease-in-out hero-slow-move"
-            style={{
-              opacity: activeImage === index ? 1 : 0,
-              objectPosition: index === 1 ? "center 18%" : "center center",
-            }}
+            className="absolute inset-0 transition-opacity duration-[4000ms] ease-in-out"
+            style={{ opacity: activeImage === index ? 1 : 0 }}
             aria-hidden={activeImage !== index}
-          />
+          >
+            {index === 2 && (
+              <img
+                src={image.src}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-[-24px] h-[calc(100%+48px)] w-[calc(100%+48px)] scale-110 object-cover blur-2xl"
+                decoding="async"
+              />
+            )}
+            <img
+              src={image.src}
+              alt={image.alt}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
+              decoding="async"
+              className={index === 2
+                ? "absolute inset-0 h-full w-full object-contain transition-transform duration-[8000ms] ease-linear hero-slow-move"
+                : "absolute inset-0 h-full w-full object-cover transition-transform duration-[8000ms] ease-linear hero-slow-move"}
+              style={{
+                objectPosition: index === 1 ? "center 18%" : "center center",
+              }}
+            />
+          </div>
         ))}
         <div className="absolute inset-0 bg-gradient-veil" />
         <div className="absolute inset-0 bg-gradient-vignette" />
