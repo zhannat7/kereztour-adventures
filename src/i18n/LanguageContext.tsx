@@ -811,7 +811,11 @@ export type EditableTextEntry = {
 
 export const getEditableTextEntries = (): EditableTextEntry[] => {
   const keys = new Set(Object.values(translations).flatMap((items) => Object.keys(items)));
-  return Array.from(keys).map((key) => ({ key, fallback: key }));
+  return Array.from(keys).map((key) => ({ key, fallback: translations.DE[key] ?? key }));
+};
+
+export const getEditableTextFallback = (language: Language, key: string): string => {
+  return translations[language][key] ?? translations.DE[key] ?? key;
 };
 
 type LanguageContextValue = {
@@ -842,10 +846,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let cancelled = false;
-
-    // The public preview can run before the optional site_content migration exists
-    // in Lovable Cloud. Only the admin editor needs this table directly.
-    if (window.location.pathname !== "/admin") return;
 
     const loadContent = async () => {
       const { data, error } = await (supabase as any)
