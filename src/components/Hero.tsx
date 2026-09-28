@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -22,6 +22,7 @@ const heroImages = [
 const Hero = () => {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
+  const heroMotionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("kereztour-hero-image", { detail: activeImage }));
@@ -42,17 +43,34 @@ const Hero = () => {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const element = heroMotionRef.current;
+    if (!element) return;
+
+    let frame = 0;
+    const start = performance.now();
+    const duration = 30000;
+
+    const animate = (now: number) => {
+      const progress = ((now - start) % duration) / duration;
+      const wave = (1 - Math.cos(progress * Math.PI * 2)) / 2;
+      const scale = 1 + wave * 0.035;
+      const x = -0.15 + wave * 0.3;
+      const y = -wave * 0.12;
+
+      element.style.transform = `translate3d(${x}%, ${y}%, 0) scale(${scale})`;
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    frame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <>
-      <style>{`
-        @keyframes hero-gentle-drift {
-          from { transform: translate3d(-0.15%, 0, 0) scale(1); }
-          to { transform: translate3d(0.15%, -0.12%, 0) scale(1.035); }
-        }
-      `}</style>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ animation: "hero-gentle-drift 30s ease-in-out infinite alternate", transformOrigin: "center center", willChange: "transform" }}>
+        <div ref={heroMotionRef} className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ transformOrigin: "center center", willChange: "transform" }}>
         {heroImages.map((image, index) => (
           <div
             key={image.src}
