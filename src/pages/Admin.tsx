@@ -4,7 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Mail, MessageCircle, Search, Save, FileText } from "lucide-react";
-import { getEditableTextEntries, type Language } from "@/i18n/LanguageContext";
+import { getEditableTextEntries, getEditableTextFallback, type Language } from "@/i18n/LanguageContext";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -252,7 +252,9 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [textLanguage, setTextLanguage] = useState<Language>("DE");
   const [textSearch, setTextSearch] = useState("");
   const [textValues, setTextValues] = useState<Record<string, string>>({});
+  const [textPreviousValues, setTextPreviousValues] = useState<Record<string, string>>({});
   const [textDirty, setTextDirty] = useState<Record<string, boolean>>({});
+  const [textHistory, setTextHistory] = useState<Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>>>({});
   const [savingText, setSavingText] = useState<string | null>(null);
 
   const load = async () => {
@@ -268,18 +270,41 @@ const Dashboard = ({ session }: { session: Session }) => {
   useEffect(() => { load(); }, []);
 
   const loadTextOverrides = async () => {
-    const { data, error } = await (supabase as any)
-      .from("site_content")
-      .select("content_key, language, value");
+    const [{ data, error }, { data: historyData, error: historyError }] = await Promise.all([
+      (supabase as any).from("site_content").select("content_key, language, value"),
+      (supabase as any)
+        .from("site_content_versions")
+        .select("id, content_key, language, previous_value, new_value, changed_at")
+        .eq("language", textLanguage)
+        .order("changed_at", { ascending: false }),
+    ]);
+
     if (error) {
       toast.error("Texte konnten nicht geladen werden.");
       return;
     }
+    if (historyError) toast.error("Versionshistorie konnte nicht geladen werden.");
+
     const values: Record<string, string> = {};
-    for (const row of (data ?? []) as Array<{ content_key: string; language: Language; value: string }>) {
-      if (row.language === textLanguage) values[row.content_key] = row.value;
+    const previousValues: Record<string, string> = {};
+    for (const entry of getEditableTextEntries()) {
+      previousValues[entry.key] = getEditableTextFallback(textLanguage, entry.key);
     }
+    for (const row of (data ?? []) as Array<{ content_key: string; language: Language; value: string }>) {
+      if (row.language === textLanguage) {
+        values[row.content_key] = row.value;
+        previousValues[row.content_key] = row.value;
+      }
+    }
+
+    const history: Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>> = {};
+    for (const row of (historyData ?? []) as Array<{ id: string; content_key: string; previous_value: string; new_value: string; changed_at: string }>) {
+      (history[row.content_key] ??= []).push(row);
+    }
+
     setTextValues(values);
+    setTextPreviousValues(previousValues);
+    setTextHistory(history);
     setTextDirty({});
   };
 
@@ -289,45 +314,106 @@ const Dashboard = ({ session }: { session: Session }) => {
 
   const saveText = async (key: string) => {
     const value = textValues[key]?.trim() ?? "";
-    if (!value) {
-      toast.error("Der Text darf nicht leer sein.");
-      return;
+    const previous = textPreviousValues[key] ?? getEditableTextFallback(textLanguage, key);
+
+    if (!value) return toast.error("Der Text darf nicht leer sein.");
+    if (value.length > 5000) return toast.error("Maximal 5.000 Zeichen pro Text.");
+    if (value === previous) {
+      setTextDirty((current) => ({ ...current, [key]: false }));
+      return toast.info("Keine Änderung vorhanden.");
     }
-    if (value.length > 5000) {
-      toast.error("Maximal 5.000 Zeichen pro Text.");
-      return;
-    }
+
     setSavingText(key);
+
+    const { error: historyError } = await (supabase as any)
+      .from("site_content_versions")
+      .insert({
+        content_key: key,
+        language: textLanguage,
+        previous_value: previous,
+        new_value: value,
+        changed_by: session.user.id,
+      });
+
+    if (historyError) {
+      setSavingText(null);
+      return toast.error("Versionshistorie konnte nicht gespeichert werden.");
+    }
+
     const { error } = await (supabase as any)
       .from("site_content")
       .upsert(
         { content_key: key, language: textLanguage, value, updated_at: new Date().toISOString() },
         { onConflict: "content_key,language" },
       );
+
     setSavingText(null);
-    if (error) {
-      toast.error("Text konnte nicht gespeichert werden.");
-      return;
-    }
+    if (error) return toast.error("Text konnte nicht gespeichert werden.");
+
+    setTextPreviousValues((current) => ({ ...current, [key]: value }));
+    setTextHistory((current) => ({
+      ...current,
+      [key]: [
+        {
+          id: crypto.randomUUID(),
+          previous_value: previous,
+          new_value: value,
+          changed_at: new Date().toISOString(),
+        },
+        ...(current[key] ?? []),
+      ].slice(0, 10),
+    }));
+    setTextValues((current) => ({ ...current, [key]: value }));
     setTextDirty((current) => ({ ...current, [key]: false }));
     toast.success("Text gespeichert");
   };
 
   const resetText = async (key: string) => {
+    const original = getEditableTextFallback(textLanguage, key);
+    const previous = textPreviousValues[key] ?? original;
+    if (previous === original) return;
+
+    setSavingText(key);
+
+    const { error: historyError } = await (supabase as any)
+      .from("site_content_versions")
+      .insert({
+        content_key: key,
+        language: textLanguage,
+        previous_value: previous,
+        new_value: original,
+        changed_by: session.user.id,
+      });
+
+    if (historyError) {
+      setSavingText(null);
+      return toast.error("Versionshistorie konnte nicht gespeichert werden.");
+    }
+
     const { error } = await (supabase as any)
       .from("site_content")
-      .delete()
-      .eq("content_key", key)
-      .eq("language", textLanguage);
-    if (error) {
-      toast.error("Text konnte nicht zurückgesetzt werden.");
-      return;
-    }
-    setTextValues((current) => {
-      const next = { ...current };
-      delete next[key];
-      return next;
-    });
+      .upsert(
+        { content_key: key, language: textLanguage, value: original, updated_at: new Date().toISOString() },
+        { onConflict: "content_key,language" },
+      );
+
+    setSavingText(null);
+    if (error) return toast.error("Originaltext konnte nicht wiederhergestellt werden.");
+
+    setTextValues((current) => ({ ...current, [key]: original }));
+    setTextPreviousValues((current) => ({ ...current, [key]: original }));
+    setTextHistory((current) => ({
+      ...current,
+      [key]: [
+        {
+          id: crypto.randomUUID(),
+          previous_value: previous,
+          new_value: original,
+          changed_at: new Date().toISOString(),
+        },
+        ...(current[key] ?? []),
+      ].slice(0, 10),
+    }));
     setTextDirty((current) => ({ ...current, [key]: false }));
     toast.success("Originaltext wiederhergestellt");
   };
@@ -498,27 +584,51 @@ const Dashboard = ({ session }: { session: Session }) => {
                   const q = textSearch.trim().toLowerCase();
                   return !q || key.toLowerCase().includes(q) || fallback.toLowerCase().includes(q);
                 })
-                .map(({ key, fallback }) => {
-                  const value = textValues[key] ?? (textLanguage === "DE" ? fallback : "");
+                .map(({ key }) => {
+                  const previous = textPreviousValues[key] ?? getEditableTextFallback(textLanguage, key);
+                  const value = textValues[key] ?? previous;
                   const dirty = textDirty[key] === true;
+                  const history = textHistory[key] ?? [];
                   return (
                     <div key={key} className="rounded-md border border-border bg-card p-4">
-                      <div className="mb-2 text-xs text-muted-foreground">Originaltext / Schlüssel</div>
-                      <div className="mb-3 rounded-sm bg-muted p-2 text-sm">{key}</div>
-                      <textarea
-                        className={`${input} min-h-[90px] resize-y leading-6`}
-                        maxLength={5000}
-                        value={value}
-                        placeholder={textLanguage === "DE" ? fallback : "Noch keine eigene Übersetzung – bitte Text eingeben…"}
-                        onChange={(e) => {
-                          setTextValues((current) => ({ ...current, [key]: e.target.value }));
-                          setTextDirty((current) => ({ ...current, [key]: true }));
-                        }}
-                      />
-                      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-xs text-muted-foreground">{value.length} / 5.000 Zeichen</span>
+                      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Text</div>
+                        <div className="text-xs text-muted-foreground">Schlüssel: {key}</div>
+                      </div>
+                      <div className="grid gap-4 lg:grid-cols-2">
+                        <div>
+                          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Vorher</div>
+                          <div className="min-h-[110px] whitespace-pre-wrap rounded-sm border border-border bg-muted/60 p-3 text-sm leading-6">{previous}</div>
+                        </div>
+                        <div>
+                          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-primary">Nachher</div>
+                          <textarea
+                            className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm min-h-[110px] resize-y leading-6"
+                            maxLength={5000}
+                            value={value}
+                            onChange={(e) => {
+                              setTextValues((current) => ({ ...current, [key]: e.target.value }));
+                              setTextDirty((current) => ({ ...current, [key]: e.target.value !== previous }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs text-muted-foreground">{value.length} / 5.000 Zeichen</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTextValues((current) => ({ ...current, [key]: previous }));
+                              setTextDirty((current) => ({ ...current, [key]: false }));
+                            }}
+                            className="rounded-sm border border-border px-3 py-1.5 text-xs hover:bg-muted"
+                          >
+                            Vorherigen Text übernehmen
+                          </button>
+                        </div>
                         <div className="flex gap-2">
-                          {textValues[key] !== undefined && textValues[key] !== (textLanguage === "DE" ? fallback : "") && (
+                          {value !== getEditableTextFallback(textLanguage, key) && (
                             <button
                               type="button"
                               onClick={() => resetText(key)}
@@ -538,6 +648,20 @@ const Dashboard = ({ session }: { session: Session }) => {
                           </button>
                         </div>
                       </div>
+                      {history.length > 0 && (
+                        <details className="mt-4 rounded-sm border border-border bg-background p-3">
+                          <summary className="cursor-pointer text-xs font-semibold">Versionshistorie ({history.length})</summary>
+                          <div className="mt-3 space-y-3">
+                            {history.slice(0, 5).map((version) => (
+                              <div key={version.id} className="border-l-2 border-border pl-3 text-xs">
+                                <div className="text-muted-foreground">{new Date(version.changed_at).toLocaleString("de-DE")}</div>
+                                <div className="mt-1"><span className="font-semibold">Vorher:</span> {version.previous_value}</div>
+                                <div className="mt-1"><span className="font-semibold text-primary">Nachher:</span> {version.new_value}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      )}
                     </div>
                   );
                 })}
