@@ -28,9 +28,11 @@ const Hero = () => {
   }, [activeImage]);
 
   useEffect(() => {
-    heroImages.slice(1).forEach((image) => {
+    heroImages.forEach((image) => {
       const preload = new Image();
       preload.src = image.src;
+      preload.decoding = "async";
+      preload.decode?.().catch(() => undefined);
     });
 
     const timer = window.setInterval(() => {
@@ -41,23 +43,30 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
+    <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => (
           <div
             key={image.src}
-            className="absolute inset-0 transition-opacity duration-[4000ms] ease-in-out"
-            style={{ opacity: activeImage === index ? 1 : 0 }}
+            className="absolute inset-0 transform-gpu transition-opacity duration-[4000ms] ease-in-out [backface-visibility:hidden]"
+            style={{
+              opacity: activeImage === index ? 1 : 0,
+              transform: "translate3d(0, 0, 0)",
+              willChange: "opacity",
+            }}
             aria-hidden={activeImage !== index}
           >
             <img
               src={image.src}
               alt={image.alt}
-              loading={index === 0 ? "eager" : "lazy"}
+              loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ objectPosition: "center center" }}
+              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden]"
+              style={{
+                objectPosition: "center center",
+                transform: "translate3d(0, 0, 0)",
+              }}
             />
           </div>
         ))}
