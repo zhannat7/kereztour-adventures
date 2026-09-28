@@ -56,7 +56,7 @@ const Hero = () => {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[8000ms] ease-linear hero-slow-move"
+              className="absolute inset-0 h-full w-full object-cover"
               style={{ objectPosition: "center center" }}
             />
           </div>
