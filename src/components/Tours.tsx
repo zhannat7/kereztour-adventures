@@ -20,8 +20,8 @@ const tours: Tour[] = [
     title: "Kultur Tour",
     desc: "10 Tage durch die schönsten Regionen Kirgisistans – Kultur, Natur, Traditionen und echte Begegnungen.",
     duration: "10 Tage",
-    groupSize: "bis 12 Personen",
-    price: "ab 990 €",
+    groupSize: "6–8 Personen",
+    price: "1.300 €",
     to: "/reisen/kultur",
     image: "/tour-kultur.jpg",
     imagePosition: "center 45%",
@@ -43,9 +43,9 @@ const Tours = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="preise" className="bg-background py-14 md:py-20 scroll-mt-24">
-      <div ref={ref} className="section-reveal container mx-auto max-w-[1400px] px-4 sm:px-6">
-        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+    <section id="preise" className="bg-background py-16 md:py-24 scroll-mt-24">
+      <div ref={ref} className="section-reveal container mx-auto max-w-[1160px] px-4 sm:px-6">
+        <div className="mb-12 flex flex-col items-center justify-between gap-5 text-center md:mb-14 md:flex-row md:items-end md:text-left">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">{t("Unsere Reisen")}</span>
             <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
@@ -60,14 +60,14 @@ const Tours = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
           {tours.map((tour) => (
             <Link
               key={tour.to}
               to={tour.to}
-              className="stagger-child group flex flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
+              className="stagger-child group flex flex-col overflow-hidden rounded-sm border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+              <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                 {tour.video ? (
                   <video
                     src={tour.video}
@@ -92,7 +92,7 @@ const Tours = () => {
                 )}
               </div>
 
-              <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-7">
+              <div className="flex flex-1 flex-col p-6 sm:p-7 md:p-8">
                 <h3 className="mb-3 font-display text-2xl leading-snug text-foreground md:text-3xl">
                   {t(tour.title)}
                 </h3>
