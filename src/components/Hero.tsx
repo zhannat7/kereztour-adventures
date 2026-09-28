@@ -15,8 +15,8 @@ const heroImages = [
     alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
   {
-    src: heroYurt,
-    alt: "Traditionelle Jurte in Kirgisistan",
+    src: yurtInterior.url,
+    alt: "Gemeinsames Essen in einer traditionellen Jurte in Kirgisistan",
   },
 ];
 
