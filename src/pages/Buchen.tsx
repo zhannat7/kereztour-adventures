@@ -318,7 +318,7 @@ const Buchen = () => {
     }
 
     return selectedTour.price ?? 0;
-  }, [selectedTour, tier]);
+  }, [selectedTour, tier, persons]);
 
   const totalPrice = persons * pricePerPerson;
 
