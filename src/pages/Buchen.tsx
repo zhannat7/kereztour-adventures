@@ -449,7 +449,15 @@ const Buchen = () => {
         let detail = t("Die Buchungsanfrage konnte nicht gespeichert werden.");
         try {
           const context = await error.context?.json?.();
-          if (context?.error) detail = context.error;
+          if (context?.diagnostic === "BOOKING_DATABASE_SCHEMA") {
+            detail = t("Die Buchungsdatenbank ist noch nicht auf dem neuesten Stand.");
+          } else if (context?.diagnostic === "BOOKING_DATABASE_CONSTRAINT") {
+            detail = t("Die Buchungsdatenbank akzeptiert die aktuelle Buchungsoption noch nicht.");
+          } else if (context?.diagnostic === "BOOKING_DATABASE_REQUIRED_FIELD") {
+            detail = t("In der Buchungsdatenbank fehlt ein erforderliches Feld.");
+          } else if (context?.error) {
+            detail = context.error;
+          }
         } catch {
           // Keep the generic message if the function response cannot be read.
         }
