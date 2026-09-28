@@ -15,7 +15,8 @@ type Message = {
   date_from: string | null; date_to: string | null; persons: number | null; message: string | null;
 };
 type TourDate = {
-  id: string; tour: string; start_date: string; end_date: string; max_participants: number; status: string;
+  id: string; tour: string; start_date: string; end_date: string; max_participants: number;
+  economy_max_participants: number; comfort_max_participants: number; status: string;
 };
 
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
@@ -238,7 +239,14 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
-  const [nd, setNd] = useState({ tour: "Kultur Tour", start_date: "", end_date: "", max_participants: 15 });
+  const [nd, setNd] = useState({
+    tour: "Kultur Tour",
+    start_date: "",
+    end_date: "",
+    max_participants: 15,
+    economy_max_participants: 12,
+    comfort_max_participants: 4,
+  });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
 
   const load = async () => {
@@ -411,8 +419,14 @@ const Dashboard = ({ session }: { session: Session }) => {
           <div className="space-y-6">
             <form onSubmit={addDate} className="grid grid-cols-1 gap-3 rounded-md border border-border bg-card p-5 sm:grid-cols-5 sm:items-end">
               <label className="text-xs text-muted-foreground">Reise
-                <select className={input} value={nd.tour} onChange={(e) => setNd({ ...nd, tour: e.target.value })}>
-                  <option>Kultur Tour</option><option>Kyrchyn Tour</option><option>Intensiv-Trekking</option>
+                <select
+                  className={input}
+                  value={nd.tour}
+                  onChange={(e) => setNd({ ...nd, tour: e.target.value })}
+                >
+                  <option>Kultur Tour</option>
+                  <option>Kyrchyn Tour</option>
+                  <option>Intensiv-Trekking</option>
                 </select>
               </label>
               <label className="text-xs text-muted-foreground">Beginn
@@ -421,42 +435,118 @@ const Dashboard = ({ session }: { session: Session }) => {
               <label className="text-xs text-muted-foreground">Ende
                 <input className={input} type="date" required value={nd.end_date} onChange={(e) => setNd({ ...nd, end_date: e.target.value })} />
               </label>
-              <label className="text-xs text-muted-foreground">Max. Plätze
-                <input
-                  className={input}
-                  type="number"
-                  min={1}
-                  required
-                  value={nd.max_participants}
-                  onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })}
-                />
-              </label>
+
+              {nd.tour === "Kultur Tour" ? (
+                <>
+                  <label className="text-xs text-muted-foreground">Economy – max. Personen
+                    <input
+                      className={input}
+                      type="number"
+                      min={1}
+                      required
+                      value={nd.economy_max_participants}
+                      onChange={(e) => setNd({ ...nd, economy_max_participants: Number(e.target.value) })}
+                    />
+                  </label>
+                  <label className="text-xs text-muted-foreground">Comfort – max. Personen
+                    <input
+                      className={input}
+                      type="number"
+                      min={1}
+                      required
+                      value={nd.comfort_max_participants}
+                      onChange={(e) => setNd({ ...nd, comfort_max_participants: Number(e.target.value) })}
+                    />
+                  </label>
+                </>
+              ) : (
+                <label className="text-xs text-muted-foreground">Max. Personen
+                  <input
+                    className={input}
+                    type="number"
+                    min={1}
+                    required
+                    value={nd.max_participants}
+                    onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })}
+                  />
+                </label>
+              )}
+
               <button className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Termin hinzufügen</button>
             </form>
 
             <div className="overflow-x-auto rounded-md border border-border bg-card">
               <table className="w-full text-sm">
                 <thead className="bg-muted text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum</th><th className="p-3">Belegt</th><th className="p-3">Max.</th><th className="p-3">Status</th><th className="p-3"></th></tr>
+                  <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum</th><th className="p-3">Belegt</th><th className="p-3">Kapazität</th><th className="p-3">Status</th><th className="p-3"></th></tr>
                 </thead>
                 <tbody>
-                  {dates.map((d) => (
-                    <tr key={d.id} className="border-t border-border">
-                      <td className="p-3 font-medium">{d.tour}</td>
-                      <td className="p-3">{fmt(d.start_date)} – {fmt(d.end_date)}</td>
-                      <td className="p-3">{booked(d)}</td>
-                      <td className="p-3">
-                        <input type="number" min={1} defaultValue={d.max_participants} className="w-20 rounded-sm border border-border bg-background px-2 py-1"
-                          onBlur={(e) => Number(e.target.value) !== d.max_participants && updateDate(d.id, { max_participants: Number(e.target.value) })} />
-                      </td>
-                      <td className="p-3">
-                        <select value={d.status} onChange={(e) => updateDate(d.id, { status: e.target.value })} className="rounded-sm border border-border bg-background px-2 py-1">
-                          <option value="open">Offen</option><option value="full">Ausgebucht</option><option value="cancelled">Abgesagt</option>
-                        </select>
-                      </td>
-                      <td className="p-3 text-right"><button onClick={() => deleteDate(d.id)} className="text-destructive hover:underline">Löschen</button></td>
-                    </tr>
-                  ))}
+                  {dates.map((d) => {
+                    const economyBooked = bookings
+                      .filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour && b.tier === "economy")
+                      .reduce((s, b) => s + b.persons, 0);
+                    const comfortBooked = bookings
+                      .filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour && b.tier === "comfort")
+                      .reduce((s, b) => s + b.persons, 0);
+
+                    return (
+                      <tr key={d.id} className="border-t border-border">
+                        <td className="p-3 font-medium">{d.tour}</td>
+                        <td className="p-3">{fmt(d.start_date)} – {fmt(d.end_date)}</td>
+                        <td className="p-3">
+                          {d.tour === "Kultur Tour" ? (
+                            <div className="space-y-1">
+                              <div>Economy: {economyBooked}</div>
+                              <div>Comfort: {comfortBooked}</div>
+                            </div>
+                          ) : booked(d)}
+                        </td>
+                        <td className="p-3">
+                          {d.tour === "Kultur Tour" ? (
+                            <div className="space-y-2">
+                              <label className="block text-xs text-muted-foreground">Economy
+                                <input
+                                  type="number"
+                                  min={1}
+                                  defaultValue={d.economy_max_participants}
+                                  className="mt-1 w-24 rounded-sm border border-border bg-background px-2 py-1"
+                                  onBlur={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value !== d.economy_max_participants) {
+                                      updateDate(d.id, { economy_max_participants: value });
+                                    }
+                                  }}
+                                />
+                              </label>
+                              <label className="block text-xs text-muted-foreground">Comfort
+                                <input
+                                  type="number"
+                                  min={1}
+                                  defaultValue={d.comfort_max_participants}
+                                  className="mt-1 w-24 rounded-sm border border-border bg-background px-2 py-1"
+                                  onBlur={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value !== d.comfort_max_participants) {
+                                      updateDate(d.id, { comfort_max_participants: value });
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </div>
+                          ) : (
+                            <input type="number" min={1} defaultValue={d.max_participants} className="w-20 rounded-sm border border-border bg-background px-2 py-1"
+                              onBlur={(e) => Number(e.target.value) !== d.max_participants && updateDate(d.id, { max_participants: Number(e.target.value) })} />
+                          )}
+                        </td>
+                        <td className="p-3">
+                          <select value={d.status} onChange={(e) => updateDate(d.id, { status: e.target.value })} className="rounded-sm border border-border bg-background px-2 py-1">
+                            <option value="open">Offen</option><option value="full">Ausgebucht</option><option value="cancelled">Abgesagt</option>
+                          </select>
+                        </td>
+                        <td className="p-3 text-right"><button onClick={() => deleteDate(d.id)} className="text-destructive hover:underline">Löschen</button></td>
+                      </tr>
+                    );
+                  })}
                   {dates.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">Keine Termine.</td></tr>}
                 </tbody>
               </table>
