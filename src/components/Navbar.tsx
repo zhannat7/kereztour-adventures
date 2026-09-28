@@ -6,7 +6,6 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const travelLinks = [
   { label: "Kultur Tour", href: "/reisen/kultur" },
   { label: "Intensiv-Trekking", href: "/reisen/trekking" },
-  { label: "Kyrchyn Tour", href: "/reisen/kyrchyn" },
 ];
 
 const languages = [
@@ -74,8 +73,7 @@ const Navbar = () => {
 
   const isTravelPage =
     location.pathname === "/reisen/kultur" ||
-    location.pathname === "/reisen/trekking" ||
-    location.pathname === "/reisen/kyrchyn";
+    location.pathname === "/reisen/trekking";
 
   const languageMenu = (
     <div className="relative z-[200] shrink-0">
