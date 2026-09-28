@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
-import cultureChurch from "@/assets/gallery/IMG_3466.jpg";
+import heroGalleryPhoto from "@/assets/gallery/IMG_2646.jpg";
 
 const heroImages = [
   {
@@ -15,8 +15,8 @@ const heroImages = [
     alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
   {
-    src: cultureChurch,
-    alt: "Historische russisch-orthodoxe Kirche in Kirgisistan",
+    src: heroGalleryPhoto,
+    alt: "Reiseeindruck aus Kirgisistan",
   },
 ];
 
