@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail, MessageCircle, Search, Save, FileText } from "lucide-react";
+import { getEditableTextEntries, type Language } from "@/i18n/LanguageContext";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -235,7 +236,7 @@ const BookingMessageModal = ({
 };
 
 const Dashboard = ({ session }: { session: Session }) => {
-  const [tab, setTab] = useState<"bookings" | "messages" | "dates">("bookings");
+  const [tab, setTab] = useState<"bookings" | "messages" | "dates" | "texts">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
@@ -248,6 +249,11 @@ const Dashboard = ({ session }: { session: Session }) => {
     comfort_max_participants: 4,
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
+  const [textLanguage, setTextLanguage] = useState<Language>("DE");
+  const [textSearch, setTextSearch] = useState("");
+  const [textValues, setTextValues] = useState<Record<string, string>>({});
+  const [textDirty, setTextDirty] = useState<Record<string, boolean>>({});
+  const [savingText, setSavingText] = useState<string | null>(null);
 
   const load = async () => {
     const [b, m, d] = await Promise.all([
@@ -260,6 +266,71 @@ const Dashboard = ({ session }: { session: Session }) => {
     setDates((d.data as TourDate[] | null) ?? []);
   };
   useEffect(() => { load(); }, []);
+
+  const loadTextOverrides = async () => {
+    const { data, error } = await (supabase as any)
+      .from("site_content")
+      .select("content_key, language, value");
+    if (error) {
+      toast.error("Texte konnten nicht geladen werden.");
+      return;
+    }
+    const values: Record<string, string> = {};
+    for (const row of (data ?? []) as Array<{ content_key: string; language: Language; value: string }>) {
+      if (row.language === textLanguage) values[row.content_key] = row.value;
+    }
+    setTextValues(values);
+    setTextDirty({});
+  };
+
+  useEffect(() => {
+    if (tab === "texts") void loadTextOverrides();
+  }, [tab, textLanguage]);
+
+  const saveText = async (key: string) => {
+    const value = textValues[key]?.trim() ?? "";
+    if (!value) {
+      toast.error("Der Text darf nicht leer sein.");
+      return;
+    }
+    if (value.length > 5000) {
+      toast.error("Maximal 5.000 Zeichen pro Text.");
+      return;
+    }
+    setSavingText(key);
+    const { error } = await (supabase as any)
+      .from("site_content")
+      .upsert(
+        { content_key: key, language: textLanguage, value, updated_at: new Date().toISOString() },
+        { onConflict: "content_key,language" },
+      );
+    setSavingText(null);
+    if (error) {
+      toast.error("Text konnte nicht gespeichert werden.");
+      return;
+    }
+    setTextDirty((current) => ({ ...current, [key]: false }));
+    toast.success("Text gespeichert");
+  };
+
+  const resetText = async (key: string) => {
+    const { error } = await (supabase as any)
+      .from("site_content")
+      .delete()
+      .eq("content_key", key)
+      .eq("language", textLanguage);
+    if (error) {
+      toast.error("Text konnte nicht zurückgesetzt werden.");
+      return;
+    }
+    setTextValues((current) => {
+      const next = { ...current };
+      delete next[key];
+      return next;
+    });
+    setTextDirty((current) => ({ ...current, [key]: false }));
+    toast.success("Originaltext wiederhergestellt");
+  };
 
   const setBookingStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
@@ -298,6 +369,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     { k: "bookings", l: `Buchungen (${bookings.length})` },
     { k: "messages", l: `Anfragen (${messages.length})` },
     { k: "dates", l: `Reisetermine (${dates.length})` },
+    { k: "texts", l: "Texte" },
   ] as const;
 
   return (
@@ -380,6 +452,96 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {tab === "texts" && (
+          <div className="space-y-5">
+            <div className="rounded-md border border-border bg-card p-5">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h2 className="font-display text-2xl text-primary">Website-Texte</h2>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Nur Texte können hier geändert werden. Bilder, Design und technische Einstellungen bleiben geschützt.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {(["DE", "EN", "IT"] as Language[]).map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => setTextLanguage(code)}
+                      className={`rounded-sm border px-3 py-1.5 text-sm ${textLanguage === code ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}
+                    >
+                      {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="relative mt-4 max-w-xl">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  className={`${input} pl-9`}
+                  value={textSearch}
+                  onChange={(e) => setTextSearch(e.target.value)}
+                  placeholder="Text suchen…"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {getEditableTextEntries()
+                .filter(({ key, fallback }) => {
+                  const q = textSearch.trim().toLowerCase();
+                  return !q || key.toLowerCase().includes(q) || fallback.toLowerCase().includes(q);
+                })
+                .map(({ key, fallback }) => {
+                  const value = textValues[key] ?? (textLanguage === "DE" ? fallback : "");
+                  const dirty = textDirty[key] === true;
+                  return (
+                    <div key={key} className="rounded-md border border-border bg-card p-4">
+                      <div className="mb-2 text-xs text-muted-foreground">Originaltext / Schlüssel</div>
+                      <div className="mb-3 rounded-sm bg-muted p-2 text-sm">{key}</div>
+                      <textarea
+                        className={`${input} min-h-[90px] resize-y leading-6`}
+                        maxLength={5000}
+                        value={value}
+                        placeholder={textLanguage === "DE" ? fallback : "Noch keine eigene Übersetzung – bitte Text eingeben…"}
+                        onChange={(e) => {
+                          setTextValues((current) => ({ ...current, [key]: e.target.value }));
+                          setTextDirty((current) => ({ ...current, [key]: true }));
+                        }}
+                      />
+                      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs text-muted-foreground">{value.length} / 5.000 Zeichen</span>
+                        <div className="flex gap-2">
+                          {textValues[key] !== undefined && textValues[key] !== (textLanguage === "DE" ? fallback : "") && (
+                            <button
+                              type="button"
+                              onClick={() => resetText(key)}
+                              className="rounded-sm border border-border px-3 py-1.5 text-xs hover:bg-muted"
+                            >
+                              Original wiederherstellen
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            disabled={!dirty || savingText === key}
+                            onClick={() => saveText(key)}
+                            className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-40"
+                          >
+                            <Save className="h-3.5 w-3.5" />
+                            {savingText === key ? "Speichert…" : "Speichern"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         )}
 
