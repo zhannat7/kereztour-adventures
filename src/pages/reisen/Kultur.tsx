@@ -69,10 +69,10 @@ const highlights = [
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
-  const itemW = 220;
-  const itemH = 165;
-  const activeW = 220;
-  const activeH = 165;
+  const itemW = 200;
+  const itemH = 150;
+  const activeW = 200;
+  const activeH = 150;
 
   return (
     <div
@@ -128,7 +128,7 @@ const DayEightMedia = ({
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="mx-auto grid max-w-[620px] grid-cols-3 gap-2 sm:gap-3">
         {photos.map((photo, index) => (
           <div
             key={photo}
