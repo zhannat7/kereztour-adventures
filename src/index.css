@@ -156,7 +156,7 @@
 }
 
 .hero-slow-move {
-  animation: hero-slow-move 8s linear both;
+  animation: hero-slow-move 16s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
