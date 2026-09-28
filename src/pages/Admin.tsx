@@ -708,7 +708,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <div className="flex flex-wrap gap-1 rounded-md border border-border bg-background p-1">
                   {(["DE", "EN", "IT"] as Language[]).map((code) => (
                     <button key={code} type="button" onClick={() => setTextLanguage(code)}
-                      className={\`rounded-sm px-4 py-2 text-sm font-medium transition-colors \${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}\`}>
+                      className={`rounded-sm px-4 py-2 text-sm font-medium transition-colors ${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
                       {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
                     </button>
                   ))}
