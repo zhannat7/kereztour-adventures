@@ -17,6 +17,13 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/i18n/LanguageContext";
+import {
+  calculateTotalPrice,
+  getAvailablePlaces,
+  getCulturePrice,
+  isBookingAvailable,
+  isValidCultureGroupSize,
+} from "@/lib/bookingRules";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,11 +63,6 @@ type TourDateAvailability = {
   economyAvailablePlaces: number;
   comfortAvailablePlaces: number;
   status: "open" | "full";
-};
-
-const getCulturePrice = (tier: TierId, persons: number) => {
-  if (tier === "comfort") return persons === 2 ? 2700 : 1700;
-  return 1300;
 };
 
 const bookingSchema = (t: (text: string) => string) => z.object({
@@ -320,7 +322,7 @@ const Buchen = () => {
     return selectedTour.price ?? 0;
   }, [selectedTour, tier, persons]);
 
-  const totalPrice = persons * pricePerPerson;
+  const totalPrice = calculateTotalPrice(pricePerPerson, persons);
 
   const selectTour = (id: TourId) => {
     setValue("tour", id, {
@@ -379,9 +381,10 @@ const Buchen = () => {
           : tour.price ?? 0;
 
       if (tour.id === "kultur") {
-        const validGroupSize =
-          (data.tier === "economy" && data.persons >= 6 && data.persons <= 8) ||
-          (data.tier === "comfort" && (data.persons === 2 || data.persons === 4));
+        const validGroupSize = isValidCultureGroupSize(
+          data.tier as TierId,
+          data.persons,
+        );
 
         if (!validGroupSize) {
           throw new Error(
@@ -392,7 +395,7 @@ const Buchen = () => {
         }
       }
 
-      const total = data.persons * price;
+      const total = calculateTotalPrice(price, data.persons);
 
       // Non-tier tours do not need a tier value. Keep this NULL-compatible
       // with the existing bookings schema instead of writing a synthetic value.
@@ -417,14 +420,13 @@ const Buchen = () => {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
 
-      const availablePlaces =
-        tour.hasTiers && data.tier === "economy"
-          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
-          : tour.hasTiers && data.tier === "comfort"
-            ? Number(selectedDate.comfort_available_places ?? selectedDate.available_places)
-            : Number(selectedDate.available_places);
+      const availablePlaces = getAvailablePlaces(
+        tour.hasTiers,
+        tour.hasTiers ? (data.tier as TierId) : null,
+        selectedDate,
+      );
 
-      if (availablePlaces <= 0 || data.persons > availablePlaces) {
+      if (!isBookingAvailable(data.persons, availablePlaces)) {
         throw new Error(
           availablePlaces > 0
             ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
