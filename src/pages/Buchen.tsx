@@ -369,23 +369,32 @@ const Buchen = () => {
         throw new Error(t("Bitte wähle eine Reise."));
       }
 
-      if (tour.hasTiers && !data.tier) {
-        throw new Error(t("Bitte wähle eine Reiseoption."));
-      }
+      // Normalize the Kultur option before validation/submission. This also
+      // keeps older preview builds from losing the selected option on submit.
+      const resolvedTier: TierId | "" =
+        tour.id === "kultur"
+          ? data.tier === "economy" || data.tier === "comfort"
+            ? data.tier
+            : data.persons === 2 || data.persons === 4
+              ? "comfort"
+              : data.persons >= 6 && data.persons <= 8
+                ? "economy"
+                : ""
+          : "";
 
       const price =
-        tour.hasTiers && data.tier
-          ? getCulturePrice(data.tier as TierId, data.persons)
+        tour.hasTiers && resolvedTier
+          ? getCulturePrice(resolvedTier, data.persons)
           : tour.price ?? 0;
 
       if (tour.id === "kultur") {
         const validGroupSize =
-          (data.tier === "economy" && data.persons >= 6 && data.persons <= 8) ||
-          (data.tier === "comfort" && (data.persons === 2 || data.persons === 4));
+          (resolvedTier === "economy" && data.persons >= 6 && data.persons <= 8) ||
+          (resolvedTier === "comfort" && (data.persons === 2 || data.persons === 4));
 
         if (!validGroupSize) {
           throw new Error(
-            data.tier === "comfort"
+            resolvedTier === "comfort"
               ? t("Das VIP-Paket ist für 2 oder 4 Personen buchbar.")
               : t("Die Standardreise ist für 6 bis 8 Personen buchbar.")
           );
@@ -397,7 +406,7 @@ const Buchen = () => {
       // Non-tier tours do not need a tier value. Keep this NULL-compatible
       // with the existing bookings schema instead of writing a synthetic value.
       const tierValue = tour.hasTiers
-        ? data.tier
+        ? resolvedTier
         : "standard";
 
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
