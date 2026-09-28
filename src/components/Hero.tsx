@@ -43,6 +43,13 @@ const Hero = () => {
   }, []);
 
   return (
+    <>
+      <style>{`
+        @keyframes hero-slow-zoom {
+          from { transform: translate3d(0, 0, 0) scale(1); }
+          to { transform: translate3d(0, 0, 0) scale(1.035); }
+        }
+      `}</style>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => (
@@ -62,10 +69,11 @@ const Hero = () => {
               loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] transition-transform duration-[8000ms] ease-out"
+              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden]"
               style={{
                 objectPosition: "center center",
                 transform: "translate3d(0, 0, 0)",
+                animation: activeImage === index ? "hero-slow-zoom 8s ease-out forwards" : "none",
               }}
             />
           </div>
@@ -129,6 +137,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
