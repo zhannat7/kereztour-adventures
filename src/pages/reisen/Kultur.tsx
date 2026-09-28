@@ -238,7 +238,7 @@ const Kultur = () => {
                             controls
                             playsInline
                             preload="metadata"
-                            className="h-auto max-h-[420px] w-full object-cover"
+                            className="mx-auto h-auto max-h-[320px] w-auto max-w-full object-contain"
                             aria-label={t("Kyrchyn Jailoo Video")}
                           />
                         </div>
