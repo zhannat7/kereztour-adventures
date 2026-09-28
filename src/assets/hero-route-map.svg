@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Kereztour Reiseroute in Kirgisistan">
+<rect width="1600" height="900" fill="#e9efe8"/>
+<path d="M0 0H1600V900H0Z" fill="#eef2e9"/>
+<path d="M0 130 C260 90 390 150 520 100 C700 35 820 120 990 80 C1180 35 1370 120 1600 70 L1600 250 C1390 290 1240 230 1080 280 C890 335 760 250 580 305 C400 355 220 275 0 330Z" fill="#d9e5d7"/>
+<path d="M0 690 C260 650 360 720 520 690 C700 655 840 730 1010 675 C1190 620 1390 700 1600 650 L1600 900H0Z" fill="#dfe9dc"/>
+<path d="M580 420 C700 340 900 320 1080 390 C1210 440 1225 555 1110 620 C965 700 760 690 620 610 C540 565 520 480 580 420Z" fill="#8ed0dc" opacity=".95"/>
+<path d="M160 360 C310 340 410 365 505 430 C560 468 570 520 630 560 C690 600 720 650 790 675 C860 700 940 675 1010 640 C1070 610 1125 565 1190 525 C1240 492 1270 435 1320 400" fill="none" stroke="#2d72e8" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1320 400 C1280 455 1240 505 1190 525" fill="none" stroke="#2d72e8" stroke-width="18" stroke-linecap="round"/>
+<circle cx="160" cy="360" r="22" fill="#fff" stroke="#2d72e8" stroke-width="10"/>
+<circle cx="790" cy="675" r="22" fill="#fff" stroke="#2d72e8" stroke-width="10"/>
+<circle cx="1320" cy="400" r="22" fill="#fff" stroke="#2d72e8" stroke-width="10"/>
+<text x="195" y="350" font-family="Arial,sans-serif" font-size="38" font-weight="700" fill="#344054">Bischkek</text>
+<text x="745" y="745" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#344054">Issyk-Kul</text>
+<text x="1338" y="390" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#344054">Karakol</text>
+<text x="770" y="500" font-family="Georgia,serif" font-size="58" font-style="italic" fill="#397f91">Issyk-Kul</text>
+<text x="1040" y="335" font-family="Arial,sans-serif" font-size="28" fill="#667085">Cholpon-Ata</text>
+<text x="1090" y="455" font-family="Arial,sans-serif" font-size="28" fill="#667085">Jeti-Ögüz</text>
+<text x="1260" y="555" font-family="Arial,sans-serif" font-size="26" fill="#667085">Kyzyl-Suu</text>
+<text x="535" y="355" font-family="Arial,sans-serif" font-size="26" fill="#667085">Boom</text>
+<text x="75" y="95" font-family="Arial,sans-serif" font-size="42" font-weight="700" fill="#1f2937">Kereztour</text>
+<text x="75" y="140" font-family="Arial,sans-serif" font-size="24" fill="#667085">Unsere Route durch Kirgisistan</text>
+</svg>
