@@ -583,6 +583,37 @@ const Dashboard = ({ session }: { session: Session }) => {
               </div>
             </div>
 
+            <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+              <div className="flex flex-col gap-3 border-b border-border bg-muted/20 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-foreground">So sieht die Website aus</span>
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">Live-Vorschau</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Sarina kann hier direkt sehen, wo die Texte auf der normalen Website stehen. Danach kann sie unten gezielt den gewünschten Text ersetzen.
+                  </p>
+                </div>
+                <a href="/" target="_blank" rel="noreferrer"
+                  className="shrink-0 rounded-sm border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted">
+                  Website separat öffnen ↗
+                </a>
+              </div>
+              <div className="bg-muted/30 p-3 sm:p-5">
+                <div className="overflow-hidden rounded-md border border-border bg-background shadow-sm">
+                  <iframe
+                    title="Kereztour Website Vorschau"
+                    src="/"
+                    className="h-[520px] w-full border-0"
+                    loading="lazy"
+                  />
+                </div>
+                <p className="mt-3 text-center text-[11px] text-muted-foreground">
+                  Hinweis: Die Vorschau ist zum Anschauen gedacht. Änderungen werden unten im Textbereich vorgenommen.
+                </p>
+              </div>
+            </div>
+
             <div className="space-y-4">
               {getEditableTextEntries()
                 .filter(({ key, fallback }) => {
