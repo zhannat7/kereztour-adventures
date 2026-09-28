@@ -20,11 +20,6 @@ const META: Record<string, Meta> = {
     description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 10 Tage mit lokalen Guides für 1.200 € pro Person.",
     trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1200, image: "/tour-trekking.jpg" },
   },
-  "/reisen/kyrchyn": {
-    title: "Kirgisistan Reise – Kyrchyn Tour & Nomadenkultur | Kereztour",
-    description: "Kirgisistan Reise zur Kyrchyn Jailoo: Jurtenleben, Nomadenkultur und traditionelle Pferdespiele hautnah erleben – 1.300 € pro Person.",
-    trip: { name: "Kyrchyn Tour Kirgisistan", price: 1300, image: "/tour-kyrchyn.jpg" },
-  },
   "/reisen/nomaden": {
     title: "Kirgisistan – Welt der Nomaden 2026 | Kereztour",
     description: "Informationen zu den Weltspielen der Nomaden 2026 in Kirgisistan: Nomadenkultur, Pferdespiele, traditionelle Wettkämpfe und die Region rund um den Issyk-Kul.",
