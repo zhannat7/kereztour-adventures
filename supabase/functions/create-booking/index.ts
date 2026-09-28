@@ -1,11 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import {
-  getAvailablePlaces,
-  getBookingPrice,
-  isValidBookingOption,
-  type BookingTier,
-  type BookingTour,
-} from "./bookingRules.ts";
 
 const allowedOrigins = new Set([
   "https://kereztour.com",
@@ -107,36 +100,42 @@ Deno.serve(async (req) => {
     }
     if (!isDate(travelDate)) return json({ error: "Ungültiges Reisedatum." }, 400, origin);
 
-    const tours: Record<BookingTour, { label: string; hasTiers: boolean }> = {
-      kultur: { label: "Kultur Tour", hasTiers: true },
-      trekking: { label: "Intensiv-Trekking", hasTiers: false },
+    const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
+      kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
+      trekking: { label: "Intensiv-Trekking", price: 1200, hasTiers: false },
     };
 
-    const selected = tours[tour as BookingTour];
+    const selected = tours[tour];
     if (!selected) return json({ error: "Ungültige Reise." }, 400, origin);
 
-    const bookingTour = tour as BookingTour;
-    const bookingTier = tier as BookingTier | null;
-
-    if (
-      !isValidBookingOption(
-        bookingTour,
-        bookingTier,
-        persons,
-      )
-    ) {
-      if (bookingTour === "kultur" && bookingTier === "economy") {
-        return json({ error: "Die Standardreise ist für 6 bis 8 Personen buchbar." }, 400, origin);
+    let price = selected.price;
+    if (selected.hasTiers) {
+      if (tier !== "economy" && tier !== "comfort") {
+        return json({ error: "Bitte wähle eine Reiseoption." }, 400, origin);
       }
 
-      if (bookingTour === "kultur" && bookingTier === "comfort") {
-        return json({ error: "Das VIP-Paket ist für 2 oder 4 Personen buchbar." }, 400, origin);
+      if (tour === "kultur") {
+        if (tier === "economy") {
+          if (persons < 6 || persons > 8) {
+            return json({ error: "Die Standardreise ist für 6 bis 8 Personen buchbar." }, 400, origin);
+          }
+          price = 1300;
+        } else {
+          if (persons !== 2 && persons !== 4) {
+            return json({ error: "Das VIP-Paket ist für 2 oder 4 Personen buchbar." }, 400, origin);
+          }
+          price = persons === 2 ? 2700 : 1700;
+        }
       }
-
-      return json({ error: "Ungültige Reiseoption." }, 400, origin);
+    } else if (tour === "trekking") {
+      // The database stores the booking option as a required text field.
+      // Trekking has no tier, so "standard" is used consistently.
+      if (tier !== "standard") {
+        return json({ error: "Ungültige Reiseoption." }, 400, origin);
+      }
+      price = 1200;
     }
 
-    const price = getBookingPrice(bookingTour, bookingTier, persons);
     const totalPrice = persons * price;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -165,11 +164,10 @@ Deno.serve(async (req) => {
         return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
       }
 
-      const availablePlaces = getAvailablePlaces(
-        bookingTour,
-        bookingTier,
-        selectedDate,
-      );
+      const availablePlaces =
+        tier === "economy"
+          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
+          : Number(selectedDate.comfort_available_places ?? selectedDate.available_places);
 
       if (availablePlaces <= 0 || persons > availablePlaces) {
         return json({
