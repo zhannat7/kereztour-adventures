@@ -46,27 +46,14 @@ const Hero = () => {
             style={{ opacity: activeImage === index ? 1 : 0 }}
             aria-hidden={activeImage !== index}
           >
-            {index === 1 && (
-              <img
-                src={image.src}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-[-24px] h-[calc(100%+48px)] w-[calc(100%+48px)] scale-110 object-cover blur-2xl"
-                decoding="async"
-              />
-            )}
             <img
               src={image.src}
               alt={image.alt}
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className={index === 1
-                ? "absolute inset-0 h-full w-full object-contain transition-transform duration-[8000ms] ease-linear hero-slow-move"
-                : "absolute inset-0 h-full w-full object-cover transition-transform duration-[8000ms] ease-linear hero-slow-move"}
-              style={{
-                objectPosition: index === 0 ? "center center" : index === 1 ? "center center" : "center center",
-              }}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[8000ms] ease-linear hero-slow-move"
+              style={{ objectPosition: "center center" }}
             />
           </div>
         ))}
