@@ -6,7 +6,6 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const tourLinks = [
   { label: "Kultur Tour", to: "/reisen/kultur" },
   { label: "Intensiv-Trekking", to: "/reisen/trekking" },
-  { label: "Kyrchyn Tour", to: "/reisen/kyrchyn" },
 ];
 
 const serviceLinks = [
