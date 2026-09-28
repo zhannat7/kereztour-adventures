@@ -8,15 +8,15 @@ import heroYurt from "@/assets/gallery/51.png";
 const heroImages = [
   {
     src: "/hero-wide.jpg",
-    alt: "Jurten-Lager im Tian Shan Gebirge von Kirgisistan",
-  },
-  {
-    src: karakolMosque,
-    alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
+    alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
     src: heroYurt,
     alt: "Gäste essen gemeinsam in einer rot dekorierten Jurte in Kirgisistan",
+  },
+  {
+    src: karakolMosque,
+    alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
 ];
 
@@ -47,7 +47,7 @@ const Hero = () => {
             style={{ opacity: activeImage === index ? 1 : 0 }}
             aria-hidden={activeImage !== index}
           >
-            {index === 2 && (
+            {index === 1 && (
               <img
                 src={image.src}
                 alt=""
@@ -62,11 +62,11 @@ const Hero = () => {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className={index === 2
+              className={index === 1
                 ? "absolute inset-0 h-full w-full object-contain transition-transform duration-[8000ms] ease-linear hero-slow-move"
                 : "absolute inset-0 h-full w-full object-cover transition-transform duration-[8000ms] ease-linear hero-slow-move"}
               style={{
-                objectPosition: index === 1 ? "center 18%" : "center center",
+                objectPosition: index === 0 ? "center center" : index === 1 ? "center center" : "center center",
               }}
             />
           </div>
