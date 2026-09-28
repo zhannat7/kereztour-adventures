@@ -84,7 +84,7 @@ const Pricing = () => {
                 {plan.details.map((d) => (
                   <li key={t(d.text)} className="flex items-start gap-3 text-sm">
                     <d.icon className={`h-5 w-5 shrink-0 ${plan.featured ? "text-secondary" : "text-primary"}`} />
-                    <span className={plan.featured ? "text-primary-foreground/90" : "text-foreground/85"}>{d.text}</span>
+                    <span className={plan.featured ? "text-primary-foreground/90" : "text-foreground/85"}>{t(d.text)}</span>
                   </li>
                 ))}
               </ul>
@@ -110,7 +110,7 @@ const Pricing = () => {
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {included.map((i) => (
               <li key={i} className="flex items-center gap-2.5 text-sm text-foreground/85">
-                <Check className="h-4 w-4 shrink-0 text-secondary" /> {i}
+                <Check className="h-4 w-4 shrink-0 text-secondary" /> {t(i)}
               </li>
             ))}
           </ul>
