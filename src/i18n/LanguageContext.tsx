@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export type Language = "DE" | "EN" | "IT";
 
@@ -742,6 +743,14 @@ const translations: Record<Language, Record<string, string>> = {
   },
 };
 
+export type EditableTextEntry = {
+  key: string;
+  fallback: string;
+};
+
+export const getEditableTextEntries = (): EditableTextEntry[] =>
+  Object.keys(translations.DE).map((key) => ({ key, fallback: translations.DE[key] ?? key }));
+
 type LanguageContextValue = {
   language: Language;
   setLanguage: (language: Language) => void;
@@ -751,6 +760,12 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [contentOverrides, setContentOverrides] = useState<Record<Language, Record<string, string>>>({
+    DE: {},
+    EN: {},
+    IT: {},
+  });
+
   const [language, setLanguageState] = useState<Language>(() => {
     const saved = window.localStorage.getItem("kereztour-language");
     return saved === "EN" || saved === "IT" ? saved : "DE";
@@ -763,6 +778,31 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    let cancelled = false;
+
+    const loadContent = async () => {
+      const { data, error } = await (supabase as any)
+        .from("site_content")
+        .select("content_key, language, value");
+
+      if (cancelled || error || !data) return;
+
+      const next: Record<Language, Record<string, string>> = { DE: {}, EN: {}, IT: {} };
+      for (const row of data as Array<{ content_key: string; language: Language; value: string }>) {
+        if (row.language === "DE" || row.language === "EN" || row.language === "IT") {
+          next[row.language][row.content_key] = row.value;
+        }
+      }
+      setContentOverrides(next);
+    };
+
+    void loadContent();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
   }, [language]);
 
@@ -770,9 +810,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       language,
       setLanguage,
-      t: (text: string) => translations[language][text] ?? text,
+      t: (text: string) => contentOverrides[language][text] ?? translations[language][text] ?? text,
     }),
-    [language],
+    [language, contentOverrides],
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
