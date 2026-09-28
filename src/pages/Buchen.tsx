@@ -39,13 +39,6 @@ const TOURS = [
     price: 1200,
     hasTiers: false,
   },
-  {
-    id: "kyrchyn",
-    label: "Kyrchyn Tour",
-    desc: "Kyrchyn Jailoo erleben, nomadische Kultur kennenlernen und Kirgisistan auf besondere Weise entdecken.",
-    price: 1300,
-    hasTiers: false,
-  },
 ] as const;
 
 type TourId = (typeof TOURS)[number]["id"];
