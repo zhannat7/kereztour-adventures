@@ -6,6 +6,7 @@ import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
 
 import t1a from "@/assets/gallery/IMG_2518.jpg";
 import t1b from "@/assets/gallery/11.png";
