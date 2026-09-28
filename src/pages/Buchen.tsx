@@ -58,6 +58,10 @@ type TourDateAvailability = {
   label: string;
   maxParticipants: number;
   availablePlaces: number;
+  economyMaxParticipants: number;
+  comfortMaxParticipants: number;
+  economyAvailablePlaces: number;
+  comfortAvailablePlaces: number;
   status: "open" | "full";
 };
 
@@ -226,7 +230,7 @@ const Buchen = () => {
       } else {
         const { data: rawDates, error: rawError } = await supabase
           .from("tour_dates")
-          .select("id, tour, start_date, end_date, max_participants, status")
+          .select("id, tour, start_date, end_date, max_participants, economy_max_participants, comfort_max_participants, status")
           .eq("tour", selectedTourLabel)
           .order("start_date", { ascending: true });
 
@@ -241,6 +245,10 @@ const Buchen = () => {
         availabilityData = (rawDates ?? []).map((item: any) => ({
           ...item,
           available_places: Number(item.max_participants),
+          economy_max_participants: Number(item.max_participants),
+          comfort_max_participants: Number(item.max_participants),
+          economy_available_places: Number(item.max_participants),
+          comfort_available_places: Number(item.max_participants),
         }));
       }
 
@@ -258,6 +266,10 @@ const Buchen = () => {
             format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
           availablePlaces: Math.max(0, Number(item.available_places)),
+          economyMaxParticipants: Number(item.economy_max_participants ?? item.max_participants),
+          comfortMaxParticipants: Number(item.comfort_max_participants ?? item.max_participants),
+          economyAvailablePlaces: Math.max(0, Number(item.economy_available_places ?? item.available_places)),
+          comfortAvailablePlaces: Math.max(0, Number(item.comfort_available_places ?? item.available_places)),
           status: item.status === "full" || item.status === "cancelled" ? "full" : "open",
         }));
 
@@ -277,6 +289,28 @@ const Buchen = () => {
       travelDate &&
       format(travelDate, "yyyy-MM-dd") === item.value
   );
+
+  const selectedTierAvailablePlaces =
+    selectedTourDate && tourId === "kultur"
+      ? tier === "economy"
+        ? selectedTourDate.economyAvailablePlaces
+        : selectedTourDate.comfortAvailablePlaces
+      : selectedTourDate?.availablePlaces ?? 20;
+
+  useEffect(() => {
+    if (
+      selectedTourDate &&
+      tourId === "kultur" &&
+      tier &&
+      selectedTierAvailablePlaces > 0 &&
+      persons > selectedTierAvailablePlaces
+    ) {
+      setValue("persons", selectedTierAvailablePlaces, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }, [selectedTourDate, tourId, tier, selectedTierAvailablePlaces, persons, setValue]);
 
   const selectedTour = TOURS.find(
     (tour) => tour.id === tourId
@@ -368,9 +402,14 @@ const Buchen = () => {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
 
-      const availablePlaces = Number(selectedDate.available_places);
+      const availablePlaces =
+        tour.hasTiers && data.tier === "economy"
+          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
+          : tour.hasTiers && data.tier === "comfort"
+            ? Number(selectedDate.comfort_available_places ?? selectedDate.available_places)
+            : Number(selectedDate.available_places);
 
-      if (selectedDate.status === "full" || data.persons > availablePlaces) {
+      if (availablePlaces <= 0 || data.persons > availablePlaces) {
         throw new Error(
           availablePlaces > 0
             ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
@@ -679,14 +718,14 @@ const Buchen = () => {
                       disabled={
                         tourId === "kultur" &&
                         !!selectedTourDate &&
-                        persons >= selectedTourDate.availablePlaces
+                        persons >= selectedTierAvailablePlaces
                       }
                       onClick={() =>
                         setValue(
                           "persons",
                           Math.min(
                             tourId === "kultur" && selectedTourDate
-                              ? selectedTourDate.availablePlaces
+                              ? selectedTierAvailablePlaces
                               : 20,
                             persons + 1
                           )
@@ -723,7 +762,19 @@ const Buchen = () => {
                         const selected =
                           travelDate &&
                           format(travelDate, "yyyy-MM-dd") === item.value;
-                        const isFull = item.status === "full" || item.availablePlaces <= 0;
+                        const itemAvailablePlaces =
+                          tourId === "kultur"
+                            ? tier === "economy"
+                              ? item.economyAvailablePlaces
+                              : item.comfortAvailablePlaces
+                            : item.availablePlaces;
+                        const itemMaxParticipants =
+                          tourId === "kultur"
+                            ? tier === "economy"
+                              ? item.economyMaxParticipants
+                              : item.comfortMaxParticipants
+                            : item.maxParticipants;
+                        const isFull = item.status === "full" || itemAvailablePlaces <= 0;
 
                         return (
                           <button
@@ -751,10 +802,10 @@ const Buchen = () => {
                               {isFull
                                 ? t("Ausgebucht")
                                 : t("Noch {count} {placeWord} verfügbar")
-                                    .replace("{count}", String(item.availablePlaces))
+                                    .replace("{count}", String(itemAvailablePlaces))
                                     .replace(
                                       "{placeWord}",
-                                      item.availablePlaces === 1 ? t("Platz") : t("Plätze")
+                                      itemAvailablePlaces === 1 ? t("Platz") : t("Plätze")
                                     )}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
