@@ -59,8 +59,13 @@ type TourDateAvailability = {
 };
 
 const TIER_PRICES: Record<TierId, number> = {
-  economy: 990,
-  comfort: 1490,
+  economy: 1300,
+  comfort: 1700,
+};
+
+const getCulturePrice = (tier: TierId, persons: number) => {
+  if (tier === "comfort") return persons === 2 ? 2700 : 1700;
+  return 1300;
 };
 
 const bookingSchema = (t: (text: string) => string) => z.object({
@@ -181,7 +186,7 @@ const Buchen = () => {
     resolver: zodResolver(schema),
 
     defaultValues: {
-      persons: 1,
+      persons: validTour === "kultur" && validTier === "comfort" ? 2 : validTour === "kultur" ? 6 : 1,
       tour: validTour,
       tier: validTour === "kultur" ? validTier : "",
       notes: "",
@@ -314,7 +319,7 @@ const Buchen = () => {
 
     if (selectedTour.hasTiers) {
       if (!tier) return 0;
-      return TIER_PRICES[tier];
+      return getCulturePrice(tier, persons);
     }
 
     return selectedTour.price ?? 0;
@@ -336,15 +341,23 @@ const Buchen = () => {
       setValue("tier", "", {
         shouldValidate: true,
       });
+      setValue("persons", 1, { shouldValidate: true });
     } else if (!tier) {
-      setValue("tier", "comfort", {
+      setValue("tier", "economy", {
         shouldValidate: true,
       });
+      setValue("persons", 6, { shouldValidate: true });
+    } else {
+      setValue("persons", tier === "comfort" ? 2 : 6, { shouldValidate: true });
     }
   };
 
   const selectTier = (value: TierId) => {
     setValue("tier", value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("persons", value === "comfort" ? 2 : 6, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -369,6 +382,20 @@ const Buchen = () => {
         tour.hasTiers && data.tier
           ? TIER_PRICES[data.tier as TierId]
           : tour.price ?? 0;
+
+      if (tour.id === "kultur") {
+        const validGroupSize =
+          (data.tier === "economy" && data.persons >= 6 && data.persons <= 8) ||
+          (data.tier === "comfort" && (data.persons === 2 || data.persons === 4));
+
+        if (!validGroupSize) {
+          throw new Error(
+            data.tier === "comfort"
+              ? t("Das VIP-Paket ist für 2 oder 4 Personen buchbar.")
+              : t("Die Standardreise ist für 6 bis 8 Personen buchbar.")
+          );
+        }
+      }
 
       const total = data.persons * price;
 
@@ -563,7 +590,7 @@ const Buchen = () => {
                         <div className="text-right shrink-0">
                           <p className="font-bold text-primary">
                             {tour.hasTiers
-                              ? t("ab 990 €")
+                              ? t("ab 1.300 €")
                               : `${tour.price?.toLocaleString("de-DE")} €`}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -587,7 +614,7 @@ const Buchen = () => {
                 <div className="mt-7 pt-7 border-t border-border">
 
                   <p className="font-semibold text-foreground mb-4">
-                    {t("Wie möchtest du reisen?")}
+                    {t("Reisevariante")}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -627,14 +654,14 @@ const Buchen = () => {
                             <div>
                               <p className="font-bold text-lg text-foreground">
                                 {isEconomy
-                                  ? t("Economy")
-                                  : t("Comfort")}
+                                  ? t("Standard")
+                                  : t("VIP")}
                               </p>
 
                               <p className="text-sm text-muted-foreground mt-2">
                                 {isEconomy
-                                  ? t("Gästehaus & Jurte, Mehrbettzimmer. Gruppe bis 12 Personen.")
-                                  : t("Ausgewählte Hotels, Einzel- oder Doppelzimmer. Kleine Gruppe bis 4 Personen.")}
+                                  ? t("Kleingruppe mit 6 bis 8 Personen. 3-Sterne-Hotels und komfortable Jurten mit WC/Dusche.")
+                                  : t("Private Jeep-Reise für 2 oder 4 Personen.")}
                               </p>
                             </div>
 
@@ -647,13 +674,11 @@ const Buchen = () => {
                           </div>
 
                           <p className="font-display text-3xl text-primary mt-5">
-                            {TIER_PRICES[
-                              option
-                            ].toLocaleString(
-                              "de-DE"
-                            )} €
+                            {isEconomy
+                            ? "1.300 €"
+                            : "2.700 € / 1.700 €"}
                             <span className="text-sm text-muted-foreground font-sans ml-1">
-                              / {t("Person")}
+                              {isEconomy ? `/ ${t("Person")}` : t("pro Person bei 2 / 4 Personen")}
                             </span>
                           </p>
 
@@ -691,10 +716,11 @@ const Buchen = () => {
                       onClick={() =>
                         setValue(
                           "persons",
-                          Math.max(
-                            1,
-                            persons - 1
-                          )
+                          tourId === "kultur"
+                            ? tier === "comfort"
+                              ? Math.max(2, persons - 2)
+                              : Math.max(6, persons - 1)
+                            : Math.max(1, persons - 1)
                         )
                       }
                       className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
@@ -717,10 +743,13 @@ const Buchen = () => {
                         setValue(
                           "persons",
                           Math.min(
-                            tourId === "kultur" && selectedTourDate
-                              ? selectedTierAvailablePlaces
+                            tourId === "kultur"
+                              ? Math.min(
+                                  tier === "comfort" ? 4 : 8,
+                                  selectedTourDate ? selectedTierAvailablePlaces : 20
+                                )
                               : 20,
-                            persons + 1
+                            persons + (tourId === "kultur" && tier === "comfort" ? 2 : 1)
                           )
                         )
                       }
