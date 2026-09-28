@@ -114,7 +114,7 @@ const DayEightMedia = ({
   ];
 
   return (
-    <div className="mt-7 max-w-[720px]">
+    <div className="mt-7 w-full max-w-[460px] mx-auto">
       <div className="mb-3 aspect-[4/3] w-full max-w-[460px] self-center overflow-hidden rounded-md border border-border bg-muted shadow-lift sm:mb-4">
         <video
           src={video}
@@ -128,7 +128,7 @@ const DayEightMedia = ({
         />
       </div>
 
-      <div className="mx-auto grid max-w-[620px] grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {photos.map((photo, index) => (
           <div
             key={photo}
