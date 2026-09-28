@@ -75,7 +75,7 @@ const Hero = () => {
                 style={{
                   color: activeImage === 1 ? "hsl(var(--gold))" : undefined,
                   WebkitTextStroke: activeImage === 1 ? "1px rgba(35, 22, 14, 0.78)" : "0 transparent",
-                  textShadow: activeImage === 1 ? "0 1px 2px rgba(35, 22, 14, 0.22)" : undefined,
+                  textShadow: activeImage === 1 ? "0 0 6px rgba(212, 168, 72, 0.42), 0 1px 2px rgba(35, 22, 14, 0.28)" : undefined,
                 }}
               >
                 {t("Authentisch erleben")}
