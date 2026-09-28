@@ -11,7 +11,6 @@ type Tour = {
   price: string;
   to: string;
   image?: string;
-  video?: string;
   imagePosition?: string;
 };
 
@@ -68,28 +67,14 @@ const Tours = () => {
               className="stagger-child group flex flex-col overflow-hidden rounded-sm border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                {tour.video ? (
-                  <video
-                    src={tour.video}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="none"
-                    poster="/tour-kyrchyn.jpg"
-                    aria-label={t(tour.title)}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={tour.image}
-                    alt={t(tour.title)}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ objectPosition: tour.imagePosition ?? "center" }}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                )}
+                <img
+                  src={tour.image}
+                  alt={t(tour.title)}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ objectPosition: tour.imagePosition ?? "center" }}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
 
               <div className="flex flex-1 flex-col p-6 sm:p-7 md:p-8">
