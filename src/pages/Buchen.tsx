@@ -358,6 +358,31 @@ const Buchen = () => {
     });
   };
 
+  const handleInvalidSubmit = (formErrors: Record<string, any>) => {
+    const firstError = Object.keys(formErrors)[0];
+    if (!firstError) return;
+
+    const errorMessage =
+      formErrors[firstError]?.message ||
+      t("Bitte prüfe die markierten Felder.");
+
+    setSubmitError(String(errorMessage));
+
+    // Keep validation usable on mobile even when the invalid field is a
+    // custom control (for example the Reisetermin buttons) without an input id.
+    const element = document.getElementById(firstError) as HTMLElement | null;
+    if (element) {
+      focusNextField(firstError);
+    } else {
+      requestAnimationFrame(() => {
+        document.querySelector("section:nth-of-type(2)")?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+    }
+  };
+
   // Preview-sync marker: Kultur booking submit normalizes the selected tier before invoking create-booking.
   const onSubmit = async (data: BookingForm) => {
     setSubmitError("");
@@ -520,19 +545,7 @@ const Buchen = () => {
           </div>
 
           <form
-            onSubmit={handleSubmit(
-              onSubmit,
-              (formErrors) => {
-                const firstError = Object.keys(formErrors)[0];
-                if (firstError) {
-                  const errorMessage =
-                    (formErrors as any)[firstError]?.message ||
-                    t("Bitte prüfe die markierten Felder.");
-                  setSubmitError(String(errorMessage));
-                  focusNextField(firstError);
-                }
-              }
-            )}
+            onSubmit={handleSubmit(onSubmit, handleInvalidSubmit)}
             className="space-y-6"
           >
 
@@ -1052,9 +1065,16 @@ const Buchen = () => {
 
             {/* SUBMIT */}
             <Button
-              type="submit"
-              className="w-full h-14 text-base rounded-xl"
+              type="button"
+              onClick={() => {
+                // Trigger React Hook Form directly instead of relying on the
+                // browser's native form-submit event. This is more reliable
+                // on mobile Safari/Chrome, especially while the keyboard is open.
+                void handleSubmit(onSubmit, handleInvalidSubmit)();
+              }}
+              className="w-full min-h-14 h-14 touch-manipulation select-none text-base rounded-xl"
               disabled={isSubmitting}
+              aria-busy={isSubmitting}
             >
               {isSubmitting ? (
                 <>
