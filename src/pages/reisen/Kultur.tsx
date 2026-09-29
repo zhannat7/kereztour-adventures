@@ -90,11 +90,6 @@ const highlights = [
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
-  const itemW = 200;
-  const itemH = 150;
-  const activeW = 200;
-  const activeH = 150;
-
   return (
     <div
       className="flex gap-2 overflow-x-auto pb-1"
@@ -106,13 +101,10 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           key={i}
           onClick={() => setActiveIdx(activeIdx === i ? null : i)}
           onMouseEnter={() => setActiveIdx(i)}
-          className="flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
-          style={{
-            width: activeIdx === i ? `${activeW}px` : `${itemW}px`,
-            height: activeIdx === i ? `${activeH}px` : `${itemH}px`,
-            opacity: activeIdx !== null && activeIdx !== i ? 0.45 : 1,
-            transition: "all 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)",
-          }}
+          className={`h-[110px] w-[150px] flex-shrink-0 overflow-hidden rounded-xl cursor-pointer sm:h-[150px] sm:w-[200px] ${
+            activeIdx !== null && activeIdx !== i ? "opacity-45" : "opacity-100"
+          }`}
+          style={{ transition: "opacity 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)" }}
         >
           <img src={photo} loading="lazy" className="w-full h-full object-cover" />
         </div>
@@ -136,7 +128,7 @@ const DayEightMedia = ({
 
   return (
     <div className="mt-7 w-full max-w-[620px] mx-auto">
-      <div className="mb-3 aspect-[4/3] w-full max-w-[460px] self-center overflow-hidden rounded-xl bg-muted shadow-lift sm:mb-4">
+      <div className="mb-3 aspect-[3/4] w-full overflow-hidden rounded-xl bg-muted shadow-lift sm:mb-4 sm:aspect-[4/3] sm:mx-auto sm:max-w-[460px]">
         <video
           src={video}
           autoPlay
@@ -149,7 +141,7 @@ const DayEightMedia = ({
         />
       </div>
 
-      <div className="grid -translate-x-16 grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {photos.map((photo, index) => (
           <div
             key={photo}
@@ -287,7 +279,7 @@ const Kultur = () => {
                         {d.day}
                       </div>
                     </div>
-                    <div className="flex-1 pb-2">
+                    <div className="min-w-0 flex-1 pb-2">
                       <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">Tag {d.day}</p>
                       <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{t(d.title)}</h3>
                       <div className="flex flex-col gap-3 mb-5">
