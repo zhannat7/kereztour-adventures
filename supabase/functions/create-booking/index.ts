@@ -229,7 +229,7 @@ Deno.serve(async (req) => {
       }, 500, origin);
     }
 
-    await sendEmail(
+    const emailTasks = Promise.all([sendEmail(
       NOTIFY_EMAIL,
       `Neue Buchungsanfrage: ${selected.label} (${name})`,
       `<h2>Neue Buchungsanfrage</h2>
@@ -245,9 +245,8 @@ Deno.serve(async (req) => {
          <tr><td><b>Anmerkungen</b></td><td>${escapeHtml(notes ?? "-")}</td></tr>
        </table>
        <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
-    );
-
-    await sendEmail(
+    ),
+    sendEmail(
       email,
       `Deine Buchungsanfrage bei Kereztour`,
       `<h2>Vielen Dank für deine Buchungsanfrage!</h2>
@@ -262,7 +261,13 @@ Deno.serve(async (req) => {
        </table>
        <p>Die Zahlung erfolgt erst, nachdem Sarina deinen Reisetermin bestätigt hat.</p>
        <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
-    );
+    )]);
+
+    // Send emails in the background so the customer gets an instant response.
+    // deno-lint-ignore no-explicit-any
+    const runtime = (globalThis as any).EdgeRuntime;
+    if (runtime?.waitUntil) runtime.waitUntil(emailTasks);
+    else await emailTasks;
 
     return json({ success: true }, 200, origin);
   } catch (error) {
