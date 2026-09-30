@@ -475,9 +475,14 @@ const Buchen = () => {
       });
 
       if (error) {
-        let detail = t("Die Buchungsanfrage konnte nicht gespeichert werden.");
+        console.error("create-booking failed:", error.name, error.message);
+        let detail =
+          error.name === "FunctionsFetchError"
+            ? t("Keine Verbindung zum Server. Bitte prüfe deine Internetverbindung und versuche es erneut.")
+            : t("Die Buchungsanfrage konnte nicht gespeichert werden.");
         try {
           const context = await error.context?.json?.();
+          console.error("create-booking response:", context);
           if (context?.diagnostic === "BOOKING_DATABASE_SCHEMA") {
             detail = t("Die Buchungsdatenbank ist noch nicht auf dem neuesten Stand.");
           } else if (context?.diagnostic === "BOOKING_DATABASE_CONSTRAINT") {

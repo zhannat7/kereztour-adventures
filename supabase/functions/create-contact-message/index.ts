@@ -1,15 +1,9 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { corsHeaders as sdkCorsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const allowedOrigins = new Set([
-  "https://kereztour.com",
-  "https://www.kereztour.com",
-]);
-
-const corsHeaders = (origin: string | null) => ({
-  "Access-Control-Allow-Origin": origin && (allowedOrigins.has(origin) || /^https:\/\/[a-z0-9-]+\.lovable\.app$/.test(origin) || /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/.test(origin)) ? origin : "https://kereztour.com",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-});
+// Public form endpoint: protected by validation, not by origin (origin
+// restrictions silently blocked some mobile browsers/webviews).
+const corsHeaders = (_origin: string | null) => sdkCorsHeaders;
 
 const json = (body: unknown, status = 200, origin: string | null = null) =>
   new Response(JSON.stringify(body), {
