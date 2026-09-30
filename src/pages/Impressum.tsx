@@ -79,7 +79,7 @@ const Impressum = () => {
                 className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
               >
                 <Mail className="h-4 w-4 shrink-0 text-primary" />
-                sarinasadirovna@gmail.com
+                kereztour@hotmail.com
               </a>
               <a
                 href="tel:+393474867408"
