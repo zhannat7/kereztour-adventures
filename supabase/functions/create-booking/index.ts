@@ -1,22 +1,9 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const allowedOrigins = new Set([
-  "https://kereztour.com",
-  "https://www.kereztour.com",
-]);
-
-const isAllowedOrigin = (origin: string | null) =>
-  !!origin && (allowedOrigins.has(origin) ||
-    /^https:\/\/[a-z0-9-]+\.lovable\.app$/.test(origin) ||
-    /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/.test(origin));
-
-const getCorsHeaders = (origin: string | null) => ({
-  "Access-Control-Allow-Origin": isAllowedOrigin(origin)
-    ? origin!
-    : "https://kereztour.com",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-});
+// This public booking endpoint is protected by server-side validation, not
+// by origin. Restricting origins silently blocked some mobile browsers/webviews.
+const getCorsHeaders = (_origin: string | null) => corsHeaders;
 
 type BookingRequest = {
   name?: string;
