@@ -26,6 +26,12 @@ type BookingEmailLog = {
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
+const cultureTierLabel = (tier: string | null | undefined) => {
+  if (tier === "economy" || tier === "standard") return "Standard";
+  if (tier === "comfort") return "VIP";
+  return tier || "–";
+};
+
 const whatsappUrl = (phone: string, name: string) => {
   const number = phone.replace(/\D/g, "");
   const message = encodeURIComponent(
@@ -108,7 +114,7 @@ const BookingMessageModal = ({
       `Reise: ${booking.tour ?? "–"}`,
       `Reisedatum: ${fmt(booking.travel_date)}`,
       `Personen: ${booking.persons}`,
-      `Reisevariante: ${booking.tier === "standard" ? "Standard" : booking.tier}`,
+      `Reisevariante: ${cultureTierLabel(booking.tier)}`,
       `Gesamtpreis: ${booking.total_price.toLocaleString("de-DE")} €`,
     ];
     const appointment = suggestAppointment && appointmentDate && appointmentTime
@@ -895,7 +901,7 @@ const Dashboard = ({ session }: { session: Session }) => {
 
               {nd.tour === "Kultur Tour" ? (
                 <>
-                  <label className="text-xs text-muted-foreground">Economy – max. Personen
+                  <label className="text-xs text-muted-foreground">Standard – max. Personen
                     <input
                       className={input}
                       type="number"
@@ -905,7 +911,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       onChange={(e) => setNd({ ...nd, economy_max_participants: Number(e.target.value) })}
                     />
                   </label>
-                  <label className="text-xs text-muted-foreground">Comfort – max. Personen
+                  <label className="text-xs text-muted-foreground">VIP – max. Personen
                     <input
                       className={input}
                       type="number"
@@ -953,15 +959,15 @@ const Dashboard = ({ session }: { session: Session }) => {
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-1">
-                              <div>Economy: {economyBooked}</div>
-                              <div>Comfort: {comfortBooked}</div>
+                              <div>Standard: {economyBooked}</div>
+                              <div>VIP: {comfortBooked}</div>
                             </div>
                           ) : booked(d)}
                         </td>
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-2">
-                              <label className="block text-xs text-muted-foreground">Economy
+                              <label className="block text-xs text-muted-foreground">Standard
                                 <input
                                   type="number"
                                   min={1}
@@ -975,7 +981,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                                   }}
                                 />
                               </label>
-                              <label className="block text-xs text-muted-foreground">Comfort
+                              <label className="block text-xs text-muted-foreground">VIP
                                 <input
                                   type="number"
                                   min={1}
