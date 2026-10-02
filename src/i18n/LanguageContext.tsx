@@ -746,6 +746,10 @@ const translations: Record<Language, Record<string, string>> = {
 
 /* Culture Tour package and detail translations added for the current tour presentation. */
 Object.assign(translations.EN, {
+  "6–8 Personen": "6–8 people",
+  "Deutschland": "Germany",
+  "Österreich": "Austria",
+Object.assign(translations.EN, {
   "Bischkek → Kyzart": "Bishkek → Kyzart",
   "Trekking zum Song-Köl See": "Trekking to Song-Köl Lake",
   "Nomadenleben am Song-Köl": "Nomadic life at Song-Köl",
@@ -792,6 +796,10 @@ Object.assign(translations.EN, {
   "Für die Reservierung ist eine Anzahlung von 100 € erforderlich.": "A €100 deposit is required to reserve your place.",
   "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
 });
+Object.assign(translations.IT, {
+  "6–8 Personen": "6–8 persone",
+  "Deutschland": "Germania",
+  "Österreich": "Austria",
 Object.assign(translations.IT, {
   "Bischkek → Kyzart": "Bishkek → Kyzart",
   "Trekking zum Song-Köl See": "Trekking al lago Song-Köl",
