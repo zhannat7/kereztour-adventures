@@ -746,6 +746,15 @@ const translations: Record<Language, Record<string, string>> = {
 
 /* Culture Tour package and detail translations added for the current tour presentation. */
 Object.assign(translations.EN, {
+  "Bischkek → Kyzart": "Bishkek → Kyzart",
+  "Trekking zum Song-Köl See": "Trekking to Song-Köl Lake",
+  "Nomadenleben am Song-Köl": "Nomadic life at Song-Köl",
+  "Abstieg → Issyk-Kul See": "Descent → Issyk-Kul Lake",
+  "Skazka Canyon → Karakol": "Skazka Canyon → Karakol",
+  "Aufstieg zur Sirota-Hütte": "Ascent to Sirota Hut",
+  "Königsetappe: Ala-Köl Pass": "Queen stage: Ala-Köl Pass",
+  "Erholung & Rückfahrt": "Relaxation & return journey",
+Object.assign(translations.EN, {
   "Historische Kirchen & Dunganen-Moschee": "Historic churches & Dungan Mosque",
   "Hotel in Bischkek": "Hotel in Bishkek",
   "Lokales Hotel in Chon-Kemin": "Local hotel in Chon-Kemin",
@@ -783,6 +792,15 @@ Object.assign(translations.EN, {
   "Für die Reservierung ist eine Anzahlung von 100 € erforderlich.": "A €100 deposit is required to reserve your place.",
   "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
 });
+Object.assign(translations.IT, {
+  "Bischkek → Kyzart": "Bishkek → Kyzart",
+  "Trekking zum Song-Köl See": "Trekking al lago Song-Köl",
+  "Nomadenleben am Song-Köl": "Vita nomade sul Song-Köl",
+  "Abstieg → Issyk-Kul See": "Discesa → lago Issyk-Kul",
+  "Skazka Canyon → Karakol": "Canyon Skazka → Karakol",
+  "Aufstieg zur Sirota-Hütte": "Salita al rifugio Sirota",
+  "Königsetappe: Ala-Köl Pass": "Tappa regina: passo Ala-Köl",
+  "Erholung & Rückfahrt": "Relax e rientro",
 Object.assign(translations.IT, {
   "Historische Kirchen & Dunganen-Moschee": "Chiese storiche e Moschea Dungan",
   "Hotel in Bischkek": "Hotel a Bishkek",
