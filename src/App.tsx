@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Component, type ErrorInfo, type ReactNode, useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,6 +24,41 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 
 const queryClient = new QueryClient();
 
+class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("Kereztour app error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main className="flex min-h-screen items-center justify-center bg-background px-6">
+          <div className="max-w-md text-center">
+            <h1 className="font-display text-3xl text-foreground">Kereztour</h1>
+            <p className="mt-3 text-muted-foreground">
+              Die Seite konnte gerade nicht geladen werden.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="mt-6 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground"
+            >
+              Seite neu laden
+            </button>
+          </div>
+        </main>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -39,7 +74,7 @@ const ScrollToTop = () => {
 };
 
 const App = () => (
-  <LanguageProvider>
+  <AppErrorBoundary>\n  <LanguageProvider>
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
