@@ -74,7 +74,8 @@ const ScrollToTop = () => {
 };
 
 const App = () => (
-  <AppErrorBoundary>\n  <LanguageProvider>
+  <AppErrorBoundary>
+  <LanguageProvider>
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -104,6 +105,7 @@ const App = () => (
   </QueryClientProvider>
   </HelmetProvider>
   </LanguageProvider>
+  </AppErrorBoundary>
 );
 
 export default App;
