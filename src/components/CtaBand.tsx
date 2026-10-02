@@ -236,7 +236,7 @@ const CtaBand = () => {
                         focusNextField("inquiry-tour");
                       }
                     }}
-                    placeholder="max@beispiel.de"
+                    placeholder={t("Musterbeispiel E-Mail")}
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
                 </div>
