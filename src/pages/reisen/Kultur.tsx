@@ -330,7 +330,7 @@ const Kultur = () => {
                         {tiers.map((tier) => (
                           <Link
                             key={tier.name}
-                            to={isFull ? "#" : "/buchen?tour=kultur&tier=" + tier.name.toLowerCase() + "&date=" + item.date}
+                            to={isFull ? "#" : "/buchen?tour=kultur&tier=" + (tier.name === "VIP" ? "comfort" : "economy") + "&date=" + item.date}
                             aria-disabled={isFull}
                             className={"inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors " + (isFull ? "pointer-events-none opacity-50" : "hover:border-primary hover:text-primary")}
                           >
