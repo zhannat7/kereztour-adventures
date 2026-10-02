@@ -952,7 +952,7 @@ const Buchen = () => {
                     type="email"
                     {...register("email")}
                     onKeyDown={(event) => handleFieldEnter(event, "phone")}
-                    placeholder={t("name@beispiel.de")}
+                    placeholder={t("Musterbeispiel E-Mail")}
                   />
 
                   {errors.email && (
@@ -972,7 +972,7 @@ const Buchen = () => {
                     type="tel"
                     {...register("phone")}
                     onKeyDown={(event) => handleFieldEnter(event, "notes")}
-                    placeholder={t("+49 123 456789")}
+                    placeholder={t("Musterbeispiel Telefonnummer")}
                   />
 
                   {errors.phone && (
