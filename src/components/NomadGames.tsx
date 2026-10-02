@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -9,7 +9,6 @@ const SAVE_INTERVAL_MS = 5000;
 type YouTubePlayer = {
   getCurrentTime: () => number;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
-  destroy: () => void;
 };
 
 type YouTubePlayerEvent = {
@@ -17,8 +16,6 @@ type YouTubePlayerEvent = {
 };
 
 type YouTubePlayerOptions = {
-  videoId: string;
-  playerVars?: Record<string, string | number>;
   events?: {
     onReady?: (event: YouTubePlayerEvent) => void;
     onStateChange?: (event: { data: number; target: YouTubePlayer }) => void;
@@ -109,39 +106,15 @@ const savePosition = (player: YouTubePlayer | null) => {
       window.localStorage.setItem(RESUME_STORAGE_KEY, String(Math.floor(position)));
     }
   } catch {
-    // The YouTube iframe may be temporarily unavailable while buffering/reloading.
+    // The YouTube iframe can be temporarily unavailable while buffering/reloading.
   }
 };
 
-class NomadGamesErrorBoundary extends Component<
-  { children: ReactNode },
-  { hasError: boolean }
-> {
-  state = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("Nomad Games video component error:", error, info);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return null;
-    }
-
-    return this.props.children;
-  }
-}
-
-const NomadGamesContent = () => {
+const NomadGames = () => {
   const ref = useScrollReveal();
-  const playerContainerRef = useRef<HTMLDivElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const saveTimerRef = useRef<number | null>(null);
-  const recoveryAttemptsRef = useRef(0);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -161,21 +134,13 @@ const NomadGamesContent = () => {
       }, SAVE_INTERVAL_MS);
     };
 
-    const createPlayer = async () => {
+    const connectApiToExistingIframe = async () => {
       try {
         await loadYouTubeApi();
 
-        if (cancelled || !playerContainerRef.current || !window.YT?.Player) return;
+        if (cancelled || !iframeRef.current || !window.YT?.Player) return;
 
-        const player = new window.YT.Player(playerContainerRef.current, {
-          videoId: VIDEO_ID,
-          playerVars: {
-            rel: 0,
-            playsinline: 1,
-            start: 0,
-            enablejsapi: 1,
-            origin: window.location.origin,
-          },
+        const player = new window.YT.Player(iframeRef.current, {
           events: {
             onReady: ({ target }) => {
               const savedPosition = getSavedPosition();
@@ -185,7 +150,7 @@ const NomadGamesContent = () => {
                   target.seekTo(savedPosition, true);
                 }
               } catch {
-                // Ignore a transient seek failure; playback can continue normally.
+                // Resume is best-effort; the native YouTube player remains available.
               }
 
               playerRef.current = target;
@@ -223,35 +188,21 @@ const NomadGamesContent = () => {
             onError: ({ data, target }) => {
               savePosition(target);
               stopSaving();
-
               console.error("Nomad Games YouTube player error:", data);
-
-              if (cancelled || recoveryAttemptsRef.current >= 2) return;
-
-              recoveryAttemptsRef.current += 1;
-              window.setTimeout(() => {
-                if (cancelled || !playerContainerRef.current) return;
-
-                try {
-                  target.destroy();
-                } catch {
-                  // Ignore cleanup errors from an already failed iframe.
-                }
-
-                playerRef.current = null;
-                void createPlayer();
-              }, 1500);
+              // Important: do not destroy or replace the iframe.
+              // The native YouTube player remains visible and the homepage stays intact.
             },
           },
         });
 
         playerRef.current = player;
       } catch (error) {
-        console.error("Nomad Games YouTube initialization error:", error);
+        console.error("Nomad Games API enhancement unavailable:", error);
+        // The already-rendered native iframe continues working without the API.
       }
     };
 
-    void createPlayer();
+    void connectApiToExistingIframe();
 
     const saveBeforePageHide = () => savePosition(playerRef.current);
     window.addEventListener("pagehide", saveBeforePageHide);
@@ -261,15 +212,6 @@ const NomadGamesContent = () => {
       window.removeEventListener("pagehide", saveBeforePageHide);
       stopSaving();
       savePosition(playerRef.current);
-
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch {
-          // Ignore cleanup errors when the iframe is already gone.
-        }
-      }
-
       playerRef.current = null;
     };
   }, []);
@@ -286,10 +228,15 @@ const NomadGamesContent = () => {
 
         <div className="mx-auto mt-10 max-w-[900px] overflow-hidden border border-border shadow-lift">
           <div className="relative w-full aspect-video">
-            <div
-              ref={playerContainerRef}
+            <iframe
+              ref={iframeRef}
               className="absolute inset-0 h-full w-full"
-              aria-label="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
+              src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&start=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+              title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
+              loading="eager"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
             />
           </div>
         </div>
@@ -301,11 +248,5 @@ const NomadGamesContent = () => {
     </section>
   );
 };
-
-const NomadGames = () => (
-  <NomadGamesErrorBoundary>
-    <NomadGamesContent />
-  </NomadGamesErrorBoundary>
-);
 
 export default NomadGames;
