@@ -31,7 +31,6 @@ const OWNER_EMAIL = "kereztour@hotmail.com";
 const TOUR_OPTIONS = [
   "Kultur Tour",
   "Intensiv-Trekking",
-  "Kyrchyn Tour",
 ] as const;
 
 const inquirySchema = (t: (text: string) => string) => z.object({
