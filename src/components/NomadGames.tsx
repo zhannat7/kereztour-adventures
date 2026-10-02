@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { Component, type ErrorInfo, type ReactNode, useEffect, useRef } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -22,6 +22,7 @@ type YouTubePlayerOptions = {
   events?: {
     onReady?: (event: YouTubePlayerEvent) => void;
     onStateChange?: (event: { data: number; target: YouTubePlayer }) => void;
+    onError?: (event: { data: number; target: YouTubePlayer }) => void;
   };
 };
 
@@ -51,10 +52,15 @@ const loadYouTubeApi = (): Promise<void> => {
   if (window.YT?.Player) return Promise.resolve();
   if (youtubeApiPromise) return youtubeApiPromise;
 
-  youtubeApiPromise = new Promise((resolve) => {
+  youtubeApiPromise = new Promise((resolve, reject) => {
     const previousReady = window.onYouTubeIframeAPIReady;
+    const timeoutId = window.setTimeout(() => {
+      youtubeApiPromise = null;
+      reject(new Error("YouTube IFrame API timeout"));
+    }, 15000);
 
     window.onYouTubeIframeAPIReady = () => {
+      window.clearTimeout(timeoutId);
       previousReady?.();
       resolve();
     };
@@ -63,11 +69,22 @@ const loadYouTubeApi = (): Promise<void> => {
       'script[src="https://www.youtube.com/iframe_api"]',
     );
 
-    if (existingScript) return;
+    if (existingScript) {
+      if (window.YT?.Player) {
+        window.clearTimeout(timeoutId);
+        resolve();
+      }
+      return;
+    }
 
     const script = document.createElement("script");
     script.src = "https://www.youtube.com/iframe_api";
     script.async = true;
+    script.onerror = () => {
+      window.clearTimeout(timeoutId);
+      youtubeApiPromise = null;
+      reject(new Error("YouTube IFrame API failed to load"));
+    };
     document.head.appendChild(script);
   });
 
@@ -75,22 +92,56 @@ const loadYouTubeApi = (): Promise<void> => {
 };
 
 const getSavedPosition = (): number => {
-  const saved = Number(window.localStorage.getItem(RESUME_STORAGE_KEY) ?? 0);
-  return Number.isFinite(saved) && saved > 5 ? saved : 0;
-};
-
-const savePosition = (player: YouTubePlayer) => {
-  const position = player.getCurrentTime();
-  if (Number.isFinite(position) && position > 0) {
-    window.localStorage.setItem(RESUME_STORAGE_KEY, String(Math.floor(position)));
+  try {
+    const saved = Number(window.localStorage.getItem(RESUME_STORAGE_KEY) ?? 0);
+    return Number.isFinite(saved) && saved > 5 ? saved : 0;
+  } catch {
+    return 0;
   }
 };
 
-const NomadGames = () => {
+const savePosition = (player: YouTubePlayer | null) => {
+  if (!player) return;
+
+  try {
+    const position = player.getCurrentTime();
+    if (Number.isFinite(position) && position > 0) {
+      window.localStorage.setItem(RESUME_STORAGE_KEY, String(Math.floor(position)));
+    }
+  } catch {
+    // The YouTube iframe may be temporarily unavailable while buffering/reloading.
+  }
+};
+
+class NomadGamesErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("Nomad Games video component error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null;
+    }
+
+    return this.props.children;
+  }
+}
+
+const NomadGamesContent = () => {
   const ref = useScrollReveal();
   const playerContainerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const saveTimerRef = useRef<number | null>(null);
+  const recoveryAttemptsRef = useRef(0);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -111,66 +162,115 @@ const NomadGames = () => {
     };
 
     const createPlayer = async () => {
-      await loadYouTubeApi();
+      try {
+        await loadYouTubeApi();
 
-      if (cancelled || !playerContainerRef.current || !window.YT?.Player) return;
+        if (cancelled || !playerContainerRef.current || !window.YT?.Player) return;
 
-      const player = new window.YT.Player(playerContainerRef.current, {
-        videoId: VIDEO_ID,
-        playerVars: {
-          rel: 0,
-          playsinline: 1,
-          start: 0,
-          origin: window.location.origin,
-        },
-        events: {
-          onReady: ({ target }) => {
-            const savedPosition = getSavedPosition();
-
-            if (savedPosition > 0) {
-              target.seekTo(savedPosition, true);
-            }
-
-            playerRef.current = target;
+        const player = new window.YT.Player(playerContainerRef.current, {
+          videoId: VIDEO_ID,
+          playerVars: {
+            rel: 0,
+            playsinline: 1,
+            start: 0,
+            enablejsapi: 1,
+            origin: window.location.origin,
           },
-          onStateChange: ({ data, target }) => {
-            if (!window.YT) return;
+          events: {
+            onReady: ({ target }) => {
+              const savedPosition = getSavedPosition();
 
-            if (data === window.YT.PlayerState.PLAYING) {
+              try {
+                if (savedPosition > 0) {
+                  target.seekTo(savedPosition, true);
+                }
+              } catch {
+                // Ignore a transient seek failure; playback can continue normally.
+              }
+
               playerRef.current = target;
-              startSaving(target);
-            }
+            },
+            onStateChange: ({ data, target }) => {
+              try {
+                if (!window.YT) return;
 
-            if (data === window.YT.PlayerState.PAUSED) {
+                if (data === window.YT.PlayerState.PLAYING) {
+                  playerRef.current = target;
+                  startSaving(target);
+                }
+
+                if (data === window.YT.PlayerState.PAUSED) {
+                  savePosition(target);
+                  stopSaving();
+                }
+
+                if (data === window.YT.PlayerState.BUFFERING) {
+                  savePosition(target);
+                }
+
+                if (data === window.YT.PlayerState.ENDED) {
+                  stopSaving();
+                  try {
+                    window.localStorage.removeItem(RESUME_STORAGE_KEY);
+                  } catch {
+                    // Ignore storage restrictions.
+                  }
+                }
+              } catch (error) {
+                console.error("Nomad Games player state error:", error);
+              }
+            },
+            onError: ({ data, target }) => {
               savePosition(target);
               stopSaving();
-            }
 
-            if (data === window.YT.PlayerState.BUFFERING) {
-              savePosition(target);
-            }
+              console.error("Nomad Games YouTube player error:", data);
 
-            if (data === window.YT.PlayerState.ENDED) {
-              stopSaving();
-              window.localStorage.removeItem(RESUME_STORAGE_KEY);
-            }
+              if (cancelled || recoveryAttemptsRef.current >= 2) return;
+
+              recoveryAttemptsRef.current += 1;
+              window.setTimeout(() => {
+                if (cancelled || !playerContainerRef.current) return;
+
+                try {
+                  target.destroy();
+                } catch {
+                  // Ignore cleanup errors from an already failed iframe.
+                }
+
+                playerRef.current = null;
+                void createPlayer();
+              }, 1500);
+            },
           },
-        },
-      });
+        });
 
-      playerRef.current = player;
+        playerRef.current = player;
+      } catch (error) {
+        console.error("Nomad Games YouTube initialization error:", error);
+      }
     };
 
     void createPlayer();
 
+    const saveBeforePageHide = () => savePosition(playerRef.current);
+    window.addEventListener("pagehide", saveBeforePageHide);
+
     return () => {
       cancelled = true;
-      if (playerRef.current) {
-        savePosition(playerRef.current);
-        playerRef.current.destroy();
-      }
-      playerRef.current = null;
+      window.removeEventListener("pagehide", saveBeforePageHide);
       stopSaving();
+      savePosition(playerRef.current);
+
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // Ignore cleanup errors when the iframe is already gone.
+        }
+      }
+
+      playerRef.current = null;
     };
   }, []);
 
@@ -201,5 +301,11 @@ const NomadGames = () => {
     </section>
   );
 };
+
+const NomadGames = () => (
+  <NomadGamesErrorBoundary>
+    <NomadGamesContent />
+  </NomadGamesErrorBoundary>
+);
 
 export default NomadGames;
