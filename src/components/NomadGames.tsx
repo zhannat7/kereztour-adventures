@@ -19,9 +19,9 @@ const NomadGames = () => {
           <div className="relative w-full aspect-video">
             <iframe
               className="absolute inset-0 h-full w-full"
-              src="https://www.youtube-nocookie.com/embed/YBRknUnMIE0?rel=0"
+              src="https://www.youtube-nocookie.com/embed/YBRknUnMIE0?rel=0&start=0&playsinline=1"
               title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
-              loading="lazy"
+              loading="eager"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
