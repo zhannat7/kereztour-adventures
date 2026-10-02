@@ -9,6 +9,7 @@ const SAVE_INTERVAL_MS = 5000;
 type YouTubePlayer = {
   getCurrentTime: () => number;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+  playVideo: () => void;
 };
 
 type YouTubePlayerEvent = {
@@ -152,8 +153,10 @@ const NomadGames = () => {
                 if (savedPosition > 0) {
                   target.seekTo(savedPosition, true);
                 }
+                // The customer has just clicked the video, so start playback immediately.
+                target.playVideo();
               } catch {
-                // Resume is best-effort; the native YouTube player remains available.
+                // Resume/autoplay is best-effort; the native YouTube controls remain available.
               }
 
               playerRef.current = target;
@@ -255,7 +258,7 @@ const NomadGames = () => {
               <iframe
                 ref={iframeRef}
                 className="absolute inset-0 h-full w-full"
-                src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&start=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+                src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&autoplay=1&start=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
                 title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
                 loading="eager"
                 referrerPolicy="strict-origin-when-cross-origin"
