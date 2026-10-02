@@ -269,6 +269,8 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [textHistory, setTextHistory] = useState<Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>>>({});
   const [savingText, setSavingText] = useState<string | null>(null);
   const [previewKey, setPreviewKey] = useState(0);
+  const [textLoading, setTextLoading] = useState(false);
+  const [textLoadError, setTextLoadError] = useState<string | null>(null);
 
   const load = async () => {
     const [b, m, d, e] = await Promise.all([
@@ -290,6 +292,9 @@ const Dashboard = ({ session }: { session: Session }) => {
   useEffect(() => { load(); }, []);
 
   const loadTextOverrides = async () => {
+    setTextLoading(true);
+    setTextLoadError(null);
+
     const [{ data, error }, { data: historyData, error: historyError }] = await Promise.all([
       (supabase as any).from("site_content").select("content_key, language, value"),
       (supabase as any)
@@ -300,10 +305,15 @@ const Dashboard = ({ session }: { session: Session }) => {
     ]);
 
     if (error) {
-      toast.error("Texte konnten nicht geladen werden.");
+      console.error("Website-Texte konnten nicht geladen werden:", error);
+      setTextLoadError("Die Textdatenbank ist momentan nicht erreichbar. Die Sprachumschaltung und das Bearbeiten der Website-Texte werden erst angezeigt, sobald die Verbindung wieder funktioniert.");
+      setTextLoading(false);
       return;
     }
-    if (historyError) toast.error("Versionshistorie konnte nicht geladen werden.");
+    if (historyError) {
+      console.error("Versionshistorie konnte nicht geladen werden:", historyError);
+      setTextLoadError("Die Website-Texte sind verfügbar, aber die Versionshistorie konnte nicht geladen werden.");
+    }
 
     const values: Record<string, string> = {};
     const previousValues: Record<string, string> = {};
@@ -326,6 +336,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     setTextPreviousValues(previousValues);
     setTextHistory(history);
     setTextDirty({});
+    setTextLoading(false);
   };
 
   useEffect(() => {
@@ -647,15 +658,31 @@ const Dashboard = ({ session }: { session: Session }) => {
                     <strong className="text-foreground">So funktioniert es:</strong> Links siehst du den aktuell veröffentlichten Text. Rechts kannst du eine neue Version erstellen. Mit „Vorherigen Text übernehmen“ kannst du den bestehenden Text kopieren, nur einzelne Stellen ändern und anschließend speichern. Für diese Änderung ist kein Code-Deployment notwendig.
                   </div>
                 </div>
-                <div className="flex shrink-0 flex-wrap gap-1 rounded-md border border-border bg-background p-1">
-                  {(["DE", "EN", "IT"] as Language[]).map((code) => (
-                    <button key={code} type="button" onClick={() => setTextLanguage(code)}
-                      className={`rounded-sm px-4 py-2 text-sm font-medium transition-colors ${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-                      {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
-                    </button>
-                  ))}
-                </div>
+                {!textLoadError && (
+                  <div className="flex shrink-0 flex-wrap gap-1 rounded-md border border-border bg-background p-1">
+                    {(["DE", "EN", "IT"] as Language[]).map((code) => (
+                      <button key={code} type="button" onClick={() => setTextLanguage(code)} disabled={textLoading}
+                        className={`rounded-sm px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${textLanguage === code ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+                        {code === "DE" ? "Deutsch" : code === "EN" ? "English" : "Italiano"}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+              {textLoadError ? (
+                <div className="mt-5 rounded-md border border-destructive/30 bg-destructive/5 p-4">
+                  <p className="text-sm font-semibold text-foreground">Website-Texte momentan nicht verfügbar</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{textLoadError}</p>
+                  <button
+                    type="button"
+                    onClick={() => void loadTextOverrides()}
+                    disabled={textLoading}
+                    className="mt-3 rounded-sm border border-border bg-background px-3 py-2 text-xs font-medium hover:bg-muted disabled:opacity-50"
+                  >
+                    {textLoading ? "Wird geprüft…" : "Erneut versuchen"}
+                  </button>
+                </div>
+              ) : (
               <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                 <div className="relative flex-1">
                   <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -669,6 +696,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   }).length} Texte
                 </div>
               </div>
+              )}
             </div>
 
             <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
