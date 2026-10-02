@@ -749,6 +749,7 @@ Object.assign(translations.EN, {
   "6–8 Personen": "6–8 people",
   "Deutschland": "Germany",
   "Österreich": "Austria",
+});
 Object.assign(translations.EN, {
   "Bischkek → Kyzart": "Bishkek → Kyzart",
   "Trekking zum Song-Köl See": "Trekking to Song-Köl Lake",
@@ -758,6 +759,7 @@ Object.assign(translations.EN, {
   "Aufstieg zur Sirota-Hütte": "Ascent to Sirota Hut",
   "Königsetappe: Ala-Köl Pass": "Queen stage: Ala-Köl Pass",
   "Erholung & Rückfahrt": "Relaxation & return journey",
+});
 Object.assign(translations.EN, {
   "Historische Kirchen & Dunganen-Moschee": "Historic churches & Dungan Mosque",
   "Hotel in Bischkek": "Hotel in Bishkek",
@@ -800,6 +802,7 @@ Object.assign(translations.IT, {
   "6–8 Personen": "6–8 persone",
   "Deutschland": "Germania",
   "Österreich": "Austria",
+});
 Object.assign(translations.IT, {
   "Bischkek → Kyzart": "Bishkek → Kyzart",
   "Trekking zum Song-Köl See": "Trekking al lago Song-Köl",
@@ -809,6 +812,7 @@ Object.assign(translations.IT, {
   "Aufstieg zur Sirota-Hütte": "Salita al rifugio Sirota",
   "Königsetappe: Ala-Köl Pass": "Tappa regina: passo Ala-Köl",
   "Erholung & Rückfahrt": "Relax e rientro",
+});
 Object.assign(translations.IT, {
   "Historische Kirchen & Dunganen-Moschee": "Chiese storiche e Moschea Dungan",
   "Hotel in Bischkek": "Hotel a Bishkek",
