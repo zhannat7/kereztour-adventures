@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -115,9 +115,12 @@ const NomadGames = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const saveTimerRef = useRef<number | null>(null);
+  const [videoStarted, setVideoStarted] = useState(false);
   const { t } = useLanguage();
 
   useEffect(() => {
+    if (!videoStarted) return;
+
     let cancelled = false;
 
     const stopSaving = () => {
@@ -189,8 +192,7 @@ const NomadGames = () => {
               savePosition(target);
               stopSaving();
               console.error("Nomad Games YouTube player error:", data);
-              // Important: do not destroy or replace the iframe.
-              // The native YouTube player remains visible and the homepage stays intact.
+              // Never replace or destroy the iframe because of a player error.
             },
           },
         });
@@ -198,7 +200,7 @@ const NomadGames = () => {
         playerRef.current = player;
       } catch (error) {
         console.error("Nomad Games API enhancement unavailable:", error);
-        // The already-rendered native iframe continues working without the API.
+        // The native YouTube player remains usable even if the API enhancement fails.
       }
     };
 
@@ -214,7 +216,11 @@ const NomadGames = () => {
       savePosition(playerRef.current);
       playerRef.current = null;
     };
-  }, []);
+  }, [videoStarted]);
+
+  const handleStartVideo = () => {
+    setVideoStarted(true);
+  };
 
   return (
     <section className="bg-background py-14 md:py-20">
@@ -227,17 +233,36 @@ const NomadGames = () => {
         </div>
 
         <div className="mx-auto mt-10 max-w-[900px] overflow-hidden border border-border shadow-lift">
-          <div className="relative w-full aspect-video">
-            <iframe
-              ref={iframeRef}
-              className="absolute inset-0 h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&start=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
-              title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
-              loading="eager"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+          <div className="relative w-full aspect-video bg-black">
+            {!videoStarted ? (
+              <button
+                type="button"
+                onClick={handleStartVideo}
+                className="group absolute inset-0 flex items-center justify-center"
+                aria-label={t("Video starten")}
+              >
+                <img
+                  src={`https://i.ytimg.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+                  alt={t("Welt der Nomaden 2026 – Kirgisistan in Bewegung")}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <span className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lift transition-transform duration-200 group-hover:scale-105">
+                  <span className="ml-1 text-3xl">▶</span>
+                </span>
+              </button>
+            ) : (
+              <iframe
+                ref={iframeRef}
+                className="absolute inset-0 h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&start=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+                title="Welt der Nomaden 2026 – Kirgisistan in Bewegung"
+                loading="eager"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            )}
           </div>
         </div>
 
