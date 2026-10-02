@@ -381,6 +381,31 @@ const Kultur = () => {
                     </div>
                   </div>
 
+                  <div className="mb-7 rounded-sm border border-border bg-sand/30 p-5">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {t("Im Preis inklusive")}
+                    </p>
+                    <ul className="space-y-2 text-[13px] leading-5 text-foreground">
+                      <li>• {t("Unterkunft: Doppelzimmer-Belegung in gemütlichen 3-Sterne-Hotels sowie traditionelle Jurten mit WC und Dusche.")}</li>
+                      <li>• {t("Transfer: Alle Fahrten entlang der Route im komfortablen Fahrzeug.")}</li>
+                      <li>• {t("Reiseleitung: Begleitung durch einen erfahrenen, professionellen Guide während der gesamten Reise.")}</li>
+                      <li>• {t("Verpflegung: 3-mal tägliche Vollpension.")}</li>
+                      <li>• {t("Traditionelles Abendessen oder Mittagessen bei einer kirgisischen Familie.")}</li>
+                      <li>• {t("Stimmungsvolles Picknick in der Natur.")}</li>
+                      <li>• {t("Getränke: 1 Bier pro Person ist inklusive.")}</li>
+                      <li>• {t("Aktivitäten: Alle im Programm beschriebenen Exkursionen, Eintrittsgelder und Freizeitaktivitäten.")}</li>
+                    </ul>
+                    <div className="mt-5 border-t border-border pt-4">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                        {t("Reservierung & Stornierung")}
+                      </p>
+                      <div className="space-y-2 text-[13px] leading-5 text-foreground">
+                        <p>{t("Für die Reservierung ist eine Anzahlung von 100 € erforderlich.")}</p>
+                        <p>{t("Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.")}</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="mb-7 rounded-sm bg-sand/40 p-5">
                     {tier.name === "VIP" ? (
                       <div className="grid grid-cols-2 divide-x divide-border">
@@ -435,33 +460,6 @@ const Kultur = () => {
             </div>
           </div>
 
-          <div className="mb-12 grid grid-cols-1 items-stretch gap-5 md:grid-cols-2">
-            <div className="border border-border bg-card p-5 md:p-6">
-              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
-                {t("Im Preis inklusive")}
-              </h2>
-              <ul className="space-y-2.5 text-[13px] leading-5 text-foreground">
-                <li>{t("Unterkunft: Doppelzimmer-Belegung in gemütlichen 3-Sterne-Hotels sowie traditionelle Jurten mit WC und Dusche.")}</li>
-                <li>{t("Transfer: Alle Fahrten entlang der Route im komfortablen Fahrzeug.")}</li>
-                <li>{t("Reiseleitung: Begleitung durch einen erfahrenen, professionellen Guide während der gesamten Reise.")}</li>
-                <li>{t("Verpflegung: 3-mal tägliche Vollpension.")}</li>
-                <li>{t("Traditionelles Abendessen oder Mittagessen bei einer kirgisischen Familie.")}</li>
-                <li>{t("Stimmungsvolles Picknick in der Natur.")}</li>
-                <li>{t("Getränke: 1 Bier pro Person ist inklusive.")}</li>
-                <li>{t("Aktivitäten: Alle im Programm beschriebenen Exkursionen, Eintrittsgelder und Freizeitaktivitäten.")}</li>
-              </ul>
-            </div>
-
-            <div className="border border-border bg-sand/50 p-5 md:p-6">
-              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
-                {t("Reservierung & Stornierung")}
-              </h2>
-              <div className="space-y-3 text-[13px] leading-5 text-foreground">
-                <p>{t("Für die Reservierung ist eine Anzahlung von 100 € erforderlich.")}</p>
-                <p>{t("Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.")}</p>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
       <Footer />
