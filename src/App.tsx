@@ -39,17 +39,17 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: bo
     if (this.state.hasError) {
       return (
         <main className="flex min-h-screen items-center justify-center bg-background px-6">
-          <div className="max-w-md text-center">
+          <div className="max-w-lg rounded-sm border border-border bg-card p-8 text-center shadow-lift">
             <h1 className="font-display text-3xl text-foreground">Kereztour</h1>
             <p className="mt-3 text-muted-foreground">
-              Die Seite konnte gerade nicht geladen werden.
+              Die Website konnte gerade nicht vollständig geladen werden.
             </p>
             <button
               type="button"
               onClick={() => window.location.reload()}
               className="mt-6 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground"
             >
-              Seite neu laden
+              Website neu laden
             </button>
           </div>
         </main>
@@ -75,36 +75,36 @@ const ScrollToTop = () => {
 
 const App = () => (
   <AppErrorBoundary>
-  <LanguageProvider>
-  <HelmetProvider>
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+    <LanguageProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
 
-      <BrowserRouter>
-        <ScrollToTop />
-        <RouteSeo />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/buchen" element={<Buchen />} />
-          <Route path="/zahlung" element={<Zahlung />} />
-          <Route path="/registrierung" element={<Certificate />} />
-          <Route path="/impressum" element={<Impressum />} />
-          <Route path="/datenschutz" element={<Datenschutz />} />
-          <Route path="/admin" element={<Admin />} />
+            <BrowserRouter>
+              <ScrollToTop />
+              <RouteSeo />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/buchen" element={<Buchen />} />
+                <Route path="/zahlung" element={<Zahlung />} />
+                <Route path="/registrierung" element={<Certificate />} />
+                <Route path="/impressum" element={<Impressum />} />
+                <Route path="/datenschutz" element={<Datenschutz />} />
+                <Route path="/admin" element={<Admin />} />
 
-          <Route path="/reisen/nomaden" element={<Nomaden />} />
-          <Route path="/reisen/kultur" element={<Kultur />} />
-          <Route path="/reisen/trekking" element={<Trekking />} />
+                <Route path="/reisen/nomaden" element={<Nomaden />} />
+                <Route path="/reisen/kultur" element={<Kultur />} />
+                <Route path="/reisen/trekking" element={<Trekking />} />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-  </HelmetProvider>
-  </LanguageProvider>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </LanguageProvider>
   </AppErrorBoundary>
 );
 
