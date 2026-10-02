@@ -254,9 +254,9 @@ const CtaBand = () => {
                       <SelectValue placeholder={t("Bitte wählen")} />
                     </SelectTrigger>
                     <SelectContent>
-                      {TOUR_OPTIONS.map((t) => (
-                        <SelectItem key={t} value={t}>
-                          {t}
+                      {TOUR_OPTIONS.map((tourOption) => (
+                        <SelectItem key={tourOption} value={tourOption}>
+                          {t(tourOption)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -341,7 +341,7 @@ const CtaBand = () => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Wird gesendet...
+                      {t("Wird gesendet...")}
                     </>
                   ) : (
                     t("Anfrage senden")
