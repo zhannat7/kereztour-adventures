@@ -45,11 +45,15 @@ declare global {
   }
 }
 
+let youtubeApiPromise: Promise<void> | null = null;
+
 const loadYouTubeApi = (): Promise<void> => {
   if (window.YT?.Player) return Promise.resolve();
+  if (youtubeApiPromise) return youtubeApiPromise;
 
-  return new Promise((resolve) => {
+  youtubeApiPromise = new Promise((resolve) => {
     const previousReady = window.onYouTubeIframeAPIReady;
+
     window.onYouTubeIframeAPIReady = () => {
       previousReady?.();
       resolve();
@@ -66,6 +70,8 @@ const loadYouTubeApi = (): Promise<void> => {
     script.async = true;
     document.head.appendChild(script);
   });
+
+  return youtubeApiPromise;
 };
 
 const getSavedPosition = (): number => {
