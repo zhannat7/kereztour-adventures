@@ -51,12 +51,6 @@ const Tours = () => {
               {t("Zwei Wege, ")}<span className="italic text-primary">{t("Kirgisistan zu entdecken")}</span>
             </h2>
           </div>
-          <Link
-            to="/buchen"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors"
-          >
-            {t("Reise auswählen")} <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
 
         <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
