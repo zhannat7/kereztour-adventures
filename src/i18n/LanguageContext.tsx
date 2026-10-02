@@ -882,13 +882,21 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = window.localStorage.getItem("kereztour-language");
-    return saved === "EN" || saved === "IT" ? saved : "DE";
+    try {
+      const saved = window.localStorage.getItem("kereztour-language");
+      return saved === "EN" || saved === "IT" ? saved : "DE";
+    } catch {
+      return "DE";
+    }
   });
 
   const setLanguage = (next: Language) => {
     setLanguageState(next);
-    window.localStorage.setItem("kereztour-language", next);
+    try {
+      window.localStorage.setItem("kereztour-language", next);
+    } catch {
+      // Continue even when browser storage is unavailable.
+    }
     document.documentElement.lang = next.toLowerCase();
   };
 
