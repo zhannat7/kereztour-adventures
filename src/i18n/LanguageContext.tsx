@@ -746,6 +746,15 @@ const translations: Record<Language, Record<string, string>> = {
 
 /* Culture Tour package and detail translations added for the current tour presentation. */
 Object.assign(translations.EN, {
+  "Historische Kirchen & Dunganen-Moschee": "Historic churches & Dungan Mosque",
+  "Hotel in Bischkek": "Hotel in Bishkek",
+  "Lokales Hotel in Chon-Kemin": "Local hotel in Chon-Kemin",
+  "Traditionelles Jurten-Hotel": "Traditional yurt hotel",
+  "Unterkunft in Dscheti-Oguz": "Accommodation in Jeti-Oguz",
+  "Hotel in Karakol": "Hotel in Karakol",
+  "Unterkunft in Altyn-Arashan": "Accommodation in Altyn-Arashan",
+  "Hotel in Tscholpon-Ata": "Hotel in Cholpon-Ata",
+  "Hotel an der Nordküste": "Hotel on the northern shore",
   "Standard": "Standard",
   "VIP": "VIP",
   "Kleingruppe mit 6 bis 8 Personen": "Small group with 6 to 8 people",
@@ -775,6 +784,15 @@ Object.assign(translations.EN, {
   "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
 });
 Object.assign(translations.IT, {
+  "Historische Kirchen & Dunganen-Moschee": "Chiese storiche e Moschea Dungan",
+  "Hotel in Bischkek": "Hotel a Bishkek",
+  "Lokales Hotel in Chon-Kemin": "Hotel locale a Chon-Kemin",
+  "Traditionelles Jurten-Hotel": "Hotel tradizionale in yurta",
+  "Unterkunft in Dscheti-Oguz": "Alloggio a Jeti-Oguz",
+  "Hotel in Karakol": "Hotel a Karakol",
+  "Unterkunft in Altyn-Arashan": "Alloggio ad Altyn-Arashan",
+  "Hotel in Tscholpon-Ata": "Hotel a Cholpon-Ata",
+  "Hotel an der Nordküste": "Hotel sulla costa settentrionale",
   "Standard": "Standard",
   "VIP": "VIP",
   "Kleingruppe mit 6 bis 8 Personen": "Piccolo gruppo da 6 a 8 persone",
