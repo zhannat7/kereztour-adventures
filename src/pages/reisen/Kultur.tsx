@@ -280,7 +280,7 @@ const Kultur = () => {
                       </div>
                     </div>
                     <div className="min-w-0 flex-1 pb-2">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">Tag {d.day}</p>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-secondary mb-1">{t("Tag")} {d.day}</p>
                       <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{t(d.title)}</h3>
                       <div className="flex flex-col gap-3 mb-5">
                         <p className="text-base text-muted-foreground leading-relaxed">{t(d.desc)}</p>
