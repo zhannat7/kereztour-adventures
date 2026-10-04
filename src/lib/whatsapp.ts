@@ -3,7 +3,7 @@ export const WHATSAPP_NUMBER = "393474867408";
 const WHATSAPP_PREFILL_KEY = "kereztour-whatsapp-prefill-used";
 
 export const whatsappUrl = (message?: string) => {
-  const baseUrl = `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}`;
+  const baseUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   if (!message) return baseUrl;
 
@@ -18,24 +18,29 @@ export const whatsappUrl = (message?: string) => {
     // Continue with the prefilled link if browser storage is unavailable.
   }
 
-  return `${baseUrl}&text=${encodeURIComponent(message)}`;
+  return `${baseUrl}?text=${encodeURIComponent(message)}`;
 };
 
 /**
- * Opens WhatsApp in a separate browser tab.
- * Using web.whatsapp.com directly avoids the api.whatsapp.com redirect
- * that can be blocked by embedded site previews.
+ * Open WhatsApp in a genuine top-level browser tab.
+ * Creating the blank tab first prevents Lovable/preview iframes from
+ * trying to render WhatsApp inside the embedded preview frame.
  */
 export const openWhatsApp = (e: React.MouseEvent, message?: string) => {
   e.preventDefault();
   const url = whatsappUrl(message);
-  const win = window.open(url, "_blank", "noopener,noreferrer");
+  const win = window.open("", "_blank");
 
-  if (!win) {
-    try {
-      (window.top ?? window).location.href = url;
-    } catch {
-      window.location.href = url;
-    }
+  if (win) {
+    win.opener = null;
+    win.location.href = url;
+    return;
+  }
+
+  // If the browser blocks a new tab, fall back to a top-level navigation.
+  try {
+    (window.top ?? window).location.href = url;
+  } catch {
+    window.location.href = url;
   }
 };
