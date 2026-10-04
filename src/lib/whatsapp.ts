@@ -11,12 +11,12 @@ export const whatsappUrl = (message?: string) =>
 export const openWhatsApp = (e: React.MouseEvent, message?: string) => {
   e.preventDefault();
   const url = whatsappUrl(message);
-  const win = window.open(url, "_blank", "noopener,noreferrer");
-  if (!win) {
-    try {
-      (window.top ?? window).location.href = url;
-    } catch {
-      window.location.href = url;
-    }
+  // Note: "noopener" makes window.open return null, so we clear opener manually.
+  const win = window.open(url, "_blank");
+  if (win) {
+    try { win.opener = null; } catch { /* ignore */ }
+    return;
   }
+  // Popup blocked: never navigate inside an embedded frame (WhatsApp refuses framing).
+  if (window.self === window.top) window.location.href = url;
 };
