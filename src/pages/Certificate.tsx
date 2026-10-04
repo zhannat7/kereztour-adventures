@@ -4,10 +4,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 
 const Certificate = () => {
   const { t } = useLanguage();
-  const certificateUrl =
-    typeof window !== "undefined"
-      ? `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(`${window.location.origin}/Certificate.pdf`)}`
-      : "/Certificate.pdf";
+  const certificateUrl = "/Certificate.pdf#toolbar=1&view=FitH";
 
   return (
   <main className="min-h-screen overflow-x-hidden bg-background">
