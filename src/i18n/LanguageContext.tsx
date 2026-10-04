@@ -769,6 +769,9 @@ const translations: Record<Language, Record<string, string>> = {
 
 /* Culture Tour package and detail translations added for the current tour presentation. */
 Object.assign(translations.EN, {
+  "Der Reisebeginn darf nicht in der Vergangenheit liegen.": "The trip start date cannot be in the past.",
+  "Das Reiseende darf nicht in der Vergangenheit liegen.": "The trip end date cannot be in the past.",
+  "Das Reiseende darf nicht vor dem Reisebeginn liegen.": "The trip end date cannot be before the trip start date.",
   "6–8 Personen": "6–8 people",
   "Deutschland": "Germany",
   "Österreich": "Austria",
@@ -822,6 +825,23 @@ Object.assign(translations.EN, {
   "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
 });
 Object.assign(translations.IT, {
+  "Der Reisebeginn darf nicht in der Vergangenheit liegen.": "La data di inizio del viaggio non può essere nel passato.",
+  "Das Reiseende darf nicht in der Vergangenheit liegen.": "La data di fine del viaggio non può essere nel passato.",
+  "Das Reiseende darf nicht vor dem Reisebeginn liegen.": "La data di fine del viaggio non può essere precedente alla data di inizio.",
+  "Bitte prüfe die markierten Felder.": "Controlla i campi evidenziati.",
+  "Das VIP-Paket ist für 2 oder 4 Personen buchbar.": "Il pacchetto VIP è disponibile per 2 o 4 persone.",
+  "Die Standardreise ist für 6 bis 8 Personen buchbar.": "Il viaggio Standard è disponibile per 6–8 persone.",
+  "Keine Verbindung zum Server. Bitte prüfe deine Internetverbindung und versuche es erneut.": "Nessuna connessione al server. Controlla la connessione Internet e riprova.",
+  "Die Buchungsdatenbank ist noch nicht auf dem neuesten Stand.": "Il database delle prenotazioni non è ancora aggiornato.",
+  "Die Buchungsdatenbank akzeptiert die aktuelle Buchungsoption noch nicht.": "Il database delle prenotazioni non accetta ancora l'opzione selezionata.",
+  "In der Buchungsdatenbank fehlt ein erforderliches Feld.": "Nel database delle prenotazioni manca un campo obbligatorio.",
+  "Ändern": "Modifica",
+  "ab 1.300 €": "da 1.300 €",
+  "Kleingruppe mit 6 bis 8 Personen. 3-Sterne-Hotels und komfortable Jurten mit WC/Dusche.": "Piccolo gruppo da 6 a 8 persone. Hotel 3 stelle e yurte confortevoli con bagno/doccia.",
+  "Private Jeep-Reise für 2 oder 4 Personen.": "Viaggio privato in jeep per 2 o 4 persone.",
+  "pro Person bei 2 / 4 Personen": "a persona per 2 / 4 persone",
+  "Bitte wähle zuerst eine Reise aus.": "Seleziona prima un viaggio.",
+  "Aktuell sind für diese Reise keine Reisetermine verfügbar.": "Al momento non sono disponibili date per questo viaggio.",
   "6–8 Personen": "6–8 persone",
   "Deutschland": "Germania",
   "Österreich": "Austria",
