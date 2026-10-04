@@ -4,6 +4,10 @@ import { useLanguage } from "@/i18n/LanguageContext";
 
 const Certificate = () => {
   const { t } = useLanguage();
+  const certificateUrl =
+    typeof window !== "undefined"
+      ? `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(`${window.location.origin}/Certificate.pdf`)}`
+      : "/Certificate.pdf";
 
   return (
   <main className="min-h-screen overflow-x-hidden bg-background">
@@ -67,7 +71,7 @@ const Certificate = () => {
 
         <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row">
           <a
-            href="/Certificate.pdf"
+            href={certificateUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
