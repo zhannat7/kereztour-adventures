@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight, MessageCircle, Mail, Loader2, Check } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
