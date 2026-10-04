@@ -769,6 +769,7 @@ const translations: Record<Language, Record<string, string>> = {
 
 /* Culture Tour package and detail translations added for the current tour presentation. */
 Object.assign(translations.EN, {
+  "Die PDF-Vorschau kann in diesem Browser nicht direkt angezeigt werden.": "The PDF preview cannot be displayed directly in this browser.",
   "Der Reisebeginn darf nicht in der Vergangenheit liegen.": "The trip start date cannot be in the past.",
   "Das Reiseende darf nicht in der Vergangenheit liegen.": "The trip end date cannot be in the past.",
   "Das Reiseende darf nicht vor dem Reisebeginn liegen.": "The trip end date cannot be before the trip start date.",
@@ -825,6 +826,7 @@ Object.assign(translations.EN, {
   "Kostenfreie Stornierung und volle Rückerstattung sind bis zu einem Monat vor dem Termin möglich.": "Free cancellation with a full refund is possible up to one month before the travel date.",
 });
 Object.assign(translations.IT, {
+  "Die PDF-Vorschau kann in diesem Browser nicht direkt angezeigt werden.": "L'anteprima PDF non può essere visualizzata direttamente in questo browser.",
   "Der Reisebeginn darf nicht in der Vergangenheit liegen.": "La data di inizio del viaggio non può essere nel passato.",
   "Das Reiseende darf nicht in der Vergangenheit liegen.": "La data di fine del viaggio non può essere nel passato.",
   "Das Reiseende darf nicht vor dem Reisebeginn liegen.": "La data di fine del viaggio non può essere precedente alla data di inizio.",
