@@ -1,6 +1,6 @@
 import { Mail, Phone, MessageCircle, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { openWhatsApp } from "@/lib/whatsapp";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const tourLinks = [
@@ -97,10 +97,16 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href={whatsappUrl(t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary">
+              <button
+                type="button"
+                onClick={(event) =>
+                  openWhatsApp(event, t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))
+                }
+                className="flex items-center gap-3 text-primary-foreground/80 transition-colors hover:text-secondary"
+              >
                 <MessageCircle className="h-4 w-4 shrink-0" /> WhatsApp
                 <ArrowUpRight className="h-3 w-3 opacity-50" />
-              </a>
+              </button>
             </li>
           </ul>
 
