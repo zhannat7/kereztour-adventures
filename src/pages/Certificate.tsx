@@ -92,43 +92,13 @@ const Certificate = () => {
             {t("Vorschau des Zertifikats")}
           </p>
 
-          <div className="md:hidden border border-border bg-muted/30 p-5">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {t("Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.")}
-            </p>
-            <a
-              href={certificateUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              {t("Zertifikat öffnen")}
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </div>
-
-          <div className="hidden overflow-hidden border border-border bg-muted/20 shadow-soft md:block">
-            <object
-              data="/Certificate.pdf"
-              type="application/pdf"
-              aria-label="Certificate of State Registration – Kereztour"
-              className="h-[80vh] min-h-[500px] w-full"
-            >
-              <div className="flex min-h-[500px] flex-col items-center justify-center gap-4 p-8 text-center">
-                <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-                  {t("Die PDF-Vorschau kann in diesem Browser nicht direkt angezeigt werden.")}
-                </p>
-                <a
-                  href="/Certificate.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  {t("Zertifikat öffnen")}
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              </div>
-            </object>
+          <div className="overflow-hidden border border-border bg-muted/20 shadow-soft">
+            <iframe
+              src={certificateUrl}
+              title="Certificate of State Registration – Kereztour"
+              className="h-[70vh] min-h-[520px] w-full bg-white sm:h-[80vh]"
+              loading="eager"
+            />
           </div>
         </div>
       </div>
