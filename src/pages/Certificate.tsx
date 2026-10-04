@@ -103,12 +103,28 @@ const Certificate = () => {
             </a>
           </div>
 
-          <div className="hidden overflow-hidden border border-border shadow-soft md:block">
-            <iframe
-              src="/Certificate.pdf#view=FitH"
-              title="Certificate of State Registration – Kereztour"
-              className="h-[80vh] min-h-[500px] w-full bg-muted"
-            />
+          <div className="hidden overflow-hidden border border-border bg-muted/20 shadow-soft md:block">
+            <object
+              data="/Certificate.pdf"
+              type="application/pdf"
+              aria-label="Certificate of State Registration – Kereztour"
+              className="h-[80vh] min-h-[500px] w-full"
+            >
+              <div className="flex min-h-[500px] flex-col items-center justify-center gap-4 p-8 text-center">
+                <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                  {t("Die PDF-Vorschau kann in diesem Browser nicht direkt angezeigt werden.")}
+                </p>
+                <a
+                  href="/Certificate.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+                >
+                  {t("Zertifikat öffnen")}
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </div>
+            </object>
           </div>
         </div>
       </div>
