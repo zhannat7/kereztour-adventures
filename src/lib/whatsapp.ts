@@ -1,7 +1,24 @@
 export const WHATSAPP_NUMBER = "393474867408";
 
-export const whatsappUrl = (message?: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+const WHATSAPP_PREFILL_KEY = "kereztour-whatsapp-prefill-used";
+
+export const whatsappUrl = (message?: string) => {
+  if (!message) return `https://wa.me/${WHATSAPP_NUMBER}`;
+
+  // WhatsApp keeps the existing draft when the chat is opened again.
+  // Re-sending the same ?text= parameter therefore appends the message
+  // instead of replacing it. Only prefill it once per browser.
+  try {
+    if (window.localStorage.getItem(WHATSAPP_PREFILL_KEY) === "1") {
+      return `https://wa.me/${WHATSAPP_NUMBER}`;
+    }
+    window.localStorage.setItem(WHATSAPP_PREFILL_KEY, "1");
+  } catch {
+    // If storage is unavailable, still provide the normal prefilled link.
+  }
+
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+};
 
 /**
  * Opens WhatsApp reliably. Inside embedded previews/iframes a plain
