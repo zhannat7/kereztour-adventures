@@ -207,6 +207,7 @@ const CtaBand = () => {
                 href={whatsappUrl(t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => openWhatsApp(e, t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-sm border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
               >
                 <MessageCircle className="h-4 w-4" /> {t("Direkt auf WhatsApp")}

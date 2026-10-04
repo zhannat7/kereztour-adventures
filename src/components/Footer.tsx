@@ -1,6 +1,6 @@
 import { Mail, Phone, MessageCircle, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { openWhatsApp, whatsappUrl } from "@/lib/whatsapp";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const tourLinks = [
