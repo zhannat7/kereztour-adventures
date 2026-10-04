@@ -67,15 +67,6 @@ const Certificate = () => {
         </dl>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row">
-          <a
-            href={certificateUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            {t("Originalzertifikat ansehen")}
-            <ExternalLink className="h-4 w-4" />
-          </a>
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
