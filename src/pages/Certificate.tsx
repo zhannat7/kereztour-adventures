@@ -89,13 +89,23 @@ const Certificate = () => {
             {t("Vorschau des Zertifikats")}
           </p>
 
-          <div className="overflow-hidden border border-border bg-muted/20 shadow-soft">
-            <iframe
-              src={certificateUrl}
-              title="Certificate of State Registration – Kereztour"
-              className="h-[70vh] min-h-[520px] w-full bg-white sm:h-[80vh]"
-              loading="eager"
-            />
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <a
+                key={n}
+                href="/Certificate.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block overflow-hidden border border-border bg-white shadow-soft"
+              >
+                <img
+                  src={`/certificate/page-${n}.jpg`}
+                  alt={`Certificate of State Registration – Kereztour, Seite ${n} von 5`}
+                  className="h-auto w-full"
+                  loading={n === 1 ? "eager" : "lazy"}
+                />
+              </a>
+            ))}
           </div>
         </div>
       </div>
