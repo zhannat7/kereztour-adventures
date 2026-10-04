@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight, MessageCircle, Mail, Loader2, Check } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { openWhatsApp } from "@/lib/whatsapp";
+import { whatsappUrl } from "@/lib/whatsapp";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -203,15 +203,14 @@ const CtaBand = () => {
               >
                 {t("Anfrage per Formular")} <ArrowRight className="h-4 w-4" />
               </button>
-              <button
-                type="button"
-                onClick={(event) =>
-                  openWhatsApp(event, t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))
-                }
+              <a
+                href={whatsappUrl(t("Hallo Kereztour, ich habe eine Frage zu euren Reisen."))}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-sm border border-primary-foreground/25 px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
               >
                 <MessageCircle className="h-4 w-4" /> {t("Direkt auf WhatsApp")}
-              </button>
+              </a>
 
               <a
                 href={`mailto:${OWNER_EMAIL}`}
