@@ -33,7 +33,16 @@ const TOUR_OPTIONS = [
   "Intensiv-Trekking",
 ] as const;
 
-const inquirySchema = (t: (text: string) => string) => z.object({
+const getTodayISO = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const inquirySchema = (t: (text: string) => string) =>
+  z.object({
   name: z
     .string()
     .trim()
@@ -49,6 +58,32 @@ const inquirySchema = (t: (text: string) => string) => z.object({
   dateTo: z.string().min(1, t("Bitte gib das Reiseende an")),
   persons: z.number().min(1).max(20),
   message: z.string().trim().max(1000, t("Maximal 1000 Zeichen")).optional(),
+}).superRefine((data, ctx) => {
+  const today = getTodayISO();
+
+  if (data.dateFrom < today) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["dateFrom"],
+      message: t("Der Reisebeginn darf nicht in der Vergangenheit liegen."),
+    });
+  }
+
+  if (data.dateTo < today) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["dateTo"],
+      message: t("Das Reiseende darf nicht in der Vergangenheit liegen."),
+    });
+  }
+
+  if (data.dateTo < data.dateFrom) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["dateTo"],
+      message: t("Das Reiseende darf nicht vor dem Reisebeginn liegen."),
+    });
+  }
 });
 
 type InquiryForm = z.infer<ReturnType<typeof inquirySchema>>;
@@ -75,6 +110,8 @@ const CtaBand = () => {
 
   const persons = watch("persons");
   const tour = watch("tour");
+  const dateFrom = watch("dateFrom");
+  const today = getTodayISO();
 
   const focusNextField = (id: string) => {
     requestAnimationFrame(() => {
@@ -94,6 +131,20 @@ const CtaBand = () => {
 
   const onSubmit = async (data: InquiryForm) => {
     setSubmitError("");
+
+    const today = getTodayISO();
+    if (data.dateFrom < today) {
+      setSubmitError(t("Der Reisebeginn darf nicht in der Vergangenheit liegen."));
+      return;
+    }
+    if (data.dateTo < today) {
+      setSubmitError(t("Das Reiseende darf nicht in der Vergangenheit liegen."));
+      return;
+    }
+    if (data.dateTo < data.dateFrom) {
+      setSubmitError(t("Das Reiseende darf nicht vor dem Reisebeginn liegen."));
+      return;
+    }
     try {
       const { error } = await supabase.functions.invoke("create-contact-message", {
         body: {
@@ -269,10 +320,24 @@ const CtaBand = () => {
                     <Input
                       id="inquiry-from"
                       type="date"
+                      min={today}
                       {...register("dateFrom")}
                       onChange={(event) => {
                         register("dateFrom").onChange(event);
-                        if (event.target.value) focusNextField("inquiry-to");
+
+                        const newStartDate = event.target.value;
+                        const currentEndDate = watch("dateTo");
+
+                        // A previously selected end date can no longer remain
+                        // before the new start date.
+                        if (currentEndDate && newStartDate && currentEndDate < newStartDate) {
+                          setValue("dateTo", "", {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          });
+                        }
+
+                        if (newStartDate) focusNextField("inquiry-to");
                       }}
                     />
                     {errors.dateFrom && <p className="text-sm text-destructive">{errors.dateFrom.message}</p>}
@@ -282,6 +347,7 @@ const CtaBand = () => {
                     <Input
                       id="inquiry-to"
                       type="date"
+                      min={dateFrom || today}
                       {...register("dateTo")}
                       onChange={(event) => {
                         register("dateTo").onChange(event);
