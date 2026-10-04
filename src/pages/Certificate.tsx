@@ -97,7 +97,7 @@ const Certificate = () => {
               {t("Die PDF-Vorschau wird auf Smartphones nicht eingebettet, damit das Zertifikat vollständig und ohne abgeschnittene Darstellung angezeigt wird.")}
             </p>
             <a
-              href="/Certificate.pdf"
+              href={certificateUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
