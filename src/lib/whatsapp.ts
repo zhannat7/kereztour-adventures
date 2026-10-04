@@ -1,20 +1,22 @@
 export const WHATSAPP_NUMBER = "393474867408";
 
-const WHATSAPP_PREFILL_KEY = "kereztour-whatsapp-prefill-used";
+export const whatsappUrl = (message?: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 
-export const whatsappUrl = (message?: string) => {
-  const baseUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
-
-  if (!message) return baseUrl;
-
-  try {
-    if (window.localStorage.getItem(WHATSAPP_PREFILL_KEY) === "1") {
-      return baseUrl;
+/**
+ * Opens WhatsApp reliably. Inside embedded previews/iframes a plain
+ * target="_blank" navigation can be blocked, so we fall back to a
+ * top-level navigation.
+ */
+export const openWhatsApp = (e: React.MouseEvent, message?: string) => {
+  e.preventDefault();
+  const url = whatsappUrl(message);
+  const win = window.open(url, "_blank", "noopener,noreferrer");
+  if (!win) {
+    try {
+      (window.top ?? window).location.href = url;
+    } catch {
+      window.location.href = url;
     }
-    window.localStorage.setItem(WHATSAPP_PREFILL_KEY, "1");
-  } catch {
-    // Use the normal prefilled link if browser storage is unavailable.
   }
-
-  return `${baseUrl}?text=${encodeURIComponent(message)}`;
 };
