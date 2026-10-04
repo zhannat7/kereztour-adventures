@@ -1,10 +1,10 @@
-import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const Certificate = () => {
   const { t } = useLanguage();
-  const certificateUrl = "/Certificate.pdf#toolbar=1&view=FitH";
+
 
   return (
   <main className="min-h-screen overflow-x-hidden bg-background">
