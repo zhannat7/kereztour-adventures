@@ -44,8 +44,8 @@ const days = [
   { day: 4, title: "Barskoon & Dscheti-Oguz", desc: "Besuch der Wasserfälle in Barskoon und der Kosmonauten-Denkmäler. Gemeinsamer Aufbau einer traditionellen Jurte mit Einheimischen, die kunstvolle Wollenteppiche nach kirgisischer Tradition herstellen.", stay: "Unterkunft in Dscheti-Oguz", photos: [t4a, t4b, t4c, t4d] },
   { day: 5, title: "Dscheti-Oguz & Karakol", desc: "Wanderung durch die malerische Dscheti-Oguz-Schlucht – bekannt für die roten Sandsteinformationen Sieben Stiere und das Gebrochene Herz. Fahrt nach Karakol. Optional: Besuch der heißen Quellen.", stay: "Hotel in Karakol", photos: [t5a, t5b] },
   { day: 6, title: "Altyn-Arashan", desc: "Fahrt ins Altyn-Arashan-Tal (Goldene Heilquelle). 4-stündige Wanderung durch dichte Wälder und alpine Landschaft. Baden in natürlichen heißen Thermalquellen. Rückweg per Pferd oder Geländefahrzeug.", stay: "Unterkunft in Altyn-Arashan", photos: [t6a, t6b] },
-  { day: 7, title: "Historische Kirchen & Dunganen-Moschee", desc: "Besuch der historischen russisch-orthodoxen Kirche und der einzigartigen Dunganen-Moschee – ein Holzbauwerk komplett ohne einen einzigen Nagel. Fahrt zur Nordküste nach Tscholpon-Ata.", stay: "Hotel in Tscholpon-Ata", photos: [t7a] },
-  { day: 8, title: "Kyrchyn Jailoo, Ruh Ordo & Petroglyphen", desc: "Einige Stunden Aufenthalt am Kyrchyn Jailoo: Einblicke in die kirgisische Nomadenkultur und traditionelle Lebensweise. Danach Besuch des Kulturmuseums Ruh Ordo, entspannte Bootsfahrt auf dem Issyk-Kul mit Blick auf das Tien-Shan-Gebirge und Besuch des Petroglyphen-Museums mit Felszeichnungen aus ca. 2000 v. Chr. Bad im See.", stay: "Hotel an der Nordküste", photos: [t8a, t8b, t8c], video: kyrchynVideo.url },
+  { day: 7, title: "Historische Kirchen & Dunganen-Moschee", desc: "Besuch der historischen russisch-orthodoxen Kirche und der einzigartigen Dunganen-Moschee – ein Holzbauwerk komplett ohne einen einzigen Nagel. Fahrt zur Nordküste nach Tscholpon-Ata.", stay: "Hotel in Tscholpon-Ata", photos: [t7a], video: kyrchynVideo.url },
+  { day: 8, title: "Kyrchyn Jailoo, Ruh Ordo & Petroglyphen", desc: "Einige Stunden Aufenthalt am Kyrchyn Jailoo: Einblicke in die kirgisische Nomadenkultur und traditionelle Lebensweise. Danach Besuch des Kulturmuseums Ruh Ordo, entspannte Bootsfahrt auf dem Issyk-Kul mit Blick auf das Tien-Shan-Gebirge und Besuch des Petroglyphen-Museums mit Felszeichnungen aus ca. 2000 v. Chr. Bad im See.", stay: "Hotel an der Nordküste", photos: [t8a, t8b, t8c] },
   { day: 9, title: "Rückkehr nach Bischkek", desc: "Rückfahrt nach Bischkek. Besuch des größten Basars des Landes. Festliches Abschiedsabendessen mit Klängen traditioneller kirgisischer Instrumente.", stay: "Hotel in Bischkek", photos: [t9a, t9b] },
   { day: 10, title: "Heimreise", desc: "Transfer zum Flughafen Manas und individuelle Abreise.", stay: "", photos: [t10a] },
 ];
@@ -113,7 +113,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
   );
 };
 
-const DayEightMedia = ({
+const DaySevenMedia = ({
   video,
   photos,
 }: {
@@ -149,7 +149,7 @@ const DayEightMedia = ({
           >
             <img
               src={photo}
-              alt={photoDescriptions[index] ?? "Impression von Tag 8 der Kultur Tour"}
+              alt={photoDescriptions[index] ?? "Impression von Tag 7 der Kultur Tour"}
               loading="lazy"
               decoding="async"
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -290,8 +290,8 @@ const Kultur = () => {
                           </div>
                         )}
                       </div>
-                      {d.day === 8 && d.video ? (
-                        <DayEightMedia video={d.video} photos={d.photos} />
+                      {d.day === 7 && d.video ? (
+                        <DaySevenMedia video={d.video} photos={d.photos} />
                       ) : (
                         d.photos.length > 0 && <PhotoSlider photos={d.photos} />
                       )}
