@@ -106,7 +106,13 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           }`}
           style={{ transition: "opacity 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)" }}
         >
-          <img src={photo} loading="lazy" className="w-full h-full object-cover" />
+          <img
+            src={photo}
+            alt="Impression der Kultur Tour durch Kirgisistan"
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         </div>
       ))}
     </div>
@@ -131,6 +137,7 @@ const DaySevenMedia = ({
       <div className="mb-3 aspect-[3/4] w-full overflow-hidden rounded-xl bg-muted shadow-lift sm:mb-4 sm:aspect-[4/3] sm:mx-auto sm:max-w-[460px]">
         <video
           src={video}
+          poster={photos[0]}
           autoPlay
           loop
           muted
