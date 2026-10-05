@@ -5,7 +5,6 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const Certificate = () => {
   const { t } = useLanguage();
 
-
   return (
   <main className="min-h-screen overflow-x-hidden bg-background">
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 md:py-28">
@@ -19,7 +18,7 @@ const Certificate = () => {
 
       <div className="mb-8 md:mb-10">
         <span className="eyebrow mb-4 block">{t("Registrierung")}</span>
-        <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
+        <h1 className="min-w-0 max-w-full break-words font-display text-4xl leading-tight text-foreground sm:text-5xl md:text-7xl">
           {t("Offizieller Registrierungsnachweis")}
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
