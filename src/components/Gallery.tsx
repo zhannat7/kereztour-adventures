@@ -51,21 +51,21 @@ import img45 from "@/assets/gallery/IMG_4933.jpg";
 import img46 from "@/assets/gallery/IMG_4992.jpg";
 import img47 from "@/assets/gallery/IMG_5006.jpg";
 import img48 from "@/assets/gallery/IMG_5010.jpg";
-import img49 from "@/assets/gallery/10.png";
-import img50 from "@/assets/gallery/11.png";
-import img51 from "@/assets/gallery/12.png";
-import img52 from "@/assets/gallery/13.png";
-import img53 from "@/assets/gallery/14.png";
-import img54 from "@/assets/gallery/21.png";
-import img55 from "@/assets/gallery/22.png";
-import img56 from "@/assets/gallery/31.png";
-import img57 from "@/assets/gallery/32.png";
-import img58 from "@/assets/gallery/41.png";
-import img59 from "@/assets/gallery/42.png";
-import img60 from "@/assets/gallery/51.png";
-import img61 from "@/assets/gallery/81.png";
-import img62 from "@/assets/gallery/82.png";
-import img63 from "@/assets/gallery/91.png";
+import img49 from "@/assets/gallery/10.webp";
+import img50 from "@/assets/gallery/11.webp";
+import img51 from "@/assets/gallery/12.webp";
+import img52 from "@/assets/gallery/13.webp";
+import img53 from "@/assets/gallery/14.webp";
+import img54 from "@/assets/gallery/21.webp";
+import img55 from "@/assets/gallery/22.webp";
+import img56 from "@/assets/gallery/31.webp";
+import img57 from "@/assets/gallery/32.webp";
+import img58 from "@/assets/gallery/41.webp";
+import img59 from "@/assets/gallery/42.webp";
+import img60 from "@/assets/gallery/51.webp";
+import img61 from "@/assets/gallery/81.webp";
+import img62 from "@/assets/gallery/82.webp";
+import img63 from "@/assets/gallery/91.webp";
 
 const alts = [
   "Gäste lauschen einer Musikeinlage in einer geschmückten Jurte",

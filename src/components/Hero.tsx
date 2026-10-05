@@ -74,7 +74,7 @@ const Hero = () => {
         {heroImages.map((image, index) => (
           <div
             key={image.src}
-            className="absolute inset-0 transform-gpu transition-opacity duration-[4000ms] ease-in-out [backface-visibility:hidden]"
+            className="absolute inset-0 transform-gpu transition-opacity duration-500 ease-in-out [backface-visibility:hidden]"
             style={{
               opacity: activeImage === index ? 1 : 0,
               transform: "translate3d(0, 0, 0)",

@@ -9,33 +9,33 @@ import { supabase } from "@/integrations/supabase/client";
 import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
 
 import t1a from "@/assets/gallery/IMG_2518.jpg";
-import t1b from "@/assets/gallery/11.png";
-import t1c from "@/assets/gallery/12.png";
-import t1d from "@/assets/gallery/13.png";
-import t1e from "@/assets/gallery/14.png";
+import t1b from "@/assets/gallery/11.webp";
+import t1c from "@/assets/gallery/12.webp";
+import t1d from "@/assets/gallery/13.webp";
+import t1e from "@/assets/gallery/14.webp";
 import t2a from "@/assets/gallery/IMG_2646.jpg";
 import t2b from "@/assets/gallery/IMG_2677.jpg";
-import t2c from "@/assets/gallery/21.png";
-import t2d from "@/assets/gallery/22.png";
+import t2c from "@/assets/gallery/21.webp";
+import t2d from "@/assets/gallery/22.webp";
 import t3a from "@/assets/gallery/IMG_4663.jpg";
 import t3b from "@/assets/gallery/IMG_3007.jpg";
-import t3c from "@/assets/gallery/31.png";
-import t3d from "@/assets/gallery/32.png";
+import t3c from "@/assets/gallery/31.webp";
+import t3d from "@/assets/gallery/32.webp";
 import t4a from "@/assets/gallery/IMG_4858.jpg";
 import t4b from "@/assets/gallery/IMG_4846.jpg";
-import t4c from "@/assets/gallery/41.png";
-import t4d from "@/assets/gallery/42.png";
+import t4c from "@/assets/gallery/41.webp";
+import t4d from "@/assets/gallery/42.webp";
 import t5a from "@/assets/gallery/IMG_3600.jpg";
-import t5b from "@/assets/gallery/51.png";
+import t5b from "@/assets/gallery/51.webp";
 import t6a from "@/assets/gallery/IMG_4933.jpg";
 import t6b from "@/assets/gallery/IMG_4920.jpg";
 import t7a from "@/assets/gallery/IMG_3466.jpg";
 import t8a from "@/assets/gallery/IMG_4992.jpg";
 import t8b from "@/assets/gallery/IMG_3858.jpg";
-import t8c from "@/assets/gallery/81.png";
-import t9a from "@/assets/gallery/82.png";
-import t9b from "@/assets/gallery/91.png";
-import t10a from "@/assets/gallery/10.png";
+import t8c from "@/assets/gallery/81.webp";
+import t9a from "@/assets/gallery/82.webp";
+import t9b from "@/assets/gallery/91.webp";
+import t10a from "@/assets/gallery/10.webp";
 
 const days = [
   { day: 1, title: "Ankunft in Bischkek", desc: "Ankunft am Flughafen Manas, Transfer ins Hotel. Nach einer Ruhepause Mittagessen in einem lokalen Restaurant. Stadttour: Ala-Too-Platz, Eichenpark und historisches Museum. Abendessen im traditionellen Restaurant Supara.", stay: "Hotel in Bischkek", photos: [t1a, t1b, t1c, t1d, t1e] },
@@ -106,7 +106,13 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
           }`}
           style={{ transition: "opacity 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)" }}
         >
-          <img src={photo} loading="lazy" className="w-full h-full object-cover" />
+          <img
+            src={photo}
+            alt="Impression der Kultur Tour durch Kirgisistan"
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         </div>
       ))}
     </div>
@@ -131,6 +137,7 @@ const DaySevenMedia = ({
       <div className="mb-3 aspect-[3/4] w-full overflow-hidden rounded-xl bg-muted shadow-lift sm:mb-4 sm:aspect-[4/3] sm:mx-auto sm:max-w-[460px]">
         <video
           src={video}
+          poster={photos[0]}
           autoPlay
           loop
           muted
