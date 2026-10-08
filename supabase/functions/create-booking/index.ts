@@ -13,6 +13,7 @@ type BookingRequest = {
   travelDate?: string;
   tour?: string;
   tier?: string | null;
+  paymentMode?: "request" | "deposit";
   notes?: string | null;
 };
 
@@ -83,12 +84,10 @@ Deno.serve(async (req) => {
     // reject a valid Kultur booking just because an older preview sends a
     // missing or differently named tier value.
     let tier = body.tier?.trim() || null;
+    const paymentMode = body.paymentMode === "deposit" ? "deposit" : "request";
     if (tour === "kultur") {
-      if (persons === 2 || persons === 4) {
-        tier = "comfort";
-      } else if (persons >= 6 && persons <= 8) {
-        tier = "economy";
-      }
+      if (persons >= 2 && persons <= 4) tier = "comfort";
+      else if (persons >= 5 && persons <= 20) tier = "economy";
     }
     const notes = body.notes?.trim() || null;
 
@@ -118,13 +117,13 @@ Deno.serve(async (req) => {
 
       if (tour === "kultur") {
         if (tier === "economy") {
-          if (persons < 6 || persons > 8) {
-            return json({ error: "Die Standardreise ist für 6 bis 8 Personen buchbar." }, 400, origin);
+          if (persons < 5 || persons > 20) {
+            return json({ error: "Ab 5 Personen ist die Reise mit Minibus buchbar." }, 400, origin);
           }
           price = 1300;
         } else {
-          if (persons !== 2 && persons !== 4) {
-            return json({ error: "Das VIP-Paket ist für 2 oder 4 Personen buchbar." }, 400, origin);
+          if (persons < 2 || persons > 4) {
+            return json({ error: "Für 2 bis 4 Personen ist die Reise mit Jeep buchbar." }, 400, origin);
           }
           price = persons === 2 ? 2700 : 1700;
         }
@@ -166,10 +165,7 @@ Deno.serve(async (req) => {
         return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
       }
 
-      const availablePlaces =
-        tier === "economy"
-          ? Number(selectedDate.economy_available_places ?? selectedDate.available_places)
-          : Number(selectedDate.comfort_available_places ?? selectedDate.available_places);
+      const availablePlaces = Number(selectedDate.available_places);
 
       if (availablePlaces <= 0 || persons > availablePlaces) {
         return json({
@@ -180,7 +176,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    const { error } = await admin.from("bookings").insert({
+    const { data: insertedBooking, error } = await admin.from("bookings").insert({
       name,
       email,
       phone,
@@ -191,7 +187,10 @@ Deno.serve(async (req) => {
       notes: notes && notes.length <= 1000 ? notes : null,
       total_price: totalPrice,
       status: "pending",
-    });
+      payment_status: "unpaid",
+      deposit_amount: 0,
+      remaining_amount: totalPrice,
+    }).select("id").single();
 
     if (error) {
       console.error("Booking insert failed:", {
@@ -246,7 +245,7 @@ Deno.serve(async (req) => {
          <tr><td><b>Personen</b></td><td>${persons}</td></tr>
          <tr><td><b>Gesamtpreis</b></td><td>${totalPrice} &euro;</td></tr>
        </table>
-       <p>Die Zahlung erfolgt erst, nachdem Sarina deinen Reisetermin bestätigt hat.</p>
+       <p>Wenn du verbindlich buchen möchtest, kannst du die <b>150 € Anzahlung</b> online per Stripe bezahlen. Der Restbetrag wird vor Ort in Kirgistan bar bezahlt.</p>
        <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
     )]);
 
@@ -256,7 +255,7 @@ Deno.serve(async (req) => {
     if (runtime?.waitUntil) runtime.waitUntil(emailTasks);
     else await emailTasks;
 
-    return json({ success: true }, 200, origin);
+    return json({ success: true, bookingId: insertedBooking?.id ?? null, paymentMode }, 200, origin);
   } catch (error) {
     console.error("create-booking error:", error);
     return json({ error: "Buchungsanfrage konnte nicht gespeichert werden." }, 500, origin);
