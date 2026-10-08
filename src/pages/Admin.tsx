@@ -10,6 +10,7 @@ type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
   persons: number; travel_date: string; tier: string; tour: string | null;
   notes: string | null; total_price: number; status: string;
+  payment_status?: string; deposit_amount?: number; remaining_amount?: number;
 };
 type Message = {
   id: string; created_at: string; name: string; email: string; tour: string | null;
@@ -26,10 +27,14 @@ type BookingEmailLog = {
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
-const cultureTierLabel = (tier: string | null | undefined) => {
-  if (tier === "economy" || tier === "standard") return "Standard";
-  if (tier === "comfort") return "VIP";
-  return tier || "–";
+const cultureTransportLabel = (tour: string | null, persons: number) =>
+  tour === "Kultur Tour" ? (persons <= 4 ? "Jeep" : "Minibus") : "–";
+
+const paymentStatusLabel = (status: string | undefined) => {
+  if (status === "deposit_paid") return "Anzahlung bezahlt";
+  if (status === "checkout_open") return "Zahlung offen";
+  if (status === "refunded") return "Erstattet";
+  return "Keine Zahlung";
 };
 
 const whatsappUrl = (phone: string, name: string) => {
@@ -114,7 +119,7 @@ const BookingMessageModal = ({
       `Reise: ${booking.tour ?? "–"}`,
       `Reisedatum: ${fmt(booking.travel_date)}`,
       `Personen: ${booking.persons}`,
-      `Reisevariante: ${cultureTierLabel(booking.tier)}`,
+      `Transport: ${cultureTransportLabel(booking.tour, booking.persons)}`,
       `Gesamtpreis: ${booking.total_price.toLocaleString("de-DE")} €`,
     ];
     const appointment = suggestAppointment && appointmentDate && appointmentTime
@@ -540,11 +545,12 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <div className="text-right">
                     <div className="font-display text-2xl text-primary">{b.total_price.toLocaleString("de-DE")} €</div>
                     <div className="text-xs text-muted-foreground">eingegangen {fmt(b.created_at)}</div>
+                    <div className="text-xs font-medium text-primary mt-1">{paymentStatusLabel(b.payment_status)}{b.deposit_amount ? ` · ${b.deposit_amount.toLocaleString("de-DE")} €` : ""}</div>
                   </div>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
                   <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
-                  <Info l="Personen" v={String(b.persons)} /><Info l="Tarif" v={b.tier} />
+                  <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
                 </div>
                 {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
                 {(emailLogs[b.id] ?? []).length > 0 && (
@@ -929,7 +935,7 @@ const Dashboard = ({ session }: { session: Session }) => {
 
               {nd.tour === "Kultur Tour" ? (
                 <>
-                  <label className="text-xs text-muted-foreground">Standard – max. Personen
+                  <label className="text-xs text-muted-foreground">Jeep – max. Personen
                     <input
                       className={input}
                       type="number"
@@ -939,7 +945,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       onChange={(e) => setNd({ ...nd, economy_max_participants: Number(e.target.value) })}
                     />
                   </label>
-                  <label className="text-xs text-muted-foreground">VIP – max. Personen
+                  <label className="text-xs text-muted-foreground">Minibus – max. Personen
                     <input
                       className={input}
                       type="number"
@@ -987,15 +993,15 @@ const Dashboard = ({ session }: { session: Session }) => {
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-1">
-                              <div>Standard: {economyBooked}</div>
-                              <div>VIP: {comfortBooked}</div>
+                              <div>Jeep: {comfortBooked}</div>
+                              <div>Minibus: {economyBooked}</div>
                             </div>
                           ) : booked(d)}
                         </td>
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-2">
-                              <label className="block text-xs text-muted-foreground">Standard
+                              <label className="block text-xs text-muted-foreground">Minibus
                                 <input
                                   type="number"
                                   min={1}
@@ -1009,7 +1015,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                                   }}
                                 />
                               </label>
-                              <label className="block text-xs text-muted-foreground">VIP
+                              <label className="block text-xs text-muted-foreground">Jeep
                                 <input
                                   type="number"
                                   min={1}
