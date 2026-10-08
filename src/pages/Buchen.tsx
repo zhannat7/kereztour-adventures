@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { openWhatsApp } from "@/lib/whatsapp";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,8 +43,6 @@ const TOURS = [
 ] as const;
 
 type TourId = (typeof TOURS)[number]["id"];
-type TierId = "economy" | "comfort";
-
 type TourDateAvailability = {
   id: string;
   value: string;
@@ -51,16 +50,14 @@ type TourDateAvailability = {
   label: string;
   maxParticipants: number;
   availablePlaces: number;
-  economyMaxParticipants: number;
-  comfortMaxParticipants: number;
-  economyAvailablePlaces: number;
-  comfortAvailablePlaces: number;
   status: "open" | "full";
 };
 
-const getCulturePrice = (tier: TierId, persons: number) => {
-  if (tier === "comfort") return persons === 2 ? 2700 : 1700;
-  return 1300;
+const getCulturePrice = (persons: number) => {
+  if (persons === 2) return 2700;
+  if (persons >= 3 && persons <= 4) return 1700;
+  if (persons >= 5) return 1300;
+  return 0;
 };
 
 const bookingSchema = (t: (text: string) => string) => z.object({
@@ -101,10 +98,6 @@ const bookingSchema = (t: (text: string) => string) => z.object({
     .string()
     .min(1, t("Bitte wähle eine Reise")),
 
-  tier: z
-    .string()
-    .optional(),
-
   notes: z
     .string()
     .max(1000)
@@ -138,6 +131,7 @@ const Buchen = () => {
 
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMode, setSubmitMode] = useState<"request" | "deposit">("request");
 
   const focusNextField = (id: string) => {
     requestAnimationFrame(() => {
@@ -155,7 +149,6 @@ const Buchen = () => {
   };
 
   const tourParam = searchParams.get("tour");
-  const tierParam = searchParams.get("tier");
   const dateParam = searchParams.get("date");
   const [showTourPicker, setShowTourPicker] = useState(!tourParam);
 
@@ -164,11 +157,6 @@ const Buchen = () => {
   const validTour =
     tourParam && TOURS.some((tour) => tour.id === tourParam)
       ? tourParam
-      : "";
-
-  const validTier =
-    tierParam === "economy" || tierParam === "comfort"
-      ? tierParam
       : "";
 
   const {
@@ -181,9 +169,8 @@ const Buchen = () => {
     resolver: zodResolver(schema),
 
     defaultValues: {
-      persons: validTour === "kultur" && validTier === "comfort" ? 2 : validTour === "kultur" ? 6 : 1,
+      persons: validTour === "kultur" ? 2 : 1,
       tour: validTour,
-      tier: validTour === "kultur" ? validTier : "",
       notes: "",
       travelDate: dateParam ? new Date(`${dateParam}T12:00:00`) : undefined,
     },
@@ -191,7 +178,6 @@ const Buchen = () => {
 
   const persons = watch("persons") || 1;
   const tourId = watch("tour") as TourId | "";
-  const tier = watch("tier") as TierId | "";
   const travelDate = watch("travelDate");
 
   const [tourDates, setTourDates] = useState<TourDateAvailability[]>([]);
@@ -238,10 +224,6 @@ const Buchen = () => {
         availabilityData = (rawDates ?? []).map((item: any) => ({
           ...item,
           available_places: Number(item.max_participants),
-          economy_max_participants: Number(item.max_participants),
-          comfort_max_participants: Number(item.max_participants),
-          economy_available_places: Number(item.max_participants),
-          comfort_available_places: Number(item.max_participants),
         }));
       }
 
@@ -259,10 +241,6 @@ const Buchen = () => {
             format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
           availablePlaces: Math.max(0, Number(item.available_places)),
-          economyMaxParticipants: Number(item.economy_max_participants ?? item.max_participants),
-          comfortMaxParticipants: Number(item.comfort_max_participants ?? item.max_participants),
-          economyAvailablePlaces: Math.max(0, Number(item.economy_available_places ?? item.available_places)),
-          comfortAvailablePlaces: Math.max(0, Number(item.comfort_available_places ?? item.available_places)),
           status: item.status === "full" || item.status === "cancelled" ? "full" : "open",
         }));
 
@@ -283,27 +261,14 @@ const Buchen = () => {
       format(travelDate, "yyyy-MM-dd") === item.value
   );
 
-  const selectedTierAvailablePlaces =
-    selectedTourDate && tourId === "kultur"
-      ? tier === "economy"
-        ? selectedTourDate.economyAvailablePlaces
-        : selectedTourDate.comfortAvailablePlaces
-      : selectedTourDate?.availablePlaces ?? 20;
+  const selectedAvailablePlaces = selectedTourDate?.availablePlaces ?? 20;
 
   useEffect(() => {
-    if (
-      selectedTourDate &&
-      tourId === "kultur" &&
-      tier &&
-      selectedTierAvailablePlaces > 0 &&
-      persons > selectedTierAvailablePlaces
-    ) {
-      setValue("persons", selectedTierAvailablePlaces, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+    if (selectedTourDate && persons > selectedAvailablePlaces) {
+      setValue("persons", selectedAvailablePlaces, { shouldValidate: true, shouldDirty: true });
     }
-  }, [selectedTourDate, tourId, tier, selectedTierAvailablePlaces, persons, setValue]);
+  }, [selectedTourDate, selectedAvailablePlaces, persons, setValue]);
+
 
   const selectedTour = TOURS.find(
     (tour) => tour.id === tourId
@@ -313,49 +278,18 @@ const Buchen = () => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
-      if (!tier) return 0;
-      return getCulturePrice(tier, persons);
+      return getCulturePrice(persons);
     }
 
     return selectedTour.price ?? 0;
-  }, [selectedTour, tier, persons]);
+  }, [selectedTour, persons]);
 
   const totalPrice = persons * pricePerPerson;
 
   const selectTour = (id: TourId) => {
-    setValue("tour", id, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("travelDate", undefined, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-
-    if (id !== "kultur") {
-      setValue("tier", "", {
-        shouldValidate: true,
-      });
-      setValue("persons", 1, { shouldValidate: true });
-    } else if (!tier) {
-      setValue("tier", "economy", {
-        shouldValidate: true,
-      });
-      setValue("persons", 6, { shouldValidate: true });
-    } else {
-      setValue("persons", tier === "comfort" ? 2 : 6, { shouldValidate: true });
-    }
-  };
-
-  const selectTier = (value: TierId) => {
-    setValue("tier", value, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("persons", value === "comfort" ? 2 : 6, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
+    setValue("tour", id, { shouldValidate: true, shouldDirty: true });
+    setValue("travelDate", undefined, { shouldValidate: true, shouldDirty: true });
+    setValue("persons", id === "kultur" ? 2 : 1, { shouldValidate: true });
   };
 
   const handleInvalidSubmit = (formErrors: Record<string, any>) => {
@@ -383,137 +317,71 @@ const Buchen = () => {
     }
   };
 
-  // Preview-sync marker: Kultur booking submit normalizes the selected tier before invoking create-booking.
-  const onSubmit = async (data: BookingForm) => {
+  const onSubmit = async (data: BookingForm, mode: "request" | "deposit") => {
     setSubmitError("");
     setIsSubmitting(true);
-
+    setSubmitMode(mode);
     try {
       const tour = TOURS.find((item) => item.id === data.tour);
-
-      if (!tour) {
-        throw new Error(t("Bitte wähle eine Reise."));
+      if (!tour) throw new Error(t("Bitte wähle eine Reise."));
+      const price = tour.hasTiers ? getCulturePrice(data.persons) : tour.price ?? 0;
+      if (tour.id === "kultur" && (data.persons < 2 || data.persons > 20)) {
+        throw new Error(t("Bitte wähle zwischen 2 und 20 Personen."));
       }
-
-      // Normalize the Kultur option before validation/submission. This also
-      // keeps older preview builds from losing the selected option on submit.
-      const resolvedTier: TierId | "" =
-        tour.id === "kultur"
-          ? data.tier === "economy" || data.tier === "comfort"
-            ? data.tier
-            : data.persons === 2 || data.persons === 4
-              ? "comfort"
-              : data.persons >= 6 && data.persons <= 8
-                ? "economy"
-                : ""
-          : "";
-
-      const price =
-        tour.hasTiers && resolvedTier
-          ? getCulturePrice(resolvedTier, data.persons)
-          : tour.price ?? 0;
-
-      if (tour.id === "kultur") {
-        const validGroupSize =
-          (resolvedTier === "economy" && data.persons >= 6 && data.persons <= 8) ||
-          (resolvedTier === "comfort" && (data.persons === 2 || data.persons === 4));
-
-        if (!validGroupSize) {
-          throw new Error(
-            resolvedTier === "comfort"
-              ? t("Das VIP-Paket ist für 2 oder 4 Personen buchbar.")
-              : t("Die Standardreise ist für 6 bis 8 Personen buchbar.")
-          );
-        }
+      if (tour.id === "kultur" && price <= 0) {
+        throw new Error(t("Für diese Personenzahl ist kein Reisepreis hinterlegt."));
       }
-
       const total = data.persons * price;
-
-      // Non-tier tours do not need a tier value. Keep this NULL-compatible
-      // with the existing bookings schema instead of writing a synthetic value.
-      const tierValue = tour.hasTiers
-        ? resolvedTier
-        : "standard";
-
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
-
-      // The selected date has already been loaded and validated in Step 2.
-      // Reuse that state here instead of making a second availability RPC call
-      // when the user presses the booking button.
-      const selectedDate = selectedTourDate;
-
-      if (!selectedDate || selectedDate.value !== travelDateValue) {
+      if (!selectedTourDate || selectedTourDate.value !== travelDateValue) {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
-
-      const availablePlaces =
-        tour.hasTiers && resolvedTier === "economy"
-          ? selectedDate.economyAvailablePlaces
-          : tour.hasTiers && resolvedTier === "comfort"
-            ? selectedDate.comfortAvailablePlaces
-            : selectedDate.availablePlaces;
-
-      if (availablePlaces <= 0 || data.persons > availablePlaces) {
+      if (selectedTourDate.availablePlaces <= 0 || data.persons > selectedTourDate.availablePlaces) {
         throw new Error(
-          availablePlaces > 0
-            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(availablePlaces))
+          selectedTourDate.availablePlaces > 0
+            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(selectedTourDate.availablePlaces))
             : t("Dieser Reisetermin ist bereits ausgebucht.")
         );
       }
-
-      const { error } = await supabase.functions.invoke("create-booking", {
+      const { data: bookingResult, error } = await supabase.functions.invoke("create-booking", {
         body: {
-          name: `${data.vorname} ${data.nachname}`,
+          name: data.vorname + " " + data.nachname,
           email: data.email,
           phone: data.phone,
           persons: data.persons,
           travelDate: travelDateValue,
           tour: tour.id,
-          tier: tierValue,
           notes: data.notes || null,
+          paymentMode: mode,
         },
       });
-
-      if (error) {
-        console.error("create-booking failed:", error.name, error.message);
-        let detail =
-          error.name === "FunctionsFetchError"
-            ? t("Keine Verbindung zum Server. Bitte prüfe deine Internetverbindung und versuche es erneut.")
-            : t("Die Buchungsanfrage konnte nicht gespeichert werden.");
-        try {
-          const context = await error.context?.json?.();
-          console.error("create-booking response:", context);
-          if (context?.diagnostic === "BOOKING_DATABASE_SCHEMA") {
-            detail = t("Die Buchungsdatenbank ist noch nicht auf dem neuesten Stand.");
-          } else if (context?.diagnostic === "BOOKING_DATABASE_CONSTRAINT") {
-            detail = t("Die Buchungsdatenbank akzeptiert die aktuelle Buchungsoption noch nicht.");
-          } else if (context?.diagnostic === "BOOKING_DATABASE_REQUIRED_FIELD") {
-            detail = t("In der Buchungsdatenbank fehlt ein erforderliches Feld.");
-          } else if (context?.error) {
-            detail = context.error;
-          }
-        } catch {
-          // Keep the generic message if the function response cannot be read.
-        }
-        throw new Error(detail);
+      if (error || !bookingResult?.bookingId) {
+        throw new Error(t("Die Buchungsanfrage konnte nicht gespeichert werden."));
       }
-
+      if (mode === "deposit") {
+        const { data: checkout, error: checkoutError } = await supabase.functions.invoke("create-checkout-session", {
+          body: { bookingId: bookingResult.bookingId },
+        });
+        if (checkoutError || !checkout?.url) {
+          throw new Error(t("Die Stripe-Zahlung konnte nicht gestartet werden."));
+        }
+        window.location.href = checkout.url;
+        return;
+      }
       navigate("/zahlung", {
         state: {
-          name: `${data.vorname} ${data.nachname}`,
-          travelDate: selectedTourDate
-            ? selectedTourDate.label
-            : format(data.travelDate, "dd.MM.yyyy"),
+          status: "request",
+          name: data.vorname + " " + data.nachname,
+          travelDate: selectedTourDate.label,
           tour: tour.label,
-          tier: tierValue,
+          transport: tour.id === "kultur" ? (data.persons <= 4 ? "Jeep" : "Minibus") : null,
           persons: data.persons,
+          pricePerPerson: price,
           totalPrice: total,
         },
       });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "";
-
+      const message = err instanceof Error ? err.message : "";
       setSubmitError(
         message
           ? t("Buchungsanfrage konnte nicht gesendet werden: {message}").replace("{message}", message)
@@ -646,83 +514,18 @@ const Buchen = () => {
                 </p>
               )}
 
-              {/* KULTUR OPTIONEN */}
               {selectedTour?.hasTiers && (
                 <div className="mt-7 pt-7 border-t border-border">
-
-                  <p className="font-semibold text-foreground mb-4">
-                    {t("Reisevariante")}
-                  </p>
-
+                  <p className="font-semibold text-foreground mb-4">{t("Transport und Preis")}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    {(
-                      ["economy", "comfort"] as TierId[]
-                    ).map((option) => {
-                      const isSelected =
-                        tier === option;
-
-                      const isEconomy =
-                        option === "economy";
-
-                      return (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() =>
-                            selectTier(option)
-                          }
-                          className={cn(
-                            "relative rounded-sm border p-5 text-left transition-all duration-200",
-                            isSelected
-                              ? "border-primary bg-primary/5 shadow-sm"
-                              : "border-border hover:border-primary/40"
-                          )}
-                        >
-
-                          {option === "comfort" && (
-                            <span className="absolute -top-3 right-4 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-                              {t("VIP")}
-                            </span>
-                          )}
-
-                          <div className="flex items-start justify-between gap-4">
-
-                            <div>
-                              <p className="font-bold text-lg text-foreground">
-                                {isEconomy
-                                  ? t("Standard")
-                                  : t("VIP")}
-                              </p>
-
-                              <p className="text-sm text-muted-foreground mt-2">
-                                {isEconomy
-                                  ? t("Kleingruppe mit 6 bis 8 Personen. 3-Sterne-Hotels und komfortable Jurten mit WC/Dusche.")
-                                  : t("Private Jeep-Reise für 2 oder 4 Personen.")}
-                              </p>
-                            </div>
-
-                            {isSelected && (
-                              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                                <Check className="h-4 w-4" />
-                              </span>
-                            )}
-
-                          </div>
-
-                          <p className="font-display text-3xl text-primary mt-5">
-                            {isEconomy
-                            ? "1.300 €"
-                            : "2.700 € / 1.700 €"}
-                            <span className="text-sm text-muted-foreground font-sans ml-1">
-                              {isEconomy ? `/ ${t("Person")}` : t("pro Person bei 2 / 4 Personen")}
-                            </span>
-                          </p>
-
-                        </button>
-                      );
-                    })}
-
+                    <div className="rounded-sm border border-border p-5">
+                      <p className="font-bold text-lg text-foreground">{t("2–4 Personen · Jeep")}</p>
+                      <p className="text-sm text-muted-foreground mt-2">{t("2 Personen: 2.700 € pro Person · 3–4 Personen: 1.700 € pro Person")}</p>
+                    </div>
+                    <div className="rounded-sm border border-border p-5">
+                      <p className="font-bold text-lg text-foreground">{t("Ab 5 Personen · Minibus")}</p>
+                      <p className="text-sm text-muted-foreground mt-2">{t("1.300 € pro Person")}</p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -754,9 +557,7 @@ const Buchen = () => {
                         setValue(
                           "persons",
                           tourId === "kultur"
-                            ? tier === "comfort"
-                              ? Math.max(2, persons - 2)
-                              : Math.max(6, persons - 1)
+                            ? Math.max(2, persons - 1)
                             : Math.max(1, persons - 1)
                         )
                       }
@@ -774,19 +575,16 @@ const Buchen = () => {
                       disabled={
                         tourId === "kultur" &&
                         !!selectedTourDate &&
-                        persons >= selectedTierAvailablePlaces
+                        persons >= selectedAvailablePlaces
                       }
                       onClick={() =>
                         setValue(
                           "persons",
                           Math.min(
                             tourId === "kultur"
-                              ? Math.min(
-                                  tier === "comfort" ? 4 : 8,
-                                  selectedTourDate ? selectedTierAvailablePlaces : 20
-                                )
+                              ? Math.min(selectedTourDate ? selectedAvailablePlaces : 20, 20)
                               : 20,
-                            persons + (tourId === "kultur" && tier === "comfort" ? 2 : 1)
+                            persons + 1
                           )
                         )
                       }
@@ -821,24 +619,9 @@ const Buchen = () => {
                         const selected =
                           travelDate &&
                           format(travelDate, "yyyy-MM-dd") === item.value;
-                        const itemAvailablePlaces =
-                          tourId === "kultur"
-                            ? tier === "economy"
-                              ? item.economyAvailablePlaces
-                              : item.comfortAvailablePlaces
-                            : item.availablePlaces;
-                        const itemMaxParticipants =
-                          tourId === "kultur"
-                            ? tier === "economy"
-                              ? item.economyMaxParticipants
-                              : item.comfortMaxParticipants
-                            : item.maxParticipants;
-                        const isFull =
-                          item.status === "full" ||
-                          itemAvailablePlaces <= 0 ||
-                          (tourId === "kultur" &&
-                            ((tier === "economy" && itemAvailablePlaces < 6) ||
-                              (tier === "comfort" && itemAvailablePlaces < 2)));
+                        const itemAvailablePlaces = item.availablePlaces;
+                        const itemMaxParticipants = item.maxParticipants;
+                        const isFull = item.status === "full" || itemAvailablePlaces <= 0;
 
                         return (
                           <button
@@ -1018,11 +801,9 @@ const Buchen = () => {
                       {t(selectedTour.label)}
                     </h3>
 
-                    {selectedTour.hasTiers && tier && (
+                    {selectedTour.hasTiers && (
                       <p className="text-primary-foreground/80 mt-1">
-                        {tier === "economy"
-                          ? t("Standard")
-                          : t("VIP")}
+                        {persons <= 4 ? t("Jeep") : t("Minibus")}
                       </p>
                     )}
 
@@ -1068,28 +849,18 @@ const Buchen = () => {
               </Alert>
             )}
 
-            {/* SUBMIT */}
-            <Button
-              type="button"
-              onClick={() => {
-                // Trigger React Hook Form directly instead of relying on the
-                // browser's native form-submit event. This is more reliable
-                // on mobile Safari/Chrome, especially while the keyboard is open.
-                void handleSubmit(onSubmit, handleInvalidSubmit)();
-              }}
-              className="w-full min-h-14 h-14 touch-manipulation select-none text-base rounded-xl"
-              disabled={isSubmitting}
-              aria-busy={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t("Wird gesendet...")}
-                </>
-              ) : (
-                t("Buchungsanfrage senden →")
-              )}
-            </Button>
+            <div className="space-y-3">
+              <Button type="button" onClick={() => void handleSubmit((data) => onSubmit(data, "deposit"), handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
+                {isSubmitting && submitMode === "deposit" ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird vorbereitet...")}</> : t("Verbindlich buchen & 150 € Anzahlung zahlen →")}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => void handleSubmit((data) => onSubmit(data, "request"), handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
+                {isSubmitting && submitMode === "request" ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird gesendet...")}</> : t("Erst Buchungsanfrage senden")}
+              </Button>
+              <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Sarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-sm text-primary hover:underline py-2">
+                {t("Fragen zur Reise? Sarina auf WhatsApp schreiben")}
+              </button>
+              <p className="text-center text-xs text-muted-foreground">{t("Bei einer Buchungsanfrage ist keine Zahlung erforderlich. Bei einer verbindlichen Buchung werden 150 € über Stripe bezahlt; der Restbetrag wird vor Ort in Kirgistan bar bezahlt.")}</p>
+            </div>
 
           </form>
         </div>
