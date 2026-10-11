@@ -209,8 +209,7 @@ const Kultur = () => {
   return (
     <>
       <Navbar />
-      <main className="bg-background pb-24 pt-24 md:pt-32">
-        <div className="container mx-auto max-w-5xl px-6">
+      <main className="container mx-auto max-w-5xl px-6 bg-background pb-24 pt-24 md:pt-32">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-10">
             <ArrowLeft className="h-4 w-4" /> {t("Zurück")}
           </Link>
@@ -374,8 +373,6 @@ const Kultur = () => {
               </div>
             </div>
           </div>
-
-        </div>
       </main>
       <Footer />
     </>
