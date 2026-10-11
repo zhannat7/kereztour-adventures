@@ -42,25 +42,25 @@ const Tours = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="preise" className="bg-background py-16 md:py-24 scroll-mt-24">
+    <section id="preise" className="bg-background py-10 md:py-14 scroll-mt-24">
       <div ref={ref} className="section-reveal container mx-auto max-w-[1160px] px-4 sm:px-6">
-        <div className="mb-12 flex flex-col items-center justify-between gap-5 text-center md:mb-14 md:flex-row md:items-end md:text-left">
+        <div className="mb-8 flex flex-col items-center justify-between gap-4 text-center md:mb-10 md:flex-row md:items-end md:text-left">
           <div className="max-w-2xl">
             <span className="eyebrow mb-4 block">{t("Unsere Reisen")}</span>
-            <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
+            <h2 className="font-display text-3xl leading-tight text-foreground md:text-5xl">
               {t("Zwei Wege, ")}<span className="italic text-primary">{t("Kirgisistan zu entdecken")}</span>
             </h2>
           </div>
         </div>
 
-        <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
+        <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           {tours.map((tour) => (
             <Link
               key={tour.to}
               to={tour.to}
               className="stagger-child group flex flex-col overflow-hidden rounded-sm border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+              <div className="relative aspect-[16/9] max-h-[260px] overflow-hidden bg-muted">
                 <img
                   src={tour.image}
                   alt={t(tour.title)}
@@ -71,16 +71,16 @@ const Tours = () => {
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-6 sm:p-7 md:p-8">
-                <h3 className="mb-3 font-display text-2xl leading-snug text-foreground md:text-3xl">
+              <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <h3 className="mb-2 font-display text-xl leading-snug text-foreground md:text-2xl">
                   {t(tour.title)}
                 </h3>
 
-                <p className="text-sm text-muted-foreground leading-snug mb-4">
+                <p className="mb-3 text-sm leading-snug text-muted-foreground">
                   {t(tour.desc)}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-4">
+                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" /> {t(tour.duration)}
                   </span>
