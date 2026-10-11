@@ -128,7 +128,7 @@ const Trekking = () => {
             <div className="space-y-2">
               {trekkingDates.map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
-                return <div key={item.id} className="flex items-center gap-3 rounded-xl bg-background px-3 py-2.5">
+                const card = <div className="flex items-center gap-3 rounded-xl bg-background px-3 py-2.5">
                   <div className="flex h-[54px] w-[50px] shrink-0 flex-col items-center justify-center rounded-lg bg-sand/70 text-primary">
                     <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
                     <span className="font-display text-xl leading-tight">{format(parseISO(item.date), "dd")}</span>
@@ -136,6 +136,13 @@ const Trekking = () => {
                   </div>
                   <div className="min-w-0 flex-1"><p className="font-display text-sm leading-snug text-foreground sm:text-base">{item.label}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
+                return isFull ? (
+                  <div key={item.id} className="cursor-not-allowed opacity-75">{card}</div>
+                ) : (
+                  <Link key={item.id} to={"/buchen?tour=trekking&date=" + item.date} className="block rounded-xl transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" aria-label={t("Termin auswählen") + ": " + item.label}>
+                    {card}
+                  </Link>
+                );
               })}
               {trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
             </div>
