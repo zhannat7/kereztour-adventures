@@ -85,8 +85,6 @@ const Zahlung = () => {
     );
   }
 
-  const remaining = Math.max(booking.totalPrice - 150, 0);
-
   return (
     <>
       <Navbar />
@@ -106,10 +104,8 @@ const Zahlung = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">{t("Personen")}</span><span className="font-medium">{booking.persons}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("Preis pro Person")}</span><span className="font-medium">{booking.pricePerPerson.toLocaleString("de-DE")} €</span></div>
               <div className="flex justify-between border-t border-border pt-3"><span className="font-semibold">{t("Gesamtpreis")}</span><span className="font-bold text-primary">{booking.totalPrice.toLocaleString("de-DE")} €</span></div>
-              <div className="flex justify-between"><span className="font-semibold">{t("Anzahlung")}</span><span className="font-bold">150 €</span></div>
-              <div className="flex justify-between"><span className="font-semibold">{t("Restbetrag vor Ort")}</span><span className="font-bold">{remaining.toLocaleString("de-DE")} €</span></div>
             </div>
-            <p className="text-muted-foreground text-sm">{t("Bei dieser Buchungsanfrage ist keine Zahlung erforderlich. Wenn du verbindlich buchen möchtest, kannst du die 150 € Anzahlung über Stripe bezahlen. Der Restbetrag wird in Kirgistan bar bezahlt.")}</p>
+            <p className="text-muted-foreground text-sm">"Deine Anfrage ist unverbindlich. Du musst jetzt nichts bezahlen. Sarina prüft deinen Wunschtermin und meldet sich persönlich bei dir. Wenn du danach verbindlich buchen möchtest, erhältst du von ihr einen persönlichen Zahlungslink."</p>
             <Button onClick={() => navigate("/")} className="w-full">{t("Zurück zur Startseite")}</Button>
           </div>
         </div>
