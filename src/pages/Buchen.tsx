@@ -349,6 +349,7 @@ const Buchen = () => {
           persons: data.persons,
           travelDate: travelDateValue,
           tour: tour.id,
+          tier: tour.id === "trekking" ? "standard" : undefined,
           notes: data.notes || null,
           paymentMode: "request",
         },
