@@ -227,6 +227,14 @@ const Kultur = () => {
             <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
               {t("10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende Natur und unvergessliche Begegnungen.")}
             </p>
+            <div className="mt-7">
+              <Link
+                to="/buchen?tour=kultur"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90"
+              >
+                {t("Kultur Tour unverbindlich anfragen")} →
+              </Link>
+            </div>
           </div>
 
           <div className="mb-20">
