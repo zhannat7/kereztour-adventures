@@ -97,7 +97,9 @@ export type Database = {
       }
       tour_dates: {
         Row: {
+          comfort_max_participants: number
           created_at: string
+          economy_max_participants: number
           end_date: string
           id: string
           max_participants: number
@@ -106,7 +108,9 @@ export type Database = {
           tour: string
         }
         Insert: {
+          comfort_max_participants?: number
           created_at?: string
+          economy_max_participants?: number
           end_date: string
           id?: string
           max_participants?: number
@@ -115,7 +119,9 @@ export type Database = {
           tour: string
         }
         Update: {
+          comfort_max_participants?: number
           created_at?: string
+          economy_max_participants?: number
           end_date?: string
           id?: string
           max_participants?: number
