@@ -3,6 +3,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, Users, CheckCircle, CalendarDays } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
+import { de } from "date-fns/locale";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -254,7 +255,7 @@ const Kultur = () => {
                     return (
                       <div key={item.id} className="flex items-center gap-4 rounded-2xl bg-background p-4 sm:p-5">
                         <div className="flex h-[76px] w-[72px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
-                          <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM")}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
                           <span className="font-display text-3xl leading-tight">{format(parseISO(item.date), "dd")}</span>
                           <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
                         </div>
