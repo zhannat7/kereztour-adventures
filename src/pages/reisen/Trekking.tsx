@@ -114,27 +114,27 @@ const Trekking = () => {
         </Link>
 
         {/* Header and admin-managed dates */}
-        <section className="mb-12 grid items-center gap-8 lg:grid-cols-[1fr_0.95fr] lg:gap-12">
+        <section className="mb-10 grid items-start gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
           <div>
-            <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
+            <h1 className="mb-5 font-display text-4xl leading-[1.05] text-foreground sm:text-5xl xl:text-6xl">
               🥾 {t("Intensiv-Trekking")}
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 10 Tage")}</span>
             </h1>
             <p className="text-muted-foreground text-lg mb-4 max-w-3xl">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die Herausforderung der Höhe suchen. Die Route führt zu den spektakulärsten Highlights Zentralasiens: dem Hochgebirgssee Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
             <p className="text-muted-foreground max-w-3xl">{t("Übernachtungen finden authentisch in Jurten, Berghütten und Gästehäusern statt.")}</p>
           </div>
-          <div className="rounded-3xl bg-sand/60 p-4 sm:p-5 md:p-6">
-            <div className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
-            <div className="space-y-2.5">
+          <div className="rounded-2xl bg-sand/50 p-3 sm:p-4">
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
+            <div className="space-y-2">
               {trekkingDates.map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
-                return <div key={item.id} className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
-                  <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
+                return <div key={item.id} className="flex items-center gap-3 rounded-xl bg-background px-3 py-2.5">
+                  <div className="flex h-[54px] w-[50px] shrink-0 flex-col items-center justify-center rounded-lg bg-sand/70 text-primary">
                     <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
-                    <span className="font-display text-2xl leading-tight">{format(parseISO(item.date), "dd")}</span>
+                    <span className="font-display text-xl leading-tight">{format(parseISO(item.date), "dd")}</span>
                     <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
                   </div>
-                  <div className="min-w-0 flex-1"><p className="font-display text-base leading-snug text-foreground sm:text-lg">{item.label}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
+                  <div className="min-w-0 flex-1"><p className="font-display text-sm leading-snug text-foreground sm:text-base">{item.label}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
               })}
               {trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
@@ -142,15 +142,15 @@ const Trekking = () => {
           </div>
         </section>
 
-        {/* Price Banner */}
-        <div className="mb-16 flex flex-col items-start justify-between gap-5 rounded-2xl bg-primary px-6 py-5 text-primary-foreground sm:flex-row sm:items-center sm:px-8 sm:py-6">
+        {/* Compact price and booking action */}
+        <div className="mb-16 flex flex-wrap items-center justify-between gap-4 py-2">
           <div>
-            <p className="text-primary-foreground/70 text-xs uppercase tracking-widest mb-1">{t("Preis pro Person")}</p>
-            <p className="font-display text-3xl md:text-4xl">1.200 €</p>
+            <p className="mb-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">{t("Preis pro Person")}</p>
+            <p className="font-display text-3xl text-foreground">1.200 €</p>
           </div>
           <Link
             to="/buchen?tour=trekking"
-            className="inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
             {t("Jetzt buchen")} <ArrowRight className="h-4 w-4" />
           </Link>
