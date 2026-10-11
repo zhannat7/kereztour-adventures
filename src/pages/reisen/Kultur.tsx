@@ -238,14 +238,14 @@ const Kultur = () => {
               </div>
             </div>
 
-            <div className="rounded-3xl bg-sand/60 p-5 sm:p-7 md:p-8">
-              <div className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
+            <div className="rounded-3xl bg-sand/60 p-4 sm:p-5 md:p-6">
+              <div className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary">
                   <CalendarDays className="h-4 w-4" />
                 </span>
                 {t("Reisedaten")}
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {cultureDates
                   .filter((item) => item.status !== "cancelled")
                   .filter((item) => item.date >= format(new Date(), "yyyy-MM-dd"))
@@ -253,14 +253,14 @@ const Kultur = () => {
                   .map((item) => {
                     const isFull = item.status === "full" || item.availablePlaces <= 0;
                     return (
-                      <div key={item.id} className="flex items-center gap-4 rounded-2xl bg-background p-4 sm:p-5">
-                        <div className="flex h-[76px] w-[72px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
+                      <div key={item.id} className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
+                        <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
                           <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
-                          <span className="font-display text-3xl leading-tight">{format(parseISO(item.date), "dd")}</span>
+                          <span className="font-display text-2xl leading-tight">{format(parseISO(item.date), "dd")}</span>
                           <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="font-display text-lg leading-snug text-foreground sm:text-xl">{item.label}</p>
+                          <p className="font-display text-base leading-snug text-foreground sm:text-lg">{item.label}</p>
                           <p className={`mt-1 text-xs font-medium ${isFull ? "text-muted-foreground" : "text-primary"}`}>
                             {isFull
                               ? t("Ausgebucht")
