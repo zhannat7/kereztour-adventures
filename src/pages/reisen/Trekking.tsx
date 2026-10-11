@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack } from "lucide-react";
+import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack, CalendarDays } from "lucide-react";
+import { useEffect, useState } from "react";
+import { format, parseISO } from "date-fns";
+import { de } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -87,6 +91,16 @@ const tips = [
 
 const Trekking = () => {
   const { t } = useLanguage();
+  const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }>>([]);
+
+  useEffect(() => {
+    const loadTrekkingDates = async () => {
+      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
+      if (error) { setTrekkingDates([]); return; }
+      setTrekkingDates(((data as any[]) ?? []).filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date)));
+    };
+    loadTrekkingDates();
+  }, []);
   return (
   <>
     <Navbar />
