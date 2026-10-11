@@ -375,8 +375,6 @@ const Kultur = () => {
             </div>
           </div>
 
-          </div>
-
         </div>
       </main>
       <Footer />
