@@ -88,6 +88,10 @@ Deno.serve(async (req) => {
     if (tour === "kultur") {
       if (persons >= 2 && persons <= 4) tier = "comfort";
       else if (persons >= 5 && persons <= 20) tier = "economy";
+    } else if (tour === "trekking") {
+      // Trekking has no selectable package; normalize it server-side so
+      // older cached clients that omit tier can still submit a valid request.
+      tier = "standard";
     }
     const notes = body.notes?.trim() || null;
 
