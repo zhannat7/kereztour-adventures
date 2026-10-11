@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowLeft, Users, CheckCircle } from "lucide-react";
+import { ArrowLeft, Users, CheckCircle, CalendarDays } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
@@ -214,28 +214,71 @@ const Kultur = () => {
             <ArrowLeft className="h-4 w-4" /> {t("Zurück")}
           </Link>
 
-          <div className="mb-16">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary mb-4 block">
-              {t("10 Tage · Gruppenreise")}
-            </span>
-            <h1 className="mb-5 font-display text-5xl leading-tight text-foreground md:text-7xl lg:text-8xl">
-              {t("Kultur Tour")}
-              <span className="block text-2xl md:text-3xl italic text-primary mt-2">
-                {t("Kirgisistan von seiner schönsten Seite")}
+          <section className="mb-20 grid items-center gap-10 lg:grid-cols-[1fr_0.95fr] lg:gap-14">
+            <div className="py-2">
+              <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+                {t("10 Tage · Gruppenreise")}
               </span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
-              {t("10 Tage durch Kirgisistans kulturelle Highlights – von der Hauptstadt Bischkek bis zum majestätischen Issyk-Kul-See. Authentische Erlebnisse, atemberaubende Natur und unvergessliche Begegnungen.")}
-            </p>
-            <div className="mt-7">
+              <h1 className="mb-4 font-display text-5xl leading-[1.05] text-foreground md:text-7xl">
+                {t("Kultur Tour")}
+              </h1>
+              <p className="mb-8 font-display text-xl italic text-primary md:text-2xl">
+                {t("Kirgisistan von seiner schönsten Seite")}
+              </p>
               <Link
                 to="/buchen?tour=kultur"
-                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
-                {t("Kultur Tour unverbindlich anfragen")} →
+                {t("Kultur Tour unverbindlich anfragen")} <span className="ml-2" aria-hidden="true">→</span>
               </Link>
+              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-2"><Users className="h-4 w-4 text-primary" />{t("Kleine Gruppen")}</span>
+                <span className="inline-flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />{t("10 unvergessliche Tage")}</span>
+              </div>
             </div>
-          </div>
+
+            <div className="rounded-3xl bg-sand/60 p-5 sm:p-7 md:p-8">
+              <div className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary">
+                  <CalendarDays className="h-4 w-4" />
+                </span>
+                {t("Reisedaten")}
+              </div>
+              <div className="space-y-3">
+                {cultureDates
+                  .filter((item) => item.status !== "cancelled")
+                  .sort((a, b) => a.date.localeCompare(b.date))
+                  .slice(0, 2)
+                  .map((item) => {
+                    const isFull = item.status === "full" || item.availablePlaces <= 0;
+                    return (
+                      <div key={item.id} className="flex items-center gap-4 rounded-2xl bg-background p-4 sm:p-5">
+                        <div className="flex h-[76px] w-[72px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
+                          <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM")}</span>
+                          <span className="font-display text-3xl leading-tight">{format(parseISO(item.date), "dd")}</span>
+                          <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-display text-lg leading-snug text-foreground sm:text-xl">{item.label}</p>
+                          <p className={`mt-1 text-xs font-medium ${isFull ? "text-muted-foreground" : "text-primary"}`}>
+                            {isFull
+                              ? t("Ausgebucht")
+                              : t("Noch {count} {placeWord} verfügbar")
+                                  .replace("{count}", String(item.availablePlaces))
+                                  .replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                {cultureDates.filter((item) => item.status !== "cancelled").length === 0 && (
+                  <div className="rounded-2xl bg-background p-5 text-sm text-muted-foreground">
+                    {t("Aktuell sind keine Reisetermine verfügbar.")}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
 
           <div className="mb-20">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
@@ -330,55 +373,6 @@ const Kultur = () => {
                 <p className="font-display text-4xl leading-none text-primary">1.300 €</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
               </div>
-            </div>
-          </div>
-
-          <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
-            <div className="mb-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">{t("Nächste Reisetermine")}</p>
-              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                {t("Deinen")} <span className="italic text-primary">{t("Termin auswählen")}</span>
-              </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl">
-                {t("Die Termine sind geplant und werden nach deiner Anfrage von Sarina bestätigt. Erst danach erfolgt die Zahlung.")}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {cultureDates.length > 0 ? (
-                cultureDates.map((item) => {
-                  const isFull = item.status === "full" || item.availablePlaces <= 0;
-                  return (
-                    <div key={item.id} className="border border-border bg-card p-5">
-                      <p className="font-semibold text-foreground">{item.label}</p>
-                      <p className="text-sm text-primary mt-1 mb-4">
-                        {isFull
-                          ? t("Ausgebucht")
-                          : t("Noch {count} {placeWord} verfügbar")
-                              .replace("{count}", String(item.availablePlaces))
-                              .replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}
-                      </p>
-                      <div className="grid grid-cols-1 gap-2">
-                        {isFull ? (
-                        <span className="inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-muted-foreground">
-                          {t("Ausgebucht")}
-                        </span>
-                      ) : (
-                        <Link
-                          to={"/buchen?tour=kultur&date=" + item.date}
-                          className="inline-flex items-center justify-center rounded-lg border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
-                        >
-                          {t("Termin auswählen")}
-                        </Link>
-                      )}
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="border border-border bg-card p-5 text-sm text-muted-foreground md:col-span-3">
-                  {t("Aktuell sind keine Reisetermine verfügbar.")}
-                </div>
-              )}
             </div>
           </div>
 
