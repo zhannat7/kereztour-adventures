@@ -105,7 +105,7 @@ const Zahlung = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">{t("Preis pro Person")}</span><span className="font-medium">{booking.pricePerPerson.toLocaleString("de-DE")} €</span></div>
               <div className="flex justify-between border-t border-border pt-3"><span className="font-semibold">{t("Gesamtpreis")}</span><span className="font-bold text-primary">{booking.totalPrice.toLocaleString("de-DE")} €</span></div>
             </div>
-            <p className="text-muted-foreground text-sm">"Deine Anfrage ist unverbindlich. Du musst jetzt nichts bezahlen. Sarina prüft deinen Wunschtermin und meldet sich persönlich bei dir. Wenn du danach verbindlich buchen möchtest, erhältst du von ihr einen persönlichen Zahlungslink."</p>
+            <p className="text-muted-foreground text-sm">{t("Deine Anfrage ist unverbindlich. Du musst jetzt nichts bezahlen. Sarina prüft deinen Wunschtermin und meldet sich persönlich bei dir. Wenn du danach verbindlich buchen möchtest, erhältst du von ihr einen persönlichen Zahlungslink.")}</p>
             <Button onClick={() => navigate("/")} className="w-full">{t("Zurück zur Startseite")}</Button>
           </div>
         </div>
