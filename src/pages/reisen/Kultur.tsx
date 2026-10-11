@@ -293,6 +293,46 @@ const Kultur = () => {
             </div>
           </div>
 
+          <div className="mb-16">
+            <div className="mb-8">
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                {t("Gruppengröße")} <span className="italic text-primary">{t("und Preise")}</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl leading-relaxed">
+                {t("Der Preis richtet sich nach der Gruppengröße. Bei 2 bis 4 Personen reist du im Jeep, ab 5 Personen im Minibus.")}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
+              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
+                <div className="mb-5 flex items-center gap-3">
+                  <Users className="h-5 w-5 text-primary" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("2 Personen · Jeep")}</p>
+                </div>
+                <p className="font-display text-4xl leading-none text-primary">2.700 €</p>
+                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+              </div>
+
+              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
+                <div className="mb-5 flex items-center gap-3">
+                  <Users className="h-5 w-5 text-primary" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("4 Personen · Jeep")}</p>
+                </div>
+                <p className="font-display text-4xl leading-none text-primary">1.700 €</p>
+                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+              </div>
+
+              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
+                <div className="mb-5 flex items-center gap-3">
+                  <Users className="h-5 w-5 text-primary" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("Ab 5 Personen · Minibus")}</p>
+                </div>
+                <p className="font-display text-4xl leading-none text-primary">1.300 €</p>
+                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+              </div>
+            </div>
+          </div>
+
           <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
             <div className="mb-7">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary mb-2">{t("Nächste Reisetermine")}</p>
@@ -369,46 +409,6 @@ const Kultur = () => {
               ))}
             </div>
           </div>
-          <div className="mb-16">
-            <div className="mb-8">
-              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                {t("Gruppengröße")} <span className="italic text-primary">{t("und Preise")}</span>
-              </h2>
-              <p className="text-muted-foreground max-w-2xl leading-relaxed">
-                {t("Der Preis richtet sich nach der Gruppengröße. Bei 2 bis 4 Personen reist du im Jeep, ab 5 Personen im Minibus.")}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("2 Personen · Jeep")}</p>
-                </div>
-                <p className="font-display text-4xl leading-none text-primary">2.700 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
-              </div>
-
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("4 Personen · Jeep")}</p>
-                </div>
-                <p className="font-display text-4xl leading-none text-primary">1.700 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
-              </div>
-
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("Ab 5 Personen · Minibus")}</p>
-                </div>
-                <p className="font-display text-4xl leading-none text-primary">1.300 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
-              </div>
-            </div>
-          </div>
-
           <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
             <h2 className="mb-3 font-display text-2xl text-foreground">
               {t("Buchung und Zahlung")}
@@ -419,6 +419,14 @@ const Kultur = () => {
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               {t("Bitte kläre die geltenden Stornierungsbedingungen vor der verbindlichen Buchung direkt mit Sarina.")}
             </p>
+          </div>
+          <div className="mb-8 mt-8 text-center">
+            <Link
+              to="/buchen?tour=kultur"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90"
+            >
+              {t("Kultur Tour unverbindlich anfragen")} →
+            </Link>
           </div>
       </main>
       <Footer />
