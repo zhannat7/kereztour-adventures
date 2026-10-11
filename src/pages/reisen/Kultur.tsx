@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowLeft, ArrowRight, Sparkles, Users, Home, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Users, CheckCircle } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
@@ -85,7 +85,7 @@ const PhotoSlider = ({ photos }: { photos: string[] }) => {
         >
           <img
             src={photo}
-            alt="Impression der Kultur Tour durch Kirgisistan"
+            alt="Landschaft und Erlebnisse auf der Kultur Tour durch Kirgisistan"
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
             className="w-full h-full object-cover"
@@ -104,7 +104,7 @@ const DaySevenMedia = ({
   photos: string[];
 }) => {
   const photoDescriptions = [
-    "Historische Petroglyphen bei Tscholpon-Ata",
+    "Kultur und Architektur in Kirgisistan",
     "Bootsfahrt auf dem Issyk-Kul-See",
     "Besuch des Kulturzentrums Ruh Ordo",
   ];
@@ -357,7 +357,7 @@ const Kultur = () => {
               <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
                 <div className="mb-5 flex items-center gap-3">
                   <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("3–4 Personen · Jeep")}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("4 Personen · Jeep")}</p>
                 </div>
                 <p className="font-display text-4xl leading-none text-primary">1.700 €</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
