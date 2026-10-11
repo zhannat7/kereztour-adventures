@@ -337,6 +337,33 @@ const Kultur = () => {
           <div className="mb-16">
             <div className="mb-8">
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                {t("Im Preis")} <span className="italic text-primary">{t("inklusive")}</span>
+              </h2>
+              <p className="max-w-2xl leading-relaxed text-muted-foreground">
+                {t("Diese Leistungen sind in deiner Kultur Tour enthalten.")}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[
+                "Übernachtungen in 3-Sterne-Hotels und traditionellen Jurten mit WC und Dusche",
+                "Alle Transfers und Fahrten entlang der Reiseroute",
+                "Erfahrener professioneller Guide während der gesamten Reise",
+                "Vollpension mit drei Mahlzeiten täglich",
+                "Traditionelles Essen bei einer kirgisischen Familie",
+                "Picknick in der Natur",
+                "Ein Bier pro Person",
+                "Aktivitäten und Eintrittsgelder laut Reiseprogramm",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 border border-border bg-card p-4">
+                  <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                  <p className="text-sm leading-relaxed text-foreground">{t(item)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mb-16">
+            <div className="mb-8">
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
                 {t("Gruppengröße")} <span className="italic text-primary">{t("und Preise")}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl leading-relaxed">
@@ -372,6 +399,18 @@ const Kultur = () => {
                 <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
               </div>
             </div>
+          </div>
+
+          <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
+            <h2 className="mb-3 font-display text-2xl text-foreground">
+              {t("Buchung und Zahlung")}
+            </h2>
+            <p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              {t("Nach deiner Anfrage bestätigt Sarina den Reisetermin und die Verfügbarkeit. Für eine verbindliche Buchung ist eine Anzahlung von 150 € über Stripe vorgesehen. Den Restbetrag bezahlst du in Kirgisistan bar.")}
+            </p>
+            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              {t("Bitte kläre die geltenden Stornierungsbedingungen vor der verbindlichen Buchung direkt mit Sarina.")}
+            </p>
           </div>
       </main>
       <Footer />
