@@ -406,7 +406,7 @@ const Kultur = () => {
               {t("Buchung und Zahlung")}
             </h2>
             <p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              {t("Nach deiner Anfrage bestätigt Sarina den Reisetermin und die Verfügbarkeit. Für eine verbindliche Buchung ist eine Anzahlung von 150 € über Stripe vorgesehen. Den Restbetrag bezahlst du in Kirgisistan bar.")}
+              {t("Wähle einen der auf der Website angezeigten Reisetermine und sende deine unverbindliche Buchungsanfrage. Sarina bespricht anschließend die Details und bestätigt die Verfügbarkeit. Wenn du verbindlich buchen möchtest, sendet sie dir danach einen persönlichen Zahlungslink. Bei der Anfrage ist noch keine Zahlung erforderlich.")}
             </p>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               {t("Bitte kläre die geltenden Stornierungsbedingungen vor der verbindlichen Buchung direkt mit Sarina.")}
