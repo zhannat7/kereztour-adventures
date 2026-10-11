@@ -248,8 +248,8 @@ const Kultur = () => {
               <div className="space-y-3">
                 {cultureDates
                   .filter((item) => item.status !== "cancelled")
+                  .filter((item) => item.date >= format(new Date(), "yyyy-MM-dd"))
                   .sort((a, b) => a.date.localeCompare(b.date))
-                  .slice(0, 2)
                   .map((item) => {
                     const isFull = item.status === "full" || item.availablePlaces <= 0;
                     return (
