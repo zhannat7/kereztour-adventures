@@ -112,14 +112,14 @@ const Trekking = () => {
         </p>
 
         {/* Price Banner */}
-        <div className="mb-20 flex flex-col items-center justify-between gap-4 border-y border-gold/30 bg-primary p-7 text-primary-foreground sm:flex-row md:p-10">
+        <div className="mb-16 flex flex-col items-start justify-between gap-5 rounded-2xl bg-primary px-6 py-5 text-primary-foreground sm:flex-row sm:items-center sm:px-8 sm:py-6">
           <div>
-            <p className="text-primary-foreground/70 text-sm uppercase tracking-widest mb-1">{t("Preis pro Person")}</p>
-            <p className="font-display text-5xl">1.200 €</p>
+            <p className="text-primary-foreground/70 text-xs uppercase tracking-widest mb-1">{t("Preis pro Person")}</p>
+            <p className="font-display text-3xl md:text-4xl">1.200 €</p>
           </div>
           <Link
             to="/buchen?tour=trekking"
-            className="inline-flex items-center gap-2 rounded-sm bg-secondary px-8 py-4 font-semibold text-secondary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all duration-300 hover:-translate-y-0.5"
           >
             {t("Jetzt buchen")} <ArrowRight className="h-4 w-4" />
           </Link>
