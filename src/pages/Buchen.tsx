@@ -353,7 +353,10 @@ const Buchen = () => {
           paymentMode: "request",
         },
       });
-      if (error || !bookingResult?.bookingId) {
+      // Older deployed Edge Function versions may return success without bookingId.
+      // The request is successful when the function explicitly confirms success;
+      // do not show a false failure merely because an older response omits the ID.
+      if (error || bookingResult?.success !== true) {
         throw new Error(t("Die Buchungsanfrage konnte nicht gespeichert werden."));
       }
       navigate("/zahlung", {
