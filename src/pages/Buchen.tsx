@@ -131,7 +131,6 @@ const Buchen = () => {
 
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMode, setSubmitMode] = useState<"request" | "deposit">("request");
 
   const focusNextField = (id: string) => {
     requestAnimationFrame(() => {
@@ -317,10 +316,9 @@ const Buchen = () => {
     }
   };
 
-  const onSubmit = async (data: BookingForm, mode: "request" | "deposit") => {
+  const onSubmit = async (data: BookingForm) => {
     setSubmitError("");
     setIsSubmitting(true);
-    setSubmitMode(mode);
     try {
       const tour = TOURS.find((item) => item.id === data.tour);
       if (!tour) throw new Error(t("Bitte wähle eine Reise."));
@@ -352,21 +350,11 @@ const Buchen = () => {
           travelDate: travelDateValue,
           tour: tour.id,
           notes: data.notes || null,
-          paymentMode: mode,
+          paymentMode: "request",
         },
       });
       if (error || !bookingResult?.bookingId) {
         throw new Error(t("Die Buchungsanfrage konnte nicht gespeichert werden."));
-      }
-      if (mode === "deposit") {
-        const { data: checkout, error: checkoutError } = await supabase.functions.invoke("create-checkout-session", {
-          body: { bookingId: bookingResult.bookingId },
-        });
-        if (checkoutError || !checkout?.url) {
-          throw new Error(t("Die Stripe-Zahlung konnte nicht gestartet werden."));
-        }
-        window.location.href = checkout.url;
-        return;
       }
       navigate("/zahlung", {
         state: {
@@ -850,16 +838,13 @@ const Buchen = () => {
             )}
 
             <div className="space-y-3">
-              <Button type="button" onClick={() => void handleSubmit((data) => onSubmit(data, "deposit"), handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
-                {isSubmitting && submitMode === "deposit" ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird vorbereitet...")}</> : t("Verbindlich buchen & 150 € Anzahlung zahlen →")}
-              </Button>
-              <Button type="button" variant="outline" onClick={() => void handleSubmit((data) => onSubmit(data, "request"), handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
-                {isSubmitting && submitMode === "request" ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird gesendet...")}</> : t("Erst Buchungsanfrage senden")}
+              <Button type="button" onClick={() => void handleSubmit(onSubmit, handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
+                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird gesendet...")}</> : t("Unverbindliche Buchungsanfrage senden →")}
               </Button>
               <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Sarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-sm text-primary hover:underline py-2">
                 {t("Fragen zur Reise? Sarina auf WhatsApp schreiben")}
               </button>
-              <p className="text-center text-xs text-muted-foreground">{t("Bei einer Buchungsanfrage ist keine Zahlung erforderlich. Bei einer verbindlichen Buchung werden 150 € über Stripe bezahlt; der Restbetrag wird vor Ort in Kirgistan bar bezahlt.")}</p>
+              <p className="text-center text-xs text-muted-foreground">{t("Du zahlst jetzt noch nichts. Sarina bespricht mit dir die Details und sendet dir anschließend bei gewünschter verbindlicher Buchung einen persönlichen Zahlungslink.")}</p>
             </div>
 
           </form>
