@@ -252,8 +252,8 @@ const Kultur = () => {
                   .sort((a, b) => a.date.localeCompare(b.date))
                   .map((item) => {
                     const isFull = item.status === "full" || item.availablePlaces <= 0;
-                    return (
-                      <div key={item.id} className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
+                    const card = (
+                      <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
                         <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
                           <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
                           <span className="font-display text-2xl leading-tight">{format(parseISO(item.date), "dd")}</span>
@@ -270,6 +270,13 @@ const Kultur = () => {
                           </p>
                         </div>
                       </div>
+                    );
+                    return isFull ? (
+                      <div key={item.id} className="cursor-not-allowed opacity-75">{card}</div>
+                    ) : (
+                      <Link key={item.id} to={"/buchen?tour=kultur&date=" + item.date} className="block rounded-2xl transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" aria-label={t("Termin auswählen") + ": " + item.label}>
+                        {card}
+                      </Link>
                     );
                   })}
                 {cultureDates.filter((item) => item.status !== "cancelled").length === 0 && (
