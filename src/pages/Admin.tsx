@@ -266,6 +266,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     comfort_max_participants: 4,
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
+  const [depositChecks, setDepositChecks] = useState<Record<string, boolean>>({});
   const [textLanguage, setTextLanguage] = useState<Language>("DE");
   const [textSearch, setTextSearch] = useState("");
   const [textValues, setTextValues] = useState<Record<string, string>>({});
@@ -456,9 +457,15 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
 
   const setBookingStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+    if (status === "confirmed" && !depositChecks[id] && !bookings.find((b) => b.id === id)?.payment_status?.includes("deposit_paid")) {
+      return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
+    }
+    const patch = status === "confirmed"
+      ? { status, payment_status: "deposit_paid" }
+      : { status };
+    const { error } = await supabase.from("bookings").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
-    toast.success("Status aktualisiert");
+    toast.success(status === "confirmed" ? "Anzahlung vermerkt und Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
     load();
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
@@ -539,7 +546,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       <span className={`rounded-sm px-2 py-0.5 text-xs font-medium ${statusStyle[b.status] ?? ""}`}>{statusLabel[b.status] ?? b.status}</span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      <a href={`mailto:${b.email}`} className="hover:text-primary">{b.email}</a> · <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
+                      <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="hover:text-primary">{b.email}</a> · <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
                     </p>
                   </div>
                   <div className="text-right">
@@ -573,13 +580,13 @@ const Dashboard = ({ session }: { session: Session }) => {
                   </details>
                 )}
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setMessageBooking(b)}
-                    className="inline-flex items-center gap-2 rounded-sm bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
+                  <a
+                    href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`}
+                    className="inline-flex items-center gap-2 rounded-sm border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted"
                   >
                     <Mail className="h-4 w-4" />
-                    E-Mail schreiben
-                  </button>
+                    Bestätigungs-E-Mail in Outlook öffnen
+                  </a>
                   <a
                     href={whatsappUrl(b.phone, b.name)}
                     target="_blank"
@@ -589,7 +596,25 @@ const Dashboard = ({ session }: { session: Session }) => {
                     <MessageCircle className="h-4 w-4" />
                     WhatsApp
                   </a>
-                  {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground">Bestätigen</button>}
+                  {b.status !== "confirmed" && (
+                    <div className="flex flex-wrap items-center gap-2 rounded-sm border border-border px-3 py-1.5">
+                      <label className="inline-flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(depositChecks[b.id] || b.payment_status === "deposit_paid")}
+                          onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))}
+                        />
+                        Anzahlung von 150 € erhalten
+                      </label>
+                      <button
+                        onClick={() => setBookingStatus(b.id, "confirmed")}
+                        disabled={!depositChecks[b.id] && b.payment_status !== "deposit_paid"}
+                        className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Buchung bestätigen
+                      </button>
+                    </div>
+                  )}
                   {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-sm border border-border px-3 py-1.5 text-sm">Auf offen setzen</button>}
                   {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-sm border border-destructive/40 px-3 py-1.5 text-sm text-destructive">Stornieren</button>}
                 </div>
