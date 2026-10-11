@@ -245,7 +245,7 @@ Deno.serve(async (req) => {
          <tr><td><b>Personen</b></td><td>${persons}</td></tr>
          <tr><td><b>Gesamtpreis</b></td><td>${totalPrice} &euro;</td></tr>
        </table>
-       <p>Wenn du verbindlich buchen möchtest, kannst du die <b>150 € Anzahlung</b> online per Stripe bezahlen. Der Restbetrag wird vor Ort in Kirgistan bar bezahlt.</p>
+       <p>Sarina meldet sich persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, erhältst du von Sarina einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von Sarina erhalten hast.</p>
        <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
     )]);
 
