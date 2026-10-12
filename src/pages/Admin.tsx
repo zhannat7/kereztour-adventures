@@ -460,12 +460,11 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (status === "confirmed" && !depositChecks[id] && !bookings.find((b) => b.id === id)?.payment_status?.includes("deposit_paid")) {
       return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
     }
-    const patch = status === "confirmed"
-      ? { status, payment_status: "deposit_paid" }
-      : { status };
-    const { error } = await supabase.from("bookings").update(patch).eq("id", id);
+    // The current bookings table does not contain a payment_status column.
+    // Save only the supported status field to avoid a schema-cache error.
+    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
     if (error) return toast.error(error.message);
-    toast.success(status === "confirmed" ? "Anzahlung vermerkt und Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
+    toast.success(status === "confirmed" ? "Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
     load();
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
