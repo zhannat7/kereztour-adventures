@@ -503,13 +503,16 @@ const Dashboard = ({ session }: { session: Session }) => {
     load();
   };
 
+  // Kyrchyn Tour is no longer managed on this website; hide legacy database rows in the dashboard.
+  const visibleDates = dates.filter((d) => d.tour !== "Kyrchyn Tour");
+
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
 
   const tabs = [
     { k: "bookings", l: `Buchungen · ${bookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
-    { k: "dates", l: `Reisetermine · ${dates.length}` },
+    { k: "dates", l: `Reisetermine · ${visibleDates.length}` },
   ] as const;
 
   return (
@@ -735,7 +738,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum</th><th className="p-3">Belegt</th><th className="p-3">Kapazität</th><th className="p-3">Status</th><th className="p-3"></th></tr>
                 </thead>
                 <tbody>
-                  {dates.map((d) => {
+                  {visibleDates.map((d) => {
                     const economyBooked = bookings
                       .filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour && b.tier === "economy")
                       .reduce((s, b) => s + b.persons, 0);
@@ -801,7 +804,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       </tr>
                     );
                   })}
-                  {dates.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">Keine Termine.</td></tr>}
+                  {visibleDates.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">Keine Termine.</td></tr>}
                 </tbody>
               </table>
             </div>
