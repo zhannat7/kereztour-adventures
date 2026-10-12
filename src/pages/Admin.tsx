@@ -338,7 +338,7 @@ const Dashboard = ({ session }: { session: Session }) => {
           activeBookingRows = [];
         } else {
           activeBookingRows = fallback.data as Booking[];
-          toast.error("Archiv noch nicht aktiviert: Datenbankänderung in Lovable Cloud fehlt. Buchungen werden trotzdem angezeigt.");
+          console.warn("Archivierung ist noch nicht verfügbar: Die Spalten archived_at/purge_after fehlen in Lovable Cloud. Buchungen werden weiterhin angezeigt.");
         }
         archivedBookingRows = [];
       } else {
