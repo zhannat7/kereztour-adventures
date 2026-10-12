@@ -252,6 +252,10 @@ const Kultur = () => {
                   .sort((a, b) => a.date.localeCompare(b.date))
                   .map((item) => {
                     const isFull = item.status === "full" || item.availablePlaces <= 0;
+                    const endDateMatch = item.label.match(/[-–]\s*(\d{2})\.(\d{2})\.(\d{4})/);
+                    const endDateLabel = endDateMatch
+                      ? `bis ${format(parseISO(`${endDateMatch[3]}-${endDateMatch[2]}-${endDateMatch[1]}`), "d. MMMM yyyy", { locale: de })}`
+                      : item.label;
                     const card = (
                       <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
                         <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
@@ -260,7 +264,7 @@ const Kultur = () => {
                           <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="font-display text-base leading-snug text-foreground sm:text-lg">{item.label}</p>
+                          <p className="font-display text-base leading-snug text-foreground sm:text-lg">{endDateLabel}</p>
                           <p className={`mt-1 text-xs font-medium ${isFull ? "text-muted-foreground" : "text-primary"}`}>
                             {isFull
                               ? t("Ausgebucht")
