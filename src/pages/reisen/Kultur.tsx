@@ -378,7 +378,7 @@ const Kultur = () => {
           <div className="mb-16">
             <div className="mb-8">
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                {t("Im Preis")} <span className="italic text-primary">{t("inklusive")}</span>
+                {t("Im Preis inklusive")}
               </h2>
               <p className="max-w-2xl leading-relaxed text-muted-foreground">
                 {t("Diese Leistungen sind in deiner Kultur Tour enthalten.")}
