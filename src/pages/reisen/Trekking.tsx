@@ -123,8 +123,8 @@ const Trekking = () => {
             <p className="mb-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die beeindruckende Hochgebirgslandschaft Kirgistans erleben möchten. Die Route führt zu zwei spektakulären Bergseen: dem Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">{t("Du übernachtest in traditionellen Jurten, Berghütten und Gästehäusern und lernst dabei die einzigartige Natur Zentralasiens kennen.")}</p>
           </div>
-          <div className="rounded-2xl bg-sand/50 p-3 sm:p-4">
-            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
+          <div className="rounded-2xl bg-sand/50 p-3">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
             <div className="divide-y divide-primary/15">
               {trekkingDates.map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
@@ -132,7 +132,7 @@ const Trekking = () => {
                 const dateRangeLabel = endDateMatch
                   ? `${format(parseISO(item.date), "dd.MM.yyyy")}–${endDateMatch[1]}.${endDateMatch[2]}.${endDateMatch[3]}`
                   : item.label;
-                const card = <div className="flex items-center gap-3 py-4">
+                const card = <div className="flex items-center gap-3 py-2.5">
                   
                   <div className="min-w-0 flex-1"><p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
