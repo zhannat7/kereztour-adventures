@@ -355,23 +355,6 @@ const Dashboard = ({ session }: { session: Session }) => {
     const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
     return matchesQuery && (bookingFilter === "all" || b.status === bookingFilter);
   });
-  const customerGroups = useMemo(() => {
-    const groups = new Map<string, Booking[]>();
-    for (const booking of filteredBookings) {
-      const key = booking.email.trim().toLowerCase() || booking.phone.replace(/\\D/g, "") || booking.id;
-      const current = groups.get(key) ?? [];
-      current.push(booking);
-      groups.set(key, current);
-    }
-    return Array.from(groups.entries()).map(([key, items]) => ({
-      key,
-      bookings: items.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()),
-      name: items[0].name,
-      email: items[0].email,
-      phone: items[0].phone,
-    }));
-  }, [filteredBookings]);
-
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
 
@@ -404,18 +387,18 @@ const Dashboard = ({ session }: { session: Session }) => {
         <div className="mb-7">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Übersicht</p>
           <h1 className="font-display text-3xl text-primary">Guten Tag, Sarina</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Hier verwaltest du Buchungen, beantwortest Kundenanfragen und pflegst die verfügbaren Reisetermine.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p>
         </div>
-        <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} hint="Warten auf Prüfung" />
-          <Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} hint="Zahlung bestätigt" />
-          <Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Reisenden" />
+        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} hint="Noch nicht bestätigt" />
+          <Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} hint="Buchungsstatus bestätigt" />
+          <Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Interessenten" />
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2 shadow-sm">
+        <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-3">
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
-              className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+              className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
               {t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
@@ -425,9 +408,14 @@ const Dashboard = ({ session }: { session: Session }) => {
         {tab === "bookings" && (
           <div className="space-y-3">
             <div className="rounded-lg border border-border bg-card p-3">
-              <div className="mb-2">
-                <h2 className="text-base font-semibold">Buchungen</h2>
-                <p className="text-xs text-muted-foreground">Zahlung prüfen, Status verwalten und Kunden kontaktieren.</p>
+              <div className="mb-3">
+                <h2 className="text-lg font-semibold">Buchungen verwalten</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Eine Buchung nach der anderen. Prüfe zuerst die Anzahlung und bestätige danach die Buchung.</p>
+              </div>
+              <div className="mb-3 grid gap-2 rounded-lg bg-muted/40 p-3 text-sm sm:grid-cols-3">
+                <div><span className="font-semibold text-primary">1.</span> Anfrage und Reisedaten prüfen</div>
+                <div><span className="font-semibold text-primary">2.</span> 150 € Anzahlung als bezahlt markieren</div>
+                <div><span className="font-semibold text-primary">3.</span> „Buchung bestätigen“ auswählen</div>
               </div>
               <div className="flex flex-col gap-2 lg:flex-row">
                 <div className="relative min-w-0 flex-1">
@@ -441,7 +429,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
               </div>
             </div>
-            {customerGroups.length === 0 && <Empty text={bookings.length === 0 ? "Noch keine Buchungen vorhanden." : "Keine passenden Buchungen gefunden."} />}
+            {filteredBookings.length === 0 && <Empty text={bookings.length === 0 ? "Noch keine Buchungen vorhanden." : "Keine passenden Buchungen gefunden. Ändere den Suchbegriff oder wähle „Alle“."} />}
             {filteredBookings.map((b) => (
               <article key={b.id} className="overflow-hidden rounded-xl border border-border bg-card">
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
