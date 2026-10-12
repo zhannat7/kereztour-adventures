@@ -508,8 +508,18 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (status === "confirmed" && !(booking && hasDepositPaid(booking))) {
       return toast.error("Bitte zuerst die Anzahlung von 150 € als bezahlt markieren.");
     }
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (status === "confirmed") {
+      // Capacity validation and confirmation run in one database transaction.
+      // The database locks the tour date so concurrent confirmations cannot
+      // consume the same remaining places.
+      const { error } = await (supabase as any).rpc("confirm_booking_if_capacity_available", {
+        p_booking_id: id,
+      });
+      if (error) return toast.error(error.message);
+    } else {
+      const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+      if (error) return toast.error(error.message);
+    }
     setBookings((current) => current.map((b) => b.id === id ? { ...b, status } : b));
     toast.success(status === "confirmed" ? "Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
     void logActivity(id, "status_updated", "Buchungsstatus geändert zu: " + (statusLabel[status] ?? status) + ".");
