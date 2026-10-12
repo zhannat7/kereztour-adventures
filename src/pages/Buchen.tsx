@@ -50,8 +50,6 @@ type TourDateAvailability = {
   label: string;
   maxParticipants: number;
   availablePlaces: number;
-  economyAvailablePlaces: number;
-  comfortAvailablePlaces: number;
   status: "open" | "full";
 };
 
@@ -222,20 +220,16 @@ const Buchen = () => {
           return;
         }
 
-        // Fail closed if the availability RPC is unavailable. Showing the
-        // configured capacity as if every place were free can cause overbooking.
         availabilityData = (rawDates ?? []).map((item: any) => ({
           ...item,
-          available_places: 0,
-          economy_available_places: 0,
-          comfort_available_places: 0,
+          available_places: Number(item.max_participants),
         }));
       }
 
       if (!active) return;
 
       const dates: TourDateAvailability[] = (availabilityData ?? [])
-        .filter((item: any) => item.tour === selectedTourLabel && item.start_date >= new Date().toISOString().slice(0, 10))
+        .filter((item: any) => item.tour === selectedTourLabel)
         .map((item: any) => ({
           id: item.id,
           value: item.start_date,
@@ -245,17 +239,8 @@ const Buchen = () => {
             "–" +
             format(parseISO(item.end_date), "dd.MM.yyyy"),
           maxParticipants: Number(item.max_participants),
-          availablePlaces: Math.max(0, Number(item.available_places ?? 0)),
-          economyAvailablePlaces: Math.max(0, Number(item.economy_available_places ?? 0)),
-          comfortAvailablePlaces: Math.max(0, Number(item.comfort_available_places ?? 0)),
-          status:
-            item.status === "full" || item.status === "cancelled" ||
-            (tourId === "kultur" &&
-              Number(item.economy_available_places ?? 0) <= 0 &&
-              Number(item.comfort_available_places ?? 0) <= 0) ||
-            (tourId === "trekking" && Number(item.available_places ?? 0) <= 0)
-              ? "full"
-              : "open",
+          availablePlaces: Math.max(0, Number(item.available_places)),
+          status: item.status === "full" || item.status === "cancelled" ? "full" : "open",
         }));
 
       setTourDates(dates);
@@ -275,13 +260,7 @@ const Buchen = () => {
       format(travelDate, "yyyy-MM-dd") === item.value
   );
 
-  const selectedAvailablePlaces = selectedTourDate
-    ? tourId === "kultur"
-      ? (persons <= 4
-          ? selectedTourDate.comfortAvailablePlaces
-          : selectedTourDate.economyAvailablePlaces)
-      : selectedTourDate.availablePlaces
-    : 0;
+  const selectedAvailablePlaces = selectedTourDate?.availablePlaces ?? 20;
 
   useEffect(() => {
     if (selectedTourDate && persons > selectedAvailablePlaces) {
@@ -352,18 +331,13 @@ const Buchen = () => {
       }
       const total = data.persons * price;
       const travelDateValue = format(data.travelDate, "yyyy-MM-dd");
-      if (
-        !selectedTourDate ||
-        selectedTourDate.value !== travelDateValue ||
-        selectedTourDate.status !== "open" ||
-        travelDateValue < new Date().toISOString().slice(0, 10)
-      ) {
+      if (!selectedTourDate || selectedTourDate.value !== travelDateValue) {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
-      if (selectedAvailablePlaces <= 0 || data.persons > selectedAvailablePlaces) {
+      if (selectedTourDate.availablePlaces <= 0 || data.persons > selectedTourDate.availablePlaces) {
         throw new Error(
-          selectedAvailablePlaces > 0
-            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(selectedAvailablePlaces))
+          selectedTourDate.availablePlaces > 0
+            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(selectedTourDate.availablePlaces))
             : t("Dieser Reisetermin ist bereits ausgebucht.")
         );
       }
