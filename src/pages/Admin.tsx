@@ -306,14 +306,12 @@ const Dashboard = ({ session }: { session: Session }) => {
     const { error } = await supabase.from("bookings").update({
       notes,
       payment_status: paid ? "deposit_paid" : "unpaid",
-      deposit_amount: paid ? 150 : 0,
     }).eq("id", id);
     if (error) return toast.error(error.message);
     setBookings((current) => current.map((b) => b.id === id ? {
       ...b,
       notes,
       payment_status: paid ? "deposit_paid" : "unpaid",
-      deposit_amount: paid ? 150 : 0,
     } : b));
     toast.success(paid ? "Anzahlung als bezahlt gespeichert." : "Anzahlung als nicht bezahlt gespeichert.");
   };
@@ -585,7 +583,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <h3 className="mb-3 flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" />Buchung und Zahlung</h3>
                   <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Buchungsstatus</span><span className={"rounded-full px-2.5 py-1 text-xs font-semibold " + (statusStyle[selectedBooking.status] ?? "bg-muted")}>{statusLabel[selectedBooking.status] ?? selectedBooking.status}</span></div>
                   <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Gesamtpreis</span><strong>{selectedBooking.total_price.toLocaleString("de-DE")} €</strong></div>
-                  <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={(e) => { const paid=e.target.checked; setDepositPaid(selectedBooking.id, paid); setSelectedBooking((current) => current ? {...current, payment_status: paid ? "deposit_paid" : "unpaid", deposit_amount: paid ? 150 : 0} : null); }} />Als bezahlt markieren</label></div>
+                  <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={(e) => { const paid=e.target.checked; setDepositPaid(selectedBooking.id, paid); setSelectedBooking((current) => current ? {...current, payment_status: paid ? "deposit_paid" : "unpaid"} : null); }} />Als bezahlt markieren</label></div>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {selectedBooking.status !== "confirmed" && <button onClick={() => { setBookingStatus(selectedBooking.id, "confirmed"); setSelectedBooking((current) => current ? {...current, status:"confirmed"} : null); }} disabled={!hasDepositPaid(selectedBooking)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">Buchung bestätigen</button>}
                     {selectedBooking.status !== "pending" && <button onClick={() => { setBookingStatus(selectedBooking.id, "pending"); setSelectedBooking((current) => current ? {...current, status:"pending"} : null); }} className="rounded-md border border-border px-3 py-2 text-sm">Auf offen setzen</button>}
