@@ -88,11 +88,10 @@ const Hero = () => {
               loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "origin-center scale-[1.08] object-center sm:scale-100" : "object-center"}`}
+              className="absolute inset-0 h-full w-full transform-gpu object-cover object-center [backface-visibility:hidden]"
               style={{
-                // On mobile, show more of the yurt's interior walls instead of
-                // zooming into the roof. Keep the desktop crop centered.
-                objectPosition: index === 1 ? "center 65%" : "center center",
+                // Avoid zooming into the yurt roof; keep the walls visible on mobile and desktop.
+                objectPosition: index === 1 ? "center 58%" : "center center",
               }}
             />
           </div>
