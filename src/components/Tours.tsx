@@ -53,54 +53,51 @@ const Tours = () => {
           </div>
         </div>
 
-        <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
-          {tours.map((tour) => (
+        <div className="mx-auto max-w-[1160px]">
+          {tours.map((tour, index) => (
             <Link
               key={tour.to}
               to={tour.to}
-              className="stagger-child group flex flex-col overflow-hidden rounded-sm border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
+              className={`stagger-child group grid grid-cols-1 items-center gap-0 border-b border-border py-8 first:border-t md:py-10 lg:grid-cols-12 lg:gap-10 ${index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
             >
-              <div className="relative aspect-[16/9] max-h-[260px] overflow-hidden bg-muted">
+              <div className="relative aspect-[5/4] overflow-hidden bg-muted lg:col-span-7">
                 <img
                   src={tour.image}
                   alt={t(tour.title)}
                   loading="lazy"
                   decoding="async"
                   style={{ objectPosition: tour.imagePosition ?? "center" }}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-5 sm:p-6">
-                <h3 className="mb-2 font-display text-xl leading-snug text-foreground md:text-2xl">
+              <div className="flex flex-col py-6 lg:col-span-5 lg:px-2 lg:py-8">
+                <span className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                  {t("Reise")} 0{index + 1}
+                </span>
+                <h3 className="mb-4 font-display text-3xl leading-tight text-foreground sm:text-4xl xl:text-5xl">
                   {t(tour.title)}
                 </h3>
-
-                <p className="mb-3 text-sm leading-snug text-muted-foreground">
+                <p className="mb-6 max-w-xl text-base leading-7 text-muted-foreground">
                   {t(tour.desc)}
                 </p>
 
-                <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> {t(tour.duration)}
+                <div className="mb-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" /> {t(tour.duration)}
                   </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Users className="h-3.5 w-3.5" /> {t(tour.groupSize)}
+                  <span className="inline-flex items-center gap-2">
+                    <Users className="h-4 w-4 text-primary" /> {t(tour.groupSize)}
                   </span>
                 </div>
 
-                <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
+                <div className="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-5">
                   <div>
-                    <p className="font-display text-2xl text-primary leading-none">
-                      {t(tour.price)}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {t("pro Person")}
-                    </p>
+                    <p className="font-display text-3xl leading-none text-primary sm:text-4xl">{t(tour.price)}</p>
+                    <p className="mt-2 text-xs tracking-wide text-muted-foreground">{t("pro Person")}</p>
                   </div>
-
-                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-primary/20 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                    <ArrowRight className="h-4 w-4" />
+                  <span className="inline-flex items-center gap-2 border-b border-primary pb-2 text-sm font-semibold text-primary transition-colors group-hover:border-foreground group-hover:text-foreground">
+                    {t("Reise entdecken")} <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </div>
               </div>
