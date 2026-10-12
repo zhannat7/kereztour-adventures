@@ -570,7 +570,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                           {b.email && <a href={`mailto:${b.email}`} title="E-Mail schreiben" aria-label="E-Mail schreiben" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Mail className="h-4 w-4" /></a>}
                           {b.phone && <a href={`tel:${b.phone}`} title="Anrufen" aria-label="Anrufen" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Phone className="h-4 w-4" /></a>}
                         </div></td>
-                        <td className="px-4 py-3"><button onClick={() => setSelectedBooking(b)} className="whitespace-nowrap rounded-md border border-border px-3 py-2 text-xs font-semibold hover:bg-muted">Profil öffnen</button></td>
+                        <td className="px-4 py-3"><button onClick={() => openBooking(b)} className="whitespace-nowrap rounded-md border border-border px-3 py-2 text-xs font-semibold hover:bg-muted">Profil öffnen</button></td>
                       </tr>
                     ))}
                   </tbody>
