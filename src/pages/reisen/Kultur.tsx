@@ -245,7 +245,7 @@ const Kultur = () => {
                 </span>
                 {t("Reisedaten")}
               </div>
-              <div className="space-y-2.5">
+              <div className="divide-y divide-primary/15">
                 {cultureDates
                   .filter((item) => item.status !== "cancelled")
                   .filter((item) => item.date >= format(new Date(), "yyyy-MM-dd"))
@@ -257,7 +257,7 @@ const Kultur = () => {
                       ? `bis ${format(parseISO(`${endDateMatch[3]}-${endDateMatch[2]}-${endDateMatch[1]}`), "d. MMMM yyyy", { locale: de })}`
                       : item.label;
                     const card = (
-                      <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-3 sm:gap-4 sm:px-4">
+                      <div className="flex items-center gap-3 py-4 sm:gap-4">
                         <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
                           <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
                           <span className="font-display text-2xl leading-tight">{format(parseISO(item.date), "dd")}</span>
