@@ -328,13 +328,17 @@ const Dashboard = ({ session }: { session: Session }) => {
       notes,
       payment_status: paid ? "deposit_paid" : "unpaid",
     }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
     setBookings((current) => current.map((b) => b.id === id ? {
       ...b,
       notes,
       payment_status: paid ? "deposit_paid" : "unpaid",
     } : b));
     toast.success(paid ? "Anzahlung als bezahlt gespeichert." : "Anzahlung als nicht bezahlt gespeichert.");
+    return true;
   };
 
   const setBookingStatus = async (id: string, status: string) => {
@@ -377,7 +381,10 @@ const Dashboard = ({ session }: { session: Session }) => {
     const query = bookingSearch.trim().toLowerCase();
     const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
     const matchesTour = tourFilter === "all" || b.tour === tourFilter;
-    return matchesQuery && matchesTour && (bookingFilter === "all" || (bookingFilter === "unpaid" ? !hasDepositPaid(b) && b.status !== "cancelled" : b.status === bookingFilter));
+    const matchesStatus = tab === "payments"
+      ? !hasDepositPaid(b) && b.status !== "cancelled"
+      : bookingFilter === "all" || (bookingFilter === "unpaid" ? !hasDepositPaid(b) && b.status !== "cancelled" : b.status === bookingFilter);
+    return matchesQuery && matchesTour && matchesStatus;
   });
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
@@ -634,7 +641,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <h3 className="mb-3 flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" />Buchung und Zahlung</h3>
                   <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Buchungsstatus</span><span className={"rounded-full px-2.5 py-1 text-xs font-semibold " + (statusStyle[selectedBooking.status] ?? "bg-muted")}>{statusLabel[selectedBooking.status] ?? selectedBooking.status}</span></div>
                   <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Gesamtpreis</span><strong>{selectedBooking.total_price.toLocaleString("de-DE")} €</strong></div>
-                  <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={(e) => { const paid=e.target.checked; setDepositPaid(selectedBooking.id, paid); setSelectedBooking((current) => current ? {...current, payment_status: paid ? "deposit_paid" : "unpaid"} : null); }} />Als bezahlt markieren</label></div>
+                  <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={async (e) => { const paid=e.target.checked; const ok=await setDepositPaid(selectedBooking.id, paid); if (!ok) return; setSelectedBooking((current) => { if (!current) return null; const base=(current.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim(); const notes=paid ? [base, DEPOSIT_PAID_MARKER].filter(Boolean).join("\n") : base || null; return {...current, notes, payment_status: paid ? "deposit_paid" : "unpaid"}; }); }} />Als bezahlt markieren</label></div>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {selectedBooking.status !== "confirmed" && <button onClick={() => { setBookingStatus(selectedBooking.id, "confirmed"); setSelectedBooking((current) => current ? {...current, status:"confirmed"} : null); }} disabled={!hasDepositPaid(selectedBooking)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">Buchung bestätigen</button>}
                     {selectedBooking.status !== "pending" && <button onClick={() => { setBookingStatus(selectedBooking.id, "pending"); setSelectedBooking((current) => current ? {...current, status:"pending"} : null); }} className="rounded-md border border-border px-3 py-2 text-sm">Auf offen setzen</button>}
