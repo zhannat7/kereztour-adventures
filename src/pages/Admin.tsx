@@ -293,7 +293,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
-    const [b, m, d, e, a, docs] = await Promise.all([
+    const [b, m, d, e, a] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
       (supabase as any).from("tour_dates").select("*").order("start_date"),
