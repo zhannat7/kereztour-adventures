@@ -323,8 +323,33 @@ const Dashboard = ({ session }: { session: Session }) => {
       (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
       (supabase as any).from("booking_activity").select("id, booking_id, activity_type, description, created_at").order("created_at", { ascending: false }),
     ]);
-    setBookings((b.data as Booking[]) ?? []);
-    setArchivedBookings((archived.data as Booking[]) ?? []);
+    let activeBookingRows = b.data as Booking[] | null;
+    let archivedBookingRows = archived.data as Booking[] | null;
+    if (b.error || archived.error) {
+      const archiveSchemaMissing = [b.error?.message, archived.error?.message].some((message) =>
+        message?.includes("archived_at") || message?.includes("purge_after") || message?.includes("schema cache")
+      );
+      if (archiveSchemaMissing) {
+        // Keep existing bookings visible if the archive migration has not reached the live database yet.
+        const fallback = await supabase.from("bookings").select("*").order("created_at", { ascending: false });
+        if (fallback.error) {
+          console.error("Bookings could not be loaded:", fallback.error);
+          toast.error("Buchungen konnten nicht geladen werden: " + fallback.error.message);
+          activeBookingRows = [];
+        } else {
+          activeBookingRows = fallback.data as Booking[];
+          toast.error("Archiv noch nicht aktiviert: Datenbankänderung in Lovable Cloud fehlt. Buchungen werden trotzdem angezeigt.");
+        }
+        archivedBookingRows = [];
+      } else {
+        console.error("Bookings could not be loaded:", b.error ?? archived.error);
+        toast.error("Buchungen konnten nicht vollständig geladen werden.");
+        activeBookingRows = activeBookingRows ?? [];
+        archivedBookingRows = archivedBookingRows ?? [];
+      }
+    }
+    setBookings(activeBookingRows ?? []);
+    setArchivedBookings(archivedBookingRows ?? []);
     setMessages((m.data as Message[]) ?? []);
     const { data: documentFolders, error: folderError } = await supabase.storage.from("booking-documents").list("", { limit: 1000 });
     if (folderError) console.error("Document folders could not be loaded:", folderError);
