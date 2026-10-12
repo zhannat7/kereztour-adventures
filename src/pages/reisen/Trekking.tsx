@@ -106,20 +106,30 @@ const Trekking = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const windowMid = window.scrollY + window.innerHeight / 2;
-      let closest = 0;
+      // Treat the upper-middle of the viewport as the reading position.
+      const readingLine = window.innerHeight * 0.4;
+      let activeIndex = -1;
+      let closestIndex = 0;
       let closestDist = Infinity;
+
       dayRefs.current.forEach((el, i) => {
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        const elMid = window.scrollY + rect.top + rect.height / 2;
-        const dist = Math.abs(windowMid - elMid);
+        if (rect.top <= readingLine && rect.bottom >= readingLine) {
+          activeIndex = i;
+        }
+        const dist = readingLine < rect.top
+          ? rect.top - readingLine
+          : readingLine > rect.bottom
+            ? readingLine - rect.bottom
+            : 0;
         if (dist < closestDist) {
           closestDist = dist;
-          closest = i;
+          closestIndex = i;
         }
       });
-      setActiveDay(closest);
+
+      setActiveDay(activeIndex >= 0 ? activeIndex : closestIndex);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
