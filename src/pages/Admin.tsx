@@ -273,7 +273,9 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
   const [bookingSearch, setBookingSearch] = useState("");
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
-  const [bookingView, setBookingView] = useState<"list" | "cards">("list");
+  const [bookingView, setBookingView] = useState<"list" | "cards" | "kanban">("list");
+  const [notesDraft, setNotesDraft] = useState("");
+  const [notesSaving, setNotesSaving] = useState(false);
   const [tourFilter, setTourFilter] = useState("all");
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
@@ -295,6 +297,25 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (e.error) console.error("Booking email log could not be loaded:", e.error);
   };
   useEffect(() => { load(); }, []);
+
+  const openBooking = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setNotesDraft((booking.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim());
+  };
+
+  const saveBookingNotes = async () => {
+    if (!selectedBooking) return;
+    setNotesSaving(true);
+    const hasPaidMarker = (selectedBooking.notes ?? "").includes(DEPOSIT_PAID_MARKER);
+    const cleaned = notesDraft.trim();
+    const notes = [cleaned, ...(hasPaidMarker ? [DEPOSIT_PAID_MARKER] : [])].filter(Boolean).join("\n") || null;
+    const { error } = await supabase.from("bookings").update({ notes }).eq("id", selectedBooking.id);
+    setNotesSaving(false);
+    if (error) return toast.error("Notiz konnte nicht gespeichert werden: " + error.message);
+    setBookings((current) => current.map((b) => b.id === selectedBooking.id ? { ...b, notes } : b));
+    setSelectedBooking((current) => current?.id === selectedBooking.id ? { ...current, notes } : current);
+    toast.success("Notiz gespeichert.");
+  };
 
   const setDepositPaid = async (id: string, paid: boolean) => {
     const booking = bookings.find((b) => b.id === id);
@@ -493,7 +514,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <tbody className="divide-y divide-border">
                     {filteredBookings.map((b) => (
                       <tr key={b.id} className="hover:bg-muted/30">
-                        <td className="px-4 py-3"><button onClick={() => setSelectedBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
+                        <td className="px-4 py-3"><button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
                         <td className="px-4 py-3"><p className="font-medium">{b.tour ?? "Reise"}</p><p className="mt-1 text-xs text-muted-foreground">{fmt(b.travel_date)} · {b.persons} {b.persons === 1 ? "Person" : "Personen"}</p></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{hasDepositPaid(b) ? "150 € bezahlt" : "Offen"}</span></td>
