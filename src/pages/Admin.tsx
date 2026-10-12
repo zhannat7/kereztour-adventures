@@ -552,7 +552,7 @@ const Dashboard = ({ session }: { session: Session }) => {
 
         <div className="mb-4 flex flex-wrap gap-1.5 border-b border-border pb-3">
           {tabs.map((t) => (
-            <button key={t.k} onClick={() => setTab(t.k)}
+            <button key={t.k} onClick={() => { setTab(t.k); if (t.k === "bookings") setBookingFilter("all"); }}
               className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
               {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
