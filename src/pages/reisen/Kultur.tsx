@@ -317,7 +317,7 @@ const Kultur = () => {
                     ref={(el) => { if (el) dayRefs.current[i] = el; }}
                   >
                     <div className="relative z-10 flex-shrink-0">
-                      <div className={`flex h-11 w-11 items-center justify-center rounded-full font-semibold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110" : "bg-card border-2 border-primary text-primary"}`}>
+                      <div className={`flex h-11 w-11 items-center justify-center rounded-full font-semibold text-base ring-4 ring-background md:h-16 md:w-16 md:text-xl transition-all duration-500 ${activeDay === i ? "bg-primary text-primary-foreground scale-110 border-2 border-primary" : "bg-background border-2 border-primary text-primary"}`}>
                         {d.day}
                       </div>
                     </div>
