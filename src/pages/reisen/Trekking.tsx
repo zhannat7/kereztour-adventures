@@ -116,12 +116,12 @@ const Trekking = () => {
         {/* Header and admin-managed dates */}
         <section className="mb-10 grid items-start gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
           <div>
-            <h1 className="mb-5 font-display text-4xl leading-[1.05] text-foreground sm:text-5xl xl:text-6xl">
+            <h1 className="mb-4 font-display text-4xl leading-[1.08] text-foreground sm:text-5xl xl:text-[3.4rem]">
               🥾 {t("Intensiv-Trekking")}
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 10 Tage")}</span>
             </h1>
-            <p className="text-muted-foreground text-lg mb-4 max-w-3xl">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die Herausforderung der Höhe suchen. Die Route führt zu den spektakulärsten Highlights Zentralasiens: dem Hochgebirgssee Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
-            <p className="text-muted-foreground max-w-3xl">{t("Übernachtungen finden authentisch in Jurten, Berghütten und Gästehäusern statt.")}</p>
+            <p className="mb-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die beeindruckende Hochgebirgslandschaft Kirgistans erleben möchten. Die Route führt zu zwei spektakulären Bergseen: dem Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
+            <p className="max-w-3xl text-base leading-7 text-muted-foreground">{t("Du übernachtest in traditionellen Jurten, Berghütten und Gästehäusern und lernst dabei die einzigartige Natur Zentralasiens kennen.")}</p>
           </div>
           <div className="rounded-2xl bg-sand/50 p-3 sm:p-4">
             <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
@@ -159,7 +159,7 @@ const Trekking = () => {
             to="/buchen?tour=trekking"
             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
-            {t("Jetzt buchen")} <ArrowRight className="h-4 w-4" />
+            {t("Reisetermin auswählen")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
