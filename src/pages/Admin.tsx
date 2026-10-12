@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2 } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -24,6 +24,10 @@ type BookingEmailLog = {
 };
 type BookingActivity = {
   id: string; booking_id: string; activity_type: string; description: string; created_at: string;
+};
+type BookingDocument = {
+  id: string; booking_id: string; file_name: string; storage_path: string;
+  mime_type: string | null; file_size: number | null; document_type: string; created_at: string;
 };
 
 const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE") : "–");
@@ -266,6 +270,8 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [dates, setDates] = useState<TourDate[]>([]);
   const [emailLogs, setEmailLogs] = useState<Record<string, BookingEmailLog[]>>({});
   const [activities, setActivities] = useState<Record<string, BookingActivity[]>>({});
+  const [bookingDocuments, setBookingDocuments] = useState<Record<string, BookingDocument[]>>({});
+  const [documentBusy, setDocumentBusy] = useState(false);
   const [nd, setNd] = useState({
     tour: "Kultur Tour",
     start_date: "",
@@ -286,12 +292,13 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
-    const [b, m, d, e, a] = await Promise.all([
+    const [b, m, d, e, a, docs] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
       (supabase as any).from("tour_dates").select("*").order("start_date"),
       (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
       (supabase as any).from("booking_activity").select("id, booking_id, activity_type, description, created_at").order("created_at", { ascending: false }),
+      (supabase as any).from("booking_documents").select("id, booking_id, file_name, storage_path, mime_type, file_size, document_type, created_at").order("created_at", { ascending: false }),
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
@@ -308,6 +315,10 @@ const Dashboard = ({ session }: { session: Session }) => {
     }
     setActivities(activityGroups);
     if (a.error) console.error("Booking activity history could not be loaded:", a.error);
+    const documentGroups: Record<string, BookingDocument[]> = {};
+    for (const row of (docs.data ?? []) as BookingDocument[]) (documentGroups[row.booking_id] ??= []).push(row);
+    setBookingDocuments(documentGroups);
+    if (docs.error) console.error("Booking documents could not be loaded:", docs.error);
   };
   useEffect(() => { load(); }, []);
 
@@ -317,6 +328,50 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (error) { console.error("Booking activity could not be saved:", error); return; }
     const activity = data as BookingActivity;
     setActivities((current) => ({ ...current, [bookingId]: [activity, ...(current[bookingId] ?? [])] }));
+  };
+
+  const uploadBookingDocument = async (file: File) => {
+    if (!selectedBooking) return;
+    const allowed = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+    if (!allowed.includes(file.type)) return toast.error("Bitte eine PDF-, JPG-, PNG- oder WebP-Datei auswählen.");
+    if (file.size > 15 * 1024 * 1024) return toast.error("Die Datei darf maximal 15 MB groß sein.");
+    setDocumentBusy(true);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const path = selectedBooking.id + "/" + crypto.randomUUID() + "-" + safeName;
+    const { error: uploadError } = await supabase.storage.from("booking-documents").upload(path, file, { contentType: file.type, upsert: false });
+    if (uploadError) { setDocumentBusy(false); return toast.error("Datei konnte nicht hochgeladen werden: " + uploadError.message); }
+    const { data: userData } = await supabase.auth.getUser();
+    const { data, error } = await (supabase as any).from("booking_documents").insert({
+      booking_id: selectedBooking.id, file_name: file.name, storage_path: path,
+      mime_type: file.type, file_size: file.size, document_type: "invoice", created_by: userData.user?.id ?? null,
+    }).select("id, booking_id, file_name, storage_path, mime_type, file_size, document_type, created_at").single();
+    if (error) {
+      await supabase.storage.from("booking-documents").remove([path]);
+      setDocumentBusy(false);
+      return toast.error("Dokument konnte nicht gespeichert werden: " + error.message);
+    }
+    const doc = data as BookingDocument;
+    setBookingDocuments((current) => ({ ...current, [selectedBooking.id]: [doc, ...(current[selectedBooking.id] ?? [])] }));
+    setDocumentBusy(false);
+    toast.success("Rechnungsdokument gespeichert.");
+    void logActivity(selectedBooking.id, "document_added", "Dokument hinzugefügt: " + file.name);
+  };
+
+  const openBookingDocument = async (doc: BookingDocument) => {
+    const { data, error } = await supabase.storage.from("booking-documents").createSignedUrl(doc.storage_path, 60);
+    if (error || !data?.signedUrl) return toast.error("Dokument konnte nicht geöffnet werden.");
+    window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const deleteBookingDocument = async (doc: BookingDocument) => {
+    if (!window.confirm("Dieses Dokument wirklich löschen?")) return;
+    const { error: storageError } = await supabase.storage.from("booking-documents").remove([doc.storage_path]);
+    if (storageError) return toast.error("Datei konnte nicht gelöscht werden: " + storageError.message);
+    const { error } = await (supabase as any).from("booking_documents").delete().eq("id", doc.id);
+    if (error) return toast.error("Dokumenteintrag konnte nicht gelöscht werden: " + error.message);
+    setBookingDocuments((current) => ({ ...current, [doc.booking_id]: (current[doc.booking_id] ?? []).filter((item) => item.id !== doc.id) }));
+    toast.success("Dokument gelöscht.");
+    void logActivity(doc.booking_id, "document_deleted", "Dokument gelöscht: " + doc.file_name);
   };
 
   const openBooking = (booking: Booking) => {
@@ -700,6 +755,27 @@ const Dashboard = ({ session }: { session: Session }) => {
                     {selectedBooking.status !== "confirmed" && <button onClick={() => { setBookingStatus(selectedBooking.id, "confirmed"); setSelectedBooking((current) => current ? {...current, status:"confirmed"} : null); }} disabled={!hasDepositPaid(selectedBooking)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">Buchung bestätigen</button>}
                     {selectedBooking.status !== "pending" && <button onClick={() => { setBookingStatus(selectedBooking.id, "pending"); setSelectedBooking((current) => current ? {...current, status:"pending"} : null); }} className="rounded-md border border-border px-3 py-2 text-sm">Auf offen setzen</button>}
                     <button onClick={() => setMessageBooking(selectedBooking)} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"><Mail className="h-4 w-4" />E-Mail verfassen</button>
+                  </div>
+                </section>
+                <section className="rounded-xl border border-border p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="flex items-center gap-2 font-semibold"><FileText className="h-4 w-4 text-primary" />Rechnungen und Dokumente</h3>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{(bookingDocuments[selectedBooking.id] ?? []).length}</span>
+                  </div>
+                  <p className="mb-3 text-sm text-muted-foreground">Rechnungen, Zahlungsbelege und andere Buchungsunterlagen sicher ablegen und später wiederfinden.</p>
+                  <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
+                    <Upload className="h-4 w-4" />{documentBusy ? "Wird hochgeladen …" : "Rechnung / Datei hinzufügen"}
+                    <input type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" className="hidden" disabled={documentBusy} onChange={(e) => { const file=e.target.files?.[0]; if(file) void uploadBookingDocument(file); e.currentTarget.value=""; }} />
+                  </label>
+                  <p className="mt-2 text-xs text-muted-foreground">PDF, JPG, PNG oder WebP · maximal 15 MB pro Datei</p>
+                  <div className="mt-3 space-y-2">
+                    {(bookingDocuments[selectedBooking.id] ?? []).map((doc) => <div key={doc.id} className="flex items-center gap-3 rounded-md border border-border p-3">
+                      <FileText className="h-5 w-5 shrink-0 text-primary" />
+                      <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium" title={doc.file_name}>{doc.file_name}</p><p className="text-xs text-muted-foreground">{new Date(doc.created_at).toLocaleDateString("de-DE")}{doc.file_size ? " · " + (doc.file_size / 1024 / 1024).toLocaleString("de-DE", { maximumFractionDigits: 1 }) + " MB" : ""}</p></div>
+                      <button onClick={() => void openBookingDocument(doc)} title="Dokument öffnen" aria-label="Dokument öffnen" className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted"><Download className="h-4 w-4" /></button>
+                      <button onClick={() => void deleteBookingDocument(doc)} title="Dokument löschen" aria-label="Dokument löschen" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
+                    </div>)}
+                    {(bookingDocuments[selectedBooking.id] ?? []).length === 0 && <p className="rounded-md border border-dashed border-border p-4 text-center text-sm text-muted-foreground">Noch keine Rechnungen oder Dokumente hinterlegt.</p>}
                   </div>
                 </section>
                 <section className="rounded-xl border border-border p-4">
