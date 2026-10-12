@@ -555,17 +555,17 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="overflow-x-auto rounded-xl border border-border bg-card">
                 <table className="w-full min-w-[850px] text-left text-sm">
                   <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground"><tr>
-                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung</th><th className="px-4 py-3">Anzahlung</th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th><th className="px-4 py-3"></th>
+                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung</th><th className="px-4 py-3">Anzahlung</th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th>
                   </tr></thead>
                   <tbody className="divide-y divide-border">
                     {filteredBookings.map((b) => (
-                      <tr key={b.id} className="hover:bg-muted/30">
+                      <tr key={b.id} onClick={() => openBooking(b)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBooking(b); } }} tabIndex={0} role="button" aria-label={"Gästeprofil von " + b.name + " öffnen"} className="cursor-pointer hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
                         <td className="px-4 py-3"><button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
                         <td className="px-4 py-3"><p className="font-medium">{b.tour ?? "Reise"}</p><p className="mt-1 text-xs text-muted-foreground">{fmt(b.travel_date)} · {b.persons} {b.persons === 1 ? "Person" : "Personen"}</p></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{hasDepositPaid(b) ? "150 € bezahlt" : "Offen"}</span></td>
                         <td className="whitespace-nowrap px-4 py-3 font-semibold">{b.total_price.toLocaleString("de-DE")} €</td>
-                        <td className="px-4 py-3"><div className="flex items-center gap-1.5">
+                        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}><div className="flex items-center gap-1.5">
                           {b.phone && <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${b.name}`} aria-label={`WhatsApp an ${b.name}`} className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#25D366] hover:bg-[#25D366]/10"><MessageCircle className="h-5 w-5" /></a>}
                           {b.email && <a href={`mailto:${b.email}`} title="E-Mail schreiben" aria-label="E-Mail schreiben" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Mail className="h-4 w-4" /></a>}
                           {b.phone && <a href={`tel:${b.phone}`} title="Anrufen" aria-label="Anrufen" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Phone className="h-4 w-4" /></a>}
