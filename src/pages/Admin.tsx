@@ -529,16 +529,20 @@ const Dashboard = ({ session }: { session: Session }) => {
       </header>
 
       <main className="mx-auto max-w-[1600px] px-6 py-8">
-        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mb-8">
+          <h1 className="font-display text-3xl text-primary">Verwaltung</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Buchungen prüfen, Kundenanfragen beantworten und Reisetermine verwalten.</p>
+        </div>
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <Stat label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} />
           <Stat label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} />
-          <Stat label="Anfragen gesamt" value={messages.length} />
+          <Stat label="Kontaktanfragen" value={messages.length} />
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2 border-b border-border">
+        <div className="mb-6 flex flex-wrap gap-2 rounded-lg border border-border bg-card p-2">
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
-              className={`-mb-px border-b-2 px-4 py-2.5 text-sm font-medium ${tab === t.k ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
               {t.l}
             </button>
           ))}
