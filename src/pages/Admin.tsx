@@ -299,9 +299,18 @@ const Dashboard = ({ session }: { session: Session }) => {
     const notes = paid
       ? [existingNotes, DEPOSIT_PAID_MARKER].filter(Boolean).join("\n")
       : existingNotes || null;
-    const { error } = await supabase.from("bookings").update({ notes }).eq("id", id);
+    const { error } = await supabase.from("bookings").update({
+      notes,
+      payment_status: paid ? "deposit_paid" : "unpaid",
+      deposit_amount: paid ? 150 : 0,
+    }).eq("id", id);
     if (error) return toast.error(error.message);
-    setBookings((current) => current.map((b) => b.id === id ? { ...b, notes, payment_status: paid ? "deposit_paid" : undefined } : b));
+    setBookings((current) => current.map((b) => b.id === id ? {
+      ...b,
+      notes,
+      payment_status: paid ? "deposit_paid" : "unpaid",
+      deposit_amount: paid ? 150 : 0,
+    } : b));
     toast.success(paid ? "Anzahlung als bezahlt gespeichert." : "Anzahlung als nicht bezahlt gespeichert.");
   };
 
