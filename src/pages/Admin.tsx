@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -256,7 +256,7 @@ const BookingMessageModal = ({
 };
 
 const Dashboard = ({ session }: { session: Session }) => {
-  const [tab, setTab] = useState<"bookings" | "messages" | "dates">("bookings");
+  const [tab, setTab] = useState<"overview" | "bookings" | "messages" | "dates">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
@@ -271,7 +271,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
   const [bookingSearch, setBookingSearch] = useState("");
-  const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled">("all");
+  const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
     const [b, m, d, e] = await Promise.all([
@@ -353,12 +353,18 @@ const Dashboard = ({ session }: { session: Session }) => {
   const filteredBookings = bookings.filter((b) => {
     const query = bookingSearch.trim().toLowerCase();
     const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
-    return matchesQuery && (bookingFilter === "all" || b.status === bookingFilter);
+    return matchesQuery && (bookingFilter === "all" || (bookingFilter === "unpaid" ? !hasDepositPaid(b) && b.status !== "cancelled" : b.status === bookingFilter));
   });
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
 
+  const openBookings = bookings.filter((b) => b.status === "pending");
+  const confirmedBookings = bookings.filter((b) => b.status === "confirmed");
+  const unpaidBookings = bookings.filter((b) => !hasDepositPaid(b) && b.status !== "cancelled");
+  const upcomingDates = visibleDates.filter((d) => d.start_date >= new Date().toISOString().slice(0, 10)).slice(0, 4);
+
   const tabs = [
+    { k: "overview", l: "Übersicht" },
     { k: "bookings", l: `Buchungen · ${bookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
     { k: "dates", l: `Reisetermine · ${visibleDates.length}` },
