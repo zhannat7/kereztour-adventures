@@ -460,23 +460,23 @@ const Dashboard = ({ session }: { session: Session }) => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8">
-        <div className="mb-7">
+      <main className="mx-auto max-w-[1440px] px-4 py-5 sm:px-6 sm:py-6">
+        <div className="mb-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Übersicht</p>
-          <h1 className="font-display text-3xl text-primary">Guten Tag, Sarina</h1>
+          <h1 className="font-display text-2xl text-primary sm:text-[1.75rem]">Guten Tag, Sarina</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p>
         </div>
-        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mb-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
           <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="text-left"><Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Anfragen" value={openBookings.length} hint="Prüfen und beantworten" /></button>
           <button onClick={() => { setTab("bookings"); setBookingFilter("confirmed"); }} className="text-left"><Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={confirmedBookings.length} hint="Buchung ist bestätigt" /></button>
           <button onClick={() => { setTab("bookings"); setBookingFilter("unpaid"); }} className="text-left"><Stat icon={<Wallet className="h-5 w-5" />} label="Anzahlungen offen" value={unpaidBookings.length} hint="150 € noch nicht als bezahlt markiert" /></button>
           <button onClick={() => setTab("messages")} className="text-left"><Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Gästen" /></button>
         </div>
 
-        <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-3">
+        <div className="mb-4 flex flex-wrap gap-1.5 border-b border-border pb-3">
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
-              className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+              className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
               {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
@@ -484,29 +484,29 @@ const Dashboard = ({ session }: { session: Session }) => {
         </div>
 
         {tab === "overview" && (
-          <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-            <section className="rounded-xl border border-border bg-card p-5">
+          <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+            <section className="rounded-lg border border-border bg-card p-4">
               <h2 className="text-lg font-semibold">Das braucht deine Aufmerksamkeit</h2>
               <p className="mt-1 text-sm text-muted-foreground">Wähle eine Aufgabe, um direkt zum richtigen Bereich zu gelangen.</p>
               <div className="mt-3 divide-y divide-border">
-                <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50 text-amber-800"><ClipboardList className="h-5 w-5" /></span>
+                <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="flex w-full items-center gap-3 py-3 text-left hover:bg-muted/30">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 text-amber-800"><ClipboardList className="h-5 w-5" /></span>
                   <span className="flex-1"><span className="block font-medium">Buchungsanfragen prüfen</span><span className="text-sm text-muted-foreground">Noch nicht bestätigte Anfragen</span></span>
                   <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{openBookings.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </button>
-                <button onClick={() => { setTab("bookings"); setBookingFilter("unpaid"); }} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50 text-amber-800"><Wallet className="h-5 w-5" /></span>
+                <button onClick={() => { setTab("bookings"); setBookingFilter("unpaid"); }} className="flex w-full items-center gap-3 py-3 text-left hover:bg-muted/30">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 text-amber-800"><Wallet className="h-5 w-5" /></span>
                   <span className="flex-1"><span className="block font-medium">Anzahlungen überprüfen</span><span className="text-sm text-muted-foreground">150 € als bezahlt markieren, wenn eingegangen</span></span>
                   <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{unpaidBookings.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </button>
-                <button onClick={() => setTab("messages")} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary"><Mail className="h-5 w-5" /></span>
+                <button onClick={() => setTab("messages")} className="flex w-full items-center gap-3 py-3 text-left hover:bg-muted/30">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary"><Mail className="h-5 w-5" /></span>
                   <span className="flex-1"><span className="block font-medium">Kontaktanfragen ansehen</span><span className="text-sm text-muted-foreground">Nachrichten von Interessenten öffnen</span></span>
                   <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{messages.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </button>
               </div>
             </section>
-            <section className="rounded-xl border border-border bg-card p-5">
+            <section className="rounded-lg border border-border bg-card p-4">
               <h2 className="text-lg font-semibold">Kommende Reisetermine</h2>
               <p className="mt-1 text-sm text-muted-foreground">Die nächsten geplanten Abreisen.</p>
               {upcomingDates.length ? <div className="mt-3 divide-y divide-border">{upcomingDates.map((d) => <div key={d.id} className="flex items-center justify-between gap-3 py-3"><div><p className="font-medium">{d.tour}</p><p className="text-sm text-muted-foreground">{fmtRange(d.start_date, d.end_date)}</p></div><span className="whitespace-nowrap text-xs text-muted-foreground">{Math.max(0, d.max_participants - booked(d))} Plätze frei</span></div>)}</div> : <p className="mt-3 rounded-lg bg-muted/30 p-4 text-sm text-muted-foreground">Keine zukünftigen Reisetermine eingetragen.</p>}
@@ -898,11 +898,11 @@ const Dashboard = ({ session }: { session: Session }) => {
 };
 
 const Stat = ({ icon, label, value, hint }: { icon: React.ReactNode; label: string; value: number; hint: string }) => (
-  <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 shadow-sm">
-    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">{icon}</span>
+  <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 shadow-sm">
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</span>
     <div className="min-w-0">
       <div className="text-sm font-medium text-muted-foreground">{label}</div>
-      <div className="mt-1 font-display text-3xl text-primary">{value}</div>
+      <div className="mt-0.5 font-display text-2xl leading-tight text-primary">{value}</div>
       <div className="mt-1 text-xs text-muted-foreground">{hint}</div>
     </div>
   </div>
