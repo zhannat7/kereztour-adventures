@@ -407,10 +407,10 @@ const Kultur = () => {
               {t("Buchung und Zahlung")}
             </h2>
             <p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              {t("Wähle einen der auf der Website angezeigten Reisetermine und sende deine unverbindliche Buchungsanfrage. Sarina bespricht anschließend die Details und bestätigt die Verfügbarkeit. Wenn du verbindlich buchen möchtest, sendet sie dir danach einen persönlichen Zahlungslink. Bei der Anfrage ist noch keine Zahlung erforderlich.")}
+              {t("Wähle deinen Wunschtermin und sende uns eine unverbindliche Buchungsanfrage. Wir prüfen die Verfügbarkeit und stimmen die Details deiner Reise persönlich mit dir ab. Möchtest du verbindlich buchen, erhältst du nach der Bestätigung einen Zahlungslink für die Anzahlung von 150 €. Den Restbetrag bezahlst du während deiner Reise in Kirgisistan in bar.")}
             </p>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              {t("Bitte kläre die geltenden Stornierungsbedingungen vor der verbindlichen Buchung direkt mit Sarina.")}
+              {t("Bitte informiere dich vor der verbindlichen Buchung über die geltenden Stornierungsbedingungen.")}
             </p>
           </div>
           <div className="mb-8 mt-8 text-center">
