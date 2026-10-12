@@ -694,7 +694,15 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <textarea value={notesDraft} onChange={(e) => setNotesDraft(e.target.value)} rows={4} placeholder="Reisewünsche, Absprachen und wichtige Hinweise zum Gast …" className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
                   <div className="mt-3 flex justify-end"><button onClick={saveBookingNotes} disabled={notesSaving} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50">{notesSaving ? "Speichert …" : "Notizen speichern"}</button></div>
                 </section>
-                <section className="rounded-xl border border-border p-4"><h3 className="mb-3 font-semibold">Aktivitäten</h3><p className="text-sm text-muted-foreground">Buchungsanfrage eingegangen am {fmt(selectedBooking.created_at)}.</p>{(emailLogs[selectedBooking.id] ?? []).length > 0 && <div className="mt-3 space-y-2">{emailLogs[selectedBooking.id].map((log) => <div key={log.id} className="rounded-md bg-muted/40 p-3 text-sm"><p className="font-medium">{log.subject}</p><p className="text-xs text-muted-foreground">An {log.recipient} · {fmt(log.sent_at)}</p></div>)}</div>}</section>
+                <section className="rounded-xl border border-border p-4">
+                  <h3 className="mb-3 font-semibold">Aktivitäten</h3>
+                  <div className="space-y-3">
+                    <div className="flex gap-3"><span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-primary" /><div><p className="text-sm font-medium">Buchungsanfrage eingegangen</p><p className="text-xs text-muted-foreground">{fmt(selectedBooking.created_at)}</p></div></div>
+                    {(activities[selectedBooking.id] ?? []).map((activity) => <div key={activity.id} className="flex gap-3"><span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-primary/60" /><div><p className="text-sm">{activity.description}</p><p className="text-xs text-muted-foreground">{new Date(activity.created_at).toLocaleString("de-DE")}</p></div></div>)}
+                    {(emailLogs[selectedBooking.id] ?? []).map((log) => <div key={log.id} className="flex gap-3"><span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#25D366]" /><div><p className="text-sm font-medium">E-Mail gesendet: {log.subject}</p><p className="text-xs text-muted-foreground">An {log.recipient} · {new Date(log.sent_at).toLocaleString("de-DE")}</p></div></div>)}
+                    {(activities[selectedBooking.id] ?? []).length === 0 && (emailLogs[selectedBooking.id] ?? []).length === 0 && <p className="text-sm text-muted-foreground">Noch keine weiteren Aktivitäten.</p>}
+                  </div>
+                </section>
               </div>
             </aside>
           </div>
