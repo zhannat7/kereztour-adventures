@@ -22,6 +22,9 @@ type TourDate = {
 type BookingEmailLog = {
   id: string; booking_id: string; recipient: string; subject: string; message: string; sent_at: string;
 };
+type BookingActivity = {
+  id: string; booking_id: string; activity_type: string; description: string; created_at: string;
+};
 
 const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE") : "–");
 const fmtRange = (start: string | null, end: string | null) => `${fmt(start)}–${fmt(end)}`;
@@ -262,6 +265,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
   const [emailLogs, setEmailLogs] = useState<Record<string, BookingEmailLog[]>>({});
+  const [activities, setActivities] = useState<Record<string, BookingActivity[]>>({});
   const [nd, setNd] = useState({
     tour: "Kultur Tour",
     start_date: "",
@@ -282,11 +286,12 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
-    const [b, m, d, e] = await Promise.all([
+    const [b, m, d, e, a] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
       (supabase as any).from("tour_dates").select("*").order("start_date"),
       (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
+      (supabase as any).from("booking_activity").select("id, booking_id, activity_type, description, created_at").order("created_at", { ascending: false }),
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
@@ -297,8 +302,22 @@ const Dashboard = ({ session }: { session: Session }) => {
     }
     setEmailLogs(grouped);
     if (e.error) console.error("Booking email log could not be loaded:", e.error);
+    const activityGroups: Record<string, BookingActivity[]> = {};
+    for (const row of (a.data ?? []) as BookingActivity[]) {
+      (activityGroups[row.booking_id] ??= []).push(row);
+    }
+    setActivities(activityGroups);
+    if (a.error) console.error("Booking activity history could not be loaded:", a.error);
   };
   useEffect(() => { load(); }, []);
+
+  const logActivity = async (bookingId: string, activityType: string, description: string) => {
+    const { data: userData } = await supabase.auth.getUser();
+    const { data, error } = await (supabase as any).from("booking_activity").insert({ booking_id: bookingId, activity_type: activityType, description, created_by: userData.user?.id ?? null }).select("id, booking_id, activity_type, description, created_at").single();
+    if (error) { console.error("Booking activity could not be saved:", error); return; }
+    const activity = data as BookingActivity;
+    setActivities((current) => ({ ...current, [bookingId]: [activity, ...(current[bookingId] ?? [])] }));
+  };
 
   const openBooking = (booking: Booking) => {
     setSelectedBooking(booking);
@@ -317,6 +336,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     setBookings((current) => current.map((b) => b.id === selectedBooking.id ? { ...b, ...patch } : b));
     setSelectedBooking((current) => current?.id === selectedBooking.id ? { ...current, ...patch } : current);
     toast.success("Kontaktdaten gespeichert.");
+    void logActivity(selectedBooking.id, "contact_updated", "Kontaktdaten wurden aktualisiert.");
   };
 
   const saveBookingNotes = async () => {
@@ -331,6 +351,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     setBookings((current) => current.map((b) => b.id === selectedBooking.id ? { ...b, notes } : b));
     setSelectedBooking((current) => current?.id === selectedBooking.id ? { ...current, notes } : current);
     toast.success("Notiz gespeichert.");
+    void logActivity(selectedBooking.id, "note_updated", "Interne Notiz wurde aktualisiert.");
   };
 
   const setDepositPaid = async (id: string, paid: boolean) => {
@@ -354,6 +375,7 @@ const Dashboard = ({ session }: { session: Session }) => {
       payment_status: paid ? "deposit_paid" : "unpaid",
     } : b));
     toast.success(paid ? "Anzahlung als bezahlt gespeichert." : "Anzahlung als nicht bezahlt gespeichert.");
+    void logActivity(id, "payment_updated", paid ? "Anzahlung von 150 € als bezahlt markiert." : "Anzahlung von 150 € wieder als offen markiert.");
     return true;
   };
 
@@ -366,6 +388,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (error) return toast.error(error.message);
     setBookings((current) => current.map((b) => b.id === id ? { ...b, status } : b));
     toast.success(status === "confirmed" ? "Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
+    void logActivity(id, "status_updated", "Buchungsstatus geändert zu: " + (statusLabel[status] ?? status) + ".");
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
     const { error } = await (supabase as any).from("tour_dates").update(patch).eq("id", id);
