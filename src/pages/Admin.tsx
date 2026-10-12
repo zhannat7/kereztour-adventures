@@ -43,16 +43,17 @@ const BookingResponseDeadline = ({ booking, now }: { booking: Booking; now: numb
   if (booking.status !== "pending") return null;
   const receivedAt = new Date(booking.created_at);
   const remainingMs = 24 * 60 * 60 * 1000 - (now - receivedAt.getTime());
+  const urgent = remainingMs <= 60 * 60 * 1000;
   const formatDuration = (ms: number) => {
     const totalMinutes = Math.floor(Math.abs(ms) / 60_000);
     return `${Math.floor(totalMinutes / 60)} Std. ${totalMinutes % 60} Min.`;
   };
   return (
-    <div className="mt-2 rounded-md bg-amber-500/10 px-2.5 py-2 text-xs text-amber-800">
+    <div className={`mt-2 rounded-md px-2.5 py-2 text-xs ${urgent ? "bg-red-600 text-white" : "bg-amber-500/10 text-amber-800"}`}>
       <p>{receivedAt.toLocaleString("de-DE", { timeZone: "Europe/Vienna", dateStyle: "short", timeStyle: "short" })} · Eingang</p>
       {remainingMs > 0
-        ? <p className="font-semibold">Antwort in 24 Std. · Noch {formatDuration(remainingMs)}</p>
-        : <p className="font-semibold">24 Std. überschritten ({formatDuration(remainingMs)}) · Bitte jetzt antworten</p>}
+        ? <p className="font-semibold">Antwort in 24 Std. · Noch {formatDuration(remainingMs)}{urgent ? " · Bitte jetzt antworten!" : ""}</p>
+        : <p className="font-semibold">24 Std. überschritten ({formatDuration(remainingMs)}) · Bitte jetzt antworten!</p>}
     </div>
   );
 };
