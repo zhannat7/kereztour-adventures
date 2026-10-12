@@ -134,7 +134,7 @@ const Trekking = () => {
                   : item.label;
                 const card = <div className="flex items-center gap-3 py-2.5">
                   
-                  <div className="min-w-0 flex-1"><p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
+                  <div className="min-w-0 flex-1"><p className="text-sm font-medium leading-snug text-foreground sm:text-base">{dateRangeLabel}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
                 return isFull ? (
                   <div key={item.id} className="cursor-not-allowed opacity-75">{card}</div>
