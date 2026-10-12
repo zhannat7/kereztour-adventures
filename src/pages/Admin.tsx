@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
@@ -1082,7 +1082,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   );
 };
 
-const Stat = ({ icon, label, value, hint }: { icon: React.ReactNode; label: string; value: number; hint: string }) => (
+const Stat = ({ icon, label, value, hint, help }: { icon: ReactNode; label: string; value: number; hint: string; help?: string }) => (
   <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 shadow-sm">
     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</span>
     <div className="min-w-0">
