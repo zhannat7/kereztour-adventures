@@ -57,8 +57,11 @@ async function sendEmail(to: string, subject: string, html: string) {
   }
 }
 
-const isDate = (value: unknown): value is string =>
-  typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+const isDate = (value: unknown): value is string => {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+};
 
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
@@ -104,6 +107,9 @@ Deno.serve(async (req) => {
       return json({ error: "Ungültige Personenanzahl." }, 400, origin);
     }
     if (!isDate(travelDate)) return json({ error: "Ungültiges Reisedatum." }, 400, origin);
+    if (travelDate < new Date().toISOString().slice(0, 10)) {
+      return json({ error: "Vergangene Reisetermine können nicht gebucht werden." }, 400, origin);
+    }
 
     const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
       kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
@@ -153,31 +159,35 @@ Deno.serve(async (req) => {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    if (selected.hasTiers) {
-      const { data: availability, error: availabilityError } = await admin.rpc(
-        "get_tour_date_availability",
-      );
+    // Always validate the date against the server-side schedule for both tours.
+    // The browser's availability list is only a convenience, never the source of truth.
+    const { data: availability, error: availabilityError } = await admin.rpc(
+      "get_tour_date_availability",
+    );
 
-      if (availabilityError) throw availabilityError;
+    if (availabilityError) throw availabilityError;
 
-      const selectedDate = (availability ?? []).find(
-        (item: { tour: string; start_date: string }) =>
-          item.tour === "Kultur Tour" && item.start_date === travelDate,
-      );
+    const selectedDate = (availability ?? []).find(
+      (item: { tour: string; start_date: string; status: string }) =>
+        item.tour === selected.label && item.start_date === travelDate && item.status === "open",
+    );
 
-      if (!selectedDate) {
-        return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
-      }
+    if (!selectedDate) {
+      return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
+    }
 
-      const availablePlaces = Number(selectedDate.available_places);
+    const availablePlaces = selected.hasTiers
+      ? Number(tier === "comfort"
+          ? selectedDate.comfort_available_places
+          : selectedDate.economy_available_places)
+      : Number(selectedDate.available_places);
 
-      if (availablePlaces <= 0 || persons > availablePlaces) {
-        return json({
-          error: availablePlaces > 0
-            ? `Für diese Reisevariante sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
-            : "Diese Reisevariante ist für den gewählten Termin bereits ausgebucht.",
-        }, 409, origin);
-      }
+    if (!Number.isFinite(availablePlaces) || availablePlaces <= 0 || persons > availablePlaces) {
+      return json({
+        error: Number.isFinite(availablePlaces) && availablePlaces > 0
+          ? `Für diese Reisevariante sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
+          : "Diese Reisevariante ist für den gewählten Termin bereits ausgebucht.",
+      }, 409, origin);
     }
 
     const { data: insertedBooking, error } = await admin.from("bookings").insert({
