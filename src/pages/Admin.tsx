@@ -521,7 +521,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{hasDepositPaid(b) ? "150 € bezahlt" : "Offen"}</span></td>
                         <td className="whitespace-nowrap px-4 py-3 font-semibold">{b.total_price.toLocaleString("de-DE")} €</td>
                         <td className="px-4 py-3"><div className="flex items-center gap-1.5">
-                          {b.phone && <a href={`https://wa.me/${b.phone.replace(/\\D/g, "")}`} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${b.name}`} aria-label={`WhatsApp an ${b.name}`} className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#25D366] hover:bg-[#25D366]/10"><MessageCircle className="h-5 w-5" /></a>}
+                          {b.phone && <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${b.name}`} aria-label={`WhatsApp an ${b.name}`} className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#25D366] hover:bg-[#25D366]/10"><MessageCircle className="h-5 w-5" /></a>}
                           {b.email && <a href={`mailto:${b.email}`} title="E-Mail schreiben" aria-label="E-Mail schreiben" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Mail className="h-4 w-4" /></a>}
                           {b.phone && <a href={`tel:${b.phone}`} title="Anrufen" aria-label="Anrufen" className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"><Phone className="h-4 w-4" /></a>}
                         </div></td>
@@ -641,7 +641,11 @@ const Dashboard = ({ session }: { session: Session }) => {
                     <button onClick={() => setMessageBooking(selectedBooking)} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"><Mail className="h-4 w-4" />E-Mail verfassen</button>
                   </div>
                 </section>
-                <section className="rounded-xl border border-border p-4"><h3 className="mb-3 font-semibold">Notizen</h3><p className="whitespace-pre-wrap text-sm text-muted-foreground">{selectedBooking.notes?.split(DEPOSIT_PAID_MARKER).join("").trim() || "Noch keine Notizen hinterlegt."}</p></section>
+                <section className="rounded-xl border border-border p-4">
+                  <h3 className="mb-3 font-semibold">Interne Notizen</h3>
+                  <textarea value={notesDraft} onChange={(e) => setNotesDraft(e.target.value)} rows={4} placeholder="Reisewünsche, Absprachen und wichtige Hinweise zum Gast …" className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                  <div className="mt-3 flex justify-end"><button onClick={saveBookingNotes} disabled={notesSaving} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50">{notesSaving ? "Speichert …" : "Notizen speichern"}</button></div>
+                </section>
                 <section className="rounded-xl border border-border p-4"><h3 className="mb-3 font-semibold">Aktivitäten</h3><p className="text-sm text-muted-foreground">Buchungsanfrage eingegangen am {fmt(selectedBooking.created_at)}.</p>{(emailLogs[selectedBooking.id] ?? []).length > 0 && <div className="mt-3 space-y-2">{emailLogs[selectedBooking.id].map((log) => <div key={log.id} className="rounded-md bg-muted/40 p-3 text-sm"><p className="font-medium">{log.subject}</p><p className="text-xs text-muted-foreground">An {log.recipient} · {fmt(log.sent_at)}</p></div>)}</div>}</section>
               </div>
             </aside>
