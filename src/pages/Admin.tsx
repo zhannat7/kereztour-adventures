@@ -457,7 +457,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
 
   const setBookingStatus = async (id: string, status: string) => {
-    if (status === "confirmed" && !depositChecks[id] && !bookings.find((b) => b.id === id)?.payment_status?.includes("deposit_paid")) {
+    if (status === "confirmed" && !depositChecks[id]) {
       return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
     }
     // The current bookings table does not contain a payment_status column.
@@ -600,14 +600,14 @@ const Dashboard = ({ session }: { session: Session }) => {
                       <label className="inline-flex items-center gap-2 text-sm">
                         <input
                           type="checkbox"
-                          checked={Boolean(depositChecks[b.id] || b.payment_status === "deposit_paid")}
+                          checked={Boolean(depositChecks[b.id])}
                           onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))}
                         />
                         Anzahlung von 150 € erhalten
                       </label>
                       <button
                         onClick={() => setBookingStatus(b.id, "confirmed")}
-                        disabled={!depositChecks[b.id] && b.payment_status !== "deposit_paid"}
+                        disabled={!depositChecks[b.id]}
                         className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         Buchung bestätigen
