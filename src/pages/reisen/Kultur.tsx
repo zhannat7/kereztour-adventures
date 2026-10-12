@@ -258,11 +258,7 @@ const Kultur = () => {
                       : item.label;
                     const card = (
                       <div className="flex items-center gap-3 py-4 sm:gap-4">
-                        <div className="flex h-[62px] w-[58px] shrink-0 flex-col items-center justify-center rounded-xl bg-sand/70 text-primary">
-                          <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
-                          <span className="font-display text-2xl leading-tight">{format(parseISO(item.date), "dd")}</span>
-                          <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
-                        </div>
+                        
                         <div className="min-w-0 flex-1">
                           <p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p>
                           <p className={`mt-1 text-xs font-medium ${isFull ? "text-muted-foreground" : "text-primary"}`}>
