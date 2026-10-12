@@ -342,6 +342,22 @@ const Dashboard = ({ session }: { session: Session }) => {
     const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
     return matchesQuery && (bookingFilter === "all" || b.status === bookingFilter);
   });
+  const customerGroups = useMemo(() => {
+    const groups = new Map<string, Booking[]>();
+    for (const booking of filteredBookings) {
+      const key = booking.email.trim().toLowerCase() || booking.phone.replace(/\\D/g, "") || booking.id;
+      const current = groups.get(key) ?? [];
+      current.push(booking);
+      groups.set(key, current);
+    }
+    return Array.from(groups.entries()).map(([key, items]) => ({
+      key,
+      bookings: items.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()),
+      name: items[0].name,
+      email: items[0].email,
+      phone: items[0].phone,
+    }));
+  }, [filteredBookings]);
 
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
@@ -412,60 +428,117 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
               </div>
             </div>
-            {filteredBookings.length === 0 && <Empty text={bookings.length === 0 ? "Noch keine Buchungen vorhanden." : "Keine passenden Buchungen gefunden."} />}
-            {filteredBookings.map((b) => (
-              <div key={b.id} className="rounded-lg border border-border bg-card">
-                <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-3 py-2.5">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-sm font-semibold">{b.name}</h3>
-                      <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span>
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{paymentStatusLabel(b.payment_status, b.notes)}</span>
-                    </div>
-                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-                      <a href={`mailto:${b.email}`} className="hover:text-primary">{b.email}</a>
-                      <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
-                      <span>Anfrage {fmt(b.created_at)}</span>
-                    </div>
-                  </div>
-                  <div className="text-left sm:text-right">
-                    <div className="font-display text-xl leading-tight text-primary">{b.total_price.toLocaleString("de-DE")} €</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border bg-muted/20 px-3 py-2.5 text-sm sm:grid-cols-4">
-                  <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
-                  <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
-                </div>
-                {b.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim() && <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">{b.notes.replaceAll(DEPOSIT_PAID_MARKER, "").trim()}</p>}
-                {(emailLogs[b.id] ?? []).length > 0 && (
-                  <details className="border-t border-border">
-                    <summary className="cursor-pointer px-3 py-2 text-xs font-medium">Gesendete E-Mails ({emailLogs[b.id].length})</summary>
-                    <div className="space-y-2 border-t border-border bg-muted/20 p-3">
-                      {emailLogs[b.id].map((log) => (
-                        <div key={log.id} className="rounded-md border border-border bg-card p-3 text-xs">
-                          <div className="flex flex-wrap justify-between gap-2 text-muted-foreground"><span>{new Date(log.sent_at).toLocaleString("de-DE")}</span><span>Gesendet an: {log.recipient}</span></div>
-                          <div className="mt-1 font-semibold">{log.subject}</div>
-                          <p className="mt-1 whitespace-pre-wrap leading-5 text-muted-foreground">{log.message}</p>
+            {customerGroups.length === 0 && <Empty text={bookings.length === 0 ? "Noch keine Buchungen vorhanden." : "Keine passenden Buchungen gefunden."} />}
+            {customerGroups.map((group) => (
+              <div key={group.key} className="overflow-hidden rounded-lg border border-border bg-card">
+                {group.bookings.length > 1 ? (
+                  <details>
+                    <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 bg-muted/30 px-3 py-3 hover:bg-muted/50">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-semibold">{group.name}</span>
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">{group.bookings.length} Anfragen</span>
+                        </div>
+                        <div className="mt-1 flex flex-wrap gap-x-3 text-xs text-muted-foreground">
+                          <span>{group.email}</span><span>{group.phone}</span>
+                        </div>
+                      </div>
+                      <span className="text-xs font-medium text-primary">Anfragen anzeigen ↓</span>
+                    </summary>
+                    <div className="space-y-2 border-t border-border bg-muted/10 p-2">
+                      {group.bookings.map((b) => (
+                        <div key={b.id} className="rounded-md border border-border bg-card">
+                          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-3 py-2.5">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className="text-sm font-semibold">{b.tour ?? "Reiseanfrage"} · {fmt(b.travel_date)}</h3>
+                                <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span>
+                                <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{paymentStatusLabel(b.payment_status, b.notes)}</span>
+                              </div>
+                            </div>
+                            <div className="font-display text-lg leading-tight text-primary">{b.total_price.toLocaleString("de-DE")} €</div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border bg-muted/20 px-3 py-2 text-sm sm:grid-cols-4">
+                            <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
+                            <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
+                          </div>
+                          {b.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim() && <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">{b.notes.replaceAll(DEPOSIT_PAID_MARKER, "").trim()}</p>}
+                          {(emailLogs[b.id] ?? []).length > 0 && (
+                            <details className="border-t border-border">
+                              <summary className="cursor-pointer px-3 py-2 text-xs font-medium">Gesendete E-Mails ({emailLogs[b.id].length})</summary>
+                              <div className="space-y-2 border-t border-border bg-muted/20 p-3">
+                                {emailLogs[b.id].map((log) => (
+                                  <div key={log.id} className="rounded-md border border-border bg-card p-3 text-xs">
+                                    <div className="flex flex-wrap justify-between gap-2 text-muted-foreground"><span>{new Date(log.sent_at).toLocaleString("de-DE")}</span><span>Gesendet an: {log.recipient}</span></div>
+                                    <div className="mt-1 font-semibold">{log.subject}</div>
+                                    <p className="mt-1 whitespace-pre-wrap leading-5 text-muted-foreground">{log.message}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </details>
+                          )}
+                          <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
+                            <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"><Mail className="h-3.5 w-3.5" />Bestätigungs-E-Mail</a>
+                            <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366] px-2.5 py-1.5 text-xs font-semibold text-white hover:opacity-90"><MessageCircle className="h-3.5 w-3.5" />WhatsApp</a>
+                            {b.status !== "confirmed" && (
+                              <div className="flex flex-wrap items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
+                                <label className="inline-flex items-center gap-1.5 text-xs">
+                                  <input type="checkbox" checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))} disabled={hasDepositPaid(b)} onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))} />
+                                  150 € erhalten
+                                </label>
+                                <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!depositChecks[b.id] && !hasDepositPaid(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Bestätigen</button>
+                              </div>
+                            )}
+                            {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-muted">Auf offen setzen</button>}
+                            {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-md border border-destructive/40 px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5">Stornieren</button>}
+                          </div>
                         </div>
                       ))}
                     </div>
                   </details>
+                ) : (
+                  <div>
+                    {(() => {
+                      const b = group.bookings[0];
+                      return (
+                        <div>
+                          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-3 py-2.5">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className="text-sm font-semibold">{b.name}</h3>
+                                <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span>
+                                <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{paymentStatusLabel(b.payment_status, b.notes)}</span>
+                              </div>
+                              <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+                                <a href={`mailto:${b.email}`} className="hover:text-primary">{b.email}</a>
+                                <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
+                                <span>Anfrage {fmt(b.created_at)}</span>
+                              </div>
+                            </div>
+                            <div className="text-left sm:text-right"><div className="font-display text-xl leading-tight text-primary">{b.total_price.toLocaleString("de-DE")} €</div></div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border bg-muted/20 px-3 py-2.5 text-sm sm:grid-cols-4">
+                            <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
+                            <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
+                          </div>
+                          {b.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim() && <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">{b.notes.replaceAll(DEPOSIT_PAID_MARKER, "").trim()}</p>}
+                          <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
+                            <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"><Mail className="h-3.5 w-3.5" />Bestätigungs-E-Mail</a>
+                            <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366] px-2.5 py-1.5 text-xs font-semibold text-white hover:opacity-90"><MessageCircle className="h-3.5 w-3.5" />WhatsApp</a>
+                            {b.status !== "confirmed" && (
+                              <div className="flex flex-wrap items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
+                                <label className="inline-flex items-center gap-1.5 text-xs"><input type="checkbox" checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))} disabled={hasDepositPaid(b)} onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))} />150 € erhalten</label>
+                                <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!depositChecks[b.id] && !hasDepositPaid(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Bestätigen</button>
+                              </div>
+                            )}
+                            {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-muted">Auf offen setzen</button>}
+                            {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-md border border-destructive/40 px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5">Stornieren</button>}
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
                 )}
-                <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
-                  <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"><Mail className="h-3.5 w-3.5" />Bestätigungs-E-Mail</a>
-                  <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366] px-2.5 py-1.5 text-xs font-semibold text-white hover:opacity-90"><MessageCircle className="h-3.5 w-3.5" />WhatsApp</a>
-                  {b.status !== "confirmed" && (
-                    <div className="flex flex-wrap items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
-                      <label className="inline-flex items-center gap-1.5 text-xs">
-                        <input type="checkbox" checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))} disabled={hasDepositPaid(b)} onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))} />
-                        150 € erhalten
-                      </label>
-                      <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!depositChecks[b.id] && !hasDepositPaid(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Bestätigen</button>
-                    </div>
-                  )}
-                  {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-muted">Auf offen setzen</button>}
-                  {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-md border border-destructive/40 px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5">Stornieren</button>}
-                </div>
               </div>
             ))}
           </div>
