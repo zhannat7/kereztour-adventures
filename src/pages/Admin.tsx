@@ -503,6 +503,7 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="flex gap-1 rounded-md border border-border p-1">
                 <button onClick={() => setBookingView("list")} title="Tabellenansicht" aria-label="Tabellenansicht" className={`rounded px-2 py-1.5 ${bookingView === "list" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}><List className="h-4 w-4" /></button>
                 <button onClick={() => setBookingView("cards")} title="Kartenansicht" aria-label="Kartenansicht" className={`rounded px-2 py-1.5 ${bookingView === "cards" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}><LayoutGrid className="h-4 w-4" /></button>
+                <button onClick={() => setBookingView("kanban")} title="Kanban-Ansicht" aria-label="Kanban-Ansicht" className={`rounded px-2 py-1.5 text-xs font-semibold ${bookingView === "kanban" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>Board</button>
               </div>
             </div>
             {bookingView === "list" && filteredBookings.length > 0 && (
@@ -529,6 +530,35 @@ const Dashboard = ({ session }: { session: Session }) => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+            {bookingView === "kanban" && (
+              <div className="grid gap-3 xl:grid-cols-3">
+                {([
+                  { status: "pending", title: "Offene Anfragen", color: "border-amber-400" },
+                  { status: "confirmed", title: "Bestätigt", color: "border-primary" },
+                  { status: "cancelled", title: "Storniert", color: "border-destructive/60" },
+                ] as const).map((column) => {
+                  const items = filteredBookings.filter((b) => b.status === column.status);
+                  return <section key={column.status} className={"min-w-0 rounded-xl border border-border border-t-4 " + column.color + " bg-card p-3"}>
+                    <div className="mb-3 flex items-center justify-between gap-2"><h3 className="font-semibold">{column.title}</h3><span className="rounded-full bg-muted px-2 py-0.5 text-xs font-semibold">{items.length}</span></div>
+                    <div className="space-y-2">
+                      {items.map((b) => <article key={b.id} className="rounded-lg border border-border bg-background p-3">
+                        <button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button>
+                        <p className="mt-1 text-xs text-muted-foreground">{b.tour ?? "Reise"} · {fmt(b.travel_date)}</p>
+                        <p className="mt-2 text-sm font-semibold">{b.total_price.toLocaleString("de-DE")} €</p>
+                        <span className={"mt-2 inline-flex rounded-full px-2 py-1 text-xs " + (hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>{hasDepositPaid(b) ? "Anzahlung bezahlt" : "Anzahlung offen"}</span>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          {b.phone && <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" title="WhatsApp öffnen" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#25D366] hover:bg-[#25D366]/10"><MessageCircle className="h-4 w-4" /></a>}
+                          {column.status === "pending" && <button onClick={() => openBooking(b)} className="rounded-md border border-border px-2 py-1.5 text-xs">Prüfen</button>}
+                          {column.status === "pending" && <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!hasDepositPaid(b)} className="rounded-md bg-primary px-2 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-40">Bestätigen</button>}
+                          {column.status === "confirmed" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2 py-1.5 text-xs">Wieder öffnen</button>}
+                        </div>
+                      </article>)}
+                      {items.length === 0 && <p className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">Keine Buchungen</p>}
+                    </div>
+                  </section>;
+                })}
               </div>
             )}
             {bookingView === "cards" && filteredBookings.map((b) => (
