@@ -133,11 +133,7 @@ const Trekking = () => {
                   ? `${format(parseISO(item.date), "dd.MM.yyyy")}–${endDateMatch[1]}.${endDateMatch[2]}.${endDateMatch[3]}`
                   : item.label;
                 const card = <div className="flex items-center gap-3 py-4">
-                  <div className="flex h-[54px] w-[50px] shrink-0 flex-col items-center justify-center rounded-lg bg-sand/70 text-primary">
-                    <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
-                    <span className="font-display text-xl leading-tight">{format(parseISO(item.date), "dd")}</span>
-                    <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
-                  </div>
+                  
                   <div className="min-w-0 flex-1"><p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
                 return isFull ? (
