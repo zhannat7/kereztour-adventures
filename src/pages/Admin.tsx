@@ -615,7 +615,7 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="flex items-start gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><BarChart3 className="h-5 w-5" /></span>
                 <div>
-                  <h2 className="text-xl font-semibold"><HelpHeading help={helpText["Website-Analyse"]}>Website-Analyse</HelpHeading></h2>
+                  <h2 className="text-xl font-semibold">Website-Analyse</h2>
                   <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">Besucherzahlen, beliebte Seiten und das Interesse an den einzelnen Reisen an einem Ort sehen.</p>
                 </div>
               </div>
