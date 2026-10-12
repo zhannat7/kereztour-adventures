@@ -294,7 +294,7 @@ const Kultur = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {highlights.map((h) => (
-                <div key={h} className="flex items-start gap-3 border-b border-border bg-card p-4">
+                <div key={h} className="flex items-start gap-3 py-3 pr-3">
                   <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <p className="text-sm text-foreground leading-relaxed">{t(h)}</p>
                 </div>
@@ -354,32 +354,23 @@ const Kultur = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("2 Personen · Jeep")}</p>
+            <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
+              <div className="grid grid-cols-1 divide-y divide-border/70 md:grid-cols-3 md:divide-x md:divide-y-0">
+                <div className="p-6 md:p-7">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("2 Personen · Jeep")}</p>
+                  <p className="font-display text-4xl leading-none tracking-tight text-primary">2.700 €</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
                 </div>
-                <p className="font-display text-4xl leading-none text-primary">2.700 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
-              </div>
-
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("4 Personen · Jeep")}</p>
+                <div className="p-6 md:p-7">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("4 Personen · Jeep")}</p>
+                  <p className="font-display text-4xl leading-none tracking-tight text-primary">1.700 €</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
                 </div>
-                <p className="font-display text-4xl leading-none text-primary">1.700 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
-              </div>
-
-              <div className="rounded-sm border border-border bg-card p-7 shadow-sm md:p-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">{t("Ab 5 Personen · Minibus")}</p>
+                <div className="p-6 md:p-7">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("Ab 5 Personen · Minibus")}</p>
+                  <p className="font-display text-4xl leading-none tracking-tight text-primary">1.300 €</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
                 </div>
-                <p className="font-display text-4xl leading-none text-primary">1.300 €</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
               </div>
             </div>
           </div>
@@ -404,14 +395,14 @@ const Kultur = () => {
                 "Ein Bier pro Person",
                 "Aktivitäten und Eintrittsgelder laut Reiseprogramm",
               ].map((item) => (
-                <div key={item} className="flex items-start gap-3 border border-border bg-card p-4">
+                <div key={item} className="flex items-start gap-3 border-b border-border/70 py-3 pr-3 last:border-b-0">
                   <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                   <p className="text-sm leading-relaxed text-foreground">{t(item)}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="mb-16 border-y border-border bg-sand/50 p-6 md:p-8">
+          <div className="mb-16 rounded-3xl bg-sand/60 p-6 md:p-8">
             <h2 className="mb-3 font-display text-2xl text-foreground">
               {t("Buchung und Zahlung")}
             </h2>
