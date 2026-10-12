@@ -285,7 +285,7 @@ const BookingMessageModal = ({
 const Dashboard = ({ session }: { session: Session }) => {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  const [tab, setTab] = useState<"overview" | "bookings" | "payments" | "messages" | "dates" | "archive">("overview");
+  const [tab, setTab] = useState<"overview" | "analytics" | "bookings" | "payments" | "messages" | "dates" | "archive">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [archivedBookings, setArchivedBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
