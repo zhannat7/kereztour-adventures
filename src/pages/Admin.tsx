@@ -433,7 +433,10 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div key={group.key} className="overflow-hidden rounded-lg border border-border bg-card">
                 {group.bookings.length > 1 ? (
                   <details>
-                    <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 bg-muted/30 px-3 py-3 hover:bg-muted/50">
+                    <summary className="flex cursor-pointer list-none items-center gap-3 bg-muted/30 px-3 py-3 hover:bg-muted/50 sm:px-4">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                        {group.name.split(/\\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase()}
+                      </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="text-sm font-semibold">{group.name}</span>
@@ -443,7 +446,9 @@ const Dashboard = ({ session }: { session: Session }) => {
                           <span>{group.email}</span><span>{group.phone}</span>
                         </div>
                       </div>
-                      <span className="text-xs font-medium text-primary">Anfragen anzeigen ↓</span>
+                      <span className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
+                        Anfragen anzeigen <span aria-hidden="true">↓</span>
+                      </span>
                     </summary>
                     <div className="border-t border-border">
                       <div className="hidden grid-cols-[minmax(160px,1.5fr)_100px_60px_100px_100px_minmax(240px,2fr)] gap-3 bg-muted/50 px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground xl:grid">
