@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip, BarChart3, Eye, Globe, TrendingUp } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; archived_at?: string | null; purge_after?: string | null; name: string; email: string; phone: string;
@@ -559,6 +559,7 @@ const Dashboard = ({ session }: { session: Session }) => {
 
   const tabs = [
     { k: "overview", l: "Übersicht" },
+    { k: "analytics", l: "Website-Analyse" },
     { k: "bookings", l: `Buchungen · ${bookings.length}` },
     { k: "payments", l: `Zahlungen · ${unpaidBookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
@@ -602,11 +603,42 @@ const Dashboard = ({ session }: { session: Session }) => {
           {tabs.map((t) => (
             <button key={t.k} onClick={() => { setTab(t.k); if (t.k === "bookings") setBookingFilter("all"); }}
               className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : t.k === "archive" ? <Trash2 className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
+              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "analytics" ? <BarChart3 className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : t.k === "archive" ? <Trash2 className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
           ))}
         </div>
+
+        {tab === "analytics" && (
+          <section className="space-y-4">
+            <div className="rounded-lg border border-border bg-card p-5">
+              <div className="flex items-start gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><BarChart3 className="h-5 w-5" /></span>
+                <div>
+                  <h2 className="text-xl font-semibold"><HelpHeading help={helpText["Website-Analyse"]}>Website-Analyse</HelpHeading></h2>
+                  <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">Besucherzahlen, beliebte Seiten und das Interesse an den einzelnen Reisen an einem Ort sehen.</p>
+                </div>
+              </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {[
+                  { label: "Besucher", icon: <Users className="h-5 w-5" /> },
+                  { label: "Seitenaufrufe", icon: <Eye className="h-5 w-5" /> },
+                  { label: "Beliebteste Reise", icon: <TrendingUp className="h-5 w-5" /> },
+                  { label: "Besucherquellen", icon: <Globe className="h-5 w-5" /> },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg border border-border bg-background p-4">
+                    <div className="flex items-center gap-2 text-muted-foreground">{item.icon}<span className="text-sm">{item.label}</span></div>
+                    <p className="mt-3 text-sm font-semibold">Noch keine Daten</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+                <p className="font-semibold">Besuchsmessung noch nicht verbunden</p>
+                <p>Diese Ansicht ist vorbereitet, zeigt aber bewusst keine erfundenen Zahlen. Damit Sarina echte Besucherzahlen sehen kann, muss ein datenschutzkonformes Analyse-Tool mit der Website verbunden und die erforderliche Einwilligung berücksichtigt werden.</p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {tab === "overview" && (
           <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
