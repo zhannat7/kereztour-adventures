@@ -58,9 +58,9 @@ const Tours = () => {
             <Link
               key={tour.to}
               to={tour.to}
-              className={`stagger-child group grid grid-cols-1 items-center gap-0 border-b border-border py-8 first:border-t md:py-10 lg:grid-cols-12 lg:gap-10 ${index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
+              className={`stagger-child group grid grid-cols-1 items-center gap-0 border-b border-border py-6 first:border-t md:py-8 lg:grid-cols-12 lg:gap-8 ${index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
             >
-              <div className="relative aspect-[5/4] overflow-hidden bg-muted lg:col-span-7">
+              <div className="relative aspect-[4/3] max-h-[400px] overflow-hidden bg-muted lg:col-span-6">
                 <img
                   src={tour.image}
                   alt={t(tour.title)}
@@ -71,18 +71,18 @@ const Tours = () => {
                 />
               </div>
 
-              <div className="flex flex-col py-6 lg:col-span-5 lg:px-2 lg:py-8">
+              <div className="flex flex-col py-5 lg:col-span-6 lg:px-2 lg:py-6">
                 <span className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
                   {t("Reise")} 0{index + 1}
                 </span>
-                <h3 className="mb-4 font-display text-3xl leading-tight text-foreground sm:text-4xl xl:text-5xl">
+                <h3 className="mb-3 font-display text-3xl leading-tight text-foreground sm:text-4xl xl:text-4xl">
                   {t(tour.title)}
                 </h3>
-                <p className="mb-6 max-w-xl text-base leading-7 text-muted-foreground">
+                <p className="mb-5 max-w-xl text-base leading-7 text-muted-foreground">
                   {t(tour.desc)}
                 </p>
 
-                <div className="mb-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-muted-foreground">
+                <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
                     <Clock className="h-4 w-4 text-primary" /> {t(tour.duration)}
                   </span>
