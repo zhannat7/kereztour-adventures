@@ -29,6 +29,13 @@
       "when": 1791760325710,
       "tag": "0003_add_tour_date_tier_capacities",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791774419646,
+      "tag": "0004_booking_documents_storage_policies",
+      "breakpoints": true
     }
   ]
 }
