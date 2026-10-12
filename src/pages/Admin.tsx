@@ -707,9 +707,9 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="overflow-x-auto pb-3">
                 <div className="grid min-w-[1120px] grid-cols-4 gap-3">
                   {([
-                    { key: "new", title: "Neue Anfragen", color: "border-amber-400", matches: (b: Booking) => b.status === "pending" },
-                    { key: "deposit", title: "Anzahlung ausstehend", color: "border-orange-400", matches: (b: Booking) => b.status === "confirmed" && !hasDepositPaid(b) },
-                    { key: "confirmed", title: "Bestätigt", color: "border-primary", matches: (b: Booking) => b.status === "confirmed" && hasDepositPaid(b) },
+                    { key: "new", title: "Neue Buchungsanfragen", color: "border-amber-400", matches: (b: Booking) => b.status === "pending" },
+                    { key: "deposit", title: "Bestätigt · Anzahlung offen", color: "border-orange-400", matches: (b: Booking) => b.status === "confirmed" && !hasDepositPaid(b) },
+                    { key: "confirmed", title: "Bestätigt & Anzahlung bezahlt", color: "border-primary", matches: (b: Booking) => b.status === "confirmed" && hasDepositPaid(b) },
                     { key: "cancelled", title: "Storniert", color: "border-destructive/60", matches: (b: Booking) => b.status === "cancelled" },
                   ] as const).map((column) => {
                     const items = filteredBookings.filter(column.matches);
@@ -722,6 +722,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                         {items.map((b) => <article key={b.id} className="rounded-lg border border-border bg-card p-3 shadow-sm">
                           <div className="flex items-center gap-1.5"><button onClick={() => openBooking(b)} className="block max-w-full truncate text-left text-sm font-semibold hover:text-primary" title={b.name}>{b.name}</button>{(bookingDocumentCounts[b.id] ?? 0) > 0 && <span title={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary"><Paperclip className="h-3 w-3" />{bookingDocumentCounts[b.id]}</span>}</div>
                           <p className="mt-1 text-xs font-medium text-foreground">{b.tour ?? "Reise"}</p>
+                           <span className={"mt-1 inline-flex rounded-full px-2 py-1 text-[11px] font-semibold " + (b.status === "pending" ? "bg-amber-500/10 text-amber-800" : b.status === "confirmed" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive")}>{b.status === "pending" ? "Buchungsanfrage · noch nicht bestätigt" : b.status === "confirmed" ? "Buchung bestätigt" : "Storniert"}</span>
                            <BookingResponseDeadline booking={b} now={now} />
                           <div className="mt-2 space-y-1 text-xs text-muted-foreground">
                             <p className="flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 shrink-0" />{fmt(b.travel_date)}</p>
@@ -730,14 +731,14 @@ const Dashboard = ({ session }: { session: Session }) => {
                           <div className="mt-3 flex items-end justify-between gap-2 border-t border-border pt-2">
                             <div className="min-w-0">
                               <p className="text-sm font-semibold tabular-nums">{b.total_price.toLocaleString("de-DE")} €</p>
-                              <span className={"mt-1 inline-flex rounded-full px-2 py-1 text-[11px] font-medium " + (hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-amber-500/10 text-amber-700")}>{hasDepositPaid(b) ? "150 € bezahlt" : "150 € offen"}</span>
+                              <span className={"mt-1 inline-flex rounded-full px-2 py-1 text-[11px] font-medium " + (hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-amber-500/10 text-amber-700")}>{hasDepositPaid(b) ? "Anzahlung: 150 € bezahlt" : "Anzahlung: 150 € offen"}</span>
                             </div>
                             {b.phone && <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" title={"WhatsApp an " + b.name} aria-label={"WhatsApp an " + b.name} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[#25D366] hover:bg-[#25D366]/10"><MessageCircle className="h-4 w-4" /></a>}
                           </div>
                           <div className="mt-3 flex flex-wrap gap-1.5">
                             <button onClick={() => openBooking(b)} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted">Details</button>
-                            {b.status === "pending" && <button onClick={() => openBooking(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground">Prüfen</button>}
-                            {b.status === "confirmed" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted">Wieder öffnen</button>}
+                            {b.status === "pending" && <button onClick={() => openBooking(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground">Anfrage prüfen</button>}
+                            
                           </div>
                         </article>)}
                         {items.length === 0 && <p className="rounded-md border border-dashed border-border bg-card/60 p-4 text-center text-xs text-muted-foreground">Keine Buchungen</p>}
