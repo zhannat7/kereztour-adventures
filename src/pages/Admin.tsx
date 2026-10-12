@@ -23,7 +23,8 @@ type BookingEmailLog = {
   id: string; booking_id: string; recipient: string; subject: string; message: string; sent_at: string;
 };
 
-const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
+const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE") : "–");
+const fmtRange = (start: string | null, end: string | null) => `${fmt(start)}–${fmt(end)}`;
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
 const cultureTransportLabel = (tour: string | null, persons: number) =>
@@ -438,7 +439,7 @@ const Dashboard = ({ session }: { session: Session }) => {
             <section className="rounded-xl border border-border bg-card p-5">
               <h2 className="text-lg font-semibold">Kommende Reisetermine</h2>
               <p className="mt-1 text-sm text-muted-foreground">Die nächsten geplanten Abreisen.</p>
-              {upcomingDates.length ? <div className="mt-3 divide-y divide-border">{upcomingDates.map((d) => <div key={d.id} className="flex items-center justify-between gap-3 py-3"><div><p className="font-medium">{d.tour}</p><p className="text-sm text-muted-foreground">{fmt(d.start_date)} – {fmt(d.end_date)}</p></div><span className="whitespace-nowrap text-xs text-muted-foreground">{Math.max(0, d.max_participants - booked(d))} Plätze frei</span></div>)}</div> : <p className="mt-3 rounded-lg bg-muted/30 p-4 text-sm text-muted-foreground">Keine zukünftigen Reisetermine eingetragen.</p>}
+              {upcomingDates.length ? <div className="mt-3 divide-y divide-border">{upcomingDates.map((d) => <div key={d.id} className="flex items-center justify-between gap-3 py-3"><div><p className="font-medium">{d.tour}</p><p className="text-sm text-muted-foreground">{fmtRange(d.start_date, d.end_date)}</p></div><span className="whitespace-nowrap text-xs text-muted-foreground">{Math.max(0, d.max_participants - booked(d))} Plätze frei</span></div>)}</div> : <p className="mt-3 rounded-lg bg-muted/30 p-4 text-sm text-muted-foreground">Keine zukünftigen Reisetermine eingetragen.</p>}
               <button onClick={() => setTab("dates")} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">Alle Reisetermine verwalten <ChevronRight className="h-4 w-4" /></button>
             </section>
           </div>
@@ -547,7 +548,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
                   <Info l="Reise" v={m.tour ?? "–"} />
-                  <Info l="Zeitraum" v={`${fmt(m.date_from)} – ${fmt(m.date_to)}`} />
+                  <Info l="Zeitraum" v={fmtRange(m.date_from, m.date_to)} />
                   <Info l="Personen" v={m.persons ? String(m.persons) : "–"} />
                 </div>
                 {m.message && <p className="mt-3 whitespace-pre-wrap rounded-sm bg-muted p-3 text-sm">{m.message}</p>}
@@ -636,7 +637,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                     return (
                       <tr key={d.id} className="border-t border-border">
                         <td className="p-3 font-medium">{d.tour}</td>
-                        <td className="p-3">{fmt(d.start_date)} – {fmt(d.end_date)}</td>
+                        <td className="p-3">{fmtRange(d.start_date, d.end_date)}</td>
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-1">
