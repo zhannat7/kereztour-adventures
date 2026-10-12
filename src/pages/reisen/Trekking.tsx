@@ -125,16 +125,20 @@ const Trekking = () => {
           </div>
           <div className="rounded-2xl bg-sand/50 p-3 sm:p-4">
             <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
-            <div className="space-y-2">
+            <div className="divide-y divide-primary/15">
               {trekkingDates.map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
-                const card = <div className="flex items-center gap-3 rounded-xl bg-background px-3 py-2.5">
+                const endDateMatch = item.label.match(/[-–]\\s*(\\d{2})\\.(\\d{2})\\.(\\d{4})/);
+                const endDateLabel = endDateMatch
+                  ? `bis ${format(parseISO(`${endDateMatch[3]}-${endDateMatch[2]}-${endDateMatch[1]}`), "d. MMMM yyyy", { locale: de })}`
+                  : item.label;
+                const card = <div className="flex items-center gap-3 py-4">
                   <div className="flex h-[54px] w-[50px] shrink-0 flex-col items-center justify-center rounded-lg bg-sand/70 text-primary">
                     <span className="text-[10px] font-bold uppercase tracking-widest">{format(parseISO(item.date), "MMM", { locale: de })}</span>
                     <span className="font-display text-xl leading-tight">{format(parseISO(item.date), "dd")}</span>
                     <span className="text-[10px]">{format(parseISO(item.date), "yyyy")}</span>
                   </div>
-                  <div className="min-w-0 flex-1"><p className="font-display text-sm leading-snug text-foreground sm:text-base">{item.label}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
+                  <div className="min-w-0 flex-1"><p className="font-display text-base leading-snug text-foreground sm:text-lg">{endDateLabel}</p><p className={"mt-1 text-xs font-medium " + (isFull ? "text-muted-foreground" : "text-primary")}>{isFull ? t("Ausgebucht") : t("Noch {count} {placeWord} verfügbar").replace("{count}", String(item.availablePlaces)).replace("{placeWord}", item.availablePlaces === 1 ? t("Platz") : t("Plätze"))}</p></div>
                 </div>;
                 return isFull ? (
                   <div key={item.id} className="cursor-not-allowed opacity-75">{card}</div>
