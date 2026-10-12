@@ -30,8 +30,13 @@ const input = "w-full rounded-sm border border-border bg-background px-3 py-2 te
 const cultureTransportLabel = (tour: string | null, persons: number) =>
   tour === "Kultur Tour" ? (persons <= 4 ? "Jeep" : "Minibus") : "–";
 
-const paymentStatusLabel = (status: string | undefined) => {
-  if (status === "deposit_paid") return "Anzahlung bezahlt";
+const DEPOSIT_PAID_MARKER = "[[DEPOSIT_PAID_150_EUR]]";
+
+const hasDepositPaid = (booking: Booking) =>
+  booking.payment_status === "deposit_paid" || (booking.notes ?? "").includes(DEPOSIT_PAID_MARKER);
+
+const paymentStatusLabel = (status: string | undefined, notes?: string | null) => {
+  if (status === "deposit_paid" || (notes ?? "").includes(DEPOSIT_PAID_MARKER)) return "150 € Anzahlung bezahlt";
   if (status === "checkout_open") return "Zahlung offen";
   if (status === "refunded") return "Erstattet";
   return "Keine Zahlung";
@@ -460,9 +465,16 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (status === "confirmed" && !depositChecks[id]) {
       return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
     }
-    // The current bookings table does not contain a payment_status column.
-    // Save only the supported status field to avoid a schema-cache error.
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+    const booking = bookings.find((b) => b.id === id);
+    const patch: { status: string; notes?: string | null } = { status };
+    if (status === "confirmed" && booking && !hasDepositPaid(booking)) {
+      // Persist payment confirmation in the existing notes field because the
+      // current bookings schema has no payment_status column.
+      patch.notes = [booking.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim(), DEPOSIT_PAID_MARKER]
+        .filter(Boolean)
+        .join("\n");
+    }
+    const { error } = await supabase.from("bookings").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
     toast.success(status === "confirmed" ? "Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
     load();
@@ -551,14 +563,14 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <div className="text-right">
                     <div className="font-display text-2xl text-primary">{b.total_price.toLocaleString("de-DE")} €</div>
                     <div className="text-xs text-muted-foreground">eingegangen {fmt(b.created_at)}</div>
-                    <div className="text-xs font-medium text-primary mt-1">{paymentStatusLabel(b.payment_status)}{b.deposit_amount ? ` · ${b.deposit_amount.toLocaleString("de-DE")} €` : ""}</div>
+                    <div className="text-xs font-medium text-primary mt-1">{paymentStatusLabel(b.payment_status, b.notes)}</div>
                   </div>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
                   <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
                   <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
                 </div>
-                {b.notes && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes}</p>}
+                {b.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim() && <p className="mt-3 rounded-sm bg-muted p-3 text-sm">{b.notes.replaceAll(DEPOSIT_PAID_MARKER, "").trim()}</p>}
                 {(emailLogs[b.id] ?? []).length > 0 && (
                   <details className="mt-4 rounded-sm border border-border bg-muted/30">
                     <summary className="cursor-pointer px-3 py-2 text-sm font-medium">
@@ -600,14 +612,14 @@ const Dashboard = ({ session }: { session: Session }) => {
                       <label className="inline-flex items-center gap-2 text-sm">
                         <input
                           type="checkbox"
-                          checked={Boolean(depositChecks[b.id])}
+                          checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))}
                           onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))}
                         />
                         Anzahlung von 150 € erhalten
                       </label>
                       <button
                         onClick={() => setBookingStatus(b.id, "confirmed")}
-                        disabled={!depositChecks[b.id]}
+                        disabled={!depositChecks[b.id] && !hasDepositPaid(b)}
                         className="rounded-sm bg-primary px-3 py-1.5 text-sm text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         Buchung bestätigen
