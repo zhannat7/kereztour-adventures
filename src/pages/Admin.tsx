@@ -39,6 +39,28 @@ const cultureTransportLabel = (tour: string | null, persons: number) =>
 
 const DEPOSIT_PAID_MARKER = "[[DEPOSIT_PAID_150_EUR]]";
 
+const BookingResponseDeadline = ({ booking, now }: { booking: Booking; now: number }) => {
+  if (booking.status !== "pending") return null;
+  const receivedAt = new Date(booking.created_at);
+  const elapsedMs = Math.max(0, now - receivedAt.getTime());
+  const remainingMs = 24 * 60 * 60 * 1000 - elapsedMs;
+  const formatDuration = (ms: number) => {
+    const totalMinutes = Math.floor(Math.abs(ms) / 60_000);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours} Std. ${minutes} Min.`;
+  };
+  return (
+    <div className="mt-2 rounded-md bg-amber-500/10 px-2.5 py-2 text-xs text-amber-800">
+      <p className="font-semibold">Eingegangen: {receivedAt.toLocaleString("de-DE", { timeZone: "Europe/Vienna", dateStyle: "short", timeStyle: "short" })} Uhr</p>
+      <p>Du solltest innerhalb von 24 Stunden antworten.</p>
+      {remainingMs > 0
+        ? <p className="font-semibold">Noch {formatDuration(remainingMs)} Zeit.</p>
+        : <p className="font-semibold">Die 24-Stunden-Frist ist seit {formatDuration(remainingMs)} überschritten. Bitte antworte jetzt schnell!</p>}
+    </div>
+  );
+};
+
 const hasDepositPaid = (booking: Booking) =>
   booking.payment_status === "deposit_paid" || (booking.notes ?? "").includes(DEPOSIT_PAID_MARKER);
 
@@ -264,6 +286,8 @@ const BookingMessageModal = ({
 };
 
 const Dashboard = ({ session }: { session: Session }) => {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
   const [tab, setTab] = useState<"overview" | "bookings" | "payments" | "messages" | "dates">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -619,7 +643,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       <tr key={b.id} onClick={() => openBooking(b)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBooking(b); } }} tabIndex={0} role="button" aria-label={"Gästeprofil von " + b.name + " öffnen"} className="cursor-pointer hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
                         <td className="px-4 py-3"><div className="flex items-center gap-2"><button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button>{(bookingDocumentCounts[b.id] ?? 0) > 0 && <span title={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} aria-label={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary"><Paperclip className="h-3.5 w-3.5" />{bookingDocumentCounts[b.id]}</span>}</div><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
                         <td className="px-4 py-3"><p className="font-medium">{b.tour ?? "Reise"}</p><p className="mt-1 text-xs text-muted-foreground">{fmt(b.travel_date)} · {b.persons} {b.persons === 1 ? "Person" : "Personen"}</p></td>
-                        <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span></td>
+                        <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span><BookingResponseDeadline booking={b} now={now} /></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{hasDepositPaid(b) ? "150 € bezahlt" : "Offen"}</span></td>
                         <td className="whitespace-nowrap px-4 py-3 font-semibold">{b.total_price.toLocaleString("de-DE")} €</td>
                         <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}><div className="flex items-center gap-1.5">
@@ -653,6 +677,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                         {items.map((b) => <article key={b.id} className="rounded-lg border border-border bg-card p-3 shadow-sm">
                           <div className="flex items-center gap-1.5"><button onClick={() => openBooking(b)} className="block max-w-full truncate text-left text-sm font-semibold hover:text-primary" title={b.name}>{b.name}</button>{(bookingDocumentCounts[b.id] ?? 0) > 0 && <span title={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary"><Paperclip className="h-3 w-3" />{bookingDocumentCounts[b.id]}</span>}</div>
                           <p className="mt-1 text-xs font-medium text-foreground">{b.tour ?? "Reise"}</p>
+                           <BookingResponseDeadline booking={b} now={now} />
                           <div className="mt-2 space-y-1 text-xs text-muted-foreground">
                             <p className="flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 shrink-0" />{fmt(b.travel_date)}</p>
                             <p className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5 shrink-0" />{b.persons} {b.persons === 1 ? "Person" : "Personen"}</p>
@@ -690,6 +715,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       <a href={`mailto:${b.email}`} className="hover:text-primary">{b.email}</a>
                       <span className="inline-flex items-center gap-2"><a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>{b.phone && <a href={`https://wa.me/${b.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${b.name}`} aria-label={`WhatsApp an ${b.name}`} className="text-[#25D366] hover:opacity-75"><MessageCircle className="h-4 w-4" /></a>}</span>
                       <span>Anfrage vom {fmt(b.created_at)}</span>
+                       <BookingResponseDeadline booking={b} now={now} />
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
@@ -747,6 +773,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 <section className="rounded-xl border border-border p-4">
                   <h3 className="mb-3 flex items-center gap-2 font-semibold"><CalendarDays className="h-4 w-4 text-primary" />Reisedetails</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm"><Info l="Reise" v={selectedBooking.tour ?? "–"} /><Info l="Reisedatum" v={fmt(selectedBooking.travel_date)} /><Info l="Personen" v={String(selectedBooking.persons)} /><Info l="Transport" v={cultureTransportLabel(selectedBooking.tour, selectedBooking.persons)} /><Info l="Kategorie" v={selectedBooking.tier || "–"} /><Info l="Anfrage vom" v={fmt(selectedBooking.created_at)} /></div>
+                  <BookingResponseDeadline booking={selectedBooking} now={now} />
                 </section>
                 <section className="rounded-xl border border-border p-4">
                   <h3 className="mb-3 flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" />Buchung und Zahlung</h3>
