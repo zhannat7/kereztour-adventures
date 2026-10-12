@@ -462,10 +462,10 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
 
   const setBookingStatus = async (id: string, status: string) => {
-    if (status === "confirmed" && !depositChecks[id]) {
+    const booking = bookings.find((b) => b.id === id);
+    if (status === "confirmed" && !depositChecks[id] && !(booking && hasDepositPaid(booking))) {
       return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
     }
-    const booking = bookings.find((b) => b.id === id);
     const patch: { status: string; notes?: string | null } = { status };
     if (status === "confirmed" && booking && !hasDepositPaid(booking)) {
       // Persist payment confirmation in the existing notes field because the
@@ -613,6 +613,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                         <input
                           type="checkbox"
                           checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))}
+                          disabled={hasDepositPaid(b)}
                           onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))}
                         />
                         Anzahlung von 150 € erhalten
