@@ -88,7 +88,7 @@ const Hero = () => {
               loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden]"
+              className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "object-[center_22%] sm:object-center" : "object-center"}`}
               style={{
                 objectPosition: "center center",
                 transform: "translate3d(0, 0, 0)",
