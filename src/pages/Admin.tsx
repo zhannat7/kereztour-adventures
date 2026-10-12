@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2 } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -271,6 +271,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [emailLogs, setEmailLogs] = useState<Record<string, BookingEmailLog[]>>({});
   const [activities, setActivities] = useState<Record<string, BookingActivity[]>>({});
   const [bookingDocuments, setBookingDocuments] = useState<Record<string, BookingDocument[]>>({});
+  const [bookingDocumentCounts, setBookingDocumentCounts] = useState<Record<string, number>>({});
   const [documentBusy, setDocumentBusy] = useState(false);
   const [nd, setNd] = useState({
     tour: "Kultur Tour",
@@ -301,6 +302,9 @@ const Dashboard = ({ session }: { session: Session }) => {
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
+    const { data: documentFolders, error: folderError } = await supabase.storage.from("booking-documents").list("", { limit: 1000 });
+    if (folderError) console.error("Document folders could not be loaded:", folderError);
+    else setBookingDocumentCounts(Object.fromEntries((documentFolders ?? []).filter((item) => item.id == null).map((item) => [item.name, 1])));
     setDates((d.data as TourDate[] | null) ?? []);
     const grouped: Record<string, BookingEmailLog[]> = {};
     for (const row of (e.data ?? []) as BookingEmailLog[]) {
@@ -348,6 +352,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     const { error } = await supabase.storage.from("booking-documents").upload(path, file, { contentType: file.type, upsert: false });
     if (error) { setDocumentBusy(false); return toast.error("Datei konnte nicht hochgeladen werden: " + error.message); }
     await loadBookingDocuments(selectedBooking.id);
+    setBookingDocumentCounts((current) => ({ ...current, [selectedBooking.id]: (current[selectedBooking.id] ?? 0) + 1 }));
     setDocumentBusy(false);
     toast.success("Rechnungsdokument gespeichert.");
     void logActivity(selectedBooking.id, "document_added", "Dokument hinzugefügt: " + file.name);
@@ -363,7 +368,9 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (!window.confirm("Dieses Dokument wirklich löschen?")) return;
     const { error } = await supabase.storage.from("booking-documents").remove([doc.storage_path]);
     if (error) return toast.error("Datei konnte nicht gelöscht werden: " + error.message);
-    setBookingDocuments((current) => ({ ...current, [doc.booking_id]: (current[doc.booking_id] ?? []).filter((item) => item.storage_path !== doc.storage_path) }));
+    const remaining = (bookingDocuments[doc.booking_id] ?? []).filter((item) => item.storage_path !== doc.storage_path);
+    setBookingDocuments((current) => ({ ...current, [doc.booking_id]: remaining }));
+    setBookingDocumentCounts((current) => ({ ...current, [doc.booking_id]: remaining.length }));
     toast.success("Dokument gelöscht.");
     void logActivity(doc.booking_id, "document_deleted", "Dokument gelöscht: " + doc.file_name);
   };
@@ -610,7 +617,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <tbody className="divide-y divide-border">
                     {filteredBookings.map((b) => (
                       <tr key={b.id} onClick={() => openBooking(b)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBooking(b); } }} tabIndex={0} role="button" aria-label={"Gästeprofil von " + b.name + " öffnen"} className="cursor-pointer hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
-                        <td className="px-4 py-3"><button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
+                        <td className="px-4 py-3"><div className="flex items-center gap-2"><button onClick={() => openBooking(b)} className="text-left font-semibold hover:text-primary">{b.name}</button>{(bookingDocumentCounts[b.id] ?? 0) > 0 && <span title={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} aria-label={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary"><Paperclip className="h-3.5 w-3.5" />{bookingDocumentCounts[b.id]}</span>}</div><p className="mt-1 max-w-[210px] truncate text-xs text-muted-foreground">{b.email || "Keine E-Mail"}</p></td>
                         <td className="px-4 py-3"><p className="font-medium">{b.tour ?? "Reise"}</p><p className="mt-1 text-xs text-muted-foreground">{fmt(b.travel_date)} · {b.persons} {b.persons === 1 ? "Person" : "Personen"}</p></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle[b.status] ?? "bg-muted text-foreground"}`}>{statusLabel[b.status] ?? b.status}</span></td>
                         <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${hasDepositPaid(b) ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{hasDepositPaid(b) ? "150 € bezahlt" : "Offen"}</span></td>
@@ -644,7 +651,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       </div>
                       <div className="max-h-[68vh] space-y-2 overflow-y-auto p-2">
                         {items.map((b) => <article key={b.id} className="rounded-lg border border-border bg-card p-3 shadow-sm">
-                          <button onClick={() => openBooking(b)} className="block max-w-full truncate text-left text-sm font-semibold hover:text-primary" title={b.name}>{b.name}</button>
+                          <div className="flex items-center gap-1.5"><button onClick={() => openBooking(b)} className="block max-w-full truncate text-left text-sm font-semibold hover:text-primary" title={b.name}>{b.name}</button>{(bookingDocumentCounts[b.id] ?? 0) > 0 && <span title={(bookingDocumentCounts[b.id] ?? 0) + " Anhang/Anhänge vorhanden"} className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary"><Paperclip className="h-3 w-3" />{bookingDocumentCounts[b.id]}</span>}</div>
                           <p className="mt-1 text-xs font-medium text-foreground">{b.tour ?? "Reise"}</p>
                           <div className="mt-2 space-y-1 text-xs text-muted-foreground">
                             <p className="flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 shrink-0" />{fmt(b.travel_date)}</p>
