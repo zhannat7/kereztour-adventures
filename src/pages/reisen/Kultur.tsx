@@ -260,7 +260,7 @@ const Kultur = () => {
                       <div className="flex items-center gap-3 py-2.5 sm:gap-4">
                         
                         <div className="min-w-0 flex-1">
-                          <p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p>
+                          <p className="text-sm font-medium leading-snug text-foreground sm:text-base">{dateRangeLabel}</p>
                           <p className={`mt-1 text-xs font-medium ${isFull ? "text-muted-foreground" : "text-primary"}`}>
                             {isFull
                               ? t("Ausgebucht")
