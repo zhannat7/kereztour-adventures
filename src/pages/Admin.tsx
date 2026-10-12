@@ -270,7 +270,6 @@ const Dashboard = ({ session }: { session: Session }) => {
     comfort_max_participants: 4,
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
-  const [depositChecks, setDepositChecks] = useState<Record<string, boolean>>({});
   const [bookingSearch, setBookingSearch] = useState("");
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled">("all");
 
@@ -293,23 +292,28 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
   useEffect(() => { load(); }, []);
 
+  const setDepositPaid = async (id: string, paid: boolean) => {
+    const booking = bookings.find((b) => b.id === id);
+    if (!booking) return;
+    const existingNotes = (booking.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim();
+    const notes = paid
+      ? [existingNotes, DEPOSIT_PAID_MARKER].filter(Boolean).join("\n")
+      : existingNotes || null;
+    const { error } = await supabase.from("bookings").update({ notes }).eq("id", id);
+    if (error) return toast.error(error.message);
+    setBookings((current) => current.map((b) => b.id === id ? { ...b, notes, payment_status: paid ? "deposit_paid" : undefined } : b));
+    toast.success(paid ? "Anzahlung als bezahlt gespeichert." : "Anzahlung als nicht bezahlt gespeichert.");
+  };
+
   const setBookingStatus = async (id: string, status: string) => {
     const booking = bookings.find((b) => b.id === id);
-    if (status === "confirmed" && !depositChecks[id] && !(booking && hasDepositPaid(booking))) {
-      return toast.error("Bitte zuerst bestätigen, dass die Anzahlung von 150 € eingegangen ist.");
+    if (status === "confirmed" && !(booking && hasDepositPaid(booking))) {
+      return toast.error("Bitte zuerst die Anzahlung von 150 € als bezahlt markieren.");
     }
-    const patch: { status: string; notes?: string | null } = { status };
-    if (status === "confirmed" && booking && !hasDepositPaid(booking)) {
-      // Persist payment confirmation in the existing notes field because the
-      // current bookings schema has no payment_status column.
-      patch.notes = [booking.notes?.split(DEPOSIT_PAID_MARKER).join("").trim(), DEPOSIT_PAID_MARKER]
-        .filter(Boolean)
-        .join("\n");
-    }
-    const { error } = await supabase.from("bookings").update(patch).eq("id", id);
+    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
     if (error) return toast.error(error.message);
+    setBookings((current) => current.map((b) => b.id === id ? { ...b, status } : b));
     toast.success(status === "confirmed" ? "Buchung bestätigt. Verfügbare Plätze werden aktualisiert." : "Status aktualisiert");
-    load();
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
     const { error } = await (supabase as any).from("tour_dates").update(patch).eq("id", id);
@@ -475,15 +479,13 @@ const Dashboard = ({ session }: { session: Session }) => {
                           <div className="flex flex-wrap items-center gap-1.5">
                             <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1.5 text-[11px] hover:bg-muted"><Mail className="h-3 w-3" />E-Mail</a>
                             <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-md bg-[#25D366] px-2 py-1.5 text-[11px] font-semibold text-white hover:opacity-90"><MessageCircle className="h-3 w-3" />WhatsApp</a>
-                            {b.status !== "confirmed" && (
-                              <div className="flex items-center gap-1 rounded-md bg-muted/50 px-1.5 py-1">
-                                <label className="inline-flex items-center gap-1 text-[11px]" title="Anzahlung von 150 € erhalten">
-                                  <input type="checkbox" checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))} disabled={hasDepositPaid(b)} onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))} />
-                                  150 €
-                                </label>
-                                <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!depositChecks[b.id] && !hasDepositPaid(b)} className="rounded bg-primary px-2 py-1 text-[11px] font-semibold text-primary-foreground disabled:opacity-40">Bestätigen</button>
-                              </div>
-                            )}
+                            <div className="flex items-center gap-1 rounded-md bg-muted/50 px-1.5 py-1">
+                              <label className="inline-flex items-center gap-1 text-[11px]" title="Anzahlungsstatus speichern">
+                                <input type="checkbox" checked={hasDepositPaid(b)} onChange={(e) => setDepositPaid(b.id, e.target.checked)} />
+                                150 € bezahlt
+                              </label>
+                              {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!hasDepositPaid(b)} className="rounded bg-primary px-2 py-1 text-[11px] font-semibold text-primary-foreground disabled:opacity-40">Bestätigen</button>}
+                            </div>
                             {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2 py-1.5 text-[11px] hover:bg-muted">Öffnen</button>}
                             {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-md border border-destructive/40 px-2 py-1.5 text-[11px] text-destructive hover:bg-destructive/5">Storno</button>}
                           </div>
@@ -520,12 +522,10 @@ const Dashboard = ({ session }: { session: Session }) => {
                           <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
                             <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"><Mail className="h-3.5 w-3.5" />Bestätigungs-E-Mail</a>
                             <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366] px-2.5 py-1.5 text-xs font-semibold text-white hover:opacity-90"><MessageCircle className="h-3.5 w-3.5" />WhatsApp</a>
-                            {b.status !== "confirmed" && (
-                              <div className="flex flex-wrap items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
-                                <label className="inline-flex items-center gap-1.5 text-xs"><input type="checkbox" checked={Boolean(depositChecks[b.id] || hasDepositPaid(b))} disabled={hasDepositPaid(b)} onChange={(e) => setDepositChecks((current) => ({ ...current, [b.id]: e.target.checked }))} />150 € erhalten</label>
-                                <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!depositChecks[b.id] && !hasDepositPaid(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Bestätigen</button>
-                              </div>
-                            )}
+                            <div className="flex flex-wrap items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
+                              <label className="inline-flex items-center gap-1.5 text-xs"><input type="checkbox" checked={hasDepositPaid(b)} onChange={(e) => setDepositPaid(b.id, e.target.checked)} />150 € Anzahlung bezahlt</label>
+                              {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!hasDepositPaid(b)} className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Bestätigen</button>}
+                            </div>
                             {b.status !== "pending" && <button onClick={() => setBookingStatus(b.id, "pending")} className="rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-muted">Auf offen setzen</button>}
                             {b.status !== "cancelled" && <button onClick={() => setBookingStatus(b.id, "cancelled")} className="rounded-md border border-destructive/40 px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5">Stornieren</button>}
                           </div>
