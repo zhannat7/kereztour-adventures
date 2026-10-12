@@ -292,9 +292,9 @@ const Kultur = () => {
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
               {t("Was dich")} <span className="italic text-primary">{t("erwartet")}</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
               {highlights.map((h) => (
-                <div key={h} className="flex items-start gap-3 py-3 pr-3">
+                <div key={h} className="flex items-start gap-3 border-b border-primary/15 py-4 pr-3">
                   <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <p className="text-sm text-foreground leading-relaxed">{t(h)}</p>
                 </div>
