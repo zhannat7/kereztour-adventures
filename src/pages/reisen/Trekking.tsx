@@ -117,7 +117,7 @@ const Trekking = () => {
         <section className="mb-10 grid items-start gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
           <div>
             <h1 className="mb-4 font-display text-4xl leading-[1.08] text-foreground sm:text-5xl xl:text-[3.4rem]">
-              🥾 {t("Intensiv-Trekking")}
+              {t("Intensiv-Trekking")}
               <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 10 Tage")}</span>
             </h1>
             <p className="mb-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die beeindruckende Hochgebirgslandschaft Kirgistans erleben möchten. Die Route führt zu zwei spektakulären Bergseen: dem Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
@@ -171,9 +171,9 @@ const Trekking = () => {
           {days.map((d) => (
             <div
               key={d.day}
-              className="group flex gap-5 border-b border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-lg"
+              className="flex gap-5 border-b border-border py-5 transition-colors hover:border-primary/40"
             >
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-sm bg-primary text-lg font-bold text-primary-foreground">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-primary/30 text-sm font-semibold text-primary">
                 {d.day}
               </div>
               <div>
@@ -182,7 +182,7 @@ const Trekking = () => {
                 </p>
                 <h3 className="font-display text-lg text-foreground mb-1">{t(d.title)}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t(d.desc)}</p>
-                {d.stay && <p className="text-xs text-primary mt-2 font-medium">🏕️ {t(d.stay)}</p>}
+                {d.stay && <p className="text-xs text-muted-foreground mt-2 font-medium">{t("Übernachtung")}: {t(d.stay)}</p>}
               </div>
             </div>
           ))}
@@ -192,10 +192,10 @@ const Trekking = () => {
         <h2 className="font-display text-3xl md:text-4xl text-foreground mb-8">
           {t("Wichtige")} <span className="italic text-primary">{t("Hinweise")}</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border mb-16">
           {tips.map((tip) => (
-            <div key={t(tip.title)} className="flex flex-col gap-4 border border-border bg-card p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-primary text-primary-foreground">
+            <div key={t(tip.title)} className="flex flex-col gap-3 py-5 md:px-6 first:md:pl-0 last:md:pr-0">
+              <div className="flex h-9 w-9 items-center justify-center text-primary">
                 <tip.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg text-foreground">{t(tip.title)}</h3>
@@ -205,11 +205,11 @@ const Trekking = () => {
         </div>
 
         {/* CTA */}
-        <div className="border-y border-border bg-muted/60 p-10 text-center">
+        <div className="border-y border-border py-10 text-center">
           <p className="font-display text-2xl text-foreground mb-6">{t("Bereit für das Abenteuer deines Lebens?")}</p>
           <Link
             to="/buchen?tour=trekking"
-            className="inline-flex items-center gap-2 rounded-sm bg-primary px-10 py-4 font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
             {t("Jetzt Platz sichern")} <ArrowRight className="h-4 w-4" />
           </Link>
