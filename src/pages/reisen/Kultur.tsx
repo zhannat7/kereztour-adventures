@@ -354,22 +354,37 @@ const Kultur = () => {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
+            <div className="overflow-hidden rounded-2xl border border-border/70 bg-card md:rounded-3xl">
               <div className="grid grid-cols-1 divide-y divide-border/70 md:grid-cols-3 md:divide-x md:divide-y-0">
-                <div className="p-6 md:p-7">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("2 Personen · Jeep")}</p>
-                  <p className="font-display text-4xl leading-none tracking-tight text-primary">2.700 €</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+                <div className="flex items-center justify-between gap-4 px-4 py-4 md:block md:p-7">
+                  <div className="min-w-0">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-secondary md:mb-3 md:text-xs md:tracking-[0.14em]">{t("2 Personen · Jeep")}</p>
+                    <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
+                  </div>
+                  <div className="shrink-0 text-right md:text-left">
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">2.700 €</p>
+                    <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
+                  </div>
                 </div>
-                <div className="p-6 md:p-7">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("4 Personen · Jeep")}</p>
-                  <p className="font-display text-4xl leading-none tracking-tight text-primary">1.700 €</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+                <div className="flex items-center justify-between gap-4 px-4 py-4 md:block md:p-7">
+                  <div className="min-w-0">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-secondary md:mb-3 md:text-xs md:tracking-[0.14em]">{t("4 Personen · Jeep")}</p>
+                    <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
+                  </div>
+                  <div className="shrink-0 text-right md:text-left">
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.700 €</p>
+                    <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
+                  </div>
                 </div>
-                <div className="p-6 md:p-7">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-secondary">{t("Ab 5 Personen · Minibus")}</p>
-                  <p className="font-display text-4xl leading-none tracking-tight text-primary">1.300 €</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{t("pro Person")}</p>
+                <div className="flex items-center justify-between gap-4 px-4 py-4 md:block md:p-7">
+                  <div className="min-w-0">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-secondary md:mb-3 md:text-xs md:tracking-[0.14em]">{t("Ab 5 Personen · Minibus")}</p>
+                    <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
+                  </div>
+                  <div className="shrink-0 text-right md:text-left">
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.300 €</p>
+                    <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
+                  </div>
                 </div>
               </div>
             </div>
