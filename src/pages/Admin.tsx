@@ -334,7 +334,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (!selectedBooking) return;
     const allowed = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
     if (!allowed.includes(file.type)) return toast.error("Bitte eine PDF-, JPG-, PNG- oder WebP-Datei auswählen.");
-    if (file.size > 15 * 1024 * 1024) return toast.error("Die Datei darf maximal 15 MB groß sein.");
+    if (file.size > 50 * 1024 * 1024) return toast.error("Die Datei darf maximal 50 MB groß sein.");
     setDocumentBusy(true);
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
     const path = selectedBooking.id + "/" + crypto.randomUUID() + "-" + safeName;
@@ -767,7 +767,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                     <Upload className="h-4 w-4" />{documentBusy ? "Wird hochgeladen …" : "Rechnung / Datei hinzufügen"}
                     <input type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" className="hidden" disabled={documentBusy} onChange={(e) => { const file=e.target.files?.[0]; if(file) void uploadBookingDocument(file); e.currentTarget.value=""; }} />
                   </label>
-                  <p className="mt-2 text-xs text-muted-foreground">PDF, JPG, PNG oder WebP · maximal 15 MB pro Datei</p>
+                  <p className="mt-2 text-xs text-muted-foreground">PDF, JPG, PNG oder WebP · maximal 50 MB pro Datei</p>
                   <div className="mt-3 space-y-2">
                     {(bookingDocuments[selectedBooking.id] ?? []).map((doc) => <div key={doc.id} className="flex items-center gap-3 rounded-md border border-border p-3">
                       <FileText className="h-5 w-5 shrink-0 text-primary" />
