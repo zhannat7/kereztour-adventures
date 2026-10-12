@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack, CalendarDays } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -91,6 +91,8 @@ const tips = [
 
 const Trekking = () => {
   const { t } = useLanguage();
+  const [activeDay, setActiveDay] = useState(0);
+  const dayRefs = useRef<HTMLDivElement[]>([]);
   const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }>>([]);
 
   useEffect(() => {
@@ -101,6 +103,29 @@ const Trekking = () => {
     };
     loadTrekkingDates();
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowMid = window.scrollY + window.innerHeight / 2;
+      let closest = 0;
+      let closestDist = Infinity;
+      dayRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const elMid = window.scrollY + rect.top + rect.height / 2;
+        const dist = Math.abs(windowMid - elMid);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      });
+      setActiveDay(closest);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
   <>
     <Navbar />
@@ -171,9 +196,10 @@ const Trekking = () => {
           {days.map((d) => (
             <div
               key={d.day}
+              ref={(el) => { if (el) dayRefs.current[d.day - 1] = el; }}
               className="flex gap-5 border-b border-border py-5 transition-colors hover:border-primary/40"
             >
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-primary/30 text-sm font-semibold text-primary">
+              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-colors duration-300 ${activeDay === d.day - 1 ? "border-primary bg-primary text-primary-foreground" : "border-primary/30 bg-background text-primary"}`}>
                 {d.day}
               </div>
               <div>
