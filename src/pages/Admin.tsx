@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -272,6 +272,9 @@ const Dashboard = ({ session }: { session: Session }) => {
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
   const [bookingSearch, setBookingSearch] = useState("");
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [bookingView, setBookingView] = useState<"list" | "cards">("list");
+  const [tourFilter, setTourFilter] = useState("all");
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
@@ -354,7 +357,8 @@ const Dashboard = ({ session }: { session: Session }) => {
   const filteredBookings = bookings.filter((b) => {
     const query = bookingSearch.trim().toLowerCase();
     const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
-    return matchesQuery && (bookingFilter === "all" || (bookingFilter === "unpaid" ? !hasDepositPaid(b) && b.status !== "cancelled" : b.status === bookingFilter));
+    const matchesTour = tourFilter === "all" || b.tour === tourFilter;
+    return matchesQuery && matchesTour && (bookingFilter === "all" || (bookingFilter === "unpaid" ? !hasDepositPaid(b) && b.status !== "cancelled" : b.status === bookingFilter));
   });
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
@@ -481,7 +485,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                     </div>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
                       <a href={`mailto:${b.email}`} className="hover:text-primary">{b.email}</a>
-                      <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
+                      <span className="inline-flex items-center gap-2"><a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>{b.phone && <a href={`https://wa.me/${b.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${b.name}`} aria-label={`WhatsApp an ${b.name}`} className="text-[#25D366] hover:opacity-75"><MessageCircle className="h-4 w-4" /></a>}</span>
                       <span>Anfrage vom {fmt(b.created_at)}</span>
                     </div>
                   </div>
