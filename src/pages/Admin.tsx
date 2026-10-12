@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, Save, FileText, RotateCcw, History, CheckCircle2 } from "lucide-react";
-import { getEditableTextEntries, getEditableTextFallback, type Language } from "@/i18n/LanguageContext";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2 } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -272,16 +271,8 @@ const Dashboard = ({ session }: { session: Session }) => {
   });
   const [messageBooking, setMessageBooking] = useState<Booking | null>(null);
   const [depositChecks, setDepositChecks] = useState<Record<string, boolean>>({});
-  const [textLanguage, setTextLanguage] = useState<Language>("DE");
-  const [textSearch, setTextSearch] = useState("");
-  const [textValues, setTextValues] = useState<Record<string, string>>({});
-  const [textPreviousValues, setTextPreviousValues] = useState<Record<string, string>>({});
-  const [textDirty, setTextDirty] = useState<Record<string, boolean>>({});
-  const [textHistory, setTextHistory] = useState<Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>>>({});
-  const [savingText, setSavingText] = useState<string | null>(null);
-  const [previewKey, setPreviewKey] = useState(0);
-  const [textLoading, setTextLoading] = useState(false);
-  const [textLoadError, setTextLoadError] = useState<string | null>(null);
+  const [bookingSearch, setBookingSearch] = useState("");
+  const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled">("all");
 
   const load = async () => {
     const [b, m, d, e] = await Promise.all([
@@ -301,165 +292,6 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (e.error) console.error("Booking email log could not be loaded:", e.error);
   };
   useEffect(() => { load(); }, []);
-
-  const loadTextOverrides = async () => {
-    setTextLoading(true);
-    setTextLoadError(null);
-
-    const [{ data, error }, { data: historyData, error: historyError }] = await Promise.all([
-      (supabase as any).from("site_content").select("content_key, language, value"),
-      (supabase as any)
-        .from("site_content_versions")
-        .select("id, content_key, language, previous_value, new_value, changed_at")
-        .eq("language", textLanguage)
-        .order("changed_at", { ascending: false }),
-    ]);
-
-    if (error) {
-      console.error("Website-Texte konnten nicht geladen werden:", error);
-      setTextLoadError("Die Textdatenbank ist momentan nicht erreichbar. Die Sprachumschaltung und das Bearbeiten der Website-Texte werden erst angezeigt, sobald die Verbindung wieder funktioniert.");
-      setTextLoading(false);
-      return;
-    }
-    if (historyError) {
-      console.error("Versionshistorie konnte nicht geladen werden:", historyError);
-      setTextLoadError("Die Website-Texte sind verfügbar, aber die Versionshistorie konnte nicht geladen werden.");
-    }
-
-    const values: Record<string, string> = {};
-    const previousValues: Record<string, string> = {};
-    for (const entry of getEditableTextEntries()) {
-      previousValues[entry.key] = getEditableTextFallback(textLanguage, entry.key);
-    }
-    for (const row of (data ?? []) as Array<{ content_key: string; language: Language; value: string }>) {
-      if (row.language === textLanguage) {
-        values[row.content_key] = row.value;
-        previousValues[row.content_key] = row.value;
-      }
-    }
-
-    const history: Record<string, Array<{ id: string; previous_value: string; new_value: string; changed_at: string }>> = {};
-    for (const row of (historyData ?? []) as Array<{ id: string; content_key: string; previous_value: string; new_value: string; changed_at: string }>) {
-      (history[row.content_key] ??= []).push(row);
-    }
-
-    setTextValues(values);
-    setTextPreviousValues(previousValues);
-    setTextHistory(history);
-    setTextDirty({});
-    setTextLoading(false);
-  };
-
-  useEffect(() => {
-    if (tab === "texts") void loadTextOverrides();
-  }, [tab, textLanguage]);
-
-  const saveText = async (key: string) => {
-    const value = textValues[key]?.trim() ?? "";
-    const previous = textPreviousValues[key] ?? getEditableTextFallback(textLanguage, key);
-
-    if (!value) return toast.error("Der Text darf nicht leer sein.");
-    if (value.length > 5000) return toast.error("Maximal 5.000 Zeichen pro Text.");
-    if (value === previous) {
-      setTextDirty((current) => ({ ...current, [key]: false }));
-      return toast.info("Keine Änderung vorhanden.");
-    }
-
-    setSavingText(key);
-
-    const { error: historyError } = await (supabase as any)
-      .from("site_content_versions")
-      .insert({
-        content_key: key,
-        language: textLanguage,
-        previous_value: previous,
-        new_value: value,
-        changed_by: session.user.id,
-      });
-
-    if (historyError) {
-      setSavingText(null);
-      return toast.error("Versionshistorie konnte nicht gespeichert werden.");
-    }
-
-    const { error } = await (supabase as any)
-      .from("site_content")
-      .upsert(
-        { content_key: key, language: textLanguage, value, updated_at: new Date().toISOString() },
-        { onConflict: "content_key,language" },
-      );
-
-    setSavingText(null);
-    if (error) return toast.error("Text konnte nicht gespeichert werden.");
-
-    setTextPreviousValues((current) => ({ ...current, [key]: value }));
-    setTextHistory((current) => ({
-      ...current,
-      [key]: [
-        {
-          id: crypto.randomUUID(),
-          previous_value: previous,
-          new_value: value,
-          changed_at: new Date().toISOString(),
-        },
-        ...(current[key] ?? []),
-      ].slice(0, 10),
-    }));
-    setTextValues((current) => ({ ...current, [key]: value }));
-    setTextDirty((current) => ({ ...current, [key]: false }));
-    setPreviewKey((current) => current + 1);
-    toast.success("Text gespeichert");
-  };
-
-  const resetText = async (key: string) => {
-    const original = getEditableTextFallback(textLanguage, key);
-    const previous = textPreviousValues[key] ?? original;
-    if (previous === original) return;
-
-    setSavingText(key);
-
-    const { error: historyError } = await (supabase as any)
-      .from("site_content_versions")
-      .insert({
-        content_key: key,
-        language: textLanguage,
-        previous_value: previous,
-        new_value: original,
-        changed_by: session.user.id,
-      });
-
-    if (historyError) {
-      setSavingText(null);
-      return toast.error("Versionshistorie konnte nicht gespeichert werden.");
-    }
-
-    const { error } = await (supabase as any)
-      .from("site_content")
-      .upsert(
-        { content_key: key, language: textLanguage, value: original, updated_at: new Date().toISOString() },
-        { onConflict: "content_key,language" },
-      );
-
-    setSavingText(null);
-    if (error) return toast.error("Originaltext konnte nicht wiederhergestellt werden.");
-
-    setTextValues((current) => ({ ...current, [key]: original }));
-    setTextPreviousValues((current) => ({ ...current, [key]: original }));
-    setTextHistory((current) => ({
-      ...current,
-      [key]: [
-        {
-          id: crypto.randomUUID(),
-          previous_value: previous,
-          new_value: original,
-          changed_at: new Date().toISOString(),
-        },
-        ...(current[key] ?? []),
-      ].slice(0, 10),
-    }));
-    setTextDirty((current) => ({ ...current, [key]: false }));
-    toast.success("Originaltext wiederhergestellt");
-  };
 
   const setBookingStatus = async (id: string, status: string) => {
     const booking = bookings.find((b) => b.id === id);
@@ -505,6 +337,11 @@ const Dashboard = ({ session }: { session: Session }) => {
 
   // Kyrchyn Tour is no longer managed on this website; hide legacy database rows in the dashboard.
   const visibleDates = dates.filter((d) => d.tour !== "Kyrchyn Tour");
+  const filteredBookings = bookings.filter((b) => {
+    const query = bookingSearch.trim().toLowerCase();
+    const matchesQuery = !query || [b.name, b.email, b.phone, b.tour ?? "", b.travel_date].some((v) => v.toLowerCase().includes(query));
+    return matchesQuery && (bookingFilter === "all" || b.status === bookingFilter);
+  });
 
   const booked = (d: TourDate) =>
     bookings.filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour).reduce((s, b) => s + b.persons, 0);
@@ -518,61 +355,83 @@ const Dashboard = ({ session }: { session: Session }) => {
   return (
     <div className="min-h-screen bg-sand/30">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
-          <div>
-            <span className="font-display text-2xl text-primary">Kereztour</span>
-            <span className="ml-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">Admin</span>
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground"><CalendarDays className="h-5 w-5" /></span>
+            <div>
+              <span className="font-display text-2xl text-primary">Kereztour</span>
+              <p className="text-xs text-muted-foreground">Verwaltungsbereich</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4 text-sm">
-            <span className="hidden text-muted-foreground sm:inline">{session.user.email}</span>
-            <Link to="/" className="text-muted-foreground hover:text-primary">Website</Link>
-            <button onClick={() => supabase.auth.signOut()} className="rounded-sm border border-border px-3 py-1.5 hover:bg-muted">Abmelden</button>
+          <div className="flex items-center gap-3 text-sm">
+            <span className="hidden max-w-[240px] truncate text-muted-foreground md:inline">{session.user.email}</span>
+            <Link to="/" className="rounded-md border border-border bg-card px-3 py-2 hover:bg-muted">Website ansehen</Link>
+            <button onClick={() => supabase.auth.signOut()} className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground">Abmelden</button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1600px] px-6 py-8">
-        <div className="mb-8">
-          <h1 className="font-display text-3xl text-primary">Verwaltung</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Buchungen prüfen, Kundenanfragen beantworten und Reisetermine verwalten.</p>
+      <main className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8">
+        <div className="mb-7">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Übersicht</p>
+          <h1 className="font-display text-3xl text-primary">Guten Tag, Sarina</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Hier verwaltest du Buchungen, beantwortest Kundenanfragen und pflegst die verfügbaren Reisetermine.</p>
         </div>
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Stat label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} />
-          <Stat label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} />
-          <Stat label="Kontaktanfragen" value={messages.length} />
+        <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} hint="Warten auf Prüfung" />
+          <Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} hint="Zahlung bestätigt" />
+          <Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Reisenden" />
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2 rounded-lg border border-border bg-card p-2">
+        <div className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2 shadow-sm">
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
-              className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+              className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+              {t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
           ))}
         </div>
 
         {tab === "bookings" && (
-          <div className="space-y-3">
-            {bookings.length === 0 && <Empty text="Noch keine Buchungen." />}
-            {bookings.map((b) => (
-              <div key={b.id} className="rounded-md border border-border bg-card p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
+          <div className="space-y-4">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <div className="mb-3">
+                <h2 className="text-lg font-semibold text-foreground">Buchungen verwalten</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Zahlung prüfen, Buchung bestätigen und den Kunden kontaktieren.</p>
+              </div>
+              <div className="flex flex-col gap-3 md:flex-row">
+                <div className="relative min-w-0 flex-1">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <input className="w-full rounded-lg border border-border bg-background py-2.5 pl-9 pr-3 text-sm" value={bookingSearch} onChange={(e) => setBookingSearch(e.target.value)} placeholder="Suche nach Name, E-Mail, Telefon oder Reise…" />
+                </div>
+                <div className="flex flex-wrap gap-1 rounded-lg bg-muted p-1">
+                  {([{value:"all",label:"Alle"},{value:"pending",label:"Offen"},{value:"confirmed",label:"Bestätigt"},{value:"cancelled",label:"Storniert"}] as const).map((f) => (
+                    <button key={f.value} onClick={() => setBookingFilter(f.value)} className={`rounded-md px-3 py-2 text-xs font-semibold ${bookingFilter === f.value ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>{f.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {filteredBookings.length === 0 && <Empty text={bookings.length === 0 ? "Noch keine Buchungen vorhanden." : "Keine Buchungen für diese Suche oder Auswahl gefunden."} />}
+            {filteredBookings.map((b) => (
+              <div key={b.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border bg-muted/20 p-4 sm:p-5">
+                  <div className="min-w-0">
                     <div className="flex items-center gap-3">
-                      <h3 className="font-semibold">{b.name}</h3>
+                      <h3 className="text-base font-semibold text-foreground">{b.name}</h3>
                       <span className={`rounded-sm px-2 py-0.5 text-xs font-medium ${statusStyle[b.status] ?? ""}`}>{statusLabel[b.status] ?? b.status}</span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
                       <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="hover:text-primary">{b.email}</a> · <a href={`tel:${b.phone}`} className="hover:text-primary">{b.phone}</a>
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="min-w-[160px] text-left sm:text-right">
                     <div className="font-display text-2xl text-primary">{b.total_price.toLocaleString("de-DE")} €</div>
-                    <div className="text-xs text-muted-foreground">eingegangen {fmt(b.created_at)}</div>
-                    <div className="text-xs font-medium text-primary mt-1">{paymentStatusLabel(b.payment_status, b.notes)}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Anfrage vom {fmt(b.created_at)}</div>
+                    <div className="mt-2 inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">{paymentStatusLabel(b.payment_status, b.notes)}</div>
                   </div>
                 </div>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4 sm:px-5">
                   <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
                   <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
                 </div>
@@ -596,7 +455,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                     </div>
                   </details>
                 )}
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2 border-t border-border bg-muted/10 p-4 sm:px-5">
                   <a
                     href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`}
                     className="inline-flex items-center gap-2 rounded-sm border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted"
@@ -642,7 +501,11 @@ const Dashboard = ({ session }: { session: Session }) => {
         )}
 
         {tab === "messages" && (
-          <div className="space-y-3">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground">Kontaktanfragen</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Kontaktiere Interessenten direkt per E-Mail und prüfe ihre Nachricht.</p>
+            </div>
             {messages.length === 0 && <Empty text="Noch keine Anfragen." />}
             {messages.map((m) => (
               <div key={m.id} className="rounded-md border border-border bg-card p-5">
@@ -674,7 +537,11 @@ const Dashboard = ({ session }: { session: Session }) => {
         )}
 
         {tab === "dates" && (
-          <div className="space-y-6">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground">Reisetermine & Kapazitäten</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Lege Termine an und verwalte die maximale Teilnehmerzahl für jeden Termin.</p>
+            </div>
             <form onSubmit={addDate} className="grid grid-cols-1 gap-3 rounded-md border border-border bg-card p-5 sm:grid-cols-5 sm:items-end">
               <label className="text-xs text-muted-foreground">Reise
                 <select
@@ -732,7 +599,7 @@ const Dashboard = ({ session }: { session: Session }) => {
               <button className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Termin hinzufügen</button>
             </form>
 
-            <div className="overflow-x-auto rounded-md border border-border bg-card">
+            <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
               <table className="w-full text-sm">
                 <thead className="bg-muted text-left text-xs uppercase tracking-wider text-muted-foreground">
                   <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum</th><th className="p-3">Belegt</th><th className="p-3">Kapazität</th><th className="p-3">Status</th><th className="p-3"></th></tr>
@@ -822,10 +689,14 @@ const Dashboard = ({ session }: { session: Session }) => {
   );
 };
 
-const Stat = ({ label, value }: { label: string; value: number }) => (
-  <div className="rounded-md border border-border bg-card p-5">
-    <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
-    <div className="mt-1 font-display text-4xl text-primary">{value}</div>
+const Stat = ({ icon, label, value, hint }: { icon: React.ReactNode; label: string; value: number; hint: string }) => (
+  <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 shadow-sm">
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">{icon}</span>
+    <div className="min-w-0">
+      <div className="text-sm font-medium text-muted-foreground">{label}</div>
+      <div className="mt-1 font-display text-3xl text-primary">{value}</div>
+      <div className="mt-1 text-xs text-muted-foreground">{hint}</div>
+    </div>
   </div>
 );
 const Info = ({ l, v }: { l: string; v: string }) => (
