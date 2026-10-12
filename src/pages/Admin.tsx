@@ -302,7 +302,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (status === "confirmed" && booking && !hasDepositPaid(booking)) {
       // Persist payment confirmation in the existing notes field because the
       // current bookings schema has no payment_status column.
-      patch.notes = [booking.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim(), DEPOSIT_PAID_MARKER]
+      patch.notes = [booking.notes?.split(DEPOSIT_PAID_MARKER).join("").trim(), DEPOSIT_PAID_MARKER]
         .filter(Boolean)
         .join("\n");
     }
@@ -516,7 +516,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                             <Info l="Reise" v={b.tour ?? "–"} /><Info l="Reisedatum" v={fmt(b.travel_date)} />
                             <Info l="Personen" v={String(b.persons)} /><Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
                           </div>
-                          {b.notes?.replaceAll(DEPOSIT_PAID_MARKER, "").trim() && <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">{b.notes.replaceAll(DEPOSIT_PAID_MARKER, "").trim()}</p>}
+                          {b.notes?.split(DEPOSIT_PAID_MARKER).join("").trim() && <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">{b.notes.split(DEPOSIT_PAID_MARKER).join("").trim()}</p>}
                           <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
                             <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\n\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\n\nReise: ${b.tour ?? "–"}\nReisedatum: ${fmt(b.travel_date)}\nPersonen: ${b.persons}\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\n\nBei Fragen antworte gerne auf diese E-Mail.\n\nLiebe Grüße\nSarina\nKereztour`)}`} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"><Mail className="h-3.5 w-3.5" />Bestätigungs-E-Mail</a>
                             <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366] px-2.5 py-1.5 text-xs font-semibold text-white hover:opacity-90"><MessageCircle className="h-3.5 w-3.5" />WhatsApp</a>

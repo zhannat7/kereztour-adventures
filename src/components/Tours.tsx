@@ -23,7 +23,7 @@ const tours: Tour[] = [
     price: "1.300 €",
     to: "/reisen/kultur",
     image: "/tour-kultur.jpg",
-    imagePosition: "center 45%",
+    imagePosition: "center top",
   },
   {
     title: "Intensiv-Trekking",
