@@ -561,6 +561,42 @@ const Dashboard = ({ session }: { session: Session }) => {
             ))}
           </div>
         )}
+        {selectedBooking && (
+          <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={() => setSelectedBooking(null)}>
+            <aside className="h-full w-full max-w-xl overflow-y-auto border-l border-border bg-card shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="sticky top-0 z-10 flex items-start justify-between border-b border-border bg-card px-5 py-4">
+                <div><p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gästeprofil · Kereztour</p><h2 className="mt-1 text-xl font-semibold">{selectedBooking.name}</h2><p className="mt-1 text-sm text-muted-foreground">{selectedBooking.tour ?? "Reise"} · {fmt(selectedBooking.travel_date)}</p></div>
+                <button onClick={() => setSelectedBooking(null)} aria-label="Profil schließen" className="rounded-full p-2 hover:bg-muted"><X className="h-5 w-5" /></button>
+              </div>
+              <div className="space-y-4 p-5">
+                <section className="rounded-xl border border-border p-4">
+                  <h3 className="mb-3 flex items-center gap-2 font-semibold"><UserRound className="h-4 w-4 text-primary" />Kontaktdaten</h3>
+                  <div className="space-y-3 text-sm">
+                    <div><p className="text-xs text-muted-foreground">Telefon</p><div className="flex flex-wrap items-center gap-3"><span className="font-medium">{selectedBooking.phone || "Keine Telefonnummer hinterlegt"}</span>{selectedBooking.phone && <><a href={"https://wa.me/" + selectedBooking.phone.replace(/\D/g, "")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#25D366]/10 px-3 py-1.5 font-semibold text-[#168A43]"><MessageCircle className="h-4 w-4" />WhatsApp öffnen</a><a href={"tel:" + selectedBooking.phone} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5"><Phone className="h-4 w-4" />Anrufen</a></>}</div></div>
+                    <div><p className="text-xs text-muted-foreground">E-Mail</p>{selectedBooking.email ? <a href={"mailto:" + selectedBooking.email} className="font-medium hover:text-primary">{selectedBooking.email}</a> : <p>Keine E-Mail-Adresse hinterlegt</p>}</div>
+                  </div>
+                </section>
+                <section className="rounded-xl border border-border p-4">
+                  <h3 className="mb-3 flex items-center gap-2 font-semibold"><CalendarDays className="h-4 w-4 text-primary" />Reisedetails</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm"><Info l="Reise" v={selectedBooking.tour ?? "–"} /><Info l="Reisedatum" v={fmt(selectedBooking.travel_date)} /><Info l="Personen" v={String(selectedBooking.persons)} /><Info l="Transport" v={cultureTransportLabel(selectedBooking.tour, selectedBooking.persons)} /><Info l="Kategorie" v={selectedBooking.tier || "–"} /><Info l="Anfrage vom" v={fmt(selectedBooking.created_at)} /></div>
+                </section>
+                <section className="rounded-xl border border-border p-4">
+                  <h3 className="mb-3 flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" />Buchung und Zahlung</h3>
+                  <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Buchungsstatus</span><span className={"rounded-full px-2.5 py-1 text-xs font-semibold " + (statusStyle[selectedBooking.status] ?? "bg-muted")}>{statusLabel[selectedBooking.status] ?? selectedBooking.status}</span></div>
+                  <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Gesamtpreis</span><strong>{selectedBooking.total_price.toLocaleString("de-DE")} €</strong></div>
+                  <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={(e) => { const paid=e.target.checked; setDepositPaid(selectedBooking.id, paid); setSelectedBooking((current) => current ? {...current, payment_status: paid ? "deposit_paid" : "unpaid", deposit_amount: paid ? 150 : 0} : null); }} />Als bezahlt markieren</label></div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {selectedBooking.status !== "confirmed" && <button onClick={() => { setBookingStatus(selectedBooking.id, "confirmed"); setSelectedBooking((current) => current ? {...current, status:"confirmed"} : null); }} disabled={!hasDepositPaid(selectedBooking)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">Buchung bestätigen</button>}
+                    {selectedBooking.status !== "pending" && <button onClick={() => { setBookingStatus(selectedBooking.id, "pending"); setSelectedBooking((current) => current ? {...current, status:"pending"} : null); }} className="rounded-md border border-border px-3 py-2 text-sm">Auf offen setzen</button>}
+                    <button onClick={() => setMessageBooking(selectedBooking)} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"><Mail className="h-4 w-4" />E-Mail verfassen</button>
+                  </div>
+                </section>
+                <section className="rounded-xl border border-border p-4"><h3 className="mb-3 font-semibold">Notizen</h3><p className="whitespace-pre-wrap text-sm text-muted-foreground">{selectedBooking.notes?.split(DEPOSIT_PAID_MARKER).join("").trim() || "Noch keine Notizen hinterlegt."}</p></section>
+                <section className="rounded-xl border border-border p-4"><h3 className="mb-3 font-semibold">Aktivitäten</h3><p className="text-sm text-muted-foreground">Buchungsanfrage eingegangen am {fmt(selectedBooking.created_at)}.</p>{(emailLogs[selectedBooking.id] ?? []).length > 0 && <div className="mt-3 space-y-2">{emailLogs[selectedBooking.id].map((log) => <div key={log.id} className="rounded-md bg-muted/40 p-3 text-sm"><p className="font-medium">{log.subject}</p><p className="text-xs text-muted-foreground">An {log.recipient} · {fmt(log.sent_at)}</p></div>)}</div>}</section>
+              </div>
+            </aside>
+          </div>
+        )}
 
         {tab === "messages" && (
           <div className="space-y-4">
