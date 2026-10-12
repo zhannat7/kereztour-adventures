@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
 type Booking = {
-  id: string; created_at: string; name: string; email: string; phone: string;
+  id: string; created_at: string; archived_at?: string | null; purge_after?: string | null; name: string; email: string; phone: string;
   persons: number; travel_date: string; tier: string; tour: string | null;
   notes: string | null; total_price: number; status: string;
   payment_status?: string; deposit_amount?: number; remaining_amount?: number;
@@ -285,8 +285,9 @@ const BookingMessageModal = ({
 const Dashboard = ({ session }: { session: Session }) => {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  const [tab, setTab] = useState<"overview" | "bookings" | "payments" | "messages" | "dates">("overview");
+  const [tab, setTab] = useState<"overview" | "bookings" | "payments" | "messages" | "dates" | "archive">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [archivedBookings, setArchivedBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
   const [emailLogs, setEmailLogs] = useState<Record<string, BookingEmailLog[]>>({});
@@ -314,14 +315,16 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
 
   const load = async () => {
-    const [b, m, d, e, a] = await Promise.all([
-      supabase.from("bookings").select("*").order("created_at", { ascending: false }),
+    const [b, archived, m, d, e, a] = await Promise.all([
+      supabase.from("bookings").select("*").is("archived_at", null).order("created_at", { ascending: false }),
+      supabase.from("bookings").select("*").not("archived_at", "is", null).order("archived_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
       (supabase as any).from("tour_dates").select("*").order("start_date"),
       (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
       (supabase as any).from("booking_activity").select("id, booking_id, activity_type, description, created_at").order("created_at", { ascending: false }),
     ]);
     setBookings((b.data as Booking[]) ?? []);
+    setArchivedBookings((archived.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
     const { data: documentFolders, error: folderError } = await supabase.storage.from("booking-documents").list("", { limit: 1000 });
     if (folderError) console.error("Document folders could not be loaded:", folderError);
@@ -341,6 +344,25 @@ const Dashboard = ({ session }: { session: Session }) => {
     if (a.error) console.error("Booking activity history could not be loaded:", a.error);
   };
   useEffect(() => { load(); }, []);
+
+  const archiveBooking = async (booking: Booking) => {
+    if (!window.confirm(`Buchung von ${booking.name} archivieren? Sie bleibt 30 Tage wiederherstellbar.`)) return;
+    const archivedAt = new Date();
+    const purgeAfter = new Date(archivedAt.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const { error } = await supabase.from("bookings").update({ archived_at: archivedAt.toISOString(), purge_after: purgeAfter.toISOString() } as any).eq("id", booking.id);
+    if (error) return toast.error("Buchung konnte nicht archiviert werden: " + error.message);
+    setSelectedBooking(null);
+    toast.success("Buchung für 30 Tage archiviert.");
+    await load();
+  };
+
+  const restoreBooking = async (booking: Booking) => {
+    if (!window.confirm(`Buchung von ${booking.name} wiederherstellen?`)) return;
+    const { error } = await supabase.from("bookings").update({ archived_at: null, purge_after: null } as any).eq("id", booking.id);
+    if (error) return toast.error("Buchung konnte nicht wiederhergestellt werden: " + error.message);
+    toast.success("Buchung wiederhergestellt.");
+    await load();
+  };
 
   const logActivity = async (bookingId: string, activityType: string, description: string) => {
     const { data: userData } = await supabase.auth.getUser();
@@ -516,6 +538,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     { k: "payments", l: `Zahlungen · ${unpaidBookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
     { k: "dates", l: `Reisetermine · ${visibleDates.length}` },
+    { k: "archive", l: `Archiv · ${archivedBookings.length}` },
   ] as const;
 
   return (
@@ -554,7 +577,7 @@ const Dashboard = ({ session }: { session: Session }) => {
           {tabs.map((t) => (
             <button key={t.k} onClick={() => { setTab(t.k); if (t.k === "bookings") setBookingFilter("all"); }}
               className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
+              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : t.k === "archive" ? <Trash2 className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
           ))}
@@ -778,6 +801,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Gesamtpreis</span><strong>{selectedBooking.total_price.toLocaleString("de-DE")} €</strong></div>
                   <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-sm text-muted-foreground">Anzahlung 150 €</span><label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={hasDepositPaid(selectedBooking)} onChange={async (e) => { const paid=e.target.checked; const ok=await setDepositPaid(selectedBooking.id, paid); if (!ok) return; setSelectedBooking((current) => { if (!current) return null; const base=(current.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim(); const notes=paid ? [base, DEPOSIT_PAID_MARKER].filter(Boolean).join("\n") : base || null; return {...current, notes, payment_status: paid ? "deposit_paid" : "unpaid"}; }); }} />Als bezahlt markieren</label></div>
                   <div className="mt-4 flex flex-wrap gap-2">
+                     <button onClick={() => void archiveBooking(selectedBooking)} className="rounded-md border border-destructive/40 px-3 py-2 text-sm text-destructive hover:bg-destructive/5">Archivieren (30 Tage)</button>
                     {selectedBooking.status !== "confirmed" && <button onClick={() => { setBookingStatus(selectedBooking.id, "confirmed"); setSelectedBooking((current) => current ? {...current, status:"confirmed"} : null); }} disabled={!hasDepositPaid(selectedBooking)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">Buchung bestätigen</button>}
                     {selectedBooking.status !== "pending" && <button onClick={() => { setBookingStatus(selectedBooking.id, "pending"); setSelectedBooking((current) => current ? {...current, status:"pending"} : null); }} className="rounded-md border border-border px-3 py-2 text-sm">Auf offen setzen</button>}
                     <button onClick={() => setMessageBooking(selectedBooking)} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"><Mail className="h-4 w-4" />E-Mail verfassen</button>
@@ -821,6 +845,27 @@ const Dashboard = ({ session }: { session: Session }) => {
               </div>
             </aside>
           </div>
+        )}
+
+        {tab === "archive" && (
+          <section className="space-y-3 rounded-xl border border-border bg-card p-4">
+            <div>
+              <h2 className="text-lg font-semibold">Archivierte Buchungen</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Buchungen bleiben 30 Tage im Archiv. Anhänge werden erst zusammen mit der Buchung endgültig gelöscht.</p>
+            </div>
+            {archivedBookings.length === 0 && <Empty text="Das Archiv ist leer." />}
+            {archivedBookings.map((booking) => {
+              const purgeAt = booking.purge_after ? new Date(booking.purge_after) : null;
+              const daysLeft = purgeAt ? Math.max(0, Math.ceil((purgeAt.getTime() - now) / (24 * 60 * 60 * 1000))) : 30;
+              return <div key={booking.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-3">
+                <div className="min-w-0">
+                  <p className="font-semibold">{booking.name} · {booking.tour ?? "Reise"}</p>
+                  <p className="text-sm text-muted-foreground">Archiviert: {booking.archived_at ? new Date(booking.archived_at).toLocaleString("de-DE") : "–"} · {daysLeft} Tage bis zur endgültigen Löschung</p>
+                </div>
+                <button onClick={() => void restoreBooking(booking)} className="rounded-md border border-border px-3 py-2 text-sm font-semibold hover:bg-muted">Wiederherstellen</button>
+              </div>;
+            })}
+          </section>
         )}
 
         {tab === "messages" && (
