@@ -257,7 +257,7 @@ const BookingMessageModal = ({
 };
 
 const Dashboard = ({ session }: { session: Session }) => {
-  const [tab, setTab] = useState<"overview" | "bookings" | "messages" | "dates">("overview");
+  const [tab, setTab] = useState<"overview" | "bookings" | "payments" | "messages" | "dates">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dates, setDates] = useState<TourDate[]>([]);
@@ -371,6 +371,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const tabs = [
     { k: "overview", l: "Übersicht" },
     { k: "bookings", l: `Buchungen · ${bookings.length}` },
+    { k: "payments", l: `Zahlungen · ${unpaidBookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
     { k: "dates", l: `Reisetermine · ${visibleDates.length}` },
   ] as const;
@@ -411,7 +412,7 @@ const Dashboard = ({ session }: { session: Session }) => {
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
               className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
+              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "payments" ? <Wallet className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
           ))}
@@ -449,12 +450,12 @@ const Dashboard = ({ session }: { session: Session }) => {
           </div>
         )}
 
-        {tab === "bookings" && (
+        {(tab === "bookings" || tab === "payments") && (
           <div className="space-y-3">
             <div className="rounded-lg border border-border bg-card p-3">
               <div className="mb-3">
-                <h2 className="text-lg font-semibold">Buchungen verwalten</h2>
-                <p className="mt-1 text-sm text-muted-foreground">Eine Buchung nach der anderen. Prüfe zuerst die Anzahlung und bestätige danach die Buchung.</p>
+                <h2 className="text-lg font-semibold">{tab === "payments" ? "Zahlungen verwalten" : "Buchungen verwalten"}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{tab === "payments" ? "Prüfe die Anzahlung von 150 € und markiere sie erst nach tatsächlichem Zahlungseingang als bezahlt." : "Eine Buchung nach der anderen. Prüfe zuerst die Anzahlung und bestätige danach die Buchung."}</p>
               </div>
               <div className="mb-3 grid gap-2 rounded-lg bg-muted/40 p-3 text-sm sm:grid-cols-3">
                 <div><span className="font-semibold text-primary">1.</span> Anfrage und Reisedaten prüfen</div>
