@@ -298,7 +298,6 @@ const Dashboard = ({ session }: { session: Session }) => {
       (supabase as any).from("tour_dates").select("*").order("start_date"),
       (supabase as any).from("booking_email_log").select("id, booking_id, recipient, subject, message, sent_at").order("sent_at", { ascending: false }),
       (supabase as any).from("booking_activity").select("id, booking_id, activity_type, description, created_at").order("created_at", { ascending: false }),
-      (supabase as any).from("booking_documents").select("id, booking_id, file_name, storage_path, mime_type, file_size, document_type, created_at").order("created_at", { ascending: false }),
     ]);
     setBookings((b.data as Booking[]) ?? []);
     setMessages((m.data as Message[]) ?? []);
@@ -315,10 +314,6 @@ const Dashboard = ({ session }: { session: Session }) => {
     }
     setActivities(activityGroups);
     if (a.error) console.error("Booking activity history could not be loaded:", a.error);
-    const documentGroups: Record<string, BookingDocument[]> = {};
-    for (const row of (docs.data ?? []) as BookingDocument[]) (documentGroups[row.booking_id] ??= []).push(row);
-    setBookingDocuments(documentGroups);
-    if (docs.error) console.error("Booking documents could not be loaded:", docs.error);
   };
   useEffect(() => { load(); }, []);
 
@@ -330,6 +325,18 @@ const Dashboard = ({ session }: { session: Session }) => {
     setActivities((current) => ({ ...current, [bookingId]: [activity, ...(current[bookingId] ?? [])] }));
   };
 
+  const loadBookingDocuments = async (bookingId: string) => {
+    const { data, error } = await supabase.storage.from("booking-documents").list(bookingId, { limit: 100, sortBy: { column: "created_at", order: "desc" } });
+    if (error) { console.error("Documents could not be loaded:", error); toast.error("Dokumente konnten nicht geladen werden: " + error.message); return; }
+    const documents: BookingDocument[] = (data ?? []).filter((item) => item.name && item.id).map((item: any) => ({
+      id: item.id ?? item.name, booking_id: bookingId,
+      file_name: item.name.replace(/^[0-9a-f-]+-/, ""), storage_path: bookingId + "/" + item.name,
+      mime_type: item.metadata?.mimetype ?? null, file_size: item.metadata?.size ?? null,
+      document_type: "invoice", created_at: item.created_at ?? item.updated_at ?? new Date().toISOString(),
+    }));
+    setBookingDocuments((current) => ({ ...current, [bookingId]: documents }));
+  };
+
   const uploadBookingDocument = async (file: File) => {
     if (!selectedBooking) return;
     const allowed = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
@@ -338,20 +345,9 @@ const Dashboard = ({ session }: { session: Session }) => {
     setDocumentBusy(true);
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
     const path = selectedBooking.id + "/" + crypto.randomUUID() + "-" + safeName;
-    const { error: uploadError } = await supabase.storage.from("booking-documents").upload(path, file, { contentType: file.type, upsert: false });
-    if (uploadError) { setDocumentBusy(false); return toast.error("Datei konnte nicht hochgeladen werden: " + uploadError.message); }
-    const { data: userData } = await supabase.auth.getUser();
-    const { data, error } = await (supabase as any).from("booking_documents").insert({
-      booking_id: selectedBooking.id, file_name: file.name, storage_path: path,
-      mime_type: file.type, file_size: file.size, document_type: "invoice", created_by: userData.user?.id ?? null,
-    }).select("id, booking_id, file_name, storage_path, mime_type, file_size, document_type, created_at").single();
-    if (error) {
-      await supabase.storage.from("booking-documents").remove([path]);
-      setDocumentBusy(false);
-      return toast.error("Dokument konnte nicht gespeichert werden: " + error.message);
-    }
-    const doc = data as BookingDocument;
-    setBookingDocuments((current) => ({ ...current, [selectedBooking.id]: [doc, ...(current[selectedBooking.id] ?? [])] }));
+    const { error } = await supabase.storage.from("booking-documents").upload(path, file, { contentType: file.type, upsert: false });
+    if (error) { setDocumentBusy(false); return toast.error("Datei konnte nicht hochgeladen werden: " + error.message); }
+    await loadBookingDocuments(selectedBooking.id);
     setDocumentBusy(false);
     toast.success("Rechnungsdokument gespeichert.");
     void logActivity(selectedBooking.id, "document_added", "Dokument hinzugefügt: " + file.name);
@@ -359,23 +355,22 @@ const Dashboard = ({ session }: { session: Session }) => {
 
   const openBookingDocument = async (doc: BookingDocument) => {
     const { data, error } = await supabase.storage.from("booking-documents").createSignedUrl(doc.storage_path, 60);
-    if (error || !data?.signedUrl) return toast.error("Dokument konnte nicht geöffnet werden.");
+    if (error || !data?.signedUrl) return toast.error("Dokument konnte nicht geöffnet werden: " + (error?.message ?? ""));
     window.open(data.signedUrl, "_blank", "noopener,noreferrer");
   };
 
   const deleteBookingDocument = async (doc: BookingDocument) => {
     if (!window.confirm("Dieses Dokument wirklich löschen?")) return;
-    const { error: storageError } = await supabase.storage.from("booking-documents").remove([doc.storage_path]);
-    if (storageError) return toast.error("Datei konnte nicht gelöscht werden: " + storageError.message);
-    const { error } = await (supabase as any).from("booking_documents").delete().eq("id", doc.id);
-    if (error) return toast.error("Dokumenteintrag konnte nicht gelöscht werden: " + error.message);
-    setBookingDocuments((current) => ({ ...current, [doc.booking_id]: (current[doc.booking_id] ?? []).filter((item) => item.id !== doc.id) }));
+    const { error } = await supabase.storage.from("booking-documents").remove([doc.storage_path]);
+    if (error) return toast.error("Datei konnte nicht gelöscht werden: " + error.message);
+    setBookingDocuments((current) => ({ ...current, [doc.booking_id]: (current[doc.booking_id] ?? []).filter((item) => item.storage_path !== doc.storage_path) }));
     toast.success("Dokument gelöscht.");
     void logActivity(doc.booking_id, "document_deleted", "Dokument gelöscht: " + doc.file_name);
   };
 
   const openBooking = (booking: Booking) => {
     setSelectedBooking(booking);
+    void loadBookingDocuments(booking.id);
     setNotesDraft((booking.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim());
     setContactDraft({ name: booking.name ?? "", phone: booking.phone ?? "", email: booking.email ?? "" });
   };
