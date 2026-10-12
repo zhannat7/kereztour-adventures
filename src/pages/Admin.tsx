@@ -42,21 +42,17 @@ const DEPOSIT_PAID_MARKER = "[[DEPOSIT_PAID_150_EUR]]";
 const BookingResponseDeadline = ({ booking, now }: { booking: Booking; now: number }) => {
   if (booking.status !== "pending") return null;
   const receivedAt = new Date(booking.created_at);
-  const elapsedMs = Math.max(0, now - receivedAt.getTime());
-  const remainingMs = 24 * 60 * 60 * 1000 - elapsedMs;
+  const remainingMs = 24 * 60 * 60 * 1000 - (now - receivedAt.getTime());
   const formatDuration = (ms: number) => {
     const totalMinutes = Math.floor(Math.abs(ms) / 60_000);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours} Std. ${minutes} Min.`;
+    return `${Math.floor(totalMinutes / 60)} Std. ${totalMinutes % 60} Min.`;
   };
   return (
     <div className="mt-2 rounded-md bg-amber-500/10 px-2.5 py-2 text-xs text-amber-800">
-      <p className="font-semibold">Eingegangen: {receivedAt.toLocaleString("de-DE", { timeZone: "Europe/Vienna", dateStyle: "short", timeStyle: "short" })} Uhr</p>
-      <p>Du solltest innerhalb von 24 Stunden antworten.</p>
+      <p>{receivedAt.toLocaleString("de-DE", { timeZone: "Europe/Vienna", dateStyle: "short", timeStyle: "short" })} · Eingang</p>
       {remainingMs > 0
-        ? <p className="font-semibold">Noch {formatDuration(remainingMs)} Zeit.</p>
-        : <p className="font-semibold">Die 24-Stunden-Frist ist seit {formatDuration(remainingMs)} überschritten. Bitte antworte jetzt schnell!</p>}
+        ? <p className="font-semibold">Antwort in 24 Std. · Noch {formatDuration(remainingMs)}</p>
+        : <p className="font-semibold">24 Std. überschritten ({formatDuration(remainingMs)}) · Bitte jetzt antworten</p>}
     </div>
   );
 };
