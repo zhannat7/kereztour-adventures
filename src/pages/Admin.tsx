@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2 } from "lucide-react";
+import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown } from "lucide-react";
 
 type Booking = {
   id: string; created_at: string; name: string; email: string; phone: string;
@@ -432,8 +432,8 @@ const Dashboard = ({ session }: { session: Session }) => {
             {customerGroups.map((group) => (
               <div key={group.key} className="overflow-hidden rounded-lg border border-border bg-card">
                 {group.bookings.length > 1 ? (
-                  <details>
-                    <summary className="flex cursor-pointer list-none items-center gap-3 bg-muted/30 px-3 py-3 hover:bg-muted/50 sm:px-4">
+                  <details className="group">
+                    <summary className="flex cursor-pointer list-none items-center gap-3 bg-muted/30 px-3 py-3 hover:bg-muted/50 sm:px-4 [&::-webkit-details-marker]:hidden">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                         {group.name.split(/\\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase()}
                       </div>
@@ -447,7 +447,9 @@ const Dashboard = ({ session }: { session: Session }) => {
                         </div>
                       </div>
                       <span className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
-                        Anfragen anzeigen <span aria-hidden="true">↓</span>
+                        <span className="group-open:hidden">Anfragen anzeigen</span>
+                        <span className="hidden group-open:inline">Anfragen ausblenden</span>
+                        <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
                       </span>
                     </summary>
                     <div className="border-t border-border">
