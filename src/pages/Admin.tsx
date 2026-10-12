@@ -395,21 +395,54 @@ const Dashboard = ({ session }: { session: Session }) => {
           <h1 className="font-display text-3xl text-primary">Guten Tag, Sarina</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p>
         </div>
-        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Buchungen" value={bookings.filter((b) => b.status === "pending").length} hint="Noch nicht bestätigt" />
-          <Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={bookings.filter((b) => b.status === "confirmed").length} hint="Buchungsstatus bestätigt" />
-          <Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Interessenten" />
+        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="text-left"><Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Anfragen" value={openBookings.length} hint="Prüfen und beantworten" /></button>
+          <button onClick={() => { setTab("bookings"); setBookingFilter("confirmed"); }} className="text-left"><Stat icon={<CheckCircle2 className="h-5 w-5" />} label="Bestätigte Buchungen" value={confirmedBookings.length} hint="Buchung ist bestätigt" /></button>
+          <button onClick={() => { setTab("bookings"); setBookingFilter("unpaid"); }} className="text-left"><Stat icon={<Wallet className="h-5 w-5" />} label="Anzahlungen offen" value={unpaidBookings.length} hint="150 € noch nicht als bezahlt markiert" /></button>
+          <button onClick={() => setTab("messages")} className="text-left"><Stat icon={<Users className="h-5 w-5" />} label="Kontaktanfragen" value={messages.length} hint="Nachrichten von Gästen" /></button>
         </div>
 
         <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-3">
           {tabs.map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
               className={`rounded-md px-4 py-2.5 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-              {t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
+              {t.k === "overview" ? <LayoutDashboard className="mr-2 inline h-4 w-4" /> : t.k === "bookings" ? <ClipboardList className="mr-2 inline h-4 w-4" /> : t.k === "messages" ? <Mail className="mr-2 inline h-4 w-4" /> : <CalendarDays className="mr-2 inline h-4 w-4" />}
               {t.l}
             </button>
           ))}
         </div>
+
+        {tab === "overview" && (
+          <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+            <section className="rounded-xl border border-border bg-card p-5">
+              <h2 className="text-lg font-semibold">Das braucht deine Aufmerksamkeit</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Wähle eine Aufgabe, um direkt zum richtigen Bereich zu gelangen.</p>
+              <div className="mt-3 divide-y divide-border">
+                <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50 text-amber-800"><ClipboardList className="h-5 w-5" /></span>
+                  <span className="flex-1"><span className="block font-medium">Buchungsanfragen prüfen</span><span className="text-sm text-muted-foreground">Noch nicht bestätigte Anfragen</span></span>
+                  <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{openBookings.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </button>
+                <button onClick={() => { setTab("bookings"); setBookingFilter("unpaid"); }} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50 text-amber-800"><Wallet className="h-5 w-5" /></span>
+                  <span className="flex-1"><span className="block font-medium">Anzahlungen überprüfen</span><span className="text-sm text-muted-foreground">150 € als bezahlt markieren, wenn eingegangen</span></span>
+                  <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{unpaidBookings.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </button>
+                <button onClick={() => setTab("messages")} className="flex w-full items-center gap-3 py-4 text-left hover:bg-muted/30">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary"><Mail className="h-5 w-5" /></span>
+                  <span className="flex-1"><span className="block font-medium">Kontaktanfragen ansehen</span><span className="text-sm text-muted-foreground">Nachrichten von Interessenten öffnen</span></span>
+                  <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">{messages.length}</span><ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+            </section>
+            <section className="rounded-xl border border-border bg-card p-5">
+              <h2 className="text-lg font-semibold">Kommende Reisetermine</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Die nächsten geplanten Abreisen.</p>
+              {upcomingDates.length ? <div className="mt-3 divide-y divide-border">{upcomingDates.map((d) => <div key={d.id} className="flex items-center justify-between gap-3 py-3"><div><p className="font-medium">{d.tour}</p><p className="text-sm text-muted-foreground">{fmt(d.start_date)} – {fmt(d.end_date)}</p></div><span className="whitespace-nowrap text-xs text-muted-foreground">{Math.max(0, d.max_participants - booked(d))} Plätze frei</span></div>)}</div> : <p className="mt-3 rounded-lg bg-muted/30 p-4 text-sm text-muted-foreground">Keine zukünftigen Reisetermine eingetragen.</p>}
+              <button onClick={() => setTab("dates")} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">Alle Reisetermine verwalten <ChevronRight className="h-4 w-4" /></button>
+            </section>
+          </div>
+        )}
 
         {tab === "bookings" && (
           <div className="space-y-3">
@@ -429,7 +462,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <input className="w-full rounded-md border border-border bg-background py-2 pl-9 pr-3 text-sm" value={bookingSearch} onChange={(e) => setBookingSearch(e.target.value)} placeholder="Name, E-Mail, Telefon oder Reise suchen…" />
                 </div>
                 <div className="flex flex-wrap gap-1 rounded-md bg-muted p-1">
-                  {([{value:"all",label:"Alle"},{value:"pending",label:"Offen"},{value:"confirmed",label:"Bestätigt"},{value:"cancelled",label:"Storniert"}] as const).map((f) => (
+                  {([{value:"all",label:"Alle Buchungen"},{value:"pending",label:"Offen"},{value:"confirmed",label:"Bestätigt"},{value:"unpaid",label:"Anzahlung offen"},{value:"cancelled",label:"Storniert"}] as const).map((f) => (
                     <button key={f.value} onClick={() => setBookingFilter(f.value)} className={`rounded px-2.5 py-1.5 text-xs font-semibold ${bookingFilter === f.value ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>{f.label}</button>
                   ))}
                 </div>
