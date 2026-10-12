@@ -238,8 +238,8 @@ const Kultur = () => {
               </div>
             </div>
 
-            <div className="rounded-3xl bg-sand/60 p-4 sm:p-5 md:p-6">
-              <div className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
+            <div className="rounded-2xl bg-sand/50 p-3 sm:p-4">
+              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary">
                   <CalendarDays className="h-4 w-4" />
                 </span>
@@ -257,7 +257,7 @@ const Kultur = () => {
                       ? `${format(parseISO(item.date), "dd.MM.yyyy")}–${endDateMatch[1]}.${endDateMatch[2]}.${endDateMatch[3]}`
                       : item.label;
                     const card = (
-                      <div className="flex items-center gap-3 py-4 sm:gap-4">
+                      <div className="flex items-center gap-3 py-2.5 sm:gap-4">
                         
                         <div className="min-w-0 flex-1">
                           <p className="font-display text-base leading-snug text-foreground sm:text-lg">{dateRangeLabel}</p>
