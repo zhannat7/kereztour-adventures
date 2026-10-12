@@ -388,7 +388,7 @@ const Buchen = () => {
     <>
       <Navbar />
 
-      <main className="pt-24 pb-20 bg-background min-h-screen">
+      <main className="pt-20 pb-12 md:pt-24 md:pb-20 bg-background min-h-screen">
         <div className="container mx-auto px-4 max-w-3xl">
 
           <Button
@@ -399,7 +399,7 @@ const Buchen = () => {
             ← {t("Zurück")}
           </Button>
 
-          <div className="mb-14 text-center">
+          <div className="mb-8 text-center md:mb-14">
             <h1 className="mb-4 font-display text-5xl text-primary md:text-7xl">
               {t("Reise buchen")}
             </h1>
@@ -415,7 +415,7 @@ const Buchen = () => {
           >
 
             {/* SCHRITT 1 */}
-            <section className="border-y border-border bg-card p-6 md:p-9">
+            <section className="border-y border-border bg-card p-4 md:p-9">
 
               <Step
                 n={1}
@@ -769,7 +769,7 @@ const Buchen = () => {
                     id="notes"
                     {...register("notes")}
                     placeholder={t("Zum Beispiel besondere Wünsche oder Anforderungen...")}
-                    rows={4}
+                    rows={3}
                   />
                 </div>
 
@@ -779,17 +779,17 @@ const Buchen = () => {
 
             {/* ZUSAMMENFASSUNG */}
             {selectedTour && pricePerPerson > 0 && (
-              <section className="border-y border-gold/30 bg-primary p-6 text-primary-foreground md:p-9">
+              <section className="border-y border-gold/30 bg-primary p-4 text-primary-foreground md:p-9">
 
-                <p className="text-primary-foreground/70 text-sm mb-2">
+                <p className="text-primary-foreground/70 text-xs mb-1 md:mb-2 md:text-sm">
                   {t("Deine Auswahl")}
                 </p>
 
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+                <div className="flex flex-row items-center justify-between gap-3 md:items-end md:gap-5">
 
                   <div>
 
-                    <h3 className="font-display text-2xl md:text-3xl">
+                    <h3 className="font-display text-xl leading-tight md:text-3xl">
                       {t(selectedTour.label)}
                     </h3>
 
@@ -800,12 +800,12 @@ const Buchen = () => {
                     )}
 
                     {travelDate && (
-                      <p className="text-primary-foreground/80 text-sm mt-3">
+                      <p className="text-primary-foreground/80 text-xs mt-2 md:mt-3 md:text-sm">
                         {t("Reisetermin:")} {format(travelDate, "dd.MM.yyyy")}
                       </p>
                     )}
 
-                    <p className="text-primary-foreground/70 text-sm mt-1">
+                    <p className="text-primary-foreground/70 text-xs mt-1 md:text-sm">
                       {persons}{" "}
                       {persons === 1 ? t("Person") : t("Personen")}{" "}
                       × {pricePerPerson.toLocaleString("de-DE")} €
@@ -815,11 +815,11 @@ const Buchen = () => {
 
                   <div className="sm:text-right">
 
-                    <p className="text-primary-foreground/70 text-sm">
+                    <p className="text-primary-foreground/70 text-xs md:text-sm">
                       {t("Gesamtpreis")}
                     </p>
 
-                    <p className="font-display text-4xl md:text-5xl">
+                    <p className="font-display text-3xl leading-none md:text-5xl">
                       {totalPrice.toLocaleString(
                         "de-DE"
                       )} €
@@ -841,14 +841,14 @@ const Buchen = () => {
               </Alert>
             )}
 
-            <div className="space-y-3">
-              <Button type="button" onClick={() => void handleSubmit(onSubmit, handleInvalidSubmit)()} className="w-full min-h-14 h-14 rounded-xl" disabled={isSubmitting}>
+            <div className="space-y-2 md:space-y-3">
+              <Button type="button" onClick={() => void handleSubmit(onSubmit, handleInvalidSubmit)()} className="w-full min-h-12 h-12 rounded-xl md:min-h-14 md:h-14" disabled={isSubmitting}>
                 {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird gesendet...")}</> : t("Unverbindliche Buchungsanfrage senden →")}
               </Button>
-              <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Sarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-sm text-primary hover:underline py-2">
+              <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Sarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-xs md:text-sm text-primary hover:underline py-1.5 md:py-2">
                 {t("Fragen zur Reise? Sarina auf WhatsApp schreiben")}
               </button>
-              <p className="text-center text-xs text-muted-foreground">{t("Du zahlst jetzt noch nichts. Sarina bespricht mit dir die Details und sendet dir anschließend bei gewünschter verbindlicher Buchung einen persönlichen Zahlungslink.")}</p>
+              <p className="text-center text-[11px] leading-relaxed text-muted-foreground md:text-xs">{t("Du zahlst jetzt noch nichts. Sarina bespricht mit dir die Details und sendet dir anschließend bei gewünschter verbindlicher Buchung einen persönlichen Zahlungslink.")}</p>
             </div>
 
           </form>
