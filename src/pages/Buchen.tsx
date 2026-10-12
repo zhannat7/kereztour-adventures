@@ -360,10 +360,10 @@ const Buchen = () => {
       ) {
         throw new Error(t("Dieser Reisetermin ist nicht mehr verfügbar."));
       }
-      if (selectedTourDate.availablePlaces <= 0 || data.persons > selectedTourDate.availablePlaces) {
+      if (selectedAvailablePlaces <= 0 || data.persons > selectedAvailablePlaces) {
         throw new Error(
-          selectedTourDate.availablePlaces > 0
-            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(selectedTourDate.availablePlaces))
+          selectedAvailablePlaces > 0
+            ? t("Für diesen Termin sind aktuell nur noch {count} Plätze verfügbar.").replace("{count}", String(selectedAvailablePlaces))
             : t("Dieser Reisetermin ist bereits ausgebucht.")
         );
       }
