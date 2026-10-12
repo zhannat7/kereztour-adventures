@@ -361,10 +361,9 @@ const Dashboard = ({ session }: { session: Session }) => {
     const notes = paid
       ? [existingNotes, DEPOSIT_PAID_MARKER].filter(Boolean).join("\n")
       : existingNotes || null;
-    const { error } = await supabase.from("bookings").update({
-      notes,
-      payment_status: paid ? "deposit_paid" : "unpaid",
-    }).eq("id", id);
+    // The bookings table does not have a payment_status column in the current database schema.
+    // Store the deposit state in the existing notes field to avoid a schema-cache update error.
+    const { error } = await supabase.from("bookings").update({ notes }).eq("id", id);
     if (error) {
       toast.error(error.message);
       return false;
