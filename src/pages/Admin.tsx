@@ -275,6 +275,8 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [bookingView, setBookingView] = useState<"list" | "cards" | "kanban">("list");
   const [notesDraft, setNotesDraft] = useState("");
+  const [contactDraft, setContactDraft] = useState({ name: "", phone: "", email: "" });
+  const [contactSaving, setContactSaving] = useState(false);
   const [notesSaving, setNotesSaving] = useState(false);
   const [tourFilter, setTourFilter] = useState("all");
   const [bookingFilter, setBookingFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "unpaid">("all");
@@ -301,6 +303,20 @@ const Dashboard = ({ session }: { session: Session }) => {
   const openBooking = (booking: Booking) => {
     setSelectedBooking(booking);
     setNotesDraft((booking.notes ?? "").split(DEPOSIT_PAID_MARKER).join("").trim());
+    setContactDraft({ name: booking.name ?? "", phone: booking.phone ?? "", email: booking.email ?? "" });
+  };
+
+  const saveBookingContact = async () => {
+    if (!selectedBooking) return;
+    if (!contactDraft.name.trim()) return toast.error("Bitte einen Namen eingeben.");
+    setContactSaving(true);
+    const patch = { name: contactDraft.name.trim(), phone: contactDraft.phone.trim(), email: contactDraft.email.trim() };
+    const { error } = await supabase.from("bookings").update(patch).eq("id", selectedBooking.id);
+    setContactSaving(false);
+    if (error) return toast.error("Kontaktdaten konnten nicht gespeichert werden: " + error.message);
+    setBookings((current) => current.map((b) => b.id === selectedBooking.id ? { ...b, ...patch } : b));
+    setSelectedBooking((current) => current?.id === selectedBooking.id ? { ...current, ...patch } : current);
+    toast.success("Kontaktdaten gespeichert.");
   };
 
   const saveBookingNotes = async () => {
