@@ -54,11 +54,9 @@ const Hero = () => {
     const animate = (now: number) => {
       const progress = ((now - start) % duration) / duration;
       const wave = (1 - Math.cos(progress * Math.PI * 2)) / 2;
-      // Keep the hero photo close to its original framing so the yurt walls
-      // remain visible instead of zooming tightly into the roof.
-      const scale = 1 + wave * 0.015;
-      const x = -0.08 + wave * 0.16;
-      const y = 0;
+      const scale = 1 + wave * 0.035;
+      const x = -0.15 + wave * 0.3;
+      const y = -wave * 0.12;
 
       element.style.transform = `translate3d(${x}%, ${y}%, 0) scale(${scale})`;
       frame = window.requestAnimationFrame(animate);
@@ -90,12 +88,9 @@ const Hero = () => {
               loading="eager"
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className="absolute inset-0 h-full w-full transform-gpu object-cover object-center [backface-visibility:hidden]"
+              className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
               style={{
-                // Frame the yurt camp lower to show the walls, while keeping people
-                // less prominent in the header. The culture slide has its own crop.
-                objectPosition:
-                  index === 0 ? "center 68%" : index === 1 ? "center 58%" : "center center",
+                objectPosition: "center center",
               }}
             />
           </div>
