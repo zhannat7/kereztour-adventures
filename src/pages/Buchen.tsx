@@ -195,53 +195,59 @@ const Buchen = () => {
 
       const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
 
-      // The admin dashboard stores the selected dates in tour_dates.
-      // Prefer the availability RPC (it also calculates remaining places),
-      // but fall back to the source table so an RPC/deployment problem does
-      // not make all admin-created dates disappear from the booking page.
-      let availabilityData: any[] | null = null;
-      const { data, error } = await (supabase as any)
-        .rpc("get_tour_date_availability");
+      // Read the saved capacity directly from tour_dates every time.
+      // The availability RPC is responsible for counting booked places, but
+      // a stale RPC result must not overwrite a newer capacity saved in Admin.
+      const [{ data: availabilityResult, error: availabilityError }, { data: rawDates, error: rawError }] =
+        await Promise.all([
+          (supabase as any).rpc("get_tour_date_availability"),
+          supabase
+            .from("tour_dates")
+            .select("id, tour, start_date, end_date, max_participants, economy_max_participants, comfort_max_participants, status")
+            .eq("tour", selectedTourLabel)
+            .order("start_date", { ascending: true }),
+        ]);
 
-      if (!error && Array.isArray(data)) {
-        availabilityData = data;
-      } else {
-        const { data: rawDates, error: rawError } = await supabase
-          .from("tour_dates")
-          .select("id, tour, start_date, end_date, max_participants, economy_max_participants, comfort_max_participants, status")
-          .eq("tour", selectedTourLabel)
-          .order("start_date", { ascending: true });
-
-        if (rawError) {
-          if (active) {
-            setTourDates([]);
-            setIsLoadingDates(false);
-          }
-          return;
+      if (rawError) {
+        if (active) {
+          setTourDates([]);
+          setIsLoadingDates(false);
         }
-
-        availabilityData = (rawDates ?? []).map((item: any) => ({
-          ...item,
-          available_places: Number(item.max_participants),
-        }));
+        return;
       }
 
       if (!active) return;
 
-      const dates: TourDateAvailability[] = (availabilityData ?? [])
+      const rpcRows: any[] = !availabilityError && Array.isArray(availabilityResult)
+        ? availabilityResult
+        : [];
+      const rpcById = new Map(rpcRows.map((item: any) => [item.id, item]));
+
+      const dates: TourDateAvailability[] = (rawDates ?? [])
         .filter((item: any) => item.tour === selectedTourLabel)
-        .map((item: any) => ({
-          id: item.id,
-          value: item.start_date,
-          endDate: item.end_date,
-          label:
-            format(parseISO(item.start_date), "dd.MM.") +
-            "–" +
-            format(parseISO(item.end_date), "dd.MM.yyyy"),
-          maxParticipants: Number(item.max_participants),
-          availablePlaces: Math.max(0, Number(item.available_places)),
-          status: item.status === "full" || item.status === "cancelled" ? "full" : "open",
-        }));
+        .map((item: any) => {
+          const rpcItem = rpcById.get(item.id);
+          const savedCapacity = Number(item.max_participants);
+          const rpcCapacity = Number(rpcItem?.max_participants ?? savedCapacity);
+          // Preserve the RPC's booked-seat calculation while applying any
+          // capacity change that has already been saved in the admin table.
+          const rpcAvailable = Number(rpcItem?.available_places ?? savedCapacity);
+          const availablePlaces = Math.max(0, rpcAvailable + savedCapacity - rpcCapacity);
+          const status = item.status === "cancelled" || availablePlaces <= 0 ? "full" : "open";
+
+          return {
+            id: item.id,
+            value: item.start_date,
+            endDate: item.end_date,
+            label:
+              format(parseISO(item.start_date), "dd.MM.") +
+              "–" +
+              format(parseISO(item.end_date), "dd.MM.yyyy"),
+            maxParticipants: savedCapacity,
+            availablePlaces,
+            status,
+          };
+        });
 
       setTourDates(dates);
       setIsLoadingDates(false);
