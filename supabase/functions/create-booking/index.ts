@@ -107,7 +107,7 @@ Deno.serve(async (req) => {
 
     const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
       kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
-      trekking: { label: "Intensiv-Trekking", price: 1200, hasTiers: false },
+      trekking: { label: "Intensiv-Trekking", price: 1490, hasTiers: false },
     };
 
     const selected = tours[tour];
@@ -153,31 +153,32 @@ Deno.serve(async (req) => {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    if (selected.hasTiers) {
-      const { data: availability, error: availabilityError } = await admin.rpc(
-        "get_tour_date_availability",
-      );
+    // Validate the selected date and capacity server-side for every tour.
+    // Previously this check only ran for Kultur Tour, allowing trekking
+    // requests to bypass date availability validation.
+    const { data: availability, error: availabilityError } = await admin.rpc(
+      "get_tour_date_availability",
+    );
 
-      if (availabilityError) throw availabilityError;
+    if (availabilityError) throw availabilityError;
 
-      const selectedDate = (availability ?? []).find(
-        (item: { tour: string; start_date: string }) =>
-          item.tour === "Kultur Tour" && item.start_date === travelDate,
-      );
+    const selectedDate = (availability ?? []).find(
+      (item: { tour: string; start_date: string }) =>
+        item.tour === selected.label && item.start_date === travelDate,
+    );
 
-      if (!selectedDate) {
-        return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
-      }
+    if (!selectedDate) {
+      return json({ error: "Dieser Reisetermin ist nicht mehr verfügbar." }, 409, origin);
+    }
 
-      const availablePlaces = Number(selectedDate.available_places);
+    const availablePlaces = Number(selectedDate.available_places);
 
-      if (availablePlaces <= 0 || persons > availablePlaces) {
-        return json({
-          error: availablePlaces > 0
-            ? `Für diese Reisevariante sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
-            : "Diese Reisevariante ist für den gewählten Termin bereits ausgebucht.",
-        }, 409, origin);
-      }
+    if (availablePlaces <= 0 || persons > availablePlaces) {
+      return json({
+        error: availablePlaces > 0
+          ? `Für diesen Termin sind aktuell nur noch ${availablePlaces} Plätze verfügbar.`
+          : "Dieser Reisetermin ist bereits ausgebucht.",
+      }, 409, origin);
     }
 
     const { data: insertedBooking, error } = await admin.from("bookings").insert({
