@@ -43,6 +43,13 @@
       "when": 1791917609662,
       "tag": "0005_add_booking_payment_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791919839334,
+      "tag": "0006_flexible_tour_date_capacity_1_to_25",
+      "breakpoints": true
     }
   ]
 }
