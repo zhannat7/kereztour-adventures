@@ -14,7 +14,6 @@ type Tour = {
   to: string;
   image?: string;
   imagePosition?: string;
-  imageFit?: "cover" | "contain";
 };
 
 const tours: Tour[] = [
@@ -26,8 +25,7 @@ const tours: Tour[] = [
     price: "1.690 €",
     to: "/reisen/kultur",
     image: "/tour-kultur.jpg",
-    imagePosition: "center",
-    imageFit: "contain",
+    imagePosition: "center 65%",
   },
   {
     title: "Intensiv-Trekking",
@@ -73,7 +71,7 @@ const Tours = () => {
                   loading="lazy"
                   decoding="async"
                   style={{ objectPosition: tour.imagePosition ?? "center" }}
-                  className={`h-full w-full ${tour.imageFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-700 group-hover:scale-[1.025]`}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                 />
               </div>
 
