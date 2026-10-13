@@ -9,6 +9,8 @@ type Tour = {
   duration: string;
   groupSize: string;
   price: string;
+  originalPrice?: string;
+  saving?: string;
   to: string;
   image?: string;
   imagePosition?: string;
@@ -31,6 +33,8 @@ const tours: Tour[] = [
     duration: "10 Tage",
     groupSize: "Gruppengröße je nach Termin",
     price: "1.490 €",
+    originalPrice: "2.450 €",
+    saving: "Sie sparen 960 €",
     to: "/reisen/trekking",
     image: "/tour-trekking.jpg",
     imagePosition: "center 35%",
@@ -93,6 +97,15 @@ const Tours = () => {
 
                 <div className="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-5">
                   <div>
+                    {tour.originalPrice && (
+                      <div className="mb-2 flex flex-wrap items-center gap-3 text-xs">
+                        <span className="rounded-full bg-secondary px-3 py-1 font-semibold uppercase tracking-wide text-secondary-foreground">{t("Angebot")}</span>
+                        <span className="text-muted-foreground">{t(tour.saving ?? "")}</span>
+                      </div>
+                    )}
+                    {tour.originalPrice && (
+                      <p className="mb-1 font-display text-lg leading-none text-muted-foreground line-through">{t(tour.originalPrice)}</p>
+                    )}
                     <p className="font-display text-3xl leading-none text-primary sm:text-4xl">{t(tour.price)}</p>
                     <p className="mt-2 text-xs tracking-wide text-muted-foreground">{t("pro Person")}</p>
                   </div>
