@@ -83,7 +83,13 @@ const bookingSchema = (t: (text: string) => string) => z.object({
     .string()
     .trim()
     .min(1, t("Telefonnummer ist erforderlich"))
-    .max(30),
+    .max(30)
+    .refine((value) => {
+      // Accept international numbers such as +43..., +996... or 0043...
+      // Ignore common visual separators, but reject short inputs like "222".
+      const normalized = value.replace(/[\\s().-]/g, "");
+      return /^(?:\\+|00)?[1-9]\\d{6,14}$/.test(normalized);
+    }, t("Bitte gib eine vollständige Telefonnummer mit Ländervorwahl ein")),
 
   persons: z
     .number()
