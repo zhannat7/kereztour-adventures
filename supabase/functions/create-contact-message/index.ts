@@ -1,3 +1,4 @@
+import { NOTIFY_EMAIL, sendKereztourMail } from "../_shared/kereztour-mail.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders as sdkCorsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
@@ -11,39 +12,11 @@ const json = (body: unknown, status = 200, origin: string | null = null) =>
     headers: { ...corsHeaders(origin), "Content-Type": "application/json" },
   });
 
-const NOTIFY_EMAIL = Deno.env.get("NOTIFY_EMAIL") ?? "kereztour@hotmail.com";
 
 const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
-async function sendEmail(to: string, subject: string, html: string) {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured – skipping email.");
-    return;
-  }
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Kereztour <onboarding@resend.dev>",
-        to: [to],
-        subject,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      console.error(`Resend error [${res.status}] for ${to}: ${await res.text()}`);
-    }
-  } catch (error) {
-    console.error(`Email failed for ${to}:`, error);
-  }
-}
 
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
@@ -82,36 +55,39 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    await sendEmail(
-      NOTIFY_EMAIL,
-      `Neue Kontaktanfrage von ${name}`,
-      `<h2>Neue Kontaktanfrage</h2>
-       <table cellpadding="6" style="border-collapse:collapse">
-         <tr><td><b>Name</b></td><td>${escapeHtml(name)}</td></tr>
-         <tr><td><b>E-Mail</b></td><td>${escapeHtml(email)}</td></tr>
-         <tr><td><b>Reise</b></td><td>${escapeHtml(typeof body.tour === "string" ? body.tour : "-")}</td></tr>
-         <tr><td><b>Zeitraum</b></td><td>${escapeHtml(typeof body.date_from === "string" ? body.date_from : "-")} bis ${escapeHtml(typeof body.date_to === "string" ? body.date_to : "-")}</td></tr>
-         <tr><td><b>Personen</b></td><td>${Number.isInteger(body.persons) ? body.persons : "-"}</td></tr>
-       </table>
-       <p><b>Nachricht:</b></p>
-       <p>${escapeHtml(message ?? "-").replace(/\n/g, "<br>")}</p>
-       <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
-    );
-
-    await sendEmail(
-      email,
-      `Deine Anfrage bei Kereztour`,
-      `<h2>Vielen Dank für deine Anfrage!</h2>
-       <p>Hallo ${escapeHtml(name)},</p>
-       <p>vielen Dank für deine Anfrage bei Kereztour. Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.</p>
-       <p><b>Deine Anfrage:</b></p>
-       <table cellpadding="6" style="border-collapse:collapse">
-         <tr><td><b>Reise</b></td><td>${escapeHtml(typeof body.tour === "string" ? body.tour : "-")}</td></tr>
-         <tr><td><b>Zeitraum</b></td><td>${escapeHtml(typeof body.date_from === "string" ? body.date_from : "-")} bis ${escapeHtml(typeof body.date_to === "string" ? body.date_to : "-")}</td></tr>
-         <tr><td><b>Personen</b></td><td>${Number.isInteger(body.persons) ? body.persons : "-"}</td></tr>
-       </table>
-       <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
-    );
+    const tour = typeof body.tour === "string" ? body.tour : "-";
+    const dateFrom = typeof body.date_from === "string" ? body.date_from : "-";
+    const dateTo = typeof body.date_to === "string" ? body.date_to : "-";
+    const persons = Number.isInteger(body.persons) ? String(body.persons) : "-";
+    const mailKey = crypto.randomUUID();
+    await Promise.all([
+      sendKereztourMail(NOTIFY_EMAIL, {
+        subject: `Neue Kontaktanfrage von ${name}`,
+        heading: "Neue Kontaktanfrage",
+        rows: [
+          { label: "Name", value: name },
+          { label: "E-Mail", value: email },
+          { label: "Reise", value: tour },
+          { label: "Zeitraum", value: `${dateFrom} bis ${dateTo}` },
+          { label: "Personen", value: persons },
+          { label: "Nachricht", value: message ?? "-" },
+        ],
+      }, `contact-notify-${mailKey}`),
+      sendKereztourMail(email, {
+        subject: "Deine Anfrage bei Kereztour",
+        heading: "Vielen Dank für deine Anfrage!",
+        paragraphs: [
+          `Hallo ${name},`,
+          "vielen Dank für deine Anfrage bei Kereztour. Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.",
+        ],
+        rows: [
+          { label: "Reise", value: tour },
+          { label: "Zeitraum", value: `${dateFrom} bis ${dateTo}` },
+          { label: "Personen", value: persons },
+        ],
+        closing: ["Liebe Grüße", "Sarina & Kereztour"],
+      }, `contact-confirm-${mailKey}`),
+    ]);
 
     return json({ success: true }, 200, origin);
   } catch (error) {

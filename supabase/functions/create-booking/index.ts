@@ -1,3 +1,4 @@
+import { NOTIFY_EMAIL, sendKereztourMail } from "../_shared/kereztour-mail.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
@@ -23,39 +24,11 @@ const json = (body: unknown, status = 200, origin: string | null = null) =>
     headers: { ...getCorsHeaders(origin), "Content-Type": "application/json" },
   });
 
-const NOTIFY_EMAIL = Deno.env.get("NOTIFY_EMAIL") ?? "kereztour@hotmail.com";
 
 const escapeHtml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
-async function sendEmail(to: string, subject: string, html: string) {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured – skipping email.");
-    return;
-  }
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Kereztour <onboarding@resend.dev>",
-        to: [to],
-        subject,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      console.error(`Resend error [${res.status}] for ${to}: ${await res.text()}`);
-    }
-  } catch (error) {
-    console.error(`Email failed for ${to}:`, error);
-  }
-}
 
 const isDate = (value: unknown): value is string =>
   typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -220,39 +193,42 @@ Deno.serve(async (req) => {
       }, 500, origin);
     }
 
-    const emailTasks = Promise.all([sendEmail(
-      NOTIFY_EMAIL,
-      `Neue Buchungsanfrage: ${selected.label} (${name})`,
-      `<h2>Neue Buchungsanfrage</h2>
-       <table cellpadding="6" style="border-collapse:collapse">
-         <tr><td><b>Name</b></td><td>${escapeHtml(name)}</td></tr>
-         <tr><td><b>E-Mail</b></td><td>${escapeHtml(email)}</td></tr>
-         <tr><td><b>Telefon</b></td><td>${escapeHtml(phone)}</td></tr>
-         <tr><td><b>Reise</b></td><td>${escapeHtml(selected.label)}</td></tr>
-         <tr><td><b>Option</b></td><td>${escapeHtml(tier ?? "-")}</td></tr>
-         <tr><td><b>Reisedatum</b></td><td>${escapeHtml(travelDate)}</td></tr>
-         <tr><td><b>Personen</b></td><td>${persons}</td></tr>
-         <tr><td><b>Gesamtpreis</b></td><td>${totalPrice} &euro;</td></tr>
-         <tr><td><b>Anmerkungen</b></td><td>${escapeHtml(notes ?? "-")}</td></tr>
-       </table>
-       <p>Details im Admin-Bereich: <a href="https://kereztour.com/admin">kereztour.com/admin</a></p>`,
-    ),
-    sendEmail(
-      email,
-      `Deine Buchungsanfrage bei Kereztour`,
-      `<h2>Vielen Dank für deine Buchungsanfrage!</h2>
-       <p>Hallo ${escapeHtml(name)},</p>
-       <p>vielen Dank für deine Buchungsanfrage bei Kereztour. Wir haben deine Anfrage erhalten und prüfen jetzt den gewünschten Termin. Sarina meldet sich zur Bestätigung bei dir.</p>
-       <table cellpadding="6" style="border-collapse:collapse">
-         <tr><td><b>Reise</b></td><td>${escapeHtml(selected.label)}</td></tr>
-         <tr><td><b>Reisedatum</b></td><td>${escapeHtml(travelDate)}</td></tr>
-         <tr><td><b>Reisevariante</b></td><td>${escapeHtml(tier ?? "-")}</td></tr>
-         <tr><td><b>Personen</b></td><td>${persons}</td></tr>
-         <tr><td><b>Gesamtpreis</b></td><td>${totalPrice} &euro;</td></tr>
-       </table>
-       <p>Sarina meldet sich persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, erhältst du von Sarina einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von Sarina erhalten hast.</p>
-       <p>Liebe Grüße<br><b>Sarina &amp; Kereztour</b></p>`,
-    )]);
+    const mailKey = crypto.randomUUID();
+    const tripRows = [
+      { label: "Reise", value: selected.label },
+      { label: "Reisedatum", value: travelDate },
+      { label: "Reisevariante", value: tier ?? "-" },
+      { label: "Personen", value: String(persons) },
+      { label: "Gesamtpreis", value: `${totalPrice} €` },
+    ];
+    const emailTasks = Promise.all([
+      sendKereztourMail(NOTIFY_EMAIL, {
+        subject: `Neue Buchungsanfrage: ${selected.label} (${name})`,
+        heading: "Neue Buchungsanfrage",
+        rows: [
+          { label: "Name", value: name },
+          { label: "E-Mail", value: email },
+          { label: "Telefon", value: phone },
+          ...tripRows,
+          { label: "Anmerkungen", value: notes ?? "-" },
+        ],
+        closing: ["Details im Admin-Bereich: https://kereztour.com/admin"],
+      }, `booking-notify-${mailKey}`),
+      sendKereztourMail(email, {
+        subject: "Deine Buchungsanfrage bei Kereztour",
+        heading: "Vielen Dank für deine Buchungsanfrage!",
+        paragraphs: [
+          `Hallo ${name},`,
+          "vielen Dank für deine Buchungsanfrage bei Kereztour. Wir haben deine Anfrage erhalten und prüfen jetzt den gewünschten Termin. Sarina meldet sich zur Bestätigung bei dir.",
+        ],
+        rows: tripRows,
+        closing: [
+          "Sarina meldet sich persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, erhältst du von Sarina einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von Sarina erhalten hast.",
+          "Liebe Grüße",
+          "Sarina & Kereztour",
+        ],
+      }, `booking-confirm-${mailKey}`),
+    ]);
 
     // Send emails in the background so the customer gets an instant response.
     // deno-lint-ignore no-explicit-any
