@@ -6,7 +6,7 @@ const items = [
   {
     icon: Users,
     title: "Kleine Gruppen",
-    desc: "Maximal 12 Reisende – für eine angenehme Atmosphäre und persönliche Begegnungen.",
+    desc: "Maximal 8 Reisende – für eine angenehme Atmosphäre und persönliche Begegnungen.",
   },
   {
     icon: ShieldCheck,
