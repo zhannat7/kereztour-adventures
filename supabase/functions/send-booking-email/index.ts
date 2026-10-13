@@ -1,3 +1,4 @@
+import { sendKereztourMail } from "../_shared/kereztour-mail.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const allowedOrigins = new Set([
@@ -17,10 +18,6 @@ const json = (body: unknown, status = 200, origin: string | null = null) =>
     headers: { ...corsHeaders(origin), "Content-Type": "application/json" },
   });
 
-const escapeHtml = (value: string) =>
-  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders(origin) });
@@ -32,8 +29,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const resendKey = Deno.env.get("RESEND_API_KEY");
-    if (!supabaseUrl || !serviceRoleKey || !resendKey) {
+        if (!supabaseUrl || !serviceRoleKey) {
       return json({ error: "Serverkonfiguration für E-Mail-Versand fehlt." }, 500, origin);
     }
 
@@ -71,28 +67,12 @@ Deno.serve(async (req) => {
 
     if (bookingError || !booking) return json({ error: "Buchung nicht gefunden." }, 404, origin);
 
-    const html = message
-      .split("\n")
-      .map((line: string) => line ? escapeHtml(line) : "&nbsp;")
-      .join("<br>");
+    const sent = await sendKereztourMail(booking.email, {
+      subject,
+      paragraphs: message.split("\n"),
+    }, `booking-manual-${crypto.randomUUID()}`);
 
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendKey}`,
-      },
-      body: JSON.stringify({
-        from: "Kereztour <onboarding@resend.dev>",
-        to: [booking.email],
-        reply_to: "kereztour@hotmail.com",
-        subject,
-        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;max-width:680px">${html}<br><br><div style="font-size:13px;color:#6b7280">Antworten bitte direkt an Sarina: kereztour@hotmail.com</div></div>`,
-      }),
-    });
-
-    if (!res.ok) {
-      console.error("Resend error:", await res.text());
+    if (!sent) {
       return json({ error: "E-Mail konnte nicht versendet werden." }, 502, origin);
     }
 
