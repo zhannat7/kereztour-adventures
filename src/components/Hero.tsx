@@ -6,12 +6,8 @@ import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
 
 const heroImages = [
   {
-    src: "/hero-wide.jpg?hero=20260928",
-    alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
-  },
-  {
     src: "/tour-kultur.jpg",
-    alt: "Kulturreise in Kirgisistan",
+    alt: "Innenansicht einer traditionellen Jurte in Kirgisistan",
   },
   {
     src: karakolMosque,
@@ -92,10 +88,10 @@ const Hero = () => {
               decoding="async"
               className="absolute inset-0 h-full w-full transform-gpu object-cover object-center [backface-visibility:hidden]"
               style={{
-                // Frame the yurt camp lower to show the walls, while keeping people
-                // less prominent in the header. The culture slide has its own crop.
+                // Keep the yurt interior framed slightly lower so more of the wall is visible.
+                // The header carousel intentionally excludes photos featuring people.
                 objectPosition:
-                  index === 0 ? "center 68%" : index === 1 ? "center 58%" : "center center",
+                  index === 0 ? "center 72%" : "center center",
               }}
             />
           </div>
