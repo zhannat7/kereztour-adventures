@@ -54,9 +54,10 @@ const Hero = () => {
     const animate = (now: number) => {
       const progress = ((now - start) % duration) / duration;
       const wave = (1 - Math.cos(progress * Math.PI * 2)) / 2;
-      const scale = 1 + wave * 0.035;
-      const x = -0.15 + wave * 0.3;
-      const y = -wave * 0.12;
+      // Keep the full yurt framing visible so the people are not cropped out.
+      const scale = 1 + wave * 0.008;
+      const x = -0.04 + wave * 0.08;
+      const y = 0;
 
       element.style.transform = `translate3d(${x}%, ${y}%, 0) scale(${scale})`;
       frame = window.requestAnimationFrame(animate);
