@@ -543,6 +543,11 @@ const Dashboard = ({ session }: { session: Session }) => {
     // Keep the shared availability capacity in sync with the Minibus capacity.
     // Public tour dates and the booking form use max_participants for the
     // remaining-seat calculation, while Kultur Tour also has vehicle-specific limits.
+    const capacities = [patch.max_participants, patch.economy_max_participants, patch.comfort_max_participants]
+      .filter((value): value is number => value !== undefined);
+    if (capacities.some((value) => !Number.isInteger(value) || value < 1 || value > 25)) {
+      return toast.error("Die maximale Teilnehmerzahl muss zwischen 1 und 25 liegen.");
+    }
     const syncedPatch =
       date?.tour === "Kultur Tour" && patch.economy_max_participants !== undefined
         ? { ...patch, max_participants: patch.economy_max_participants }
@@ -556,6 +561,12 @@ const Dashboard = ({ session }: { session: Session }) => {
     e.preventDefault();
     if (nd.end_date < nd.start_date) {
       return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
+    }
+    const capacities = nd.tour === "Kultur Tour"
+      ? [nd.economy_max_participants, nd.comfort_max_participants]
+      : [nd.max_participants];
+    if (capacities.some((value) => !Number.isInteger(value) || value < 1 || value > 25)) {
+      return toast.error("Die maximale Teilnehmerzahl muss zwischen 1 und 25 liegen.");
     }
 
     const { error } = await (supabase as any).from("tour_dates").insert(nd);
@@ -994,6 +1005,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       className={input}
                       type="number"
                       min={1}
+                      max={25}
                       required
                       value={nd.economy_max_participants}
                       onChange={(e) => setNd({ ...nd, economy_max_participants: Number(e.target.value) })}
@@ -1004,6 +1016,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                       className={input}
                       type="number"
                       min={1}
+                      max={25}
                       required
                       value={nd.comfort_max_participants}
                       onChange={(e) => setNd({ ...nd, comfort_max_participants: Number(e.target.value) })}
@@ -1016,6 +1029,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                     className={input}
                     type="number"
                     min={1}
+                    max={25}
                     required
                     value={nd.max_participants}
                     onChange={(e) => setNd({ ...nd, max_participants: Number(e.target.value) })}
@@ -1059,6 +1073,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                                 <input
                                   type="number"
                                   min={1}
+                                  max={25}
                                   defaultValue={d.economy_max_participants}
                                   className="mt-1 w-24 rounded-sm border border-border bg-background px-2 py-1"
                                   onBlur={(e) => {
@@ -1073,6 +1088,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                                 <input
                                   type="number"
                                   min={1}
+                                  max={25}
                                   defaultValue={d.comfort_max_participants}
                                   className="mt-1 w-24 rounded-sm border border-border bg-background px-2 py-1"
                                   onBlur={(e) => {
@@ -1085,7 +1101,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                               </label>
                             </div>
                           ) : (
-                            <input type="number" min={1} defaultValue={d.max_participants} className="w-20 rounded-sm border border-border bg-background px-2 py-1"
+                            <input type="number" min={1} max={25} defaultValue={d.max_participants} className="w-20 rounded-sm border border-border bg-background px-2 py-1"
                               onBlur={(e) => Number(e.target.value) !== d.max_participants && updateDate(d.id, { max_participants: Number(e.target.value) })} />
                           )}
                         </td>
