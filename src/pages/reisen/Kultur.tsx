@@ -38,6 +38,72 @@ import t9a from "@/assets/gallery/82.webp";
 import t9b from "@/assets/gallery/91.webp";
 import t10a from "@/assets/gallery/10.webp";
 
+
+const itineraryTranslations: Record<"DE" | "EN", Record<string, string>> = {
+  DE: {
+    "Giorno 1 – Punto di incontro:": "Tag 1 – Ankunft und Begrüßung",
+    "Giorno 2 – Chon-Kemin:": "Tag 2 – Chon-Kemin",
+    "Giorno 3 – Sponda sud del lago Issyk-Kul:": "Tag 3 – Südufer des Issyk-Kul-Sees",
+    "Giorno 4 – Barskoon e Dscheti-Oguz:": "Tag 4 – Barskoon und Dscheti-Oguz",
+    "Giorno 5 – Dscheti-Oguz e Karakol:": "Tag 5 – Dscheti-Oguz und Karakol",
+    "Giorno 6 – Altyn-Arashan:": "Tag 6 – Altyn-Arashan",
+    "Giorno 7 – Chiese storiche e Moschea Dungan:": "Tag 7 – Historische Kirchen und Dunganen-Moschee",
+    "Giorno 8 – Ruh Ordo, Gita in barca e Petrografi:": "Tag 8 – Ruh Ordo, Bootsfahrt und Petroglyphen",
+    "Giorno 9 – Ritorno a Bishkek e Bazar:": "Tag 9 – Rückkehr nach Bischkek und Basar",
+    "Giorno 10 – Transferimento all'aeroporto:": "Tag 10 – Transfer zum Flughafen",
+    "Arrivo all'Aeroporto Internazionale di Manas e trasferimento in hotel a Bishkek.": "Ankunft am internationalen Flughafen Manas und Transfer zum Hotel in Bischkek.",
+    "Riposo dopo il lungo viaggio.": "Zeit zum Ausruhen nach der langen Reise.",
+    "Pranzo intorno alle 12 o alle 13 in un ristorante locale.": "Mittagessen gegen 12 oder 13 Uhr in einem lokalen Restaurant.",
+    "Tour della città nel pomeriggio: visita a Piazza Ala-Too, Parco delle Querce e Museo Storico.": "Stadtrundfahrt am Nachmittag mit Besuch des Ala-Too-Platzes, des Eichenparks und des Historischen Museums.",
+    "Cena in un ristorante etnico tradizionale a Bishkek chiamato \"Supara\".": "Abendessen im traditionellen Restaurant „Supara“ in Bischkek.",
+    "Il nostro tour inizia in direzione dell'unica Riserva Naturale di Chon-Kemin.": "Unsere Reise führt zum einzigartigen Naturreservat Chon-Kemin.",
+    "La cena si terrà in un hotel locale, dove pernotteremo anche.": "Abendessen und Übernachtung in einem lokalen Hotel.",
+    "Successivamente, visiteremo i canyon \"Skazka\" (Valle delle fiabe) e \"Aksai\".": "Anschließend besuchen wir die Schluchten Skazka („Märchental“) und Aksai.",
+    "Dopo una giornata ricca di eventi, ci sarà la possibilità di nuotare nel lago e rinfrescarsi.": "Nach einem erlebnisreichen Tag können Sie im See schwimmen und sich erfrischen.",
+    "Pernottamento in un tradizionale hotel di yurte nelle vicinanze.": "Übernachtung in einem traditionellen Jurtenhotel in der Nähe.",
+    "Qui ci sono meravigliose opportunità per fare escursioni, fotografare e godersi la natura.": "Hier gibt es wunderbare Möglichkeiten zum Wandern, Fotografieren und Genießen der Natur.",
+    "Viaggio verso la città di Karakol (circa 30 minuti).": "Weiterfahrt in die Stadt Karakol (etwa 30 Minuten).",
+    "Cena in un ristorante locale e pernottamento.": "Abendessen in einem lokalen Restaurant und Übernachtung.",
+    "La moschea Dungan è una struttura unica in legno, costruita interamente senza l'uso di un singolo chiodo.": "Die Dunganen-Moschee ist ein einzigartiges Holzbauwerk, das vollständig ohne Nägel errichtet wurde.",
+    "Successivamente, proseguiamo per Cholpon-Ata, sulla costa nord del lago Issyk-Kul.": "Anschließend fahren wir nach Tscholpon-Ata am Nordufer des Issyk-Kul-Sees.",
+    "Prima dell'arrivo, visiteremo il villaggio etnico di Kyrchyn.": "Vor der Ankunft besuchen wir das ethnische Dorf Kyrchyn.",
+    "E naturalmente, un bagno nelle acque limpide del lago Issyk-Kul è d'obbligo!": "Und natürlich darf ein Bad im klaren Wasser des Issyk-Kul-Sees nicht fehlen!",
+    "Trasferimento all'aeroporto di Manas e partenza individuale.": "Transfer zum Flughafen Manas und individuelle Abreise.",
+    "Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.": "Die Reise bietet viele Möglichkeiten, die beeindruckende Natur Kirgisistans zu erleben. Wandere durch malerische Täler, schwimme im klaren Wasser des Issyk-Kul-Sees und übernachte in traditionellen Jurten. Entdecke Geschichte und Kultur bei Besuchen von Museen und historischen Stätten und probiere die traditionelle kirgisische Küche."
+  },
+  EN: {
+    "Giorno 1 – Punto di incontro:": "Day 1 – Arrival and welcome",
+    "Giorno 2 – Chon-Kemin:": "Day 2 – Chon-Kemin",
+    "Giorno 3 – Sponda sud del lago Issyk-Kul:": "Day 3 – Southern shore of Lake Issyk-Kul",
+    "Giorno 4 – Barskoon e Dscheti-Oguz:": "Day 4 – Barskoon and Jeti-Oguz",
+    "Giorno 5 – Dscheti-Oguz e Karakol:": "Day 5 – Jeti-Oguz and Karakol",
+    "Giorno 6 – Altyn-Arashan:": "Day 6 – Altyn-Arashan",
+    "Giorno 7 – Chiese storiche e Moschea Dungan:": "Day 7 – Historic churches and Dungan Mosque",
+    "Giorno 8 – Ruh Ordo, Gita in barca e Petrografi:": "Day 8 – Ruh Ordo, boat trip and petroglyphs",
+    "Giorno 9 – Ritorno a Bishkek e Bazar:": "Day 9 – Return to Bishkek and the bazaar",
+    "Giorno 10 – Transferimento all'aeroporto:": "Day 10 – Transfer to the airport",
+    "Arrivo all'Aeroporto Internazionale di Manas e trasferimento in hotel a Bishkek.": "Arrival at Manas International Airport and transfer to the hotel in Bishkek.",
+    "Riposo dopo il lungo viaggio.": "Time to rest after the long journey.",
+    "Pranzo intorno alle 12 o alle 13 in un ristorante locale.": "Lunch at around 12 or 1 pm at a local restaurant.",
+    "Tour della città nel pomeriggio: visita a Piazza Ala-Too, Parco delle Querce e Museo Storico.": "Afternoon city tour visiting Ala-Too Square, Oak Park and the Historical Museum.",
+    "Cena in un ristorante etnico tradizionale a Bishkek chiamato \"Supara\".": "Dinner at a traditional restaurant in Bishkek called “Supara”.",
+    "Il nostro tour inizia in direzione dell'unica Riserva Naturale di Chon-Kemin.": "Our journey heads towards the unique Chon-Kemin Nature Reserve.",
+    "La cena si terrà in un hotel locale, dove pernotteremo anche.": "Dinner and overnight stay are at a local hotel.",
+    "Successivamente, visiteremo i canyon \"Skazka\" (Valle delle fiabe) e \"Aksai\".": "Next, we visit the Skazka (“Fairytale Valley”) and Aksai canyons.",
+    "Dopo una giornata ricca di eventi, ci sarà la possibilità di nuotare nel lago e rinfrescarsi.": "After a full day, there is time to swim in the lake and cool off.",
+    "Pernottamento in un tradizionale hotel di yurte nelle vicinanze.": "Overnight stay in a traditional yurt hotel nearby.",
+    "Qui ci sono meravigliose opportunità per fare escursioni, fotografare e godersi la natura.": "There are wonderful opportunities for hiking, photography and enjoying nature.",
+    "Viaggio verso la città di Karakol (circa 30 minuti).": "Travel to the city of Karakol (about 30 minutes).",
+    "Cena in un ristorante locale e pernottamento.": "Dinner at a local restaurant and overnight stay.",
+    "La moschea Dungan è una struttura unica in legno, costruita interamente senza l'uso di un singolo chiodo.": "The Dungan Mosque is a unique wooden structure built entirely without a single nail.",
+    "Successivamente, proseguiamo per Cholpon-Ata, sulla costa nord del lago Issyk-Kul.": "We then continue to Cholpon-Ata on the northern shore of Lake Issyk-Kul.",
+    "Prima dell'arrivo, visiteremo il villaggio etnico di Kyrchyn.": "Before arriving, we visit the Kyrchyn ethnic village.",
+    "E naturalmente, un bagno nelle acque limpide del lago Issyk-Kul è d'obbligo!": "And of course, a swim in the clear waters of Lake Issyk-Kul is a must!",
+    "Trasferimento all'aeroporto di Manas e partenza individuale.": "Transfer to Manas Airport for individual departure.",
+    "Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.": "The trip offers many ways to experience Kyrgyzstan’s remarkable nature. Hike through scenic valleys, swim in the clear waters of Lake Issyk-Kul, stay in traditional yurts, explore museums and historic sites, and sample traditional Kyrgyz cuisine."
+  }
+};
+
 const days = [
   {
     day: 1,
@@ -246,7 +312,8 @@ const DaySevenMedia = ({
 };
 
 const Kultur = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const itineraryText = (value: string) => language === "IT" ? value : itineraryTranslations[language][value] ?? value;
   const [activeDay, setActiveDay] = useState(0);
   const [cultureDates, setCultureDates] = useState<Array<{
     id: string;
@@ -349,7 +416,7 @@ const Kultur = () => {
               <p className="mb-8 font-display text-xl italic text-primary md:text-2xl">
                 {t("Kirgisistan von seiner schönsten Seite")}
               </p>
-              <p className="mb-6 max-w-xl text-base leading-relaxed text-muted-foreground">Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.</p>
+              <p className="mb-6 max-w-xl text-base leading-relaxed text-muted-foreground">{itineraryText("Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.")}</p>
               <Link
                 to="/buchen?tour=kultur"
                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
@@ -446,15 +513,15 @@ const Kultur = () => {
                       </div>
                     </div>
                     <div className="min-w-0 flex-1 pb-2">
-                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{d.title}</h3>
+                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{itineraryText(d.title)}</h3>
                       <div className="flex flex-col gap-3 mb-5">
                         {d.bullets ? (
                           <ul className="list-disc space-y-2 pl-5 text-base text-muted-foreground leading-relaxed">
-                            {d.bullets.map((item) => <li key={item}>{item}</li>)}
+                            {d.bullets.map((item) => <li key={item}>{itineraryText(item)}</li>)}
                           </ul>
                         ) : (
                           d.paragraphs?.map((paragraph) => (
-                            <p key={paragraph} className="text-base text-muted-foreground leading-relaxed">{paragraph}</p>
+                            <p key={paragraph} className="text-base text-muted-foreground leading-relaxed">{itineraryText(paragraph)}</p>
                           ))
                         )}
                       </div>
