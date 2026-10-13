@@ -382,7 +382,7 @@ const Kultur = () => {
                     <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
                   </div>
                   <div className="shrink-0 text-right md:text-left">
-                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.300 €</p>
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.690 €</p>
                     <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
                   </div>
                 </div>
