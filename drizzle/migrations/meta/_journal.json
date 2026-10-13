@@ -36,6 +36,13 @@
       "when": 1791774419646,
       "tag": "0004_booking_documents_storage_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791917609662,
+      "tag": "0005_add_booking_payment_columns",
+      "breakpoints": true
     }
   ]
 }

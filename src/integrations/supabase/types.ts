@@ -17,12 +17,15 @@ export type Database = {
       bookings: {
         Row: {
           created_at: string
+          deposit_amount: number
           email: string
           id: string
           name: string
           notes: string | null
+          payment_status: string
           persons: number
           phone: string
+          remaining_amount: number
           status: string
           tier: string
           total_price: number
@@ -31,12 +34,15 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deposit_amount?: number
           email: string
           id?: string
           name: string
           notes?: string | null
+          payment_status?: string
           persons: number
           phone: string
+          remaining_amount?: number
           status?: string
           tier: string
           total_price: number
@@ -45,12 +51,15 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deposit_amount?: number
           email?: string
           id?: string
           name?: string
           notes?: string | null
+          payment_status?: string
           persons?: number
           phone?: string
+          remaining_amount?: number
           status?: string
           tier?: string
           total_price?: number
