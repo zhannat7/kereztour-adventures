@@ -36,11 +36,11 @@ const Faq = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="faq" className="border-y border-border bg-sand/50 py-14 md:py-20">
+    <section id="faq" className="border-y border-border bg-sand/50 py-12 md:py-16">
       <div ref={ref} className="section-reveal container mx-auto px-4 sm:px-6 max-w-[1400px]">
-        <div className="max-w-2xl mb-12">
+        <div className="max-w-2xl mb-8 md:mb-10">
           <span className="eyebrow mb-4 block">{t("Häufige Fragen")}</span>
-          <h2 className="font-display text-4xl leading-tight text-foreground md:text-6xl">
+          <h2 className="font-display text-3xl leading-tight text-foreground sm:text-4xl md:text-5xl">
             {t("Alles, was du vor der ")}<span className="italic text-primary">{t("Anfrage wissen willst")}</span>
           </h2>
         </div>
@@ -53,15 +53,15 @@ const Faq = () => {
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-4 px-1 py-5 sm:gap-6 sm:py-6 text-left transition-colors hover:bg-card/70 sm:px-4"
+                  className="flex min-h-14 w-full items-center justify-between gap-4 px-1 py-4 sm:gap-6 sm:py-5 text-left transition-colors hover:bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-inset sm:px-4"
                 >
-                  <span className="font-display text-lg text-foreground">{t(f.q)}</span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-primary/20 text-primary">
+                  <span className="font-display text-base leading-snug text-foreground sm:text-lg">{t(f.q)}</span>
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-primary/20 text-primary transition-colors">
                     {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                   </span>
                 </button>
                 {isOpen && (
-                  <p className="-mt-1 max-w-3xl px-1 pb-7 text-sm leading-relaxed text-muted-foreground sm:px-4">
+                  <p className="-mt-1 max-w-3xl px-1 pb-6 text-sm leading-relaxed text-muted-foreground sm:px-4 sm:text-base">
                     {t(f.a)}
                   </p>
                 )}
@@ -69,6 +69,17 @@ const Faq = () => {
             );
           })}
         </div>
+
+        <p className="mt-7 text-sm leading-relaxed text-muted-foreground sm:mt-8 sm:text-base">
+          {t("Noch Fragen?")}{" "}
+          <a
+            href="/buchen"
+            className="font-medium text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            {t("Stelle eine unverbindliche Anfrage")}
+          </a>
+          .
+        </p>
       </div>
     </section>
   );
