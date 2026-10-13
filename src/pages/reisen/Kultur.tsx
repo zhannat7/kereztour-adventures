@@ -259,11 +259,14 @@ const Kultur = () => {
   const dayRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
+    let active = true;
+
     const loadCultureDates = async () => {
       const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
 
+      if (!active) return;
       if (error) {
-        setCultureDates([]);
+        console.error("Kultur-Termine konnten nicht aktualisiert werden:", error);
         return;
       }
 
@@ -275,13 +278,34 @@ const Kultur = () => {
             date: item.start_date,
             label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
             maxParticipants: Number(item.max_participants),
-            availablePlaces: Number(item.available_places),
+            availablePlaces: Math.max(0, Number(item.available_places)),
             status: item.status,
           }))
       );
     };
 
-    loadCultureDates();
+    void loadCultureDates();
+
+    // Keep the dates in sync with admin edits and confirmed/cancelled bookings.
+    // Supabase Realtime updates immediately when enabled; polling is the fallback.
+    const refreshInterval = window.setInterval(() => {
+      if (active) void loadCultureDates();
+    }, 15000);
+    const availabilityChannel = supabase
+      .channel("public-culture-availability")
+      .on("postgres_changes", { event: "*", schema: "public", table: "tour_dates" }, () => {
+        if (active) void loadCultureDates();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => {
+        if (active) void loadCultureDates();
+      })
+      .subscribe();
+
+    return () => {
+      active = false;
+      window.clearInterval(refreshInterval);
+      void supabase.removeChannel(availabilityChannel);
+    };
   }, []);
 
   useEffect(() => {
