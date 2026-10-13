@@ -97,6 +97,16 @@ const Certificate = () => {
               </a>
             ))}
           </div>
+
+          <div className="flex justify-start border-t border-border pt-6">
+            <Link
+              to="/"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t("Zurück")} zur Website
+            </Link>
+          </div>
         </div>
       </div>
     </div>
