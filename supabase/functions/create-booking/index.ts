@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
           if (persons < 5 || persons > 20) {
             return json({ error: "Ab 5 Personen ist die Reise mit Minibus buchbar." }, 400, origin);
           }
-          price = 1300;
+          price = 1690;
         } else {
           if (persons < 2 || persons > 4) {
             return json({ error: "Für 2 bis 4 Personen ist die Reise mit Jeep buchbar." }, 400, origin);
