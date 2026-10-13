@@ -515,9 +515,18 @@ const Dashboard = ({ session }: { session: Session }) => {
     void logActivity(id, "status_updated", "Buchungsstatus geändert zu: " + (statusLabel[status] ?? status) + ".");
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
-    const { error } = await (supabase as any).from("tour_dates").update(patch).eq("id", id);
+    const date = dates.find((item) => item.id === id);
+    // Keep the shared availability capacity in sync with the Minibus capacity.
+    // Public tour dates and the booking form use max_participants for the
+    // remaining-seat calculation, while Kultur Tour also has vehicle-specific limits.
+    const syncedPatch =
+      date?.tour === "Kultur Tour" && patch.economy_max_participants !== undefined
+        ? { ...patch, max_participants: patch.economy_max_participants }
+        : patch;
+    const { error } = await (supabase as any).from("tour_dates").update(syncedPatch).eq("id", id);
     if (error) return toast.error(error.message);
-    load();
+    await load();
+    toast.success("Kapazität gespeichert – Website und Buchungsseite werden aktualisiert.");
   };
   const addDate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1030,7 +1039,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                                   className="mt-1 w-24 rounded-sm border border-border bg-background px-2 py-1"
                                   onBlur={(e) => {
                                     const value = Number(e.target.value);
-                                    if (value !== d.economy_max_participants) {
+                                    if (value !== d.economy_max_participants || value !== d.max_participants) {
                                       updateDate(d.id, { economy_max_participants: value });
                                     }
                                   }}
