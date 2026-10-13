@@ -56,7 +56,7 @@ type TourDateAvailability = {
 const getCulturePrice = (persons: number) => {
   if (persons === 2) return 2700;
   if (persons >= 3 && persons <= 4) return 1700;
-  if (persons >= 5) return 1300;
+  if (persons >= 5) return 1690;
   return 0;
 };
 
@@ -504,7 +504,7 @@ const Buchen = () => {
                         <div className="text-right shrink-0">
                           <p className="font-bold text-primary">
                             {tour.hasTiers
-                              ? t("ab 1.300 €")
+                              ? t("ab 1.690 €")
                               : `${tour.price?.toLocaleString("de-DE")} €`}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -533,7 +533,7 @@ const Buchen = () => {
                     </div>
                     <div className="rounded-sm border border-border p-5">
                       <p className="font-bold text-lg text-foreground">{t("Ab 5 Personen · Minibus")}</p>
-                      <p className="text-sm text-muted-foreground mt-2">{t("1.300 € pro Person")}</p>
+                      <p className="text-sm text-muted-foreground mt-2">{t("1.690 € pro Person")}</p>
                     </div>
                   </div>
                 </div>
