@@ -39,16 +39,116 @@ import t9b from "@/assets/gallery/91.webp";
 import t10a from "@/assets/gallery/10.webp";
 
 const days = [
-  { day: 1, title: "Giorno 1 – Punto di incontro:", desc: "Arrivo all'Aeroporto Internazionale di Manas e trasferimento in hotel a Bishkek. Riposo dopo il lungo viaggio. Pranzo intorno alle 12 o alle 13 in un ristorante locale. Tour della città nel pomeriggio: visita a Piazza Ala-Too, Parco delle Querce e Museo Storico. Cena in un ristorante etnico tradizionale a Bishkek chiamato \"Supara\".", photos: [t1a, t1b, t1c, t1d, t1e] },
-  { day: 2, title: "Giorno 2 – Chon-Kemin:", desc: "Il nostro tour inizia in direzione dell'unica Riserva Naturale di Chon-Kemin. Lungo la strada, faremo una sosta presso la storica Torre di Burana. Successivamente, continueremo il nostro viaggio verso la gola di Chon-Kemin. All'ingresso della valle si trova la confluenza di due fiumi: il turchese Chon-Kemin e il selvaggio Chuy. Lì vi aspettano escursioni a cavallo o un facile trekking nel Parco Nazionale di Chon-Kemin. La cena si terrà in un hotel locale, dove pernotteremo anche.", photos: [t2a, t2b, t2c, t2d] },
-  { day: 3, title: "Giorno 3 – Sponda sud del lago Issyk-Kul:", desc: "Partenza in direzione della sponda sud del lago Issyk-Kul con sosta nel villaggio di Bokonbaeva. Lì assisteremo a una dimostrazione di caccia con l'aquila, un'antica tradizione dei kirghisi sopravvissuta fino ad oggi, sebbene praticata solo da pochi. Questa pratica unica unisce la caccia a volpi e lepri, l'addestramento di rapaci come l'aquila reale (\"Berkut\") e un legame profondo tra cacciatore e uccello. Successivamente, visiteremo i canyon \"Skazka\" (Valle delle fiabe) e \"Aksai\". Dopo una giornata ricca di eventi, ci sarà la possibilità di nuotare nel lago e rinfrescarsi. Pernottamento in un tradizionale hotel di yurte nelle vicinanze.", photos: [t3a, t3b, t3c, t3d] },
-  { day: 4, title: "Giorno 4 – Barskoon e Dscheti-Oguz:", desc: "Proseguiamo verso il villaggio di Barskoon, noto per le sue impressionanti cascate. In passato, anche i cosmonauti russi vi trascorrevano il loro tempo libero, e in loro onore sono stati eretti dei monumenti. Dopo pranzo, ci aspetta un'attività interessante: aiuteremo a montare una yurta tradizionale insieme agli abitanti del posto, che realizzano tappeti artistici di lana secondo la tradizione kirghisa. Successivamente, proseguiamo per Jeti-Oguz, dove ceneremo e pernotteremo.", photos: [t4a, t4b, t4c, t4d] },
-  { day: 5, title: "Giorno 5 – Dscheti-Oguz e Karakol:", desc: "Dscheti-Oguz è una pittoresca gola nelle montagne del Tien-Shan, famosa per le sue formazioni di arenaria rossa, in particolare i \"Sette Tori\" e il \"Cuore Infranto\". Qui ci sono meravigliose opportunità per fare escursioni, fotografare e godersi la natura. Viaggio verso la città di Karakol (circa 30 minuti). Se il tempo lo permette, visiteremo le sorgenti termali poco fuori Karakol, ideali per rilassarsi dopo una lunga giornata. Cena in un ristorante locale e pernottamento.", photos: [t5a, t5b] },
-  { day: 6, title: "Giorno 6 – Altyn-Arashan:", desc: "Ci dirigiamo verso la bellissima valle di Altyn-Arashan, nota per la sua natura mozzafiato e le sorgenti termali. La gola si trova in una zona alpina remota, circondata da fitte foreste, limpidi torrenti di montagna e cime innevate. \"Altyn-Arashan\" significa \"Sorgente termale dorata\" in kirghiso, e qui si trovano sorgenti termali naturali stimate per i loro effetti curativi. I bagni caldi si trovano immersi nella natura: un'esperienza unica per rilassarsi dopo un'escursione o una giornata attiva. Altyn-Arashan è raggiungibile solo con veicoli fuoristrada o a piedi, il che rende il luogo particolarmente tranquillo e incontaminato. L'intera escursione a piedi dura circa 4 ore, incluse le pause per riposare e scattare fotografie. Per il ritorno, c'è la possibilità di scegliere se tornare a cavallo o comodamente con uno speciale veicolo fuoristrada.", photos: [t6a, t6b] },
-  { day: 7, title: "Giorno 7 – Chiese storiche e Moschea Dungan:", desc: "Dopo colazione, visitiamo in tutta tranquillità la storica chiesa russo-ortodossa e la moschea Dungan, due impressionanti edifici religiosi con architetture molto diverse tra loro. La moschea Dungan è una struttura unica in legno, costruita interamente senza l'uso di un singolo chiodo. Successivamente, proseguiamo per Cholpon-Ata, sulla costa nord del lago Issyk-Kul. Prima dell'arrivo, visiteremo il villaggio etnico di Kyrchyn.", photos: [t7a], video: kyrchynVideo.url },
-  { day: 8, title: "Giorno 8 – Ruh Ordo, Gita in barca e Petrografi:", desc: "A Cholpon-Ata, visitiamo il museo culturale all'aperto \"Ruh Ordo\", intitolato al famoso scrittore kirghiso Cingiz Ajtmatov. Successivamente, faremo una rilassante gita in barca sul lago Issyk-Kul con una nave da escursione. Godiamo l'aria fresca del lago e la vista imponente delle montagne del Tien-Shan. Dopo pranzo, visitiamo il famoso museo di petroglifi a cielo aperto, chiamato anche \"Giardino di Pietra\". Le incisioni rupestri risalgono al 2000 a.C. circa e sono considerate un tesoro culturale della regione. E naturalmente, un bagno nelle acque limpide del lago Issyk-Kul è d'obbligo!", photos: [t8a, t8b, t8c] },
-  { day: 9, title: "Giorno 9 – Ritorno a Bishkek e Bazar:", desc: "Il nono giorno, ritorniamo a Bishkek. Dopo l'arrivo, visitiamo il bazar più grande del paese, un luogo perfetto per acquistare souvenir, frutta secca e altre specialità locali. Per concludere il nostro viaggio, ci aspetta una festosa cena d'addio in un ristorante suggestivo. Lì potremo goderci i suoni degli strumenti tradizionali kirghisi, suonati da musicisti di talento: una conclusione culturale indimenticabile.", photos: [t9a, t9b] },
-  { day: 10, title: "Giorno 10 – Transferimento all'aeroporto:", desc: "Trasferimento all'aeroporto di Manas e partenza individuale.", photos: [t10a] },
+  {
+    day: 1,
+    title: "Giorno 1 – Punto di incontro:",
+    bullets: [
+      "Arrivo all'Aeroporto Internazionale di Manas e trasferimento in hotel a Bishkek.",
+      "Riposo dopo il lungo viaggio.",
+      "Pranzo intorno alle 12 o alle 13 in un ristorante locale.",
+      "Tour della città nel pomeriggio: visita a Piazza Ala-Too, Parco delle Querce e Museo Storico.",
+      "Cena in un ristorante etnico tradizionale a Bishkek chiamato \"Supara\"."
+    ],
+    photos: [t1a, t1b, t1c, t1d, t1e]
+  },
+  {
+    day: 2,
+    title: "Giorno 2 – Chon-Kemin:",
+    paragraphs: [
+      "Il nostro tour inizia in direzione dell'unica Riserva Naturale di Chon-Kemin.",
+      "Lungo la strada, faremo una sosta presso la storica Torre di Burana. Successivamente, continueremo il nostro viaggio verso la gola di Chon-Kemin. All'ingresso della valle si trova la confluenza di due fiumi: il turchese Chon-Kemin e il selvaggio Chuy. Lì vi aspettano escursioni a cavallo o un facile trekking nel Parco Nazionale di Chon-Kemin.",
+      "La cena si terrà in un hotel locale, dove pernotteremo anche."
+    ],
+    photos: [t2a, t2b, t2c, t2d]
+  },
+  {
+    day: 3,
+    title: "Giorno 3 – Sponda sud del lago Issyk-Kul:",
+    paragraphs: [
+      "Partenza in direzione della sponda sud del lago Issyk-Kul con sosta nel villaggio di Bokonbaeva. Lì assisteremo a una dimostrazione di caccia con l'aquila, un'antica tradizione dei kirghisi sopravvissuta fino ad oggi, sebbene praticata solo da pochi.",
+      "Questa pratica unica unisce la caccia a volpi e lepri, l'addestramento di rapaci come l'aquila reale (\"Berkut\") e un legame profondo tra cacciatore e uccello.",
+      "Successivamente, visiteremo i canyon \"Skazka\" (Valle delle fiabe) e \"Aksai\".",
+      "Dopo una giornata ricca di eventi, ci sarà la possibilità di nuotare nel lago e rinfrescarsi.",
+      "Pernottamento in un tradizionale hotel di yurte nelle vicinanze."
+    ],
+    photos: [t3a, t3b, t3c, t3d]
+  },
+  {
+    day: 4,
+    title: "Giorno 4 – Barskoon e Dscheti-Oguz:",
+    paragraphs: [
+      "Proseguiamo verso il villaggio di Barskoon, noto per le sue impressionanti cascate. In passato, anche i cosmonauti russi vi trascorrevano il loro tempo libero, e in loro onore sono stati eretti dei monumenti.",
+      "Dopo pranzo, ci aspetta un'attività interessante: aiuteremo a montare una yurta tradizionale insieme agli abitanti del posto, che realizzano tappeti artistici di lana secondo la tradizione kirghisa.",
+      "Successivamente, proseguiamo per Jeti-Oguz, dove ceneremo e pernotteremo."
+    ],
+    photos: [t4a, t4b, t4c, t4d]
+  },
+  {
+    day: 5,
+    title: "Giorno 5 – Dscheti-Oguz e Karakol:",
+    paragraphs: [
+      "Dscheti-Oguz è una pittoresca gola nelle montagne del Tien-Shan, famosa per le sue formazioni di arenaria rossa, in particolare i \"Sette Tori\" e il \"Cuore Infranto\".",
+      "Qui ci sono meravigliose opportunità per fare escursioni, fotografare e godersi la natura.",
+      "Viaggio verso la città di Karakol (circa 30 minuti).",
+      "Se il tempo lo permette, visiteremo le sorgenti termali poco fuori Karakol, ideali per rilassarsi dopo una lunga giornata.",
+      "Cena in un ristorante locale e pernottamento."
+    ],
+    photos: [t5a, t5b]
+  },
+  {
+    day: 6,
+    title: "Giorno 6 – Altyn-Arashan:",
+    paragraphs: [
+      "Ci dirigiamo verso la bellissima valle di Altyn-Arashan, nota per la sua natura mozzafiato e le sorgenti termali.",
+      "La gola si trova in una zona alpina remota, circondata da fitte foreste, limpidi torrenti di montagna e cime innevate.",
+      "\"Altyn-Arashan\" significa \"Sorgente termale dorata\" in kirghiso, e qui si trovano sorgenti termali naturali stimate per i loro effetti curativi.",
+      "I bagni caldi si trovano immersi nella natura: un'esperienza unica per rilassarsi dopo un'escursione o una giornata attiva.",
+      "Altyn-Arashan è raggiungibile solo con veicoli fuoristrada o a piedi, il che rende il luogo particolarmente tranquillo e incontaminato.",
+      "L'intera escursione a piedi dura circa 4 ore, incluse le pause per riposare e scattare fotografie.",
+      "Per il ritorno, c'è la possibilità di scegliere se tornare a cavallo o comodamente con uno speciale veicolo fuoristrada."
+    ],
+    photos: [t6a, t6b]
+  },
+  {
+    day: 7,
+    title: "Giorno 7 – Chiese storiche e Moschea Dungan:",
+    paragraphs: [
+      "Dopo colazione, visitiamo in tutta tranquillità la storica chiesa russo-ortodossa e la moschea Dungan, due impressionanti edifici religiosi con architetture molto diverse tra loro.",
+      "La moschea Dungan è una struttura unica in legno, costruita interamente senza l'uso di un singolo chiodo.",
+      "Successivamente, proseguiamo per Cholpon-Ata, sulla costa nord del lago Issyk-Kul.",
+      "Prima dell'arrivo, visiteremo il villaggio etnico di Kyrchyn."
+    ],
+    photos: [t7a],
+    video: kyrchynVideo.url
+  },
+  {
+    day: 8,
+    title: "Giorno 8 – Ruh Ordo, Gita in barca e Petrografi:",
+    paragraphs: [
+      "A Cholpon-Ata, visitiamo il museo culturale all'aperto \"Ruh Ordo\", intitolato al famoso scrittore kirghiso Cingiz Ajtmatov.",
+      "Successivamente, faremo una rilassante gita in barca sul lago Issyk-Kul con una nave da escursione. Godiamo l'aria fresca del lago e la vista imponente delle montagne del Tien-Shan.",
+      "Dopo pranzo, visitiamo il famoso museo di petroglifi a cielo aperto, chiamato anche \"Giardino di Pietra\". Le incisioni rupestri risalgono al 2000 a.C. circa e sono considerate un tesoro culturale della regione.",
+      "E naturalmente, un bagno nelle acque limpide del lago Issyk-Kul è d'obbligo!"
+    ],
+    photos: [t8a, t8b, t8c]
+  },
+  {
+    day: 9,
+    title: "Giorno 9 – Ritorno a Bishkek e Bazar:",
+    paragraphs: [
+      "Il nono giorno, ritorniamo a Bishkek. Dopo l'arrivo, visitiamo il bazar più grande del paese, un luogo perfetto per acquistare souvenir, frutta secca e altre specialità locali.",
+      "Per concludere il nostro viaggio, ci aspetta una festosa cena d'addio in un ristorante suggestivo. Lì potremo goderci i suoni degli strumenti tradizionali kirghisi, suonati da musicisti di talento: una conclusione culturale indimenticabile."
+    ],
+    photos: [t9a, t9b]
+  },
+  {
+    day: 10,
+    title: "Giorno 10 – Transferimento all'aeroporto:",
+    paragraphs: [
+      "Trasferimento all'aeroporto di Manas e partenza individuale."
+    ],
+    photos: [t10a]
+  },
 ];
 
 
@@ -324,7 +424,15 @@ const Kultur = () => {
                     <div className="min-w-0 flex-1 pb-2">
                       <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">{d.title}</h3>
                       <div className="flex flex-col gap-3 mb-5">
-                        <p className="text-base text-muted-foreground leading-relaxed">{d.desc}</p>
+                        {d.bullets ? (
+                          <ul className="list-disc space-y-2 pl-5 text-base text-muted-foreground leading-relaxed">
+                            {d.bullets.map((item) => <li key={item}>{item}</li>)}
+                          </ul>
+                        ) : (
+                          d.paragraphs?.map((paragraph) => (
+                            <p key={paragraph} className="text-base text-muted-foreground leading-relaxed">{paragraph}</p>
+                          ))
+                        )}
                       </div>
                       {d.day === 7 && d.video ? (
                         <DaySevenMedia video={d.video} photos={d.photos} />
