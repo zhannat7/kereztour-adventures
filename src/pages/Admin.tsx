@@ -354,7 +354,31 @@ const Dashboard = ({ session }: { session: Session }) => {
     const { data: documentFolders, error: folderError } = await supabase.storage.from("booking-documents").list("", { limit: 1000 });
     if (folderError) console.error("Document folders could not be loaded:", folderError);
     else setBookingDocumentCounts(Object.fromEntries((documentFolders ?? []).filter((item) => item.id == null).map((item) => [item.name, 1])));
-    setDates((d.data as TourDate[] | null) ?? []);
+    const loadedDates = (d.data as TourDate[] | null) ?? [];
+    // Repair existing Kultur Tour rows where the shared public capacity still
+    // has the old default (for example 15) while the Minibus capacity is 8.
+    const kulturCapacityMismatches = loadedDates.filter(
+      (item) => item.tour === "Kultur Tour" && item.max_participants !== item.economy_max_participants
+    );
+    if (kulturCapacityMismatches.length > 0) {
+      const syncResults = await Promise.all(
+        kulturCapacityMismatches.map((item) =>
+          (supabase as any)
+            .from("tour_dates")
+            .update({ max_participants: item.economy_max_participants })
+            .eq("id", item.id)
+        )
+      );
+      const syncError = syncResults.find((result) => result.error)?.error;
+      if (syncError) {
+        console.error("Kultur Tour capacity sync failed:", syncError);
+      } else {
+        kulturCapacityMismatches.forEach((item) => {
+          item.max_participants = item.economy_max_participants;
+        });
+      }
+    }
+    setDates(loadedDates);
     const grouped: Record<string, BookingEmailLog[]> = {};
     for (const row of (e.data ?? []) as BookingEmailLog[]) {
       (grouped[row.booking_id] ??= []).push(row);
