@@ -188,7 +188,7 @@ const Trekking = () => {
         <div className="mb-16 flex flex-wrap items-center justify-between gap-4 py-2">
           <div>
             <p className="mb-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">{t("Preis pro Person")}</p>
-            <p className="font-display text-3xl text-foreground">1.200 €</p>
+            <p className="font-display text-3xl text-foreground">1.490 €</p>
           </div>
           <Link
             to="/buchen?tour=trekking"
