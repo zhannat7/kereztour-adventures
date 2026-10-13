@@ -401,7 +401,7 @@ const Kultur = () => {
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {[
-                "Übernachtungen in 3-Sterne-Hotels und traditionellen Jurten mit WC und Dusche",
+                "Übernachtungen in 4-Sterne-Hotels und traditionellen Jurten mit WC und Dusche",
                 "Alle Transfers und Fahrten entlang der Reiseroute",
                 "Erfahrener professioneller Guide während der gesamten Reise",
                 "Vollpension mit drei Mahlzeiten täglich",
