@@ -83,9 +83,9 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-        from: "Kereztour <onboarding@resend.dev>",
+        from: Deno.env.get("RESEND_FROM_EMAIL") ?? "Kereztour <info@notify.kereztour.com>",
         to: [booking.email],
-        reply_to: "kereztour@hotmail.com",
+        reply_to: Deno.env.get("RESEND_REPLY_TO") ?? "kereztour@hotmail.com",
         subject,
         html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;max-width:680px">${html}<br><br><div style="font-size:13px;color:#6b7280">Antworten bitte direkt an Sarina: kereztour@hotmail.com</div></div>`,
       }),
