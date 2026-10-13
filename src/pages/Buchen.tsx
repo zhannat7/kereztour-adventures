@@ -37,7 +37,7 @@ const TOURS = [
     id: "trekking",
     label: "Intensiv-Trekking",
     desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
-    price: 1200,
+    price: 1490,
     hasTiers: false,
   },
 ] as const;
