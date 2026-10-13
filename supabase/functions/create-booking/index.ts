@@ -138,7 +138,7 @@ Deno.serve(async (req) => {
       if (tier !== "standard") {
         return json({ error: "Ungültige Reiseoption." }, 400, origin);
       }
-      price = 1200;
+      price = 1490;
     }
 
     const totalPrice = persons * price;
