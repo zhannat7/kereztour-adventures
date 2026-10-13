@@ -247,10 +247,27 @@ const Buchen = () => {
       setIsLoadingDates(false);
     };
 
-    loadTourDates();
+    void loadTourDates();
+
+    // Refresh public availability while this page is open. Realtime gives
+    // immediate updates where enabled; polling remains a reliable fallback.
+    const refreshInterval = window.setInterval(() => {
+      if (active) void loadTourDates();
+    }, 15000);
+    const availabilityChannel = supabase
+      .channel("public-booking-availability")
+      .on("postgres_changes", { event: "*", schema: "public", table: "tour_dates" }, () => {
+        if (active) void loadTourDates();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => {
+        if (active) void loadTourDates();
+      })
+      .subscribe();
 
     return () => {
       active = false;
+      window.clearInterval(refreshInterval);
+      void supabase.removeChannel(availabilityChannel);
     };
   }, [tourId]);
 
