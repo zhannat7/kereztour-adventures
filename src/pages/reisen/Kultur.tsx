@@ -325,7 +325,7 @@ const Kultur = () => {
               <p className="mb-8 font-display text-xl italic text-primary md:text-2xl">
                 {t("Kirgisistan von seiner schönsten Seite")}
               </p>
-              <p className="mb-6 max-w-xl text-base leading-relaxed text-muted-foreground">{Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.}</p>
+              <p className="mb-6 max-w-xl text-base leading-relaxed text-muted-foreground">Il viaggio offre numerose opportunità per vivere la straordinaria natura del Kirghizistan. Fai escursioni attraverso valli pittoresche, nuota nelle acque cristalline del lago Issyk-Kul e trascorri la notte in Yurta tradizionali. Scopri di più sulla storia e la cultura del paese attraverso visite a musei e siti storici. Durante il viaggio, avrai l'occasione di provare la cucina tradizionale kirghisa.</p>
               <Link
                 to="/buchen?tour=kultur"
                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
