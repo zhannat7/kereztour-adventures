@@ -6,9 +6,9 @@ const Registration = () => {
   const { t } = useLanguage();
 
   return (
-  <section className="border-y border-border bg-muted/40 py-12 md:py-16">
+  <section className="bg-muted/40 py-12 md:py-16">
     <div className="container mx-auto max-w-[1600px] px-6">
-      <div className="flex flex-col items-start gap-8 border-y border-border bg-card px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 md:py-10">
+      <div className="flex flex-col items-start gap-8 bg-card px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10 md:py-10">
         <div className="flex items-start gap-5">
           <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-primary/20 bg-primary-soft text-primary">
             <FileCheck2 className="h-5 w-5" />
@@ -26,7 +26,7 @@ const Registration = () => {
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-col gap-3 border-t border-border pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0">
+        <div className="flex shrink-0 flex-col gap-3 pt-0 md:pl-7">
           <div className="text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">{t("Registriert seit 22.04.2024")}</p>
             <p className="mt-1">{t("Kirgisische Republik")}</p>
