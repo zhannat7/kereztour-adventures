@@ -1,17 +1,15 @@
 project_id = "cbheroegxcwwthnppgzt"
 
-[functions.create-booking]
-verify_jwt = false
-
-[functions.create-contact-message]
-verify_jwt = false
-
-
-[functions.create-checkout-session]
-verify_jwt = false
-
-[functions.stripe-webhook]
-verify_jwt = false
-
-[functions.purge-archived-bookings]
-verify_jwt = false
+[functions]
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.create-booking]
+    verify_jwt = false
+  [functions.create-checkout-session]
+    verify_jwt = false
+  [functions.create-contact-message]
+    verify_jwt = false
+  [functions.purge-archived-bookings]
+    verify_jwt = false
+  [functions.stripe-webhook]
+    verify_jwt = false
