@@ -17,8 +17,8 @@ const META: Record<string, Meta> = {
   },
   "/reisen/trekking": {
     title: "Kirgisistan Trekking – 10 Tage im Tian-Shan | Kereztour",
-    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 10 Tage mit lokalen Guides für 1.200 € pro Person.",
-    trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1200, image: "/tour-trekking.jpg" },
+    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 10 Tage mit lokalen Guides für 1.490 € pro Person.",
+    trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1490, image: "/tour-trekking.jpg" },
   },
   "/reisen/nomaden": {
     title: "Kirgisistan – Welt der Nomaden 2026 | Kereztour",
