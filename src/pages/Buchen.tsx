@@ -785,11 +785,11 @@ const Buchen = () => {
                   {t("Deine Auswahl")}
                 </p>
 
-                <div className="flex flex-row items-center justify-between gap-3 md:items-end md:gap-5">
+                <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end sm:gap-6">
 
-                  <div>
+                  <div className="min-w-0 w-full sm:flex-1">
 
-                    <h3 className="font-display text-xl leading-tight md:text-3xl">
+                    <h3 className="font-display text-2xl leading-tight break-words md:text-3xl">
                       {t(selectedTour.label)}
                     </h3>
 
@@ -805,7 +805,7 @@ const Buchen = () => {
                       </p>
                     )}
 
-                    <p className="text-primary-foreground/70 text-xs mt-1 md:text-sm">
+                    <p className="text-primary-foreground/80 text-sm mt-2">
                       {persons}{" "}
                       {persons === 1 ? t("Person") : t("Personen")}{" "}
                       × {pricePerPerson.toLocaleString("de-DE")} €
@@ -813,16 +813,14 @@ const Buchen = () => {
 
                   </div>
 
-                  <div className="sm:text-right">
+                  <div className="w-full border-t border-primary-foreground/20 pt-4 sm:w-auto sm:shrink-0 sm:border-0 sm:pt-0 sm:text-right">
 
-                    <p className="text-primary-foreground/70 text-xs md:text-sm">
+                    <p className="text-primary-foreground/75 text-xs md:text-sm">
                       {t("Gesamtpreis")}
                     </p>
 
-                    <p className="font-display text-3xl leading-none md:text-5xl">
-                      {totalPrice.toLocaleString(
-                        "de-DE"
-                      )} €
+                    <p className="mt-1 whitespace-nowrap font-body text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
+                      {totalPrice.toLocaleString("de-DE")} €
                     </p>
 
                   </div>
