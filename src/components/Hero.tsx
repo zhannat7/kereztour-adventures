@@ -130,8 +130,8 @@ const Hero = () => {
               className="relative top-[76px] flex flex-col items-center justify-center gap-5 sm:top-[-12px] sm:flex-row sm:items-stretch sm:gap-6"
               style={{ animationDelay: "0.25s" }}
             >
-              <Link
-                to="/#preise"
+              <a
+                href="#preise"
                 className="group relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-sm border border-gold bg-transparent px-7 py-3 text-[13px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-none backdrop-blur-0 transition-all duration-500 hover:-translate-y-0.5 hover:bg-gold/20 hover:shadow-glow sm:min-h-13 sm:px-8 sm:py-3.5 sm:text-[14px]"
               >
                 <span className="absolute inset-0 translate-y-full bg-gold/25 transition-transform duration-500 ease-out group-hover:translate-y-0" />
@@ -139,7 +139,7 @@ const Hero = () => {
                   {t("Beginne Deine Reise")}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-4.5 sm:w-4.5" />
                 </span>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
