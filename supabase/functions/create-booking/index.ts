@@ -196,10 +196,8 @@ Deno.serve(async (req) => {
     const mailKey = crypto.randomUUID();
     const tripRows = [
       { label: "Reise", value: selected.label },
-      { label: "Reisedatum", value: travelDate },
-      { label: "Reisevariante", value: tier ?? "-" },
+      { label: "Reisedatum", value: travelDate.split("-").reverse().join(".") },
       { label: "Personen", value: String(persons) },
-      { label: "Gesamtpreis", value: `${totalPrice} €` },
     ];
     const emailTasks = Promise.all([
       sendKereztourMail(NOTIFY_EMAIL, {
@@ -215,17 +213,16 @@ Deno.serve(async (req) => {
         closing: ["Details im Admin-Bereich: https://kereztour.com/admin"],
       }, `booking-notify-${mailKey}`),
       sendKereztourMail(email, {
-        subject: "Deine Buchungsanfrage bei Kereztour",
-        heading: "Vielen Dank für deine Buchungsanfrage!",
+        subject: "Deine Anfrage bei Kereztour",
+        heading: "Vielen Dank für deine Anfrage!",
         paragraphs: [
           `Hallo ${name},`,
-          "vielen Dank für deine Buchungsanfrage bei Kereztour. Wir haben deine Anfrage erhalten und prüfen jetzt den gewünschten Termin. Sarina meldet sich zur Bestätigung bei dir.",
+          "vielen Dank für deine Anfrage! Wir haben deinen Reisewunsch erhalten, prüfen jetzt die Verfügbarkeit und melden uns ganz bald persönlich bei dir.",
         ],
         rows: tripRows,
         closing: [
-          "Sarina meldet sich persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, erhältst du von Sarina einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von Sarina erhalten hast.",
-          "Liebe Grüße",
-          "Sarina & Kereztour",
+          "Herzliche Grüße",
+          "Sarina & das Kereztour-Team",
         ],
       }, `booking-confirm-${mailKey}`),
     ]);
