@@ -192,6 +192,8 @@ const Buchen = () => {
   useEffect(() => {
     if (!tourId) {
       setTourDates([]);
+      setIsLoadingDates(false);
+      setIsCheckingAvailability(false);
       return;
     }
 
@@ -215,6 +217,7 @@ const Buchen = () => {
         if (active) {
           setTourDates([]);
           setIsLoadingDates(false);
+          setIsCheckingAvailability(false);
         }
         return;
       }
