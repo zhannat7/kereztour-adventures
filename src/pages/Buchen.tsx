@@ -187,6 +187,7 @@ const Buchen = () => {
 
   const [tourDates, setTourDates] = useState<TourDateAvailability[]>([]);
   const [isLoadingDates, setIsLoadingDates] = useState(false);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
   useEffect(() => {
     if (!tourId) {
@@ -198,6 +199,7 @@ const Buchen = () => {
 
     const loadTourDates = async () => {
       setIsLoadingDates(true);
+      setIsCheckingAvailability(true);
 
       const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
 
@@ -246,7 +248,11 @@ const Buchen = () => {
       const { data: availabilityResult, error: availabilityError } =
         await (supabase as any).rpc("get_tour_date_availability");
 
-      if (!active || availabilityError || !Array.isArray(availabilityResult)) return;
+      if (!active) return;
+      if (availabilityError || !Array.isArray(availabilityResult)) {
+        setIsCheckingAvailability(false);
+        return;
+      }
 
       const rpcById = new Map(availabilityResult.map((item: any) => [item.id, item]));
       setTourDates((currentDates) => currentDates.map((date) => {
@@ -263,6 +269,7 @@ const Buchen = () => {
           status: availablePlaces <= 0 ? "full" : "open",
         };
       }));
+      setIsCheckingAvailability(false);
     };
 
     void loadTourDates();
@@ -673,7 +680,7 @@ const Buchen = () => {
                           >
                             <p className="font-semibold text-foreground">{item.label}</p>
                             <p className="text-sm mt-1 font-medium text-primary">
-                              {isLoadingDates
+                              {isCheckingAvailability
                                 ? t("Freie Plätze werden geprüft …")
                                 : isFull
                                   ? t("Ausgebucht")
