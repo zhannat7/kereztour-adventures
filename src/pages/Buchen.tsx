@@ -639,7 +639,7 @@ const Buchen = () => {
                     <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
                       {t("Bitte wähle zuerst eine Reise aus.")}
                     </div>
-                  ) : isLoadingDates ? (
+                  ) : isLoadingDates && tourDates.length === 0 ? (
                     <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
                       {t("Termine werden geladen … Bitte einen Moment warten.")}
                     </div>
