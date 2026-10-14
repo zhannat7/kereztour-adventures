@@ -50,6 +50,13 @@
       "when": 1791919839334,
       "tag": "0006_flexible_tour_date_capacity_1_to_25",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791988484915,
+      "tag": "0007_remove_contact_text_test_row",
+      "breakpoints": true
     }
   ]
 }
