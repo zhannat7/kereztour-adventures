@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
           { label: "Zeitraum", value: `${dateFrom} bis ${dateTo}` },
           { label: "Personen", value: persons },
         ],
-        closing: ["Liebe Grüße", "Sarina & Kereztour"],
+        closing: ["Herzliche Grüße", "Sarina & das Kereztour-Team"],
       }, `contact-confirm-${mailKey}`),
     ]);
 
