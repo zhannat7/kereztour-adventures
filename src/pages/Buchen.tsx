@@ -201,18 +201,13 @@ const Buchen = () => {
 
       const selectedTourLabel = TOURS.find((tour) => tour.id === tourId)?.label;
 
-      // Read the saved capacity directly from tour_dates every time.
-      // The availability RPC is responsible for counting booked places, but
-      // a stale RPC result must not overwrite a newer capacity saved in Admin.
-      const [{ data: availabilityResult, error: availabilityError }, { data: rawDates, error: rawError }] =
-        await Promise.all([
-          (supabase as any).rpc("get_tour_date_availability"),
-          supabase
-            .from("tour_dates")
-            .select("id, tour, start_date, end_date, max_participants, economy_max_participants, comfort_max_participants, status")
-            .eq("tour", selectedTourLabel)
-            .order("start_date", { ascending: true }),
-        ]);
+      // Load the dates first so the customer sees them immediately.
+      // The availability RPC can be slower, so refresh seat counts in the background.
+      const { data: rawDates, error: rawError } = await supabase
+        .from("tour_dates")
+        .select("id, tour, start_date, end_date, max_participants, economy_max_participants, comfort_max_participants, status")
+        .eq("tour", selectedTourLabel)
+        .order("start_date", { ascending: true });
 
       if (rawError) {
         if (active) {
@@ -224,22 +219,11 @@ const Buchen = () => {
 
       if (!active) return;
 
-      const rpcRows: any[] = !availabilityError && Array.isArray(availabilityResult)
-        ? availabilityResult
-        : [];
-      const rpcById = new Map(rpcRows.map((item: any) => [item.id, item]));
-
       const dates: TourDateAvailability[] = (rawDates ?? [])
         .filter((item: any) => item.tour === selectedTourLabel)
         .map((item: any) => {
-          const rpcItem = rpcById.get(item.id);
           const savedCapacity = Number(item.max_participants);
-          const rpcCapacity = Number(rpcItem?.max_participants ?? savedCapacity);
-          // Preserve the RPC's booked-seat calculation while applying any
-          // capacity change that has already been saved in the admin table.
-          const rpcAvailable = Number(rpcItem?.available_places ?? savedCapacity);
-          const availablePlaces = Math.max(0, rpcAvailable + savedCapacity - rpcCapacity);
-          const status = item.status === "cancelled" || availablePlaces <= 0 ? "full" : "open";
+          const status = item.status === "cancelled" || savedCapacity <= 0 ? "full" : "open";
 
           return {
             id: item.id,
@@ -250,13 +234,35 @@ const Buchen = () => {
               "–" +
               format(parseISO(item.end_date), "dd.MM.yyyy"),
             maxParticipants: savedCapacity,
-            availablePlaces,
+            availablePlaces: savedCapacity,
             status,
           };
         });
 
       setTourDates(dates);
       setIsLoadingDates(false);
+
+      // Update available places after dates are already visible.
+      const { data: availabilityResult, error: availabilityError } =
+        await (supabase as any).rpc("get_tour_date_availability");
+
+      if (!active || availabilityError || !Array.isArray(availabilityResult)) return;
+
+      const rpcById = new Map(availabilityResult.map((item: any) => [item.id, item]));
+      setTourDates((currentDates) => currentDates.map((date) => {
+        const rpcItem: any = rpcById.get(date.id);
+        if (!rpcItem) return date;
+
+        const rpcCapacity = Number(rpcItem.max_participants ?? date.maxParticipants);
+        const rpcAvailable = Number(rpcItem.available_places ?? date.availablePlaces);
+        // Keep the admin-saved capacity authoritative if it changed after the RPC snapshot.
+        const availablePlaces = Math.max(0, Math.min(date.maxParticipants, rpcAvailable + date.maxParticipants - rpcCapacity));
+        return {
+          ...date,
+          availablePlaces,
+          status: availablePlaces <= 0 ? "full" : "open",
+        };
+      }));
     };
 
     void loadTourDates();
@@ -628,7 +634,7 @@ const Buchen = () => {
                     </div>
                   ) : isLoadingDates ? (
                     <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
-                      {t("Reisetermine werden geladen …")}
+                      {t("Termine werden geladen … Bitte einen Moment warten.")}
                     </div>
                   ) : tourDates.length === 0 ? (
                     <div className="rounded-sm border border-border p-5 text-sm text-muted-foreground">
@@ -667,14 +673,16 @@ const Buchen = () => {
                           >
                             <p className="font-semibold text-foreground">{item.label}</p>
                             <p className="text-sm mt-1 font-medium text-primary">
-                              {isFull
-                                ? t("Ausgebucht")
-                                : t("Noch {count} {placeWord} verfügbar")
-                                    .replace("{count}", String(itemAvailablePlaces))
-                                    .replace(
-                                      "{placeWord}",
-                                      itemAvailablePlaces === 1 ? t("Platz") : t("Plätze")
-                                    )}
+                              {isLoadingDates
+                                ? t("Freie Plätze werden geprüft …")
+                                : isFull
+                                  ? t("Ausgebucht")
+                                  : t("Noch {count} {placeWord} verfügbar")
+                                      .replace("{count}", String(itemAvailablePlaces))
+                                      .replace(
+                                        "{placeWord}",
+                                        itemAvailablePlaces === 1 ? t("Platz") : t("Plätze")
+                                      )}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
                               Max. {itemMaxParticipants} {itemMaxParticipants === 1 ? t("Person") : t("Personen")} · {t("Anfrage ohne Zahlung")}
