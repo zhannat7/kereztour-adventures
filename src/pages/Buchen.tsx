@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { openWhatsApp } from "@/lib/whatsapp";
+import { isValidPhone } from "@/lib/phone";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,12 +85,10 @@ const bookingSchema = (t: (text: string) => string) => z.object({
     .trim()
     .min(1, t("Telefonnummer ist erforderlich"))
     .max(30)
-    .refine((value) => {
-      // Accept international numbers such as +43..., +996... or 0043...
-      // Ignore common visual separators, but reject short inputs like "222".
-      const normalized = value.replace(/[\s()./–-]/g, "");
-      return /^(?:\+|00)?[1-9]\d{6,14}$/.test(normalized);
-    }, t("Bitte gib eine vollständige Telefonnummer mit Ländervorwahl ein")),
+    .refine(
+      isValidPhone,
+      t("Bitte gib eine vollständige Telefonnummer mit Ländervorwahl ein"),
+    ),
 
   persons: z
     .number()
