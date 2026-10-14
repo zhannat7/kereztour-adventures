@@ -29,19 +29,25 @@ const Hero = () => {
   }, [activeImage]);
 
   useEffect(() => {
-    heroImages.forEach((image) => {
-      const preload = new Image();
-      preload.src = image.src;
-      preload.decoding = "async";
-      preload.decode?.().catch(() => undefined);
-    });
-
+    // Keep the first hero image prioritized; do not download every carousel image
+    // during the initial render. Preload the next slide shortly before it is shown.
     const timer = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % heroImages.length);
     }, 8000);
 
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const nextIndex = (activeImage + 1) % heroImages.length;
+    const preloadTimer = window.setTimeout(() => {
+      const preload = new Image();
+      preload.decoding = "async";
+      preload.src = heroImages[nextIndex].src;
+    }, 5000);
+
+    return () => window.clearTimeout(preloadTimer);
+  }, [activeImage]);
 
   useEffect(() => {
     const element = heroMotionRef.current;
@@ -84,10 +90,10 @@ const Hero = () => {
             aria-hidden={activeImage !== index}
           >
             <img
-              src={image.src}
+              src={index === 0 || index === activeImage ? image.src : undefined}
               alt={image.alt}
-              loading="eager"
-              fetchPriority={index === 0 ? "high" : "auto"}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "low"}
               decoding="async"
               className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
               style={{
