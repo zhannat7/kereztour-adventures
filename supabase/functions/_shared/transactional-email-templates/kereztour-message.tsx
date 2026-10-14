@@ -44,7 +44,7 @@ export const template = {
     heading: 'Vielen Dank für deine Buchungsanfrage!',
     paragraphs: ['Hallo Anna,', 'wir haben deine Anfrage erhalten.'],
     rows: [{ label: 'Reise', value: 'Kultur Tour' }, { label: 'Personen', value: '2' }],
-    closing: ['Liebe Grüße', 'Sarina & Kereztour'],
+    closing: ['Herzliche Grüße', 'Sarina & das Kereztour-Team'],
   },
 } satisfies TemplateEntry
 
