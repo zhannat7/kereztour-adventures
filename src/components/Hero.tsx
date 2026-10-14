@@ -90,7 +90,7 @@ const Hero = () => {
             aria-hidden={activeImage !== index}
           >
             <img
-              src={image.src}
+              src={index === 0 || index === activeImage ? image.src : undefined}
               alt={image.alt}
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "low"}
