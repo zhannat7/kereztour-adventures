@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Vorhandenen geschützten Admin-Bereich um Bearbeitungsstatus, Suche und Filter für Kontaktanfragen ergänzen
+- [ ] Speicherung und Zugriffsschutz prüfen; vorhandene Buchungsverwaltung beibehalten
+
 - [x] Hero-Buttons neu: nur noch ein Button „Beginne Deine Reise" (Premium-Stil), „Unverbindlich anfragen" entfernen
 - [x] Trust-Zeile „5,0 / 5,0 · Kleine Gruppen · Lokale Gastgeber" an den unteren Rand des Heroes verschieben
 - [x] Verifizieren (Desktop + Mobile Screenshot)
