@@ -78,6 +78,7 @@ export type Database = {
           message: string | null
           name: string
           persons: number | null
+          status: string
           tour: string | null
         }
         Insert: {
@@ -89,6 +90,7 @@ export type Database = {
           message?: string | null
           name: string
           persons?: number | null
+          status?: string
           tour?: string | null
         }
         Update: {
@@ -100,6 +102,7 @@ export type Database = {
           message?: string | null
           name?: string
           persons?: number | null
+          status?: string
           tour?: string | null
         }
         Relationships: []
