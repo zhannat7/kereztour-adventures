@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ContactInquiries from "@/components/admin/ContactInquiries";
 import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
 type Booking = {
@@ -14,6 +15,7 @@ type Booking = {
 type Message = {
   id: string; created_at: string; name: string; email: string; tour: string | null;
   date_from: string | null; date_to: string | null; persons: number | null; message: string | null;
+  status: string;
 };
 type TourDate = {
   id: string; tour: string; start_date: string; end_date: string; max_participants: number;
@@ -350,6 +352,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     }
     setBookings(activeBookingRows ?? []);
     setArchivedBookings(archivedBookingRows ?? []);
+    if (m.error) toast.error("Kontaktanfragen konnten nicht geladen werden.");
     setMessages((m.data as Message[]) ?? []);
     const { data: documentFolders, error: folderError } = await supabase.storage.from("booking-documents").list("", { limit: 1000 });
     if (folderError) console.error("Document folders could not be loaded:", folderError);
@@ -939,39 +942,7 @@ const Dashboard = ({ session }: { session: Session }) => {
         )}
 
         {tab === "messages" && (
-          <div className="space-y-4">
-            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-              <h2 className="text-lg font-semibold text-foreground">Kontaktanfragen</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Kontaktiere Interessenten direkt per E-Mail und prüfe ihre Nachricht.</p>
-            </div>
-            {messages.length === 0 && <Empty text="Noch keine Anfragen." />}
-            {messages.map((m) => (
-              <div key={m.id} className="rounded-md border border-border bg-card p-5">
-                <div className="flex flex-wrap justify-between gap-2">
-                  <div>
-                    <h3 className="font-semibold">{m.name}</h3>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Kereztour – deine Anfrage")}`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
-                        <Mail className="h-4 w-4" />
-                        {m.email}
-                      </a>
-                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Kereztour – deine Anfrage")}`} className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 text-xs font-medium hover:bg-muted">
-                        <Mail className="h-3.5 w-3.5" />
-                        E-Mail schreiben
-                      </a>
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">{fmt(m.created_at)}</span>
-                </div>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-                  <Info l="Reise" v={m.tour ?? "–"} />
-                  <Info l="Zeitraum" v={fmtRange(m.date_from, m.date_to)} />
-                  <Info l="Personen" v={m.persons ? String(m.persons) : "–"} />
-                </div>
-                {m.message && <p className="mt-3 whitespace-pre-wrap rounded-sm bg-muted p-3 text-sm">{m.message}</p>}
-              </div>
-            ))}
-          </div>
+          <ContactInquiries messages={messages} onUpdated={(updated) => setMessages((current) => current.map((message) => message.id === updated.id ? updated : message))} onRefresh={load} />
         )}
 
         {tab === "dates" && (
