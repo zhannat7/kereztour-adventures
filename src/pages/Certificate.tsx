@@ -1,3 +1,5 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -6,15 +8,10 @@ const Certificate = () => {
   const { t } = useLanguage();
 
   return (
-  <main className="min-h-screen overflow-x-hidden bg-background">
+  <>
+  <Navbar />
+  <main className="min-h-screen overflow-x-hidden bg-background pt-16 md:pt-0">
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-12 md:py-28">
-      <Link
-        to="/"
-        className="mb-6 inline-flex min-h-11 items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted md:mb-10 md:border-0 md:px-0 md:py-0 md:font-normal md:text-muted-foreground md:hover:bg-transparent md:hover:text-primary"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        {t("Zurück")} zu Kereztour
-      </Link>
 
       <div className="mb-8 md:mb-10">
         <span className="eyebrow mb-4 block">{t("Registrierung")}</span>
@@ -111,6 +108,8 @@ const Certificate = () => {
       </div>
     </div>
   </main>
+  <Footer />
+  </>
   );
 };
 

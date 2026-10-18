@@ -13,7 +13,6 @@ import Impressum from "./pages/Impressum.tsx";
 import Datenschutz from "./pages/Datenschutz.tsx";
 import Admin from "./pages/Admin.tsx";
 
-import Nomaden from "./pages/reisen/Nomaden.tsx";
 import Kultur from "./pages/reisen/Kultur.tsx";
 import Trekking from "./pages/reisen/Trekking.tsx";
 
@@ -93,7 +92,6 @@ const App = () => (
                 <Route path="/datenschutz" element={<Datenschutz />} />
                 <Route path="/admin" element={<Admin />} />
 
-                <Route path="/reisen/nomaden" element={<Nomaden />} />
                 <Route path="/reisen/kultur" element={<Kultur />} />
                 <Route path="/reisen/trekking" element={<Trekking />} />
 
