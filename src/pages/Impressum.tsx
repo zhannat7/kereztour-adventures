@@ -1,3 +1,5 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -5,16 +7,11 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const Impressum = () => {
   const { t } = useLanguage();
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <>
+    <Navbar />
+    <main className="min-h-screen bg-background pt-20 text-foreground md:pt-24">
       <section className="border-b border-border bg-muted/30">
         <div className="container mx-auto max-w-[1200px] px-6 py-16 md:py-24">
-          <Link
-            to="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t("Zurück")} zur Startseite
-          </Link>
 
           <p className="eyebrow mb-4">{t("Rechtliches")}</p>
           <h1 className="font-display text-5xl leading-tight md:text-7xl">
@@ -108,6 +105,8 @@ const Impressum = () => {
         </div>
       </section>
     </main>
+    <Footer />
+    </>
   );
 };
 
