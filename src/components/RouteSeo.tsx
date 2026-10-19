@@ -16,9 +16,9 @@ const META: Record<string, Meta> = {
     trip: { name: "Kultur Tour Kirgisistan – 10 Tage", price: 990, image: "/tour-kultur.jpg" },
   },
   "/reisen/trekking": {
-    title: "Kirgisistan Trekking – 10 Tage im Tian-Shan | Kereztour",
-    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 10 Tage mit lokalen Guides für 1.490 € pro Person.",
-    trip: { name: "Intensiv-Trekking Kirgisistan – 10 Tage", price: 1490, image: "/tour-trekking.jpg" },
+    title: "Kirgisistan Trekking – 11 Tage im Tian-Shan | Kereztour",
+    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 11 Tage mit lokalen Guides für 1.490 € pro Person.",
+    trip: { name: "Intensiv-Trekking Kirgisistan – 11 Tage", price: 1490, image: "/tour-trekking.jpg" },
   },
   "/buchen": {
     title: "Kirgisistan Reise buchen | Kereztour",
