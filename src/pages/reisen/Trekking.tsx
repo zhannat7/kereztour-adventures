@@ -104,7 +104,7 @@ const Trekking = () => {
           <div>
             <h1 className="mb-4 font-display text-4xl leading-[1.08] text-foreground sm:text-5xl xl:text-[3.4rem]">
               {t("Intensiv-Trekking")}
-              <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 10 Tage")}</span>
+              <span className="block text-2xl md:text-3xl italic text-primary mt-2">{t("Bergseen Kirgistans – 11 Tage")}</span>
             </h1>
             <p className="mb-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">{t("Diese Tour ist für gut vorbereitete Bergwanderer konzipiert, die die beeindruckende Hochgebirgslandschaft Kirgistans erleben möchten. Die Route führt zu zwei spektakulären Bergseen: dem Song-Köl und dem türkisfarbenen Ala-Köl.")}</p>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">{t("Du übernachtest in traditionellen Jurten, Berghütten und Gästehäusern und lernst dabei die einzigartige Natur Zentralasiens kennen.")}</p>
