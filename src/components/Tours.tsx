@@ -30,7 +30,7 @@ const tours: Tour[] = [
   {
     title: "Intensiv-Trekking",
     desc: "Berge, alpine Landschaften und abgelegene Täler – für alle, die Kirgisistan aktiv erleben möchten.",
-    duration: "10 Tage",
+    duration: "11 Tage",
     groupSize: "Kleine Gruppe, maximal 8 Personen",
     price: "1.490 €",
     originalPrice: "2.450 €",

@@ -9,66 +9,17 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const days = [
-  {
-    day: 1,
-    title: "Ankunft in Bischkek",
-    desc: "Ankunft am Flughafen Manas, Transfer ins Zentrum. Spaziergang über den Ala-Too-Platz und durch den Eichenpark. Proviant-Kauf auf dem Osh-Basar.",
-    stay: "Hotel in Bischkek",
-  },
-  {
-    day: 2,
-    title: "Bischkek → Kyzart",
-    desc: "Fahrt vorbei am Burana-Turm (UNESCO). Warm-up-Trekking (ca. 2–3 Std.) zu den ersten Ausläufern der Berge zur Höhenakklimatisierung.",
-    stay: "Gästehaus oder Jurtencamp in Kyzart",
-  },
-  {
-    day: 3,
-    title: "Trekking zum Song-Köl See",
-    desc: "Anspruchsvoller Aufstieg über den Tuz-Ashuu Pass (3.228 m). Blick auf den zweitgrößten See Kirgisistans. Ca. 16–18 km, 5–7 Std.",
-    stay: "Jurtencamp am Seeufer",
-  },
-  {
-    day: 4,
-    title: "Nomadenleben am Song-Köl",
-    desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken bis 3.500 m für ein 360°-Panorama. Kontakt mit nomadischen Hirten und Beobachtung der traditionellen Stutenmilch-Produktion.",
-    stay: "Jurtencamp am Song-Köl",
-  },
-  {
-    day: 5,
-    title: "Abstieg → Issyk-Kul See",
-    desc: "Abstieg über den '33 Papageien'-Pass (ca. 3–4 Std.). Fahrt entlang der Südküste des Issyk-Kul bis nach Bokonbayevo.",
-    stay: "Jurtencamp 'Bel-Tam' direkt am Strand",
-  },
-  {
-    day: 6,
-    title: "Skazka Canyon → Karakol",
-    desc: "Kurzes aber intensives Trekking durch die bizarren Felsformationen des Skazka (Fairytale) Canyons. Weiterfahrt nach Karakol, Besuch der historischen hölzernen russisch-orthodoxen Kirche. Vorbereitung auf den großen Ala-Köl Trek.",
-    stay: "Hotel/Gästehaus in Karakol",
-  },
-  {
-    day: 7,
-    title: "Aufstieg zur Sirota-Hütte",
-    desc: "Transfer mit dem Geländewagen ins Karakol-Tal. Steiler Aufstieg durch dichte Wälder bis zum Rastplatz Sirota.",
-    stay: "Bergsteiger-Hütte oder Zelt",
-  },
-  {
-    day: 8,
-    title: "Königsetappe: Ala-Köl Pass",
-    desc: "Der härteste Tag der Tour: Aufstieg zum Ala-Köl See (3.560 m) und weiter über den Ala-Köl Pass (3.911 m). Atemberaubender Blick auf die 5.000er Gipfel des Tienschan. Langer Abstieg in das idyllische Tal von Altyn-Arashan.",
-    stay: "Berghütte mit heißen Thermalquellen",
-  },
-  {
-    day: 9,
-    title: "Erholung & Rückfahrt",
-    desc: "Entspannung in den heißen Quellen. Spektakulärer Abstieg mit russischem Allrad-LKW (UAZ). Lange Rückfahrt nach Bischkek (ca. 6–7 Std.). Abschiedsabendessen.",
-    stay: "Hotel in Bischkek",
-  },
-  {
-    day: 10,
-    title: "Heimreise",
-    desc: "Letzte Souvenir-Käufe (Honig, Filzwaren). Transfer zum Flughafen Manas und Rückflug.",
-    stay: "",
-  },
+  { day: 1, title: "Ankunft in Bischkek", desc: "Ankunft am Flughafen Manas, Transfer ins Zentrum. Akklimatisierung bei einem Spaziergang über den Ala-Too-Platz und durch den Eichenpark.", stay: "Hotel in Bischkek" },
+  { day: 2, title: "Aufbruch Richtung Berge (Bischkek – Kyzart)", desc: "Fahrt vorbei am Burana-Turm (UNESCO) bis zum Dorf Kyzart.", stay: "Gästehaus in Kyzart oder Jurtencamp am Fuße des Passes" },
+  { day: 3, title: "Trekking zum Song-Köl See", desc: "Anspruchsvoller Aufstieg über den Tuz-Ashuu Pass (3.228 m). Belohnt wird man mit dem Blick auf den zweitgrößten See Kirgisistans, umgeben von nomadischen Weiden. Ca. 16–18 km (5–7 Std. wandern).", stay: "Traditionelles Jurtencamp am Seeufer (mit Betten und Holzofen)" },
+  { day: 4, title: "Das Nomadenleben am Song-Köl", desc: "Ein intensiver Tag am See: Wanderung entlang der Uferlinie oder zu den umliegenden Bergrücken (bis zu 3.500 m) für ein 360-Grad-Panorama. Beobachtung der Stutenmilch-Produktion und Kontakt mit den Hirten.", stay: "Jurtencamp am Song-Köl" },
+  { day: 5, title: "Abstieg und Fahrt zum Issyk-Kul See", desc: "Abstieg vom Plateau über die Serpentinen des „33 Papageien“-Passes (ca. 3–4 Std.). Unten wartet der Fahrer. Fahrt entlang der Südküste des Issyk-Kul bis nach Bokonbayevo.", stay: "Jurtencamp direkt am Strand (mit Duschen)" },
+  { day: 6, title: "Märchen-Canyon & Karakol", desc: "Kurzes, aber intensives Trekking durch die bizarren Felsformationen des Skazka (Fairytale) Canyons. Weiterfahrt nach Karakol und Vorbereitung auf den großen Ala-Köl Trek.", stay: "Hotel/Gästehaus in Karakol" },
+  { day: 7, title: "Der Aufstieg zur „Sirota“-Hütte", desc: "Transfer mit dem Geländewagen tief ins Karakol-Tal. Steiler Aufstieg durch dichte Wälder bis zum Rastplatz „Sirota“.", stay: "Bergsteiger-Hütte (einfache Holzhütte) oder Zelt" },
+  { day: 8, title: "Die Königsetappe: Ala-Köl See & Pass", desc: "Der härteste Tag: Aufstieg zum Ala-Köl See (3.560 m) und weiter über den Ala-Köl Pass (3.911 m). Atemberaubender Blick auf die 5.000er Gipfel des Tienschan. Langer Abstieg in das Tal von Altyn-Arashan.", stay: "Berghütte in Altyn-Arashan mit Zugang zu heißen Thermalquellen" },
+  { day: 9, title: "Erholung & Fahrt nach Cholpon-Ata", desc: "Vormittags Entspannung in den heißen Quellen. Anstatt zu wandern, erfolgt der Abstieg spektakulär mit einem russischen Allrad über die holprige Piste zurück nach Karakol. Fahrt nach Cholpon-Ata – ein Bad im klaren Wasser des Issyk-Kul-Sees darf nicht fehlen!", stay: "Hotel in Cholpon-Ata" },
+  { day: 10, title: "Rückfahrt nach Bischkek & Basar", desc: "Rückkehr nach Bischkek und Besuch des größten Basars des Landes – perfekt für Souvenirs, getrocknete Früchte und lokale Spezialitäten. Zum Abschluss ein festliches Abschiedsabendessen mit traditioneller kirgisischer Live-Musik.", stay: "Hotel in Bischkek" },
+  { day: 11, title: "Transfer zum Flughafen", desc: "Transfer zum Flughafen Manas und individuelle Abreise.", stay: "" },
 ];
 
 const tips = [
