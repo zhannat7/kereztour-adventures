@@ -543,6 +543,12 @@ const Dashboard = ({ session }: { session: Session }) => {
   };
   const updateDate = async (id: string, patch: Partial<TourDate>) => {
     const date = dates.find((item) => item.id === id);
+    if (!date) return toast.error("Termin nicht gefunden. Bitte lade die Seite neu.");
+    const nextStart = patch.start_date ?? date.start_date;
+    const nextEnd = patch.end_date ?? date.end_date;
+    if (nextEnd < nextStart) {
+      return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
+    }
     // Keep the shared availability capacity in sync with the Minibus capacity.
     // Public tour dates and the booking form use max_participants for the
     // remaining-seat calculation, while Kultur Tour also has vehicle-specific limits.
@@ -1028,7 +1034,34 @@ const Dashboard = ({ session }: { session: Session }) => {
                     return (
                       <tr key={d.id} className="border-t border-border">
                         <td className="p-3 font-medium">{d.tour}</td>
-                        <td className="p-3">{fmtRange(d.start_date, d.end_date)}</td>
+                        <td className="p-3">
+                          <div className="flex min-w-40 flex-col gap-2">
+                            <label className="text-xs text-muted-foreground">Beginn
+                              <input
+                                type="date"
+                                aria-label={`Beginn für ${d.tour}`}
+                                defaultValue={d.start_date.slice(0, 10)}
+                                className="mt-1 w-full rounded-sm border border-border bg-background px-2 py-1 text-sm text-foreground"
+                                onBlur={(e) => {
+                                  const value = e.target.value;
+                                  if (value && value !== d.start_date.slice(0, 10)) updateDate(d.id, { start_date: value });
+                                }}
+                              />
+                            </label>
+                            <label className="text-xs text-muted-foreground">Ende
+                              <input
+                                type="date"
+                                aria-label={`Ende für ${d.tour}`}
+                                defaultValue={d.end_date.slice(0, 10)}
+                                className="w-full rounded-sm border border-border bg-background px-2 py-1 text-sm text-foreground"
+                                onBlur={(e) => {
+                                  const value = e.target.value;
+                                  if (value && value !== d.end_date.slice(0, 10)) updateDate(d.id, { end_date: value });
+                                }}
+                              />
+                            </label>
+                          </div>
+                        </td>
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-1">
