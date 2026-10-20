@@ -4,6 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ContactInquiries from "@/components/admin/ContactInquiries";
+import AiDateCheck from "@/components/admin/AiDateCheck";
 import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
 type Booking = {
@@ -1026,6 +1027,9 @@ const Dashboard = ({ session }: { session: Session }) => {
               )}
 
               <button className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Termin hinzufügen</button>
+              <div className="sm:col-span-5">
+                <AiDateCheck tour={nd.tour} startDate={nd.start_date} endDate={nd.end_date} existing={dates} onApplyEnd={(end) => setNd({ ...nd, end_date: end })} />
+              </div>
             </form>
 
             <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
@@ -1054,6 +1058,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                               <label className="text-xs text-muted-foreground">Ende
                                 <input type="date" value={editDate.end_date} onChange={(e) => setEditDate({ ...editDate, end_date: e.target.value })} className="mt-1 block rounded-sm border border-border bg-background px-2 py-1" />
                               </label>
+                              <AiDateCheck tour={d.tour} startDate={editDate.start_date} endDate={editDate.end_date} existing={dates} excludeId={d.id} onApplyEnd={(end) => setEditDate({ ...editDate, end_date: end })} />
                               <div className="flex gap-2">
                                 <button onClick={() => void saveEditDate(d)} className="rounded-sm bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">Speichern</button>
                                 <button onClick={() => setEditDate(null)} className="rounded-sm border border-border px-3 py-1 text-xs">Abbrechen</button>
