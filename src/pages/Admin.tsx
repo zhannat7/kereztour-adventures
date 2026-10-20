@@ -297,6 +297,7 @@ const Dashboard = ({ session }: { session: Session }) => {
   const [bookingDocuments, setBookingDocuments] = useState<Record<string, BookingDocument[]>>({});
   const [bookingDocumentCounts, setBookingDocumentCounts] = useState<Record<string, number>>({});
   const [documentBusy, setDocumentBusy] = useState(false);
+  const [editDate, setEditDate] = useState<{ id: string; start_date: string; end_date: string } | null>(null);
   const [nd, setNd] = useState({
     tour: "Kultur Tour",
     start_date: "",
@@ -577,6 +578,22 @@ const Dashboard = ({ session }: { session: Session }) => {
     toast.success("Termin hinzugefügt");
     setNd({ ...nd, start_date: "", end_date: "" });
     load();
+  };
+  const saveEditDate = async (d: TourDate) => {
+    if (!editDate) return;
+    const { start_date, end_date } = editDate;
+    if (!start_date || !end_date) return toast.error("Bitte Beginn und Ende angeben.");
+    if (end_date < start_date) return toast.error("Das Enddatum darf nicht vor dem Startdatum liegen.");
+    const { error } = await (supabase as any).from("tour_dates").update({ start_date, end_date }).eq("id", d.id);
+    if (error) return toast.error(error.message);
+    if (start_date !== d.start_date) {
+      // Keep existing bookings attached to this date.
+      const { error: bErr } = await supabase.from("bookings").update({ travel_date: start_date }).eq("tour", d.tour).eq("travel_date", d.start_date);
+      if (bErr) toast.error("Termin gespeichert, aber Buchungen konnten nicht angepasst werden: " + bErr.message);
+    }
+    setEditDate(null);
+    await load();
+    toast.success("Termin aktualisiert");
   };
   const deleteDate = async (id: string) => {
     if (!confirm("Termin wirklich löschen?")) return;
@@ -1028,7 +1045,22 @@ const Dashboard = ({ session }: { session: Session }) => {
                     return (
                       <tr key={d.id} className="border-t border-border">
                         <td className="p-3 font-medium">{d.tour}</td>
-                        <td className="p-3">{fmtRange(d.start_date, d.end_date)}</td>
+                        <td className="p-3">
+                          {editDate?.id === d.id ? (
+                            <div className="flex flex-col gap-2">
+                              <label className="text-xs text-muted-foreground">Beginn
+                                <input type="date" value={editDate.start_date} onChange={(e) => setEditDate({ ...editDate, start_date: e.target.value })} className="mt-1 block rounded-sm border border-border bg-background px-2 py-1" />
+                              </label>
+                              <label className="text-xs text-muted-foreground">Ende
+                                <input type="date" value={editDate.end_date} onChange={(e) => setEditDate({ ...editDate, end_date: e.target.value })} className="mt-1 block rounded-sm border border-border bg-background px-2 py-1" />
+                              </label>
+                              <div className="flex gap-2">
+                                <button onClick={() => void saveEditDate(d)} className="rounded-sm bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">Speichern</button>
+                                <button onClick={() => setEditDate(null)} className="rounded-sm border border-border px-3 py-1 text-xs">Abbrechen</button>
+                              </div>
+                            </div>
+                          ) : fmtRange(d.start_date, d.end_date)}
+                        </td>
                         <td className="p-3">
                           {d.tour === "Kultur Tour" ? (
                             <div className="space-y-1">
@@ -1081,7 +1113,10 @@ const Dashboard = ({ session }: { session: Session }) => {
                             <option value="open">Offen</option><option value="full">Ausgebucht</option><option value="cancelled">Abgesagt</option>
                           </select>
                         </td>
-                        <td className="p-3 text-right"><button onClick={() => deleteDate(d.id)} className="text-destructive hover:underline">Löschen</button></td>
+                        <td className="p-3 text-right whitespace-nowrap">
+                          <button onClick={() => setEditDate({ id: d.id, start_date: d.start_date, end_date: d.end_date })} className="mr-3 text-primary hover:underline">Bearbeiten</button>
+                          <button onClick={() => deleteDate(d.id)} className="text-destructive hover:underline">Löschen</button>
+                        </td>
                       </tr>
                     );
                   })}
