@@ -7,7 +7,7 @@ type Props = {
   onApplyEnd?: (end: string) => void;
 };
 
-const expectedDays = (tour: string) => (tour === "trekking" ? 11 : 10);
+const expectedDays = (tour: string) => (/trek/i.test(tour) ? 11 : 10);
 
 export default function AiDateCheck({ tour, startDate, endDate, onApplyEnd }: Props) {
   if (!startDate || !endDate) return null;
