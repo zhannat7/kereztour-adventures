@@ -747,7 +747,7 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="overflow-x-auto rounded-xl border border-border bg-card">
                 <table className="w-full min-w-[850px] text-left text-sm">
                   <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground"><tr>
-                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung</th><th className="px-4 py-3">Anzahlung</th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th>
+                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung<HelpTip text="Offen = neue Anfrage, Platz noch nicht reserviert. Bestätigt = Platz fest reserviert. Storniert = Gast fährt nicht mit, Platz wird wieder frei." /></th><th className="px-4 py-3">Anzahlung<HelpTip text="Zeigt, ob die 150 € Anzahlung eingegangen ist. Eine Buchung kann erst nach bezahlter Anzahlung bestätigt werden." /></th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th>
                   </tr></thead>
                   <tbody className="divide-y divide-border">
                     {filteredBookings.map((b) => (
