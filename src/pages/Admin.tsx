@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ContactInquiries from "@/components/admin/ContactInquiries";
 import AiDateCheck from "@/components/admin/AiDateCheck";
+import { AdminHelpGuide, HelpTip } from "@/components/admin/AdminHelp";
 import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
 type Booking = {
@@ -654,7 +655,7 @@ const Dashboard = ({ session }: { session: Session }) => {
         <div className="mb-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Übersicht</p>
           <h1 className="font-display text-2xl text-primary sm:text-[1.75rem]">Guten Tag, Sarina</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p>
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-3"><p className="max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p><AdminHelpGuide /></div>
         </div>
         <div className="mb-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
           <button onClick={() => { setTab("bookings"); setBookingFilter("pending"); }} className="text-left"><Stat icon={<ClipboardList className="h-5 w-5" />} label="Offene Anfragen" value={openBookings.length} hint="Prüfen und beantworten" /></button>
@@ -746,7 +747,7 @@ const Dashboard = ({ session }: { session: Session }) => {
               <div className="overflow-x-auto rounded-xl border border-border bg-card">
                 <table className="w-full min-w-[850px] text-left text-sm">
                   <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground"><tr>
-                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung</th><th className="px-4 py-3">Anzahlung</th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th>
+                    <th className="px-4 py-3">Gast</th><th className="px-4 py-3">Reise / Termin</th><th className="px-4 py-3">Buchung<HelpTip text="Offen = neue Anfrage, Platz noch nicht reserviert. Bestätigt = Platz fest reserviert. Storniert = Gast fährt nicht mit, Platz wird wieder frei." /></th><th className="px-4 py-3">Anzahlung<HelpTip text="Zeigt, ob die 150 € Anzahlung eingegangen ist. Eine Buchung kann erst nach bezahlter Anzahlung bestätigt werden." /></th><th className="px-4 py-3">Gesamtpreis</th><th className="px-4 py-3">Kontakt</th>
                   </tr></thead>
                   <tbody className="divide-y divide-border">
                     {filteredBookings.map((b) => (
@@ -1035,7 +1036,7 @@ const Dashboard = ({ session }: { session: Session }) => {
             <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
               <table className="w-full text-sm">
                 <thead className="bg-muted text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum</th><th className="p-3">Belegt</th><th className="p-3">Kapazität</th><th className="p-3">Status</th><th className="p-3"></th></tr>
+                  <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum<HelpTip text="Beginn und Ende der Reise. Die Tage-Anzeige wird grün, wenn die Dauer stimmt (Kultur Tour 10, Trekking 11 Tage)." /></th><th className="p-3">Belegt<HelpTip text="Anzahl Gäste mit bestätigter Buchung für diesen Termin." /></th><th className="p-3">Kapazität<HelpTip text="Maximale Plätze. Kultur Tour: Jeep für 1–4 Personen, Minibus ab 5 Personen. Erlaubt sind 1 bis 25." /></th><th className="p-3">Status<HelpTip text="Offen = buchbar. Ausgebucht = als voll angezeigt. Abgesagt = auf der Website ausgeblendet, Buchungen bleiben hier gespeichert." /></th><th className="p-3 text-right">Aktionen<HelpTip text="Bearbeiten = Datum korrigieren, gebuchte Gäste wandern mit. Löschen = endgültig entfernen, nur wenn niemand gebucht hat." /></th></tr>
                 </thead>
                 <tbody>
                   {visibleDates.map((d) => {
@@ -1115,7 +1116,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                         </td>
                         <td className="p-3">
                           <select value={d.status} onChange={(e) => updateDate(d.id, { status: e.target.value })} className="rounded-sm border border-border bg-background px-2 py-1">
-                            <option value="open">Offen</option><option value="full">Ausgebucht</option><option value="cancelled">Abgesagt</option>
+                            <option value="open">Offen (auf Website buchbar)</option><option value="full">Ausgebucht (keine Plätze mehr)</option><option value="cancelled">Abgesagt (auf Website ausgeblendet)</option>
                           </select>
                         </td>
                         <td className="p-3 text-right whitespace-nowrap">
