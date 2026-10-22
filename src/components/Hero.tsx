@@ -31,15 +31,18 @@ const Hero = () => {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setActiveImage((current) => {
-        const next = (current + 1) % heroImages.length;
-        setLoadedImages((loaded) => loaded.includes(next) ? loaded : [...loaded, next]);
-        return next;
-      });
+      setActiveImage((current) => (current + 1) % heroImages.length);
     }, 8000);
 
     return () => window.clearInterval(timer);
   }, []);
+
+  // Ensure the active slide has a source even if its preload was slow or failed.
+  useEffect(() => {
+    setLoadedImages((loaded) =>
+      loaded.includes(activeImage) ? loaded : [...loaded, activeImage]
+    );
+  }, [activeImage]);
 
   useEffect(() => {
     const next = (activeImage + 1) % heroImages.length;
