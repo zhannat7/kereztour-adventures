@@ -53,6 +53,13 @@ const Trekking = () => {
       setTrekkingDates(((data as any[]) ?? []).filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date)));
     };
     loadTrekkingDates();
+    const channel = supabase
+      .channel("trekking-tour-dates")
+      .on("postgres_changes", { event: "*", schema: "public", table: "tour_dates" }, () => { loadTrekkingDates(); })
+      .subscribe();
+    const onFocus = () => loadTrekkingDates();
+    window.addEventListener("focus", onFocus);
+    return () => { supabase.removeChannel(channel); window.removeEventListener("focus", onFocus); };
   }, []);
 
   useEffect(() => {
