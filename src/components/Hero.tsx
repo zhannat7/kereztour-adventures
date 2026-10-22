@@ -6,11 +6,11 @@ import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
 
 const heroImages = [
   {
-    src: "/hero-wide.jpg?hero=20260928",
+    src: "/hero-wide.webp",
     alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
-    src: "/tour-kultur.jpg",
+    src: "/tour-kultur.webp",
     alt: "Kulturreise in Kirgisistan",
   },
   {
