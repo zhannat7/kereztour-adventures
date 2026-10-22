@@ -1,20 +1,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { Component, type ErrorInfo, type ReactNode, useEffect } from "react";
+import { Component, type ErrorInfo, type ReactNode, useEffect, lazy, Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import Index from "./pages/Index.tsx";
-import Buchen from "./pages/Buchen.tsx";
-import Zahlung from "./pages/Zahlung.tsx";
-import Certificate from "./pages/Certificate.tsx";
-import Impressum from "./pages/Impressum.tsx";
-import Datenschutz from "./pages/Datenschutz.tsx";
-import Admin from "./pages/Admin.tsx";
-
-import Kultur from "./pages/reisen/Kultur.tsx";
-import Trekking from "./pages/reisen/Trekking.tsx";
+const Buchen = lazy(() => import("./pages/Buchen.tsx"));
+const Zahlung = lazy(() => import("./pages/Zahlung.tsx"));
+const Certificate = lazy(() => import("./pages/Certificate.tsx"));
+const Impressum = lazy(() => import("./pages/Impressum.tsx"));
+const Datenschutz = lazy(() => import("./pages/Datenschutz.tsx"));
+const Admin = lazy(() => import("./pages/Admin.tsx"));
+const Kultur = lazy(() => import("./pages/reisen/Kultur.tsx"));
+const Trekking = lazy(() => import("./pages/reisen/Trekking.tsx"));
 
 import { HelmetProvider } from "react-helmet-async";
 import RouteSeo from "./components/RouteSeo";
