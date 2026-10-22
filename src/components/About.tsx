@@ -18,7 +18,7 @@ const About = () => {
           <div className="lg:col-span-6">
             <div className="relative aspect-[5/4] overflow-hidden shadow-lift">
               <img
-                src="/about.jpg"
+                src="/about.webp"
                 alt="Weite Landschaft Kirgisistans"
                 loading="lazy"
                 className="h-full w-full object-cover"

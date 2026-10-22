@@ -1,8 +1,8 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Star, Quote } from "lucide-react";
 
-import reviewHelmut from "@/assets/333.png";
-import reviewHubert from "@/assets/666.png";
+import reviewHelmut from "@/assets/333.webp";
+import reviewHubert from "@/assets/666.webp";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const reviews = [
@@ -68,6 +68,7 @@ const Testimonials = () => {
                   <img
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
+                    decoding="async"
                     loading="lazy"
                   className="max-h-[320px] w-auto max-w-full rounded-sm object-contain shadow-soft sm:max-h-[380px]"
                   />

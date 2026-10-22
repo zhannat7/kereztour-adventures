@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
-import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
+import karakolMosque from "@/assets/gallery/IMG_3432.webp";
 
 const heroImages = [
   {
-    src: "/hero-wide.jpg?hero=20260928",
+    src: "/hero-wide.webp",
     alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
-    src: "/tour-kultur.jpg",
+    src: "/tour-kultur.webp",
     alt: "Kulturreise in Kirgisistan",
   },
   {

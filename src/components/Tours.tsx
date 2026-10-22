@@ -24,7 +24,7 @@ const tours: Tour[] = [
     groupSize: "Kleine Gruppe, maximal 8 Personen",
     price: "1.690 €",
     to: "/reisen/kultur",
-    image: "/tour-kultur.jpg",
+    image: "/tour-kultur.webp",
     imagePosition: "center 65%",
   },
   {
@@ -36,7 +36,7 @@ const tours: Tour[] = [
     originalPrice: "1.750 €",
     saving: "Sie sparen 260 €",
     to: "/reisen/trekking",
-    image: "/tour-trekking.jpg",
+    image: "/tour-trekking.webp",
     imagePosition: "center 35%",
   },
 ];
