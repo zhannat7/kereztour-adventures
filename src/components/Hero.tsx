@@ -30,7 +30,6 @@ const Hero = () => {
   }, [activeImage]);
 
   useEffect(() => {
-    let preloadTimer: number | undefined;
     const timer = window.setInterval(() => {
       setActiveImage((current) => {
         const next = (current + 1) % heroImages.length;
@@ -39,23 +38,24 @@ const Hero = () => {
       });
     }, 8000);
 
-    // Preload only the next slide shortly before the transition, not all hero images on startup.
-    const preloadNextSlide = () => {
-      const next = (activeImage + 1) % heroImages.length;
-      if (loadedImages.includes(next)) return;
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const next = (activeImage + 1) % heroImages.length;
+    if (loadedImages.includes(next)) return;
+
+    // Load only the next slide shortly before the transition.
+    const timer = window.setTimeout(() => {
       const preload = new Image();
       preload.src = heroImages[next].src;
       preload.decoding = "async";
       preload.decode?.().then(() => {
         setLoadedImages((loaded) => loaded.includes(next) ? loaded : [...loaded, next]);
       }).catch(() => undefined);
-    };
-    preloadTimer = window.setTimeout(preloadNextSlide, 6500);
+    }, 6500);
 
-    return () => {
-      window.clearInterval(timer);
-      if (preloadTimer !== undefined) window.clearTimeout(preloadTimer);
-    };
+    return () => window.clearTimeout(timer);
   }, [activeImage, loadedImages]);
 
   useEffect(() => {
