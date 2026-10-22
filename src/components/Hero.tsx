@@ -22,6 +22,7 @@ const heroImages = [
 const Hero = () => {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<number[]>([0]);
   const heroMotionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,19 +30,33 @@ const Hero = () => {
   }, [activeImage]);
 
   useEffect(() => {
-    heroImages.forEach((image) => {
-      const preload = new Image();
-      preload.src = image.src;
-      preload.decoding = "async";
-      preload.decode?.().catch(() => undefined);
-    });
-
+    let preloadTimer: number | undefined;
     const timer = window.setInterval(() => {
-      setActiveImage((current) => (current + 1) % heroImages.length);
+      setActiveImage((current) => {
+        const next = (current + 1) % heroImages.length;
+        setLoadedImages((loaded) => loaded.includes(next) ? loaded : [...loaded, next]);
+        return next;
+      });
     }, 8000);
 
-    return () => window.clearInterval(timer);
-  }, []);
+    // Preload only the next slide shortly before the transition, not all hero images on startup.
+    const preloadNextSlide = () => {
+      const next = (activeImage + 1) % heroImages.length;
+      if (loadedImages.includes(next)) return;
+      const preload = new Image();
+      preload.src = heroImages[next].src;
+      preload.decoding = "async";
+      preload.decode?.().then(() => {
+        setLoadedImages((loaded) => loaded.includes(next) ? loaded : [...loaded, next]);
+      }).catch(() => undefined);
+    };
+    preloadTimer = window.setTimeout(preloadNextSlide, 6500);
+
+    return () => {
+      window.clearInterval(timer);
+      if (preloadTimer !== undefined) window.clearTimeout(preloadTimer);
+    };
+  }, [activeImage, loadedImages]);
 
   useEffect(() => {
     const element = heroMotionRef.current;
@@ -84,9 +99,9 @@ const Hero = () => {
             aria-hidden={activeImage !== index}
           >
             <img
-              src={image.src}
+              src={loadedImages.includes(index) ? image.src : undefined}
               alt={image.alt}
-              loading="eager"
+              loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
               className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
