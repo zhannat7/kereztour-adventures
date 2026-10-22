@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
-import karakolMosque from "@/assets/gallery/IMG_3432.jpg";
+import karakolMosque from "@/assets/gallery/IMG_3432.webp";
 
 const heroImages = [
   {
