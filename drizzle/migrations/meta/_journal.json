@@ -64,6 +64,13 @@
       "when": 1792195013749,
       "tag": "0008_contact_inquiry_processing_status",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792706787237,
+      "tag": "0009_respect_manual_full_status",
+      "breakpoints": true
     }
   ]
 }
