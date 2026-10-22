@@ -237,8 +237,9 @@ const Buchen = () => {
           // Preserve the RPC's booked-seat calculation while applying any
           // capacity change that has already been saved in the admin table.
           const rpcAvailable = Number(rpcItem?.available_places ?? savedCapacity);
-          const availablePlaces = Math.max(0, rpcAvailable + savedCapacity - rpcCapacity);
-          const status = item.status === "cancelled" || availablePlaces <= 0 ? "full" : "open";
+          const manuallyClosed = item.status === "cancelled" || item.status === "full";
+          const availablePlaces = manuallyClosed ? 0 : Math.max(0, rpcAvailable + savedCapacity - rpcCapacity);
+          const status = manuallyClosed || availablePlaces <= 0 ? "full" : "open";
 
           return {
             id: item.id,
