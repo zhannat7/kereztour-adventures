@@ -1111,26 +1111,36 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     let cancelled = false;
 
     const loadContent = async () => {
-      const { supabase } = await import("@/integrations/supabase/client");
-      if (cancelled) return;
-      const { data, error } = await (supabase as any)
-        .from("site_content")
-        .select("content_key, language, value");
+      try {
+        // Built-in translations render immediately; CMS overrides are optional.
+        const { supabase } = await import("@/integrations/supabase/client");
+        if (cancelled) return;
+        const { data, error } = await (supabase as any)
+          .from("site_content")
+          .select("content_key, language, value");
 
-      if (cancelled || error || !data) return;
+        if (cancelled || error || !data) return;
 
-      const next: Record<Language, Record<string, string>> = { DE: {}, EN: {}, IT: {} };
-      for (const row of data as Array<{ content_key: string; language: Language; value: string }>) {
-        if (row.language === "DE" || row.language === "EN" || row.language === "IT") {
-          next[row.language][row.content_key] = row.value;
+        const next: Record<Language, Record<string, string>> = { DE: {}, EN: {}, IT: {} };
+        for (const row of data as Array<{ content_key: string; language: Language; value: string }>) {
+          if (row.language === "DE" || row.language === "EN" || row.language === "IT") {
+            next[row.language][row.content_key] = row.value;
+          }
         }
+        setContentOverrides(next);
+      } catch {
+        // Keep built-in translations if the optional CMS request fails.
       }
-      setContentOverrides(next);
     };
 
-    void loadContent();
+    // Let the first screen render before loading optional editable text from the database.
+    const timer = window.setTimeout(() => {
+      void loadContent();
+    }, 1200);
+
     return () => {
       cancelled = true;
+      window.clearTimeout(timer);
     };
   }, []);
 
