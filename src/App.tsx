@@ -82,6 +82,7 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <RouteSeo />
+              <Suspense fallback={<div className="min-h-screen bg-background" />}>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/buchen" element={<Buchen />} />
@@ -96,6 +97,7 @@ const App = () => (
 
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
+              </Suspense>
             </BrowserRouter>
           </TooltipProvider>
         </QueryClientProvider>
