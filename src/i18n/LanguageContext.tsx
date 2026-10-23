@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 export type Language = "DE" | "EN" | "IT";
 
@@ -1112,6 +1111,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     let cancelled = false;
 
     const loadContent = async () => {
+      const { supabase } = await import("@/integrations/supabase/client");
+      if (cancelled) return;
       const { data, error } = await (supabase as any)
         .from("site_content")
         .select("content_key, language, value");
