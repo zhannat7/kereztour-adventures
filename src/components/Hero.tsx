@@ -77,8 +77,10 @@ const Hero = () => {
             aria-hidden={activeImage !== index}
           >
             <img
-              src={loadedImages.includes(index) ? image.src : undefined}
+              src={loadedImages.includes(index) ? (index === 0 && typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches ? "/hero-wide-mobile.webp" : image.src) : undefined}
               alt={image.alt}
+              width={1920}
+              height={1312}
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
