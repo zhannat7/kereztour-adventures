@@ -76,6 +76,14 @@ const Hero = () => {
             }}
             aria-hidden={activeImage !== index}
           >
+            {index === 0 && loadedImages.includes(0) && (
+              <img
+                src="/hero-wide-mobile.webp"
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl sm:hidden"
+              />
+            )}
             <img
               src={loadedImages.includes(index) ? (index === 0 && typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches ? "/hero-wide-mobile.webp" : image.src) : undefined}
               alt={image.alt}
@@ -84,7 +92,7 @@ const Hero = () => {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className={`absolute inset-0 h-full w-full transform-gpu object-cover [backface-visibility:hidden] ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
+              className={`absolute inset-0 h-full w-full transform-gpu [backface-visibility:hidden] ${index === 0 ? "object-contain sm:object-cover" : "object-cover"} ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
               style={{
                 objectPosition: "center center",
               }}
