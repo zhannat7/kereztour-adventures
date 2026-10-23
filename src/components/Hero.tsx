@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -23,7 +23,6 @@ const Hero = () => {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
   const [loadedImages, setLoadedImages] = useState<number[]>([0]);
-  const heroMotionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("kereztour-hero-image", { detail: activeImage }));
@@ -61,35 +60,13 @@ const Hero = () => {
     return () => window.clearTimeout(timer);
   }, [activeImage, loadedImages]);
 
-  useEffect(() => {
-    const element = heroMotionRef.current;
-    if (!element) return;
 
-    let frame = 0;
-    const start = performance.now();
-    const duration = 30000;
-
-    const animate = (now: number) => {
-      const progress = ((now - start) % duration) / duration;
-      const wave = (1 - Math.cos(progress * Math.PI * 2)) / 2;
-      // Keep the full yurt framing visible so the people are not cropped out.
-      const scale = 1 + wave * 0.008;
-      const x = -0.04 + wave * 0.08;
-      const y = 0;
-
-      element.style.transform = `translate3d(${x}%, ${y}%, 0) scale(${scale})`;
-      frame = window.requestAnimationFrame(animate);
-    };
-
-    frame = window.requestAnimationFrame(animate);
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
 
   return (
     <>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div ref={heroMotionRef} className="absolute inset-0 transform-gpu [backface-visibility:hidden]" style={{ transformOrigin: "center center", willChange: "transform" }}>
+        <div className="absolute inset-0">
         {heroImages.map((image, index) => (
           <div
             key={image.src}
