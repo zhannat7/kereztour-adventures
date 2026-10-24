@@ -245,7 +245,7 @@ const NomadGames = () => {
                 aria-label={t("Video starten")}
               >
                 <img
-                  src={`https://i.ytimg.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+                  src="/nomad-thumb.webp"
                   alt={t("Welt der Nomaden 2026 – Kirgisistan in Bewegung")}
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
