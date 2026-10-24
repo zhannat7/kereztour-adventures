@@ -76,9 +76,9 @@ const Hero = () => {
             }}
             aria-hidden={activeImage !== index}
           >
-            {index === 0 && loadedImages.includes(0) && (
+            {index === 1 && loadedImages.includes(1) && (
               <img
-                src="/hero-wide-mobile.webp"
+                src={image.src}
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl sm:hidden"
@@ -92,7 +92,7 @@ const Hero = () => {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
               decoding="async"
-              className={`absolute inset-0 h-full w-full transform-gpu [backface-visibility:hidden] ${index === 0 ? "object-contain sm:object-cover" : "object-cover"} ${index === 1 ? "origin-top scale-[1.8] object-top sm:scale-100 sm:object-center" : "object-center"}`}
+              className={`absolute inset-0 h-full w-full transform-gpu object-center [backface-visibility:hidden] ${index === 1 ? "object-contain sm:object-cover" : "object-cover"}`}
               style={{
                 objectPosition: "center center",
               }}
