@@ -1133,14 +1133,28 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       }
     };
 
-    // Let the first screen render before loading optional editable text from the database.
-    const timer = window.setTimeout(() => {
-      void loadContent();
-    }, 1200);
+    // Load optional editable text only after the page has fully loaded and the browser is idle,
+    // so the database client never competes with the first screen.
+    let timer: number | undefined;
+    let idleId: number | undefined;
+    const w = window as any;
+    const schedule = () => {
+      timer = window.setTimeout(() => {
+        if (w.requestIdleCallback) {
+          idleId = w.requestIdleCallback(() => void loadContent(), { timeout: 3000 });
+        } else {
+          void loadContent();
+        }
+      }, 2500);
+    };
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
 
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
+      window.removeEventListener("load", schedule);
+      if (timer) window.clearTimeout(timer);
+      if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
     };
   }, []);
 
