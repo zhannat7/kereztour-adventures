@@ -133,6 +133,10 @@ const alts = [
   "Verkäuferin zwischen frischem Fladenbrot auf dem Basar",
 ];
 
+const thumbFiles = import.meta.glob("@/assets/gallery/thumbs/*.webp", { eager: true, import: "default" }) as Record<string, string>;
+const thumbByName = Object.fromEntries(Object.entries(thumbFiles).map(([k, v]) => [k.split("/").pop()!, v]));
+const fileNames = ["IMG_2518.webp", "IMG_2646.webp", "IMG_2677.webp", "IMG_2689.webp", "IMG_2697.webp", "IMG_2769.webp", "IMG_2793.webp", "IMG_3007.webp", "IMG_3070.webp", "IMG_3092.webp", "IMG_3181.webp", "IMG_3191.webp", "IMG_3202.webp", "IMG_3243.webp", "IMG_3267.webp", "IMG_3283.webp", "IMG_3299.webp", "IMG_3310.webp", "IMG_3369.webp", "IMG_3432.webp", "IMG_3466.webp", "IMG_3541.webp", "IMG_3600.webp", "IMG_3858.webp", "IMG_3925.webp", "IMG_3952.webp", "IMG_4561.webp", "IMG_4663.webp", "IMG_4672.webp", "IMG_4725.webp", "IMG_4736.webp", "IMG_4747.webp", "IMG_4748.webp", "IMG_4773.webp", "IMG_4817.webp", "IMG_4822.webp", "IMG_4831.webp", "IMG_4846.webp", "IMG_4851.webp", "IMG_4858.webp", "IMG_4871.webp", "IMG_4919.webp", "IMG_4920.webp", "IMG_4930.webp", "IMG_4933.webp", "IMG_4992.webp", "IMG_5006.webp", "IMG_5010.webp", "10.webp", "11.webp", "12.webp", "13.webp", "14.webp", "21.webp", "22.webp", "31.webp", "32.webp", "41.webp", "42.webp", "51.webp", "81.webp", "82.webp", "91.webp"];
+
 const images = [
   img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
   img11, img12, img13, img14, img15, img16, img17, img18, img19, img20,
@@ -141,7 +145,7 @@ const images = [
   img41, img42, img43, img44, img45, img46, img47, img48, img49, img50,
   img51, img52, img53, img54, img55, img56, img57, img58, img59, img60,
   img61, img62, img63,
-].map((src, i) => ({ src, alt: alts[i] ?? `Reisefoto aus Kirgisistan ${i + 1}` }));
+].map((src, i) => ({ src, thumb: thumbByName[fileNames[i]] ?? src, alt: alts[i] ?? `Reisefoto aus Kirgisistan ${i + 1}` }));
 
 const VISIBLE = 12; // 2 Zeilen · 6 Spalten · Instagram-große Fotos
 
@@ -244,7 +248,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
               i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-50 hover:opacity-80"
             }`}
           >
-            <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
+            <img src={img.thumb} alt={img.alt} className="w-full h-full object-cover" loading="lazy" decoding="async" />
           </button>
         ))}
       </div>
@@ -287,9 +291,12 @@ const Gallery = () => {
                 className="group relative aspect-square overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
               >
                 <img
-                  src={img.src}
+                  src={img.thumb}
                   alt={img.alt}
+                  width={480}
+                  height={480}
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
                 />
               </button>

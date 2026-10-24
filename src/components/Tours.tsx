@@ -67,6 +67,10 @@ const Tours = () => {
               <div className="relative aspect-[4/3] max-h-[400px] overflow-hidden bg-muted lg:col-span-6">
                 <img
                   src={tour.image}
+                  srcSet={`${tour.image.replace(".webp", "-700.webp")} 700w, ${tour.image} 1100w`}
+                  sizes="(min-width: 1024px) 560px, 100vw"
+                  width={1100}
+                  height={825}
                   alt={t(tour.title)}
                   loading="lazy"
                   decoding="async"
