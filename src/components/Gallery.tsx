@@ -151,7 +151,7 @@ const VISIBLE = 12; // 2 Zeilen · 6 Spalten · Instagram-große Fotos
 
 /* ── Lightbox ── */
 const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
-  images: { src: string; alt: string }[];
+  images: { src: string; thumb: string; alt: string }[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
