@@ -1033,7 +1033,80 @@ const Dashboard = ({ session }: { session: Session }) => {
               </div>
             </form>
 
-            <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
+            <div className="space-y-3 md:hidden">
+              {visibleDates.length === 0 && <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">Keine Termine.</div>}
+              {visibleDates.map((d) => {
+                const sumTier = (tier: string) => bookings
+                  .filter((b) => b.status === "confirmed" && b.travel_date === d.start_date && b.tour === d.tour && b.tier === tier)
+                  .reduce((s, b) => s + b.persons, 0);
+                const isKultur = d.tour === "Kultur Tour";
+                const field = "mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-base";
+                return (
+                  <div key={d.id} className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-foreground">{d.tour}</p>
+                        {editDate?.id !== d.id && <p className="text-sm text-muted-foreground">{fmtRange(d.start_date, d.end_date)}</p>}
+                      </div>
+                      <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                        Belegt: {isKultur ? `${sumTier("comfort") + sumTier("economy")}` : booked(d)}
+                      </span>
+                    </div>
+
+                    {editDate?.id === d.id && (
+                      <div className="mt-3 space-y-2">
+                        <label className="block text-xs text-muted-foreground">Beginn
+                          <input type="date" value={editDate.start_date} onChange={(e) => setEditDate({ ...editDate, start_date: e.target.value })} className={field} />
+                        </label>
+                        <label className="block text-xs text-muted-foreground">Ende
+                          <input type="date" value={editDate.end_date} onChange={(e) => setEditDate({ ...editDate, end_date: e.target.value })} className={field} />
+                        </label>
+                        <AiDateCheck tour={d.tour} startDate={editDate.start_date} endDate={editDate.end_date} existing={dates} excludeId={d.id} onApplyEnd={(end) => setEditDate({ ...editDate, end_date: end })} />
+                        <div className="flex gap-2">
+                          <button onClick={() => void saveEditDate(d)} className="flex-1 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground">Speichern</button>
+                          <button onClick={() => setEditDate(null)} className="flex-1 rounded-md border border-border px-3 py-2 text-sm">Abbrechen</button>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className={`mt-3 grid gap-3 ${isKultur ? "grid-cols-2" : "grid-cols-1"}`}>
+                      {isKultur ? (
+                        <>
+                          <label className="text-xs text-muted-foreground">Jeep max. (belegt {sumTier("comfort")})
+                            <input type="number" min={1} max={25} defaultValue={d.comfort_max_participants} className={field}
+                              onBlur={(e) => Number(e.target.value) !== d.comfort_max_participants && updateDate(d.id, { comfort_max_participants: Number(e.target.value) })} />
+                          </label>
+                          <label className="text-xs text-muted-foreground">Minibus max. (belegt {sumTier("economy")})
+                            <input type="number" min={1} max={25} defaultValue={d.economy_max_participants} className={field}
+                              onBlur={(e) => Number(e.target.value) !== d.economy_max_participants && updateDate(d.id, { economy_max_participants: Number(e.target.value) })} />
+                          </label>
+                        </>
+                      ) : (
+                        <label className="text-xs text-muted-foreground">Max. Personen
+                          <input type="number" min={1} max={25} defaultValue={d.max_participants} className={field}
+                            onBlur={(e) => Number(e.target.value) !== d.max_participants && updateDate(d.id, { max_participants: Number(e.target.value) })} />
+                        </label>
+                      )}
+                    </div>
+
+                    <label className="mt-3 block text-xs text-muted-foreground">Status
+                      <select value={d.status} onChange={(e) => updateDate(d.id, { status: e.target.value })} className={field}>
+                        <option value="open">Offen (auf Website buchbar)</option><option value="full">Ausgebucht (keine Plätze mehr)</option><option value="cancelled">Abgesagt (auf Website ausgeblendet)</option>
+                      </select>
+                    </label>
+
+                    {editDate?.id !== d.id && (
+                      <div className="mt-3 flex gap-2">
+                        <button onClick={() => setEditDate({ id: d.id, start_date: d.start_date, end_date: d.end_date })} className="flex-1 rounded-md border border-border px-3 py-2 text-sm font-semibold text-primary">Bearbeiten</button>
+                        <button onClick={() => deleteDate(d.id)} className="flex-1 rounded-md border border-destructive/40 px-3 py-2 text-sm font-semibold text-destructive">Löschen</button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="hidden overflow-x-auto rounded-xl border border-border bg-card shadow-sm md:block">
               <table className="w-full text-sm">
                 <thead className="bg-muted text-left text-xs uppercase tracking-wider text-muted-foreground">
                   <tr><th className="p-3">Reise</th><th className="p-3">Zeitraum<HelpTip text="Beginn und Ende der Reise. Die Tage-Anzeige wird grün, wenn die Dauer stimmt (Kultur Tour 10, Trekking 11 Tage)." /></th><th className="p-3">Belegt<HelpTip text="Anzahl Gäste mit bestätigter Buchung für diesen Termin." /></th><th className="p-3">Kapazität<HelpTip text="Maximale Plätze. Kultur Tour: Jeep für 1–4 Personen, Minibus ab 5 Personen. Erlaubt sind 1 bis 25." /></th><th className="p-3">Status<HelpTip text="Offen = buchbar. Ausgebucht = als voll angezeigt. Abgesagt = auf der Website ausgeblendet, Buchungen bleiben hier gespeichert." /></th><th className="p-3 text-right">Aktionen<HelpTip text="Bearbeiten = Datum korrigieren, gebuchte Gäste wandern mit. Löschen = endgültig entfernen, nur wenn niemand gebucht hat." /></th></tr>
