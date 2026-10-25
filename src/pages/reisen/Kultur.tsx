@@ -264,17 +264,6 @@ const days = [
 ];
 
 
-const highlights = [
-  "Traditionelle Adlerjagd mit Steinadlern im Dorf Bokonbaeva",
-  "Baden im türkisfarbenen Issyk-Kul-See",
-  "Thermalquellen in Altyn-Arashan – der Goldenen Heilquelle",
-  "Dunganen-Moschee – ein Holzbauwerk ohne einen einzigen Nagel",
-  "Bootsfahrt mit Blick auf das Tien-Shan-Gebirge",
-  "Petroglyphen aus ca. 2000 v. Chr.",
-  "Burana-Turm (UNESCO-Erbe)",
-  "Jurtenaufbau mit Einheimischen",
-  "Festliches Abschiedsabendessen mit kirgisischer Livemusik",
-];
 
 const PhotoSlider = ({ photos }: { photos: string[] }) => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -525,19 +514,6 @@ const Kultur = () => {
             </div>
           </section>
 
-          <div className="mb-20">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
-              {t("Was dich")} <span className="italic text-primary">{t("erwartet")}</span>
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
-              {highlights.map((h) => (
-                <div key={h} className="flex items-start gap-3 border-b border-primary/15 py-4 pr-3">
-                  <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-sm text-foreground leading-relaxed">{t(h)}</p>
-                </div>
-              ))}
-            </div>
-          </div>
 
           <div className="mb-20">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-12">
