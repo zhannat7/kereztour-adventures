@@ -71,6 +71,13 @@
       "when": 1792706787237,
       "tag": "0009_respect_manual_full_status",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792960567892,
+      "tag": "0010_fix_admin_tour_date_status",
+      "breakpoints": true
     }
   ]
 }
