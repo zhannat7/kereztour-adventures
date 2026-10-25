@@ -64,8 +64,8 @@ const Hero = () => {
 
   return (
     <>
-    <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-background sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
-      <div className="absolute inset-0 z-0 overflow-hidden">
+    <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-primary sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-primary">
         <div className="absolute inset-0">
         {heroImages.map((image, index) => (
           <div
@@ -84,19 +84,31 @@ const Hero = () => {
                 className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl sm:hidden"
               />
             )}
-            <img
-              src={loadedImages.includes(index) ? (index === 0 && typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches ? "/hero-wide-mobile.webp" : image.src) : undefined}
-              alt={image.alt}
-              width={1920}
-              height={1312}
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchPriority={index === 0 ? "high" : "auto"}
-              decoding="async"
-              className={`absolute inset-0 h-full w-full transform-gpu object-center [backface-visibility:hidden] ${index === 1 ? "object-contain sm:object-cover" : "object-cover"}`}
-              style={{
-                objectPosition: "center center",
-              }}
-            />
+            {index === 0 ? (
+              <picture>
+                <source media="(max-width: 768px)" srcSet="/hero-wide-mobile.webp" />
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  width={1920}
+                  height={1312}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                />
+              </picture>
+            ) : (
+              <img
+                src={loadedImages.includes(index) ? image.src : undefined}
+                alt={image.alt}
+                width={1920}
+                height={1312}
+                loading="lazy"
+                decoding="async"
+                className={`absolute inset-0 h-full w-full transform-gpu object-center [backface-visibility:hidden] ${index === 1 ? "object-contain sm:object-cover" : "object-cover"}`}
+              />
+            )}
           </div>
         ))}
         <div className="absolute inset-0 bg-gradient-veil" />
