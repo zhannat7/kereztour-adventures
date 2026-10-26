@@ -20,6 +20,8 @@ const About = () => {
               <img
                 src="/about.webp"
                 alt="Weite Landschaft Kirgisistans"
+                width={1100}
+                height={825}
                 loading="lazy"
                 className="h-full w-full object-cover"
               />

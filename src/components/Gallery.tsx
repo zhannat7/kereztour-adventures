@@ -248,7 +248,7 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
               i === index ? "ring-2 ring-white opacity-100 scale-110" : "opacity-50 hover:opacity-80"
             }`}
           >
-            <img src={img.thumb} alt={img.alt} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <img src={img.thumb} alt={img.alt} width={48} height={48} className="w-full h-full object-cover" loading="lazy" decoding="async" />
           </button>
         ))}
       </div>

@@ -247,6 +247,8 @@ const NomadGames = () => {
                 <img
                   src="/nomad-thumb.webp"
                   alt={t("Welt der Nomaden 2026 – Kirgisistan in Bewegung")}
+                  width={960}
+                  height={540}
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
                 />
