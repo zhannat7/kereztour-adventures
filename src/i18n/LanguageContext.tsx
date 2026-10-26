@@ -1082,7 +1082,7 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [contentOverrides, setContentOverrides] = useState<Record<Language, Record<string, string>>>({
+  const [contentOverrides] = useState<Record<Language, Record<string, string>>>({
     DE: {},
     EN: {},
     IT: {},
@@ -1107,56 +1107,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     document.documentElement.lang = next.toLowerCase();
   };
 
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadContent = async () => {
-      try {
-        // Built-in translations render immediately; CMS overrides are optional.
-        const { supabase } = await import("@/integrations/supabase/client");
-        if (cancelled) return;
-        const { data, error } = await (supabase as any)
-          .from("site_content")
-          .select("content_key, language, value");
-
-        if (cancelled || error || !data) return;
-
-        const next: Record<Language, Record<string, string>> = { DE: {}, EN: {}, IT: {} };
-        for (const row of data as Array<{ content_key: string; language: Language; value: string }>) {
-          if (row.language === "DE" || row.language === "EN" || row.language === "IT") {
-            next[row.language][row.content_key] = row.value;
-          }
-        }
-        setContentOverrides(next);
-      } catch {
-        // Keep built-in translations if the optional CMS request fails.
-      }
-    };
-
-    // Load optional editable text only after the page has fully loaded and the browser is idle,
-    // so the database client never competes with the first screen.
-    let timer: number | undefined;
-    let idleId: number | undefined;
-    const w = window as any;
-    const schedule = () => {
-      timer = window.setTimeout(() => {
-        if (w.requestIdleCallback) {
-          idleId = w.requestIdleCallback(() => void loadContent(), { timeout: 3000 });
-        } else {
-          void loadContent();
-        }
-      }, 2500);
-    };
-    if (document.readyState === "complete") schedule();
-    else window.addEventListener("load", schedule, { once: true });
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener("load", schedule);
-      if (timer) window.clearTimeout(timer);
-      if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
-    };
-  }, []);
 
   useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
