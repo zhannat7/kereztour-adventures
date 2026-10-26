@@ -2,7 +2,7 @@ import { lazy, Suspense, type ReactNode } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Highlights from "@/components/Highlights";
-import Tours from "@/components/Tours";
+const Tours = lazy(() => import("@/components/Tours"));
 import Footer from "@/components/Footer";
 import { SectionErrorBoundary } from "@/components/SectionErrorBoundary";
 
@@ -31,7 +31,7 @@ const Index = () => (
     <main>
       <Section name="Hero"><Hero /></Section>
       <Section name="Highlights"><Highlights /></Section>
-      <Section name="Tours"><Tours /></Section>
+      <LazySection name="Tours"><Tours /></LazySection>
       <LazySection name="NomadGames"><NomadGames /></LazySection>
       <LazySection name="About"><About /></LazySection>
       <LazySection name="Gallery"><Gallery /></LazySection>
