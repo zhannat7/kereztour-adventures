@@ -68,6 +68,8 @@ const Testimonials = () => {
                   <img
                     src={r.screenshot}
                     alt="WhatsApp-Bewertung"
+                    width={600}
+                    height={1200}
                     decoding="async"
                     loading="lazy"
                   className="max-h-[320px] w-auto max-w-full rounded-sm object-contain shadow-soft sm:max-h-[380px]"

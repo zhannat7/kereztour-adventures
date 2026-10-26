@@ -335,6 +335,8 @@ const DaySevenMedia = ({
             <img
               src={photo}
               alt={photoDescriptions[index] ?? "Impression von Tag 7 der Kultur Tour"}
+              width={400}
+              height={300}
               loading="lazy"
               decoding="async"
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
