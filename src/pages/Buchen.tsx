@@ -131,7 +131,7 @@ const Step = ({
 
 const Buchen = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [searchParams] = useSearchParams();
 
   const [submitError, setSubmitError] = useState("");
@@ -381,6 +381,7 @@ const Buchen = () => {
           tier: tour.id === "trekking" ? "standard" : undefined,
           notes: data.notes || null,
           paymentMode: "request",
+          language,
         },
       });
       // Older deployed Edge Function versions may return success without bookingId.

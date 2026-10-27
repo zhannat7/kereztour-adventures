@@ -1,4 +1,5 @@
 import { NOTIFY_EMAIL, sendKereztourMail } from "../_shared/kereztour-mail.ts";
+import { mailText, parseLang } from "../_shared/mail-i18n.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders as sdkCorsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
@@ -60,6 +61,8 @@ Deno.serve(async (req) => {
     const dateTo = typeof body.date_to === "string" ? body.date_to : "-";
     const persons = Number.isInteger(body.persons) ? String(body.persons) : "-";
     const mailKey = crypto.randomUUID();
+    const lang = parseLang(body.language);
+    const L = mailText(lang);
     await Promise.all([
       sendKereztourMail(NOTIFY_EMAIL, {
         subject: `Neue Kontaktanfrage von ${name}`,
@@ -67,6 +70,7 @@ Deno.serve(async (req) => {
         rows: [
           { label: "Name", value: name },
           { label: "E-Mail", value: email },
+          { label: "Sprache des Kunden", value: lang },
           { label: "Reise", value: tour },
           { label: "Zeitraum", value: `${dateFrom} bis ${dateTo}` },
           { label: "Personen", value: persons },
@@ -74,18 +78,15 @@ Deno.serve(async (req) => {
         ],
       }, `contact-notify-${mailKey}`),
       sendKereztourMail(email, {
-        subject: "Deine Anfrage bei Kereztour",
-        heading: "Vielen Dank für deine Anfrage!",
-        paragraphs: [
-          `Hallo ${name},`,
-          "vielen Dank für deine Anfrage bei Kereztour. Wir haben deine Nachricht erhalten und melden uns innerhalb von 24 Stunden bei dir.",
-        ],
+        subject: L.contactSubject,
+        heading: L.contactHeading,
+        paragraphs: [L.hello(name), L.contactIntro],
         rows: [
-          { label: "Reise", value: tour },
-          { label: "Zeitraum", value: `${dateFrom} bis ${dateTo}` },
-          { label: "Personen", value: persons },
+          { label: L.tour, value: tour },
+          { label: L.period, value: `${dateFrom} ${L.to} ${dateTo}` },
+          { label: L.persons, value: persons },
         ],
-        closing: ["Herzliche Grüße", "Zarina & das Kereztour-Team"],
+        closing: [L.regards, L.sign],
       }, `contact-confirm-${mailKey}`),
     ]);
 

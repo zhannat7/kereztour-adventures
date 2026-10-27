@@ -88,7 +88,7 @@ type InquiryForm = z.infer<ReturnType<typeof inquirySchema>>;
 const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const schema = inquirySchema(t);
 
   const {
@@ -151,6 +151,7 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
           date_to: data.dateTo,
           persons: data.persons,
           message: data.message || null,
+          language,
         },
       });
 

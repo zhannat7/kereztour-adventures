@@ -1,4 +1,5 @@
 import { NOTIFY_EMAIL, sendKereztourMail } from "../_shared/kereztour-mail.ts";
+import { mailText, parseLang } from "../_shared/mail-i18n.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
@@ -194,12 +195,21 @@ Deno.serve(async (req) => {
     }
 
     const mailKey = crypto.randomUUID();
+    const lang = parseLang((body as { language?: unknown }).language);
+    const L = mailText(lang);
     const tripRows = [
       { label: "Reise", value: selected.label },
       { label: "Reisedatum", value: travelDate },
       { label: "Reisevariante", value: tier ?? "-" },
       { label: "Personen", value: String(persons) },
       { label: "Gesamtpreis", value: `${totalPrice} €` },
+    ];
+    const customerRows = [
+      { label: L.tour, value: selected.label },
+      { label: L.date, value: travelDate },
+      { label: L.tier, value: tier ?? "-" },
+      { label: L.persons, value: String(persons) },
+      { label: L.total, value: `${totalPrice} €` },
     ];
     const emailTasks = Promise.all([
       sendKereztourMail(NOTIFY_EMAIL, {
@@ -209,24 +219,18 @@ Deno.serve(async (req) => {
           { label: "Name", value: name },
           { label: "E-Mail", value: email },
           { label: "Telefon", value: phone },
+          { label: "Sprache des Kunden", value: lang },
           ...tripRows,
           { label: "Anmerkungen", value: notes ?? "-" },
         ],
         closing: ["Details im Admin-Bereich: https://kereztour.com/admin"],
       }, `booking-notify-${mailKey}`),
       sendKereztourMail(email, {
-        subject: "Deine Buchungsanfrage bei Kereztour",
-        heading: "Vielen Dank für deine Buchungsanfrage!",
-        paragraphs: [
-          `Hallo ${name},`,
-          "vielen Dank für deine Buchungsanfrage bei Kereztour! Wir haben deine Anfrage erhalten und prüfen jetzt deinen gewünschten Termin. Wir melden uns ganz bald persönlich zur Bestätigung bei dir.",
-        ],
-        rows: tripRows,
-        closing: [
-          "Wir melden uns persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, senden wir dir einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von uns erhalten hast.",
-          "Herzliche Grüße",
-          "Zarina & das Kereztour-Team",
-        ],
+        subject: L.bookingSubject,
+        heading: L.bookingHeading,
+        paragraphs: [L.hello(name), L.bookingIntro],
+        rows: customerRows,
+        closing: [L.bookingClosing, L.regards, L.sign],
       }, `booking-confirm-${mailKey}`),
     ]);
 
