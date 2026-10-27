@@ -872,10 +872,10 @@ const Buchen = () => {
               <Button type="button" onClick={() => void handleSubmit(onSubmit, handleInvalidSubmit)()} className="w-full min-h-12 h-12 rounded-xl md:min-h-14 md:h-14" disabled={isSubmitting}>
                 {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("Wird gesendet...")}</> : t("Unverbindliche Buchungsanfrage senden →")}
               </Button>
-              <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Sarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-xs md:text-sm text-primary hover:underline py-1.5 md:py-2">
-                {t("Fragen zur Reise? Sarina auf WhatsApp schreiben")}
+              <button type="button" onClick={(e) => openWhatsApp(e, "Hallo Zarina, ich habe eine Frage zu einer Kereztour-Reise.")} className="w-full text-xs md:text-sm text-primary hover:underline py-1.5 md:py-2">
+                {t("Fragen zur Reise? Zarina auf WhatsApp schreiben")}
               </button>
-              <p className="text-center text-[11px] leading-relaxed text-muted-foreground md:text-xs">{t("Du zahlst jetzt noch nichts. Sarina bespricht mit dir die Details und sendet dir anschließend bei gewünschter verbindlicher Buchung einen persönlichen Zahlungslink.")}</p>
+              <p className="text-center text-[11px] leading-relaxed text-muted-foreground md:text-xs">{t("Du zahlst jetzt noch nichts. Zarina bespricht mit dir die Details und sendet dir anschließend bei gewünschter verbindlicher Buchung einen persönlichen Zahlungslink.")}</p>
             </div>
 
           </form>

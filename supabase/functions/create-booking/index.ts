@@ -225,7 +225,7 @@ Deno.serve(async (req) => {
         closing: [
           "Wir melden uns persönlich bei dir, um die Details und Verfügbarkeit zu besprechen. Wenn du danach verbindlich buchen möchtest, senden wir dir einen persönlichen Zahlungslink. Bitte bezahle noch nichts, bevor du den Zahlungslink und die Buchungsbedingungen von uns erhalten hast.",
           "Herzliche Grüße",
-          "Sarina & das Kereztour-Team",
+          "Zarina & das Kereztour-Team",
         ],
       }, `booking-confirm-${mailKey}`),
     ]);
