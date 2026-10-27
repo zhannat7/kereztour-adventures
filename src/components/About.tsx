@@ -37,7 +37,7 @@ const About = () => {
               {t("Kereztour ist ein kleines Familienunternehmen aus Kirgisistan, das von meiner Mutter geführt wird. Sie kennt das Land, die Menschen und viele besondere Orte aus eigener Erfahrung.")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-5">
-              {t("Ich bin Sarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch, Italienisch und Kirgisisch.")}
+              {t("Ich bin Zarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch, Italienisch und Kirgisisch.")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
               {t("Gemeinsam haben wir bereits mehrere Reisen für Gäste organisiert. Dabei sind schöne Erlebnisse und persönliche Begegnungen entstanden. Genau diese Erfahrungen möchten wir immer wieder mit unseren Gästen teilen.")}

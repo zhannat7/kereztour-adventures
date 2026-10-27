@@ -175,10 +175,10 @@ const BookingMessageModal = ({
       ...details,
       ...appointment,
       "",
-      "Bei Fragen kannst du direkt an Sarina antworten: kereztour@hotmail.com",
+      "Bei Fragen kannst du direkt an Zarina antworten: kereztour@hotmail.com",
       "",
       "Liebe Grüße",
-      "Sarina",
+      "Zarina",
       "Kereztour",
     ].join("\n");
   }, [booking, confirmBooking, suggestAppointment, appointmentDate, appointmentTime]);
@@ -654,7 +654,7 @@ const Dashboard = ({ session }: { session: Session }) => {
       <main className="mx-auto max-w-[1440px] px-4 py-5 sm:px-6 sm:py-6">
         <div className="mb-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Übersicht</p>
-          <h1 className="font-display text-2xl text-primary sm:text-[1.75rem]">Guten Tag, Sarina</h1>
+          <h1 className="font-display text-2xl text-primary sm:text-[1.75rem]">Guten Tag, Zarina</h1>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3"><p className="max-w-2xl text-sm leading-6 text-muted-foreground">Alles an einem Ort: Buchungen bearbeiten, Kunden kontaktieren und Reisetermine verwalten.</p><AdminHelpGuide /></div>
         </div>
         <div className="mb-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
@@ -852,7 +852,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   </div>
                   {b.notes?.split(DEPOSIT_PAID_MARKER).join("").trim() && <p className="text-sm text-muted-foreground">{b.notes.split(DEPOSIT_PAID_MARKER).join("").trim()}</p>}
                   <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
-                    <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\\n\\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\\n\\nReise: ${b.tour ?? "–"}\\nReisedatum: ${fmt(b.travel_date)}\\nPersonen: ${b.persons}\\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\\n\\nBei Fragen antworte gerne auf diese E-Mail.\\n\\nLiebe Grüße\\nSarina\\nKereztour`)}`} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium hover:bg-muted"><Mail className="h-4 w-4" />Bestätigungs-E-Mail</a>
+                    <a href={`mailto:${b.email}?subject=${encodeURIComponent("Kereztour – Buchungsbestätigung")}&body=${encodeURIComponent(`Hallo ${b.name},\\n\\nwir bestätigen den Eingang deiner Anzahlung von 150 € und deine Buchung bei Kereztour.\\n\\nReise: ${b.tour ?? "–"}\\nReisedatum: ${fmt(b.travel_date)}\\nPersonen: ${b.persons}\\nGesamtpreis: ${b.total_price.toLocaleString("de-DE")} €\\n\\nBei Fragen antworte gerne auf diese E-Mail.\\n\\nLiebe Grüße\\nZarina\\nKereztour`)}`} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium hover:bg-muted"><Mail className="h-4 w-4" />Bestätigungs-E-Mail</a>
                     <a href={whatsappUrl(b.phone, b.name)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[#25D366] px-3 py-2 text-sm font-semibold text-white hover:opacity-90"><MessageCircle className="h-4 w-4" />WhatsApp</a>
                     <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
                       {b.status !== "confirmed" && <button onClick={() => setBookingStatus(b.id, "confirmed")} disabled={!hasDepositPaid(b)} className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40">Buchung bestätigen</button>}
