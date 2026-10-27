@@ -195,7 +195,7 @@ Deno.serve(async (req) => {
     }
 
     const mailKey = crypto.randomUUID();
-    const lang = parseLang(body?.language);
+    const lang = parseLang((body as { language?: unknown }).language);
     const L = mailText(lang);
     const tripRows = [
       { label: "Reise", value: selected.label },
