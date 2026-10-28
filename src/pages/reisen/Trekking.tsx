@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchTourDates, getCachedTourDates } from "@/lib/tourDatesCache";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -44,15 +45,14 @@ const Trekking = () => {
   const { t } = useLanguage();
   const [activeDay, setActiveDay] = useState(0);
   const dayRefs = useRef<HTMLDivElement[]>([]);
-  const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }>>([]);
+  const mapTrekking = (data: any[]) => data.filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
+  const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }> | null>(() => { const c = getCachedTourDates(); return c ? mapTrekking(c) : null; });
 
   useEffect(() => {
-    const loadTrekkingDates = async () => {
-      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
-      if (error) { setTrekkingDates([]); return; }
-      setTrekkingDates(((data as any[]) ?? []).filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date)));
+    const loadTrekkingDates = async (force = true) => {
+      try { setTrekkingDates(mapTrekking(await fetchTourDates(force))); } catch { setTrekkingDates((prev) => prev ?? []); }
     };
-    loadTrekkingDates();
+    loadTrekkingDates(false);
     const channel = supabase
       .channel("trekking-tour-dates")
       .on("postgres_changes", { event: "*", schema: "public", table: "tour_dates" }, () => { loadTrekkingDates(); })
@@ -119,7 +119,8 @@ const Trekking = () => {
           <div className="rounded-2xl bg-sand/50 p-3">
             <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
             <div className="divide-y divide-primary/15">
-              {trekkingDates.map((item) => {
+              {trekkingDates === null && <div className="space-y-3" aria-busy="true">{[0,1,2].map((i) => <div key={i} className="h-20 animate-pulse rounded-2xl bg-muted" />)}</div>}
+              {(trekkingDates ?? []).map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
                 const endDateMatch = item.label.match(/[-–]\\s*(\\d{2})\\.(\\d{2})\\.(\\d{4})/);
                 const dateRangeLabel = endDateMatch
@@ -137,7 +138,7 @@ const Trekking = () => {
                   </Link>
                 );
               })}
-              {trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
+              {trekkingDates !== null && trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
             </div>
           </div>
         </section>
