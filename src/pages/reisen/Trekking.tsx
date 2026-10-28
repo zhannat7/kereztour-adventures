@@ -44,15 +44,14 @@ const Trekking = () => {
   const { t } = useLanguage();
   const [activeDay, setActiveDay] = useState(0);
   const dayRefs = useRef<HTMLDivElement[]>([]);
-  const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }>>([]);
+  const mapTrekking = (data: any[]) => data.filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
+  const [trekkingDates, setTrekkingDates] = useState<Array<{ id: string; date: string; label: string; availablePlaces: number; status: string }> | null>(() => { const c = getCachedTourDates(); return c ? mapTrekking(c) : null; });
 
   useEffect(() => {
-    const loadTrekkingDates = async () => {
-      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
-      if (error) { setTrekkingDates([]); return; }
-      setTrekkingDates(((data as any[]) ?? []).filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date)));
+    const loadTrekkingDates = async (force = true) => {
+      try { setTrekkingDates(mapTrekking(await fetchTourDates(force))); } catch { setTrekkingDates((prev) => prev ?? []); }
     };
-    loadTrekkingDates();
+    loadTrekkingDates(false);
     const channel = supabase
       .channel("trekking-tour-dates")
       .on("postgres_changes", { event: "*", schema: "public", table: "tour_dates" }, () => { loadTrekkingDates(); })
