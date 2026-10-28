@@ -7,6 +7,7 @@ import { de } from "date-fns/locale";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchTourDates, getCachedTourDates } from "@/lib/tourDatesCache";
 import kyrchynVideo from "@/assets/kyrchyn-tour.mp4.asset.json";
 
 import t1a from "@/assets/gallery/IMG_2518.webp";
@@ -352,6 +353,16 @@ const Kultur = () => {
   const { t, language } = useLanguage();
   const itineraryText = (value: string) => language === "IT" ? value : itineraryTranslations[language][value] ?? value;
   const [activeDay, setActiveDay] = useState(0);
+  const mapCulture = (data: any[]) => data
+    .filter((item: any) => item.tour === "Kultur Tour")
+    .map((item: any) => ({
+      id: item.id,
+      date: item.start_date,
+      label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
+      maxParticipants: Number(item.max_participants),
+      availablePlaces: Math.max(0, Number(item.available_places)),
+      status: item.status,
+    }));
   const [cultureDates, setCultureDates] = useState<Array<{
     id: string;
     date: string;
@@ -359,36 +370,23 @@ const Kultur = () => {
     maxParticipants: number;
     availablePlaces: number;
     status: string;
-  }>>([]);
+  }> | null>(() => { const c = getCachedTourDates(); return c ? mapCulture(c) : null; });
   const dayRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
     let active = true;
 
-    const loadCultureDates = async () => {
-      const { data, error } = await (supabase as any).rpc("get_tour_date_availability");
-
-      if (!active) return;
-      if (error) {
+    const loadCultureDates = async (force = true) => {
+      try {
+        const data = await fetchTourDates(force);
+        if (active) setCultureDates(mapCulture(data));
+      } catch (error) {
         console.error("Kultur-Termine konnten nicht aktualisiert werden:", error);
-        return;
+        if (active) setCultureDates((prev) => prev ?? []);
       }
-
-      setCultureDates(
-        ((data as any[]) ?? [])
-          .filter((item: any) => item.tour === "Kultur Tour")
-          .map((item: any) => ({
-            id: item.id,
-            date: item.start_date,
-            label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"),
-            maxParticipants: Number(item.max_participants),
-            availablePlaces: Math.max(0, Number(item.available_places)),
-            status: item.status,
-          }))
-      );
     };
 
-    void loadCultureDates();
+    void loadCultureDates(false);
 
     // Keep the dates in sync with admin edits and confirmed/cancelled bookings.
     // Supabase Realtime updates immediately when enabled; polling is the fallback.
@@ -474,7 +472,7 @@ const Kultur = () => {
                 {t("Reisedaten")}
               </div>
               <div className="divide-y divide-primary/15">
-                {cultureDates
+                {(cultureDates ?? [])
                   .filter((item) => item.status !== "cancelled")
                   .filter((item) => item.date >= format(new Date(), "yyyy-MM-dd"))
                   .sort((a, b) => a.date.localeCompare(b.date))
@@ -507,7 +505,8 @@ const Kultur = () => {
                       </Link>
                     );
                   })}
-                {cultureDates.filter((item) => item.status !== "cancelled").length === 0 && (
+                {cultureDates === null && <div className="space-y-3" aria-busy="true">{[0,1,2].map((i) => <div key={i} className="h-20 animate-pulse rounded-2xl bg-muted" />)}</div>}
+                {cultureDates !== null && (cultureDates ?? []).filter((item) => item.status !== "cancelled").length === 0 && (
                   <div className="rounded-2xl bg-background p-5 text-sm text-muted-foreground">
                     {t("Aktuell sind keine Reisetermine verfügbar.")}
                   </div>

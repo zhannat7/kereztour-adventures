@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchTourDates, getCachedTourDates } from "@/lib/tourDatesCache";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -118,7 +119,8 @@ const Trekking = () => {
           <div className="rounded-2xl bg-sand/50 p-3">
             <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary"><CalendarDays className="h-4 w-4" /></span>{t("Reisedaten")}</div>
             <div className="divide-y divide-primary/15">
-              {trekkingDates.map((item) => {
+              {trekkingDates === null && <div className="space-y-3" aria-busy="true">{[0,1,2].map((i) => <div key={i} className="h-20 animate-pulse rounded-2xl bg-muted" />)}</div>}
+              {(trekkingDates ?? []).map((item) => {
                 const isFull = item.status === "full" || item.availablePlaces <= 0;
                 const endDateMatch = item.label.match(/[-–]\\s*(\\d{2})\\.(\\d{2})\\.(\\d{4})/);
                 const dateRangeLabel = endDateMatch
@@ -136,7 +138,7 @@ const Trekking = () => {
                   </Link>
                 );
               })}
-              {trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
+              {trekkingDates !== null && trekkingDates.length === 0 && <div className="rounded-2xl bg-background p-4 text-sm text-muted-foreground">{t("Aktuell sind keine Reisetermine verfügbar.")}</div>}
             </div>
           </div>
         </section>
