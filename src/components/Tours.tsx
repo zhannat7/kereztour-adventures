@@ -74,7 +74,7 @@ const Tours = () => {
                   alt={t(tour.title)}
                   loading="lazy"
                   decoding="async"
-                  style={{ objectPosition: tour.imagePosition ?? "center" }}
+                  style={{ objectPosition: "center" }}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                 />
               </div>
