@@ -19,6 +19,8 @@ const About = () => {
             <div className="relative aspect-[5/4] overflow-hidden shadow-lift">
               <img
                 src="/about.webp"
+                srcSet="/about-700.webp 700w, /about.webp 1100w"
+                sizes="(min-width: 1024px) 550px, 100vw"
                 alt="Weite Landschaft Kirgisistans"
                 width={1100}
                 height={825}

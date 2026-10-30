@@ -68,7 +68,7 @@ const Tours = () => {
                 <img
                   src={tour.image}
                   srcSet={`${tour.image.replace(".webp", "-700.webp")} 700w, ${tour.image} 1100w`}
-                  sizes="(min-width: 1024px) 560px, 100vw"
+                  sizes="(min-width: 1024px) 560px, (max-width: 768px) 92vw, 100vw"
                   width={1100}
                   height={825}
                   alt={t(tour.title)}
