@@ -4,17 +4,19 @@ import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import karakolMosque from "@/assets/gallery/IMG_3432.webp";
 
+const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+
 const heroImages = [
   {
     src: "/hero-wide.webp",
     alt: "Berglandschaft im Tian Shan mit drei Jurten in Kirgisistan",
   },
   {
-    src: "/tour-kultur.webp",
+    src: isMobile ? "/tour-kultur-mobile.webp" : "/tour-kultur.webp",
     alt: "Kulturreise in Kirgisistan",
   },
   {
-    src: karakolMosque,
+    src: isMobile ? "/karakol-mobile.webp" : karakolMosque,
     alt: "Blau-bunte Holzmoschee in Karakol, Kirgisistan",
   },
 ];
