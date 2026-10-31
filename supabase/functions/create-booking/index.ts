@@ -211,34 +211,38 @@ Deno.serve(async (req) => {
       { label: L.persons, value: String(persons) },
       { label: L.total, value: `${totalPrice} €` },
     ];
-    const emailTasks = Promise.all([
-      sendKereztourMail(NOTIFY_EMAIL, {
-        subject: `Neue Buchungsanfrage: ${selected.label} (${name})`,
-        heading: "Neue Buchungsanfrage",
-        rows: [
-          { label: "Name", value: name },
-          { label: "E-Mail", value: email },
-          { label: "Telefon", value: phone },
-          { label: "Sprache des Kunden", value: lang },
-          ...tripRows,
-          { label: "Anmerkungen", value: notes ?? "-" },
-        ],
-        closing: ["Details im Admin-Bereich: https://kereztour.com/admin"],
-      }, `booking-notify-${mailKey}`),
-      sendKereztourMail(email, {
-        subject: L.bookingSubject,
-        heading: L.bookingHeading,
-        paragraphs: [L.hello(name), L.bookingIntro],
-        rows: customerRows,
-        closing: [L.bookingClosing, L.regards, L.sign],
-      }, `booking-confirm-${mailKey}`),
-    ]);
+    // Defer email rendering/sending until after the response is flushed, so
+    // template rendering never blocks the customer's confirmation.
+    const sendEmails = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      await Promise.all([
+        sendKereztourMail(NOTIFY_EMAIL, {
+          subject: `Neue Buchungsanfrage: ${selected.label} (${name})`,
+          heading: "Neue Buchungsanfrage",
+          rows: [
+            { label: "Name", value: name },
+            { label: "E-Mail", value: email },
+            { label: "Telefon", value: phone },
+            { label: "Sprache des Kunden", value: lang },
+            ...tripRows,
+            { label: "Anmerkungen", value: notes ?? "-" },
+          ],
+          closing: ["Details im Admin-Bereich: https://kereztour.com/admin"],
+        }, `booking-notify-${mailKey}`),
+        sendKereztourMail(email, {
+          subject: L.bookingSubject,
+          heading: L.bookingHeading,
+          paragraphs: [L.hello(name), L.bookingIntro],
+          rows: customerRows,
+          closing: [L.bookingClosing, L.regards, L.sign],
+        }, `booking-confirm-${mailKey}`),
+      ]);
+    };
 
-    // Send emails in the background so the customer gets an instant response.
     // deno-lint-ignore no-explicit-any
     const runtime = (globalThis as any).EdgeRuntime;
+    const emailTasks = sendEmails().catch((e) => console.error("Booking emails failed:", e));
     if (runtime?.waitUntil) runtime.waitUntil(emailTasks);
-    else await emailTasks;
 
     return json({ success: true, bookingId: insertedBooking?.id ?? null, paymentMode }, 200, origin);
   } catch (error) {
