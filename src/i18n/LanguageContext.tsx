@@ -1091,7 +1091,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     try {
       const saved = window.localStorage.getItem("kereztour-language");
-      return saved === "EN" || saved === "IT" ? saved : "DE";
+      if (saved === "DE" || saved === "EN" || saved === "IT") return saved;
+      const langs = navigator.languages?.length ? navigator.languages : [navigator.language];
+      const primary = (langs[0] || "").toLowerCase();
+      if (primary.startsWith("it")) return "IT";
+      if (primary.startsWith("de")) return "DE";
+      return "EN";
     } catch {
       return "DE";
     }
