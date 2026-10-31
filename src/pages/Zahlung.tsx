@@ -94,7 +94,7 @@ const Zahlung = () => {
             <CheckCircle className="mx-auto h-16 w-16 text-primary" />
             <h1 className="text-2xl md:text-3xl font-bold text-primary">{t("Buchungsanfrage erhalten")}</h1>
             <p className="text-muted-foreground text-sm">
-              {t("Vielen Dank für deine Anfrage. Zarina prüft den gewünschten Termin und meldet sich bei dir.")}
+              {t("Vielen Dank für deine Anfrage. Wir prüfen deinen Wunschtermin und melden uns zeitnah persönlich bei dir.")}
             </p>
             <div className="space-y-3 border-y border-border bg-muted p-5 text-left">
               <div className="flex justify-between"><span className="text-muted-foreground">{t("Name")}</span><span className="font-medium">{booking.name}</span></div>
@@ -105,7 +105,7 @@ const Zahlung = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">{t("Preis pro Person")}</span><span className="font-medium">{booking.pricePerPerson.toLocaleString("de-DE")} €</span></div>
               <div className="flex justify-between border-t border-border pt-3"><span className="font-semibold">{t("Gesamtpreis")}</span><span className="font-bold text-primary">{booking.totalPrice.toLocaleString("de-DE")} €</span></div>
             </div>
-            <p className="text-muted-foreground text-sm">{t("Deine Anfrage ist unverbindlich. Du musst jetzt nichts bezahlen. Zarina prüft deinen Wunschtermin und meldet sich persönlich bei dir. Wenn du danach verbindlich buchen möchtest, erhältst du von ihr einen persönlichen Zahlungslink.")}</p>
+            <p className="text-muted-foreground text-sm">{t("Deine Anfrage ist unverbindlich – eine Zahlung ist jetzt noch nicht erforderlich. Wir prüfen zunächst die Verfügbarkeit deines Wunschtermins. Wenn du anschließend verbindlich buchen möchtest, erhältst du von uns alle weiteren Informationen und einen persönlichen Zahlungslink.")}</p>
             <Button onClick={() => navigate("/")} className="w-full">{t("Zurück zur Startseite")}</Button>
           </div>
         </div>
