@@ -211,15 +211,15 @@ const Lightbox = ({ images, index, onClose, onPrev, onNext, onSelect }: {
           onClick={(e) => { e.stopPropagation(); onNext(); }}
           onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
           onTouchEnd={(e) => {
-            if (!touchStartX.current) return;
+            if (touchStartX.current === null) return;
             const diff = touchStartX.current - e.changedTouches[0].clientX;
+            touchStartX.current = null;
+            // Kurzes Antippen löst nur den Klick aus (sonst doppelter Sprung)
             if (Math.abs(diff) > 40) {
+              e.preventDefault();
               if (diff > 0) onNext();
               else onPrev();
-            } else {
-              onNext();
             }
-            touchStartX.current = null;
           }}
         />
       </div>
