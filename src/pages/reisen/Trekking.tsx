@@ -1,3 +1,4 @@
+import { useTourPrices, eur } from "@/lib/tourPrices";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, ArrowRight, Mountain, Thermometer, Backpack, CalendarDays } from "lucide-react";
@@ -43,6 +44,7 @@ const tips = [
 
 const Trekking = () => {
   const { t } = useLanguage();
+  const prices = useTourPrices();
   const [activeDay, setActiveDay] = useState(0);
   const dayRefs = useRef<HTMLDivElement[]>([]);
   const mapTrekking = (data: any[]) => data.filter((item: any) => item.tour === "Intensiv-Trekking").map((item: any) => ({ id: item.id, date: item.start_date, label: format(parseISO(item.start_date), "dd.MM.") + "–" + format(parseISO(item.end_date), "dd.MM.yyyy"), availablePlaces: Number(item.available_places), status: item.status })).filter((item) => item.date >= format(new Date(), "yyyy-MM-dd") && item.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
@@ -148,12 +150,12 @@ const Trekking = () => {
           <div>
             <div className="mb-2 flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">{t("Angebot")}</span>
-              <span className="text-sm font-medium text-primary">{t("Sie sparen 260 €")}</span>
+              <span className="text-sm font-medium text-primary">{`${t("Sie sparen")} ${eur(prices.trekking_original - prices.trekking)}`}</span>
             </div>
             <p className="mb-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">{t("Preis pro Person")}</p>
             <div className="flex flex-wrap items-baseline gap-3">
-              <span className="font-display text-xl text-muted-foreground line-through decoration-2">1.750 €</span>
-              <span className="font-display text-3xl text-foreground">1.490 €</span>
+              <span className="font-display text-xl text-muted-foreground line-through decoration-2">{eur(prices.trekking_original)}</span>
+              <span className="font-display text-3xl text-foreground">{eur(prices.trekking)}</span>
             </div>
           </div>
           <Link

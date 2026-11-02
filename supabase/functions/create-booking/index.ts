@@ -79,9 +79,26 @@ Deno.serve(async (req) => {
     }
     if (!isDate(travelDate)) return json({ error: "Ungültiges Reisedatum." }, 400, origin);
 
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !serviceRoleKey) {
+      return json({ error: "Serverkonfiguration fehlt." }, 500, origin);
+    }
+
+    const admin = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
+    const priceMap: Record<string, number> = { kultur_2: 2700, kultur_3_4: 1700, kultur_5plus: 1690, trekking: 1490 };
+    const { data: priceRows } = await admin.from("tour_prices").select("price_key, amount");
+    for (const row of priceRows ?? []) {
+      const amount = Number((row as any).amount);
+      if (Number.isFinite(amount) && amount > 0) priceMap[(row as any).price_key] = amount;
+    }
+
     const tours: Record<string, { label: string; price: number; hasTiers: boolean }> = {
       kultur: { label: "Kultur Tour", price: 0, hasTiers: true },
-      trekking: { label: "Intensiv-Trekking", price: 1490, hasTiers: false },
+      trekking: { label: "Intensiv-Trekking", price: priceMap.trekking, hasTiers: false },
     };
 
     const selected = tours[tour];
@@ -98,12 +115,12 @@ Deno.serve(async (req) => {
           if (persons < 5 || persons > 20) {
             return json({ error: "Ab 5 Personen ist die Reise mit Minibus buchbar." }, 400, origin);
           }
-          price = 1690;
+          price = priceMap.kultur_5plus;
         } else {
           if (persons < 2 || persons > 4) {
             return json({ error: "Für 2 bis 4 Personen ist die Reise mit Jeep buchbar." }, 400, origin);
           }
-          price = persons === 2 ? 2700 : 1700;
+          price = persons === 2 ? priceMap.kultur_2 : priceMap.kultur_3_4;
         }
       }
     } else if (tour === "trekking") {
@@ -112,20 +129,10 @@ Deno.serve(async (req) => {
       if (tier !== "standard") {
         return json({ error: "Ungültige Reiseoption." }, 400, origin);
       }
-      price = 1490;
+      price = priceMap.trekking;
     }
 
     const totalPrice = persons * price;
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!supabaseUrl || !serviceRoleKey) {
-      return json({ error: "Serverkonfiguration fehlt." }, 500, origin);
-    }
-
-    const admin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
 
     // Validate the selected date and capacity server-side for every tour.
     // Previously this check only ran for Kultur Tour, allowing trekking

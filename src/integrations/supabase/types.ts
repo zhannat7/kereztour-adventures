@@ -143,6 +143,24 @@ export type Database = {
         }
         Relationships: []
       }
+      tour_prices: {
+        Row: {
+          amount: number
+          price_key: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          price_key: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          price_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

@@ -1,3 +1,4 @@
+import { useTourPrices, eur } from "@/lib/tourPrices";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { ArrowLeft, Users, CheckCircle, CalendarDays } from "lucide-react";
@@ -351,6 +352,7 @@ const DaySevenMedia = ({
 
 const Kultur = () => {
   const { t, language } = useLanguage();
+  const prices = useTourPrices();
   const itineraryText = (value: string) => language === "IT" ? value : itineraryTranslations[language][value] ?? value;
   const [activeDay, setActiveDay] = useState(0);
   const mapCulture = (data: any[]) => data
@@ -578,7 +580,7 @@ const Kultur = () => {
                     <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
                   </div>
                   <div className="shrink-0 text-right md:text-left">
-                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">2.700 €</p>
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">{eur(prices.kultur_2)}</p>
                     <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
                   </div>
                 </div>
@@ -588,7 +590,7 @@ const Kultur = () => {
                     <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
                   </div>
                   <div className="shrink-0 text-right md:text-left">
-                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.700 €</p>
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">{eur(prices.kultur_3_4)}</p>
                     <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
                   </div>
                 </div>
@@ -598,7 +600,7 @@ const Kultur = () => {
                     <p className="text-sm text-muted-foreground md:hidden">{t("pro Person")}</p>
                   </div>
                   <div className="shrink-0 text-right md:text-left">
-                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">1.690 €</p>
+                    <p className="font-display text-3xl leading-none tracking-tight text-primary md:text-4xl">{eur(prices.kultur_5plus)}</p>
                     <p className="mt-1 hidden text-sm text-muted-foreground md:block md:mt-2">{t("pro Person")}</p>
                   </div>
                 </div>

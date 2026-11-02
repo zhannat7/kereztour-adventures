@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ContactInquiries from "@/components/admin/ContactInquiries";
 import AiDateCheck from "@/components/admin/AiDateCheck";
+import TourPricesEditor from "@/components/admin/TourPricesEditor";
 import { AdminHelpGuide, HelpTip } from "@/components/admin/AdminHelp";
 import { Mail, MessageCircle, Search, CalendarDays, ClipboardList, Users, CheckCircle2, ChevronDown, LayoutDashboard, Wallet, ChevronRight, X, Phone, UserRound, CreditCard, List, LayoutGrid, FileText, Upload, Download, Trash2, Paperclip } from "lucide-react";
 
@@ -289,7 +290,7 @@ const BookingMessageModal = ({
 const Dashboard = ({ session }: { session: Session }) => {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
-  const [tab, setTab] = useState<"overview" | "analytics" | "bookings" | "payments" | "messages" | "dates" | "archive">("overview");
+  const [tab, setTab] = useState<"overview" | "analytics" | "bookings" | "payments" | "messages" | "dates" | "prices" | "archive">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [archivedBookings, setArchivedBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -629,6 +630,7 @@ const Dashboard = ({ session }: { session: Session }) => {
     { k: "payments", l: `Zahlungen · ${unpaidBookings.length}` },
     { k: "messages", l: `Kontaktanfragen · ${messages.length}` },
     { k: "dates", l: `Reisetermine · ${visibleDates.length}` },
+    { k: "prices", l: "Preise" },
     { k: "archive", l: `Archiv · ${archivedBookings.length}` },
   ] as const;
 
@@ -959,6 +961,8 @@ const Dashboard = ({ session }: { session: Session }) => {
             })}
           </section>
         )}
+
+        {tab === "prices" && <TourPricesEditor />}
 
         {tab === "messages" && (
           <ContactInquiries messages={messages} onUpdated={(updated) => setMessages((current) => current.map((message) => message.id === updated.id ? updated : message))} onRefresh={load} />
