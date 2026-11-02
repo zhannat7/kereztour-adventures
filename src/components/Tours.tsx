@@ -106,13 +106,13 @@ const Tours = () => {
                     {tour.originalPrice && (
                       <div className="mb-2 flex flex-wrap items-center gap-3 text-xs">
                         <span className="rounded-full bg-secondary px-3 py-1 font-semibold uppercase tracking-wide text-secondary-foreground">{t("Angebot")}</span>
-                        <span className="text-muted-foreground">{t(tour.saving ?? "")}</span>
+                        <span className="text-muted-foreground">{`${t("Sie sparen")} ${eur(prices.trekking_original - prices.trekking)}`}</span>
                       </div>
                     )}
                     {tour.originalPrice && (
-                      <p className="mb-1 font-display text-lg leading-none text-muted-foreground line-through">{t(tour.originalPrice)}</p>
+                      <p className="mb-1 font-display text-lg leading-none text-muted-foreground line-through">{eur(prices.trekking_original)}</p>
                     )}
-                    <p className="font-display text-3xl leading-none text-primary sm:text-4xl">{t(tour.price)}</p>
+                    <p className="font-display text-3xl leading-none text-primary sm:text-4xl">{tour.originalPrice ? eur(prices.trekking) : eur(Math.min(prices.kultur_2, prices.kultur_3_4, prices.kultur_5plus))}</p>
                     <p className="mt-2 text-xs tracking-wide text-muted-foreground">{t("pro Person")}</p>
                   </div>
                   <span className="inline-flex items-center gap-2 border-b border-primary pb-2 text-sm font-semibold text-primary transition-colors group-hover:border-foreground group-hover:text-foreground">
