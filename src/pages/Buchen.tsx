@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTourPrices, eur, getCulturePrice } from "@/lib/tourPrices";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,12 +55,6 @@ type TourDateAvailability = {
   status: "open" | "full";
 };
 
-const getCulturePrice = (persons: number) => {
-  if (persons === 2) return 2700;
-  if (persons >= 3 && persons <= 4) return 1700;
-  if (persons >= 5) return 1690;
-  return 0;
-};
 
 const bookingSchema = (t: (text: string) => string) => z.object({
   vorname: z
@@ -132,6 +127,7 @@ const Step = ({
 const Buchen = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
+  const prices = useTourPrices();
   const [searchParams] = useSearchParams();
 
   const [submitError, setSubmitError] = useState("");
@@ -306,11 +302,11 @@ const Buchen = () => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
-      return getCulturePrice(persons);
+      return getCulturePrice(persons, prices);
     }
 
-    return selectedTour.price ?? 0;
-  }, [selectedTour, persons]);
+    return prices.trekking;
+  }, [selectedTour, persons, prices]);
 
   const totalPrice = persons * pricePerPerson;
 
@@ -517,8 +513,8 @@ const Buchen = () => {
                         <div className="text-right shrink-0">
                           <p className="font-bold text-primary">
                             {tour.hasTiers
-                              ? t("ab 1.690 €")
-                              : `${tour.price?.toLocaleString("de-DE")} €`}
+                              ? `${t("ab")} ${eur(Math.min(prices.kultur_5plus, prices.kultur_3_4, prices.kultur_2))}`
+                              : eur(prices.trekking)}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             pro {t("Person")}
@@ -542,11 +538,11 @@ const Buchen = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="rounded-sm border border-border p-5">
                       <p className="font-bold text-lg text-foreground">{t("2–4 Personen · Jeep")}</p>
-                      <p className="text-sm text-muted-foreground mt-2">{t("2 Personen: 2.700 € pro Person · 3–4 Personen: 1.700 € pro Person")}</p>
+                      <p className="text-sm text-muted-foreground mt-2">{`2 ${t("Personen")}: ${eur(prices.kultur_2)} ${t("pro Person")} · 3–4 ${t("Personen")}: ${eur(prices.kultur_3_4)} ${t("pro Person")}`}</p>
                     </div>
                     <div className="rounded-sm border border-border p-5">
                       <p className="font-bold text-lg text-foreground">{t("Ab 5 Personen · Minibus")}</p>
-                      <p className="text-sm text-muted-foreground mt-2">{t("1.690 € pro Person")}</p>
+                      <p className="text-sm text-muted-foreground mt-2">{`${eur(prices.kultur_5plus)} ${t("pro Person")}`}</p>
                     </div>
                   </div>
                 </div>
