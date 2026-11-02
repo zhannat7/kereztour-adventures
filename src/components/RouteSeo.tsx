@@ -7,17 +7,17 @@ type Meta = { title: string; description: string; noindex?: boolean; trip?: { na
 
 const META: Record<string, Meta> = {
   "/": {
-    title: "Kirgisistan Reise & Kyrgyzstan Reisen | Kereztour",
-    description: "Kirgisistan Reise, Kirgistan Reise und Kyrgyzstan Reisen: Rundreisen, Kultur, Trekking und Nomadenreisen in kleinen Gruppen mit lokalen Gastgebern.",
+    title: "Kirgistan Reise | Ihr lokaler Veranstalter | Kereztour",
+    description: "Erleben Sie eine unvergessliche Kirgistan Reise mit Kereztour. Wir organisieren persönliche Rundreisen & Trekking in kleinen Gruppen mit lokalen Gastgebern.",
   },
   "/reisen/kultur": {
-    title: "Kirgisistan Rundreise – Kultur Tour 10 Tage | Kereztour",
-    description: "Kirgisistan Rundreise mit Bischkek, Burana-Turm, Issyk-Kul, Karakol, Jurtencamps und Adlerjägern – 10 Tage ab 990 € in kleiner Gruppe.",
+    title: "Kirgistan Rundreise: 10 Tage Kultur & Highlights | Kereztour",
+    description: "Unsere 10-tägige Kirgistan Rundreise führt Sie von Bischkek bis zum Issyk-Kul-See. Entdecken Sie Kultur, Nomadenleben und atemberaubende Natur hautnah!",
     trip: { name: "Kultur Tour Kirgisistan – 10 Tage", price: 990, image: "/tour-kultur.jpg" },
   },
   "/reisen/trekking": {
-    title: "Kirgisistan Trekking – 11 Tage im Tian-Shan | Kereztour",
-    description: "Kirgisistan Trekking zu Hochgebirgsseen, Gletschern und Jurtencamps im Tian-Shan – 11 Tage mit lokalen Guides für 1.490 € pro Person.",
+    title: "Kirgistan Trekking & Wanderreise: 11 Tage Tian-Shan | Kereztour",
+    description: "Aktiv durch Kirgistan wandern: Erleben Sie ein intensives 11-Tage-Trekking im Tian-Shan-Gebirge. Kleine Gruppen, unberührte Natur & lokale Guides.",
     trip: { name: "Intensiv-Trekking Kirgisistan – 11 Tage", price: 1490, image: "/tour-trekking.jpg" },
   },
   "/buchen": {
