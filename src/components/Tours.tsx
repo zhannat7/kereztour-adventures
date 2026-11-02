@@ -1,3 +1,4 @@
+import { useTourPrices, eur } from "@/lib/tourPrices";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ArrowRight, Clock, Users } from "lucide-react";
@@ -44,6 +45,7 @@ const tours: Tour[] = [
 const Tours = () => {
   const ref = useScrollReveal();
   const { t } = useLanguage();
+  const prices = useTourPrices();
 
   return (
     <section id="preise" className="bg-background py-10 md:py-14 scroll-mt-24">
