@@ -347,7 +347,7 @@ const Buchen = () => {
     try {
       const tour = TOURS.find((item) => item.id === data.tour);
       if (!tour) throw new Error(t("Bitte wähle eine Reise."));
-      const price = tour.hasTiers ? getCulturePrice(data.persons) : tour.price ?? 0;
+      const price = tour.hasTiers ? getCulturePrice(data.persons, prices) : tour.price ?? 0;
       if (tour.id === "kultur" && (data.persons < 2 || data.persons > 20)) {
         throw new Error(t("Bitte wähle zwischen 2 und 20 Personen."));
       }
