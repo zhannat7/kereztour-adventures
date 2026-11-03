@@ -85,6 +85,13 @@
       "when": 1793632346463,
       "tag": "0011_tour_prices",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1793708309157,
+      "tag": "0012_add_booking_transport",
+      "breakpoints": true
     }
   ]
 }

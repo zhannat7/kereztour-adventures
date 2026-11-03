@@ -30,6 +30,7 @@ export type Database = {
           tier: string
           total_price: number
           tour: string | null
+          transport: string | null
           travel_date: string
         }
         Insert: {
@@ -47,6 +48,7 @@ export type Database = {
           tier: string
           total_price: number
           tour?: string | null
+          transport?: string | null
           travel_date: string
         }
         Update: {
@@ -64,6 +66,7 @@ export type Database = {
           tier?: string
           total_price?: number
           tour?: string | null
+          transport?: string | null
           travel_date?: string
         }
         Relationships: []
