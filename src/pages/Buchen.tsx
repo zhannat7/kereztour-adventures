@@ -176,9 +176,7 @@ const Buchen = () => {
     },
   });
 
-  const [transport, setTransport] = useState<CultureTransport>(
-    validTour === "kultur" && 2 >= 5 ? "minibus" : "jeep"
-  );
+  const [transport, setTransport] = useState<CultureTransport>("jeep");
   const persons = watch("persons") || 1;
   const tourId = watch("tour") as TourId | "";
   const travelDate = watch("travelDate");
