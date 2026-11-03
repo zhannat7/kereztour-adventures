@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTourPrices, eur, getCulturePrice } from "@/lib/tourPrices";
+import { useTourPrices, eur, getCultureTransportPrice, type CultureTransport } from "@/lib/tourPrices";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -176,6 +176,7 @@ const Buchen = () => {
     },
   });
 
+  const [transport, setTransport] = useState<CultureTransport>("jeep");
   const persons = watch("persons") || 1;
   const tourId = watch("tour") as TourId | "";
   const travelDate = watch("travelDate");
@@ -302,11 +303,11 @@ const Buchen = () => {
     if (!selectedTour) return 0;
 
     if (selectedTour.hasTiers) {
-      return getCulturePrice(persons, prices);
+      return getCultureTransportPrice(persons, transport, prices);
     }
 
     return prices.trekking;
-  }, [selectedTour, persons, prices]);
+  }, [selectedTour, persons, prices, transport]);
 
   const totalPrice = persons * pricePerPerson;
 
@@ -347,9 +348,9 @@ const Buchen = () => {
     try {
       const tour = TOURS.find((item) => item.id === data.tour);
       if (!tour) throw new Error(t("Bitte wähle eine Reise."));
-      const price = tour.hasTiers ? getCulturePrice(data.persons, prices) : prices.trekking;
-      if (tour.id === "kultur" && (data.persons < 2 || data.persons > 20)) {
-        throw new Error(t("Bitte wähle zwischen 2 und 20 Personen."));
+      const price = tour.hasTiers ? getCultureTransportPrice(data.persons, transport, prices) : prices.trekking;
+      if (tour.id === "kultur" && (data.persons < 1 || data.persons > 20)) {
+        throw new Error(t("Bitte wähle zwischen 1 und 20 Personen."));
       }
       if (tour.id === "kultur" && price <= 0) {
         throw new Error(t("Für diese Personenzahl ist kein Reisepreis hinterlegt."));
@@ -375,6 +376,7 @@ const Buchen = () => {
           travelDate: travelDateValue,
           tour: tour.id,
           tier: tour.id === "trekking" ? "standard" : undefined,
+          transport: tour.id === "kultur" ? transport : undefined,
           notes: data.notes || null,
           paymentMode: "request",
           language,
@@ -392,7 +394,7 @@ const Buchen = () => {
           name: data.vorname + " " + data.nachname,
           travelDate: selectedTourDate.label,
           tour: tour.label,
-          transport: tour.id === "kultur" ? (data.persons <= 4 ? "Jeep" : "Minibus") : null,
+          transport: tour.id === "kultur" ? (transport === "jeep" ? "Jeep" : "Minibus") : null,
           persons: data.persons,
           pricePerPerson: price,
           totalPrice: total,
@@ -535,15 +537,28 @@ const Buchen = () => {
               {selectedTour?.hasTiers && (
                 <div className="mt-7 pt-7 border-t border-border">
                   <p className="font-semibold text-foreground mb-4">{t("Transport und Preis")}</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="rounded-sm border border-border p-5">
-                      <p className="font-bold text-lg text-foreground">{t("2–4 Personen · Jeep")}</p>
-                      <p className="text-sm text-muted-foreground mt-2">{`2 ${t("Personen")}: ${eur(prices.kultur_2)} ${t("pro Person")} · 3–4 ${t("Personen")}: ${eur(prices.kultur_3_4)} ${t("pro Person")}`}</p>
-                    </div>
-                    <div className="rounded-sm border border-border p-5">
-                      <p className="font-bold text-lg text-foreground">{t("Ab 5 Personen · Minibus")}</p>
-                      <p className="text-sm text-muted-foreground mt-2">{`${eur(prices.kultur_5plus)} ${t("pro Person")}`}</p>
-                    </div>
+                  <p className="text-sm text-muted-foreground mb-4">{t("Wähle dein Wunschfahrzeug")}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="radiogroup" aria-label={t("Transport und Preis")}>
+                    {(["jeep", "minibus"] as const).map((option) => {
+                      const active = transport === option;
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          role="radio"
+                          aria-checked={active}
+                          onClick={() => setTransport(option)}
+                          className={`rounded-sm border-2 p-5 text-left transition-colors ${active ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}
+                        >
+                          <p className="font-bold text-lg text-foreground">{option === "jeep" ? t("Jeep") : t("Minibus")}</p>
+                          <p className="text-sm text-muted-foreground mt-2">
+                            {option === "jeep"
+                              ? `1–2 ${t("Personen")}: ${eur(prices.kultur_2)} · ${t("ab 3 Personen")}: ${eur(prices.kultur_3_4)} ${t("pro Person")}`
+                              : `${eur(prices.kultur_5plus)} ${t("pro Person")} · ${t("auch für Alleinreisende")}`}
+                          </p>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -574,9 +589,7 @@ const Buchen = () => {
                       onClick={() =>
                         setValue(
                           "persons",
-                          tourId === "kultur"
-                            ? Math.max(2, persons - 1)
-                            : Math.max(1, persons - 1)
+                          Math.max(1, persons - 1)
                         )
                       }
                       className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border hover:border-primary transition-colors"
@@ -821,7 +834,7 @@ const Buchen = () => {
 
                     {selectedTour.hasTiers && (
                       <p className="text-primary-foreground/80 mt-1">
-                        {persons <= 4 ? t("Jeep") : t("Minibus")}
+                        {transport === "jeep" ? t("Jeep") : t("Minibus")}
                       </p>
                     )}
 

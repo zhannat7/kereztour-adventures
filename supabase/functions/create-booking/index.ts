@@ -15,6 +15,7 @@ type BookingRequest = {
   travelDate?: string;
   tour?: string;
   tier?: string | null;
+  transport?: string | null;
   paymentMode?: "request" | "deposit";
   notes?: string | null;
 };
@@ -59,9 +60,15 @@ Deno.serve(async (req) => {
     // missing or differently named tier value.
     let tier = body.tier?.trim() || null;
     const paymentMode = body.paymentMode === "deposit" ? "deposit" : "request";
+    // Kultur: customer picks the vehicle. Older clients without a choice
+    // fall back to the previous group-size rule.
+    let transport: "jeep" | "minibus" | null = null;
     if (tour === "kultur") {
-      if (persons >= 2 && persons <= 4) tier = "comfort";
-      else if (persons >= 5 && persons <= 20) tier = "economy";
+      const requested = String(body.transport ?? "").trim().toLowerCase();
+      transport = requested === "jeep" || requested === "minibus"
+        ? requested
+        : (persons >= 5 ? "minibus" : "jeep");
+      tier = transport === "jeep" ? "comfort" : "economy";
     } else if (tour === "trekking") {
       // Trekking has no selectable package; normalize it server-side so
       // older cached clients that omit tier can still submit a valid request.
@@ -111,17 +118,9 @@ Deno.serve(async (req) => {
       }
 
       if (tour === "kultur") {
-        if (tier === "economy") {
-          if (persons < 5 || persons > 20) {
-            return json({ error: "Ab 5 Personen ist die Reise mit Minibus buchbar." }, 400, origin);
-          }
-          price = priceMap.kultur_5plus;
-        } else {
-          if (persons < 2 || persons > 4) {
-            return json({ error: "Für 2 bis 4 Personen ist die Reise mit Jeep buchbar." }, 400, origin);
-          }
-          price = persons === 2 ? priceMap.kultur_2 : priceMap.kultur_3_4;
-        }
+        price = transport === "minibus"
+          ? priceMap.kultur_5plus
+          : (persons <= 2 ? priceMap.kultur_2 : priceMap.kultur_3_4);
       }
     } else if (tour === "trekking") {
       // The database stores the booking option as a required text field.
@@ -170,6 +169,7 @@ Deno.serve(async (req) => {
       travel_date: travelDate,
       tour: selected.label,
       tier,
+      transport: transport === "jeep" ? "Jeep" : transport === "minibus" ? "Minibus" : null,
       notes: notes && notes.length <= 1000 ? notes : null,
       total_price: totalPrice,
       status: "pending",
@@ -207,14 +207,14 @@ Deno.serve(async (req) => {
     const tripRows = [
       { label: "Reise", value: selected.label },
       { label: "Reisedatum", value: travelDate },
-      { label: "Reisevariante", value: tier ?? "-" },
+      { label: "Transport", value: transport === "jeep" ? "Jeep" : transport === "minibus" ? "Minibus" : "-" },
       { label: "Personen", value: String(persons) },
       { label: "Gesamtpreis", value: `${totalPrice} €` },
     ];
     const customerRows = [
       { label: L.tour, value: selected.label },
       { label: L.date, value: travelDate },
-      { label: L.tier, value: tier ?? "-" },
+      { label: "Transport", value: transport === "jeep" ? "Jeep" : transport === "minibus" ? "Minibus" : "-" },
       { label: L.persons, value: String(persons) },
       { label: L.total, value: `${totalPrice} €` },
     ];

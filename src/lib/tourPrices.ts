@@ -54,6 +54,15 @@ export const useTourPrices = () => {
 
 export const eur = (n: number) => `${n.toLocaleString("de-DE")} €`;
 
+export type CultureTransport = "jeep" | "minibus";
+
+/** Kultur Tour price per person by the customer's chosen vehicle. */
+export const getCultureTransportPrice = (persons: number, transport: CultureTransport, p: TourPrices) => {
+  if (persons < 1) return 0;
+  if (transport === "minibus") return p.kultur_5plus;
+  return persons <= 2 ? p.kultur_2 : p.kultur_3_4;
+};
+
 export const getCulturePrice = (persons: number, p: TourPrices) => {
   if (persons === 2) return p.kultur_2;
   if (persons >= 3 && persons <= 4) return p.kultur_3_4;

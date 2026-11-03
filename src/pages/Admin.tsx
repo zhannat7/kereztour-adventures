@@ -39,8 +39,8 @@ const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).to
 const fmtRange = (start: string | null, end: string | null) => `${fmt(start)}–${fmt(end)}`;
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
-const cultureTransportLabel = (tour: string | null, persons: number) =>
-  tour === "Kultur Tour" ? (persons <= 4 ? "Jeep" : "Minibus") : "–";
+const cultureTransportLabel = (tour: string | null, persons: number, transport?: string | null) =>
+  tour === "Kultur Tour" ? (transport || (persons <= 4 ? "Jeep" : "Minibus")) : "–";
 
 const DEPOSIT_PAID_MARKER = "[[DEPOSIT_PAID_150_EUR]]";
 
