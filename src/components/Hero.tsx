@@ -6,6 +6,9 @@ import karakolMosque from "@/assets/gallery/IMG_3432.webp";
 
 const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
+const HERO_PLACEHOLDER =
+  "data:image/webp;base64,UklGRhwBAABXRUJQVlA4IBABAACwBwCdASowACEAPu1sqU+ppiOiKrqsATAdiUAYdjbwZwMWCnpgYcKXoV0+xSQ/NdWFncSuPflzwHIfH9aImycssy4USqwAAP7ne+tyv0+QwBTDGuUay08NdElzyr04l06PGQ0xOSjcWMHLpYr0uXZS/1rcIzQOwfJB7oyAEIxDnurKkNprM8w7ghQeb1nGfYyVZXtBk0kkhjrQfdOUYzGJoDZAVGpuAMFYAqlV533a2g9IKQkORNOCENRMLjszgqdsG7yFHIVFXxe2tSft/STwpmKMbWL1Tcruy3RCArRcCO5/R+3JJqgt6B71hzkisoEcUivAGbkr/A0izxMSnXTYmP40ZZRufKEzC/1DVlhAAA==";
+
 const heroImages = [
   {
     src: "/hero-wide.webp",
@@ -68,6 +71,12 @@ const Hero = () => {
     <>
     <section className="relative isolate flex h-[72svh] min-h-[560px] w-full items-center overflow-hidden bg-primary sm:h-[78svh] sm:min-h-[620px] lg:h-[86vh] lg:max-h-[880px]">
       <div className="absolute inset-0 z-0 overflow-hidden bg-primary">
+        {/* Tiny inline blurred preview so the landscape is visible instantly while the full photo loads. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+          style={{ backgroundImage: `url(${HERO_PLACEHOLDER})` }}
+        />
         <div className="absolute inset-0">
         {heroImages.map((image, index) => (
           <div
