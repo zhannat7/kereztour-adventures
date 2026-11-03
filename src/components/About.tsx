@@ -41,7 +41,7 @@ const About = () => {
             <p className="text-muted-foreground leading-relaxed mb-5">
               {t("Ich bin Zarina und lebe in Völs am Schlern in Südtirol. Ich unterstütze meine Mutter bei der Kommunikation und bei der Planung unserer Reisen für Gäste aus Europa. Ich spreche Deutsch, Italienisch und Kirgisisch.")}
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-8">
+            <p className="text-muted-foreground leading-relaxed mb-5">
               {t("Gemeinsam haben wir bereits mehrere Reisen für Gäste organisiert. Dabei sind schöne Erlebnisse und persönliche Begegnungen entstanden. Genau diese Erfahrungen möchten wir immer wieder mit unseren Gästen teilen.")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
