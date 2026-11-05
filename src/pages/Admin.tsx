@@ -13,7 +13,7 @@ type Booking = {
   id: string; created_at: string; archived_at?: string | null; purge_after?: string | null; name: string; email: string; phone: string;
   persons: number; travel_date: string; tier: string; tour: string | null;
   notes: string | null; total_price: number; status: string;
-  payment_status?: string; deposit_amount?: number; remaining_amount?: number;
+  payment_status?: string; deposit_amount?: number; remaining_amount?: number; transport?: string | null;
 };
 type Message = {
   id: string; created_at: string; name: string; email: string; tour: string | null;
@@ -155,7 +155,7 @@ const BookingMessageModal = ({
       `Reise: ${booking.tour ?? "–"}`,
       `Reisedatum: ${fmt(booking.travel_date)}`,
       `Personen: ${booking.persons}`,
-      `Transport: ${cultureTransportLabel(booking.tour, booking.persons)}`,
+      `Transport: ${cultureTransportLabel(booking.tour, booking.persons, booking.transport)}`,
       `Gesamtpreis: ${booking.total_price.toLocaleString("de-DE")} €`,
     ];
     const appointment = suggestAppointment && appointmentDate && appointmentTime
@@ -841,7 +841,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                   <Info l="Reise" v={b.tour ?? "–"} />
                   <Info l="Reisedatum" v={fmt(b.travel_date)} />
                   <Info l="Personen" v={String(b.persons)} />
-                  <Info l="Transport" v={cultureTransportLabel(b.tour, b.persons)} />
+                  <Info l="Transport" v={cultureTransportLabel(b.tour, b.persons, b.transport)} />
                 </div>
                 <div className="flex flex-col gap-3 border-t border-border px-4 py-4 sm:px-5">
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -886,7 +886,7 @@ const Dashboard = ({ session }: { session: Session }) => {
                 </section>
                 <section className="rounded-xl border border-border p-4">
                   <h3 className="mb-3 flex items-center gap-2 font-semibold"><CalendarDays className="h-4 w-4 text-primary" />Reisedetails</h3>
-                  <div className="grid grid-cols-2 gap-4 text-sm"><Info l="Reise" v={selectedBooking.tour ?? "–"} /><Info l="Reisedatum" v={fmt(selectedBooking.travel_date)} /><Info l="Personen" v={String(selectedBooking.persons)} /><Info l="Transport" v={cultureTransportLabel(selectedBooking.tour, selectedBooking.persons)} /><Info l="Kategorie" v={selectedBooking.tier || "–"} /><Info l="Anfrage vom" v={fmt(selectedBooking.created_at)} /></div>
+                  <div className="grid grid-cols-2 gap-4 text-sm"><Info l="Reise" v={selectedBooking.tour ?? "–"} /><Info l="Reisedatum" v={fmt(selectedBooking.travel_date)} /><Info l="Personen" v={String(selectedBooking.persons)} /><Info l="Transport" v={cultureTransportLabel(selectedBooking.tour, selectedBooking.persons, selectedBooking.transport)} /><Info l="Kategorie" v={selectedBooking.tier || "–"} /><Info l="Anfrage vom" v={fmt(selectedBooking.created_at)} /></div>
                   <BookingResponseDeadline booking={selectedBooking} now={now} />
                 </section>
                 <section className="rounded-xl border border-border p-4">
