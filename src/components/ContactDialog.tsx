@@ -289,7 +289,6 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                           });
                         }
 
-                        if (newStartDate) focusNextField("inquiry-to");
                       }}
                     />
                     {errors.dateFrom && <p className="text-sm text-destructive">{errors.dateFrom.message}</p>}
@@ -303,7 +302,6 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                       {...register("dateTo")}
                       onChange={(event) => {
                         register("dateTo").onChange(event);
-                        if (event.target.value) focusNextField("inquiry-message");
                       }}
                     />
                     {errors.dateTo && <p className="text-sm text-destructive">{errors.dateTo.message}</p>}
