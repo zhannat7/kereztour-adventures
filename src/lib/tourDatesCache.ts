@@ -26,8 +26,7 @@ export const getCachedTourDates = () => Date.now() - savedAt <= MAX_AGE ? cached
 export const fetchTourDates = (_force = false): Promise<TourDate[]> => {
   // Refresh triggers also share an active read, avoiding competing responses.
   if (inflight) return inflight;
-  const request = supabase
-    .rpc("get_tour_date_availability")
+  const request = Promise.resolve(supabase.rpc("get_tour_date_availability"))
     .then(({ data, error }) => {
       if (error) throw error;
       cached = data ?? [];
