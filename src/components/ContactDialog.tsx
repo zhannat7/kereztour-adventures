@@ -273,6 +273,7 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                       id="inquiry-from"
                       type="date"
                       min={today}
+                      max="2099-12-31"
                       {...register("dateFrom")}
                       onChange={(event) => {
                         register("dateFrom").onChange(event);
@@ -299,6 +300,7 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                       id="inquiry-to"
                       type="date"
                       min={dateFrom || today}
+                      max="2099-12-31"
                       {...register("dateTo")}
                       onChange={(event) => {
                         register("dateTo").onChange(event);
