@@ -5,9 +5,9 @@ import "@fontsource-variable/fraunces/opsz-italic.css";
 import "@fontsource-variable/inter/opsz.css";
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(<App />);
+const root = document.getElementById("root");
+if (root) createRoot(root).render(<App />);
 
-// Prefetch tour dates in the background so tour pages show them instantly.
+// Start independently of image loading; the pages share this in-flight request.
 const prefetchDates = () => import("@/lib/tourDatesCache").then((m) => m.fetchTourDates().catch(() => {}));
-if (document.readyState === "complete") setTimeout(prefetchDates, 1500);
-else window.addEventListener("load", () => setTimeout(prefetchDates, 1500), { once: true });
+void prefetchDates();

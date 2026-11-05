@@ -1,20 +1,40 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-// Shared in-memory cache so tour pages show dates instantly after a prefetch.
-let cached: any[] | null = null;
-let inflight: Promise<any[]> | null = null;
+type TourDate = Database["public"]["Functions"]["get_tour_date_availability"]["Returns"][number];
+const STORAGE_KEY = "kereztour:tour-dates:v1";
+const MAX_AGE = 5 * 60 * 1000;
 
-export const getCachedTourDates = () => cached;
+// Only public availability is stored, and a live read still runs on every mount.
+const readSnapshot = (): { data: TourDate[]; savedAt: number } | null => {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const snapshot = JSON.parse(raw);
+    if (!Number.isFinite(snapshot.savedAt) || Date.now() - snapshot.savedAt > MAX_AGE || !Array.isArray(snapshot.data)) return null;
+    if (!snapshot.data.every((row: TourDate) => row && typeof row.id === "string" && typeof row.tour === "string" && typeof row.start_date === "string" && typeof row.end_date === "string" && typeof row.status === "string" && Number.isFinite(row.available_places))) return null;
+    return snapshot;
+  } catch { return null; }
+};
+const snapshot = readSnapshot();
+let cached: TourDate[] | null = snapshot?.data ?? null;
+let savedAt = snapshot?.savedAt ?? 0;
+let inflight: Promise<TourDate[]> | null = null;
 
-export const fetchTourDates = (force = false): Promise<any[]> => {
-  if (!force && inflight) return inflight;
-  inflight = (supabase as any)
-    .rpc("get_tour_date_availability")
-    .then(({ data, error }: any) => {
+export const getCachedTourDates = () => Date.now() - savedAt <= MAX_AGE ? cached : null;
+
+export const fetchTourDates = (_force = false): Promise<TourDate[]> => {
+  // Refresh triggers also share an active read, avoiding competing responses.
+  if (inflight) return inflight;
+  const request = Promise.resolve(supabase.rpc("get_tour_date_availability"))
+    .then(({ data, error }) => {
       if (error) throw error;
-      cached = (data as any[]) ?? [];
+      cached = data ?? [];
+      savedAt = Date.now();
+      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ data: cached, savedAt })); } catch { /* Storage may be disabled. */ }
       return cached;
     })
     .finally(() => { inflight = null; });
-  return inflight!;
+  inflight = request;
+  return request;
 };
