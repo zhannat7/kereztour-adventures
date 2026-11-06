@@ -10,7 +10,7 @@ import { inquiryStatuses, inquiryStatusLabels, isInquiryStatus } from "@/lib/inq
 
 type Inquiry = Tables<"contact_messages">;
 type Props = { messages: Inquiry[]; onUpdated: (message: Inquiry) => void; onRefresh: () => Promise<void> };
-const date = (value: string | null) => value ? new Date(value).toLocaleDateString("de-DE") : "–";
+const date = (value: string | null) => value ? new Date(`${value.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }) : "–";
 
 export default function ContactInquiries({ messages, onUpdated, onRefresh }: Props) {
   const [search, setSearch] = useState("");
@@ -52,7 +52,7 @@ export default function ContactInquiries({ messages, onUpdated, onRefresh }: Pro
         <Select value={message.status} disabled={busy.has(message.id)} onValueChange={(status) => void updateStatus(message, status)}><SelectTrigger className="w-44" aria-label={`Bearbeitungsstatus für ${message.name}`}><SelectValue /></SelectTrigger><SelectContent>{inquiryStatuses.map((status) => <SelectItem key={status} value={status}>{inquiryStatusLabels[status]}</SelectItem>)}</SelectContent></Select>
       </div>
       <a className="mt-3 block break-all text-sm text-primary hover:underline" href={`mailto:${message.email}`}>{message.email}</a>
-      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm"><div className="col-span-2"><dt className="text-xs text-muted-foreground">Reise</dt><dd className="break-words">{message.tour || "–"}</dd></div><div><dt className="text-xs text-muted-foreground">Zeitraum</dt><dd>{date(message.date_from)} – {date(message.date_to)}</dd></div><div><dt className="text-xs text-muted-foreground">Personen</dt><dd>{message.persons ?? "–"}</dd></div></dl>
+      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm"><div className="col-span-2"><dt className="text-xs text-muted-foreground">Reise</dt><dd className="break-words">{message.tour || "–"}</dd></div><div><dt className="text-xs text-muted-foreground">Zeitraum</dt><dd>{date(message.date_from)}–{date(message.date_to)}</dd></div><div><dt className="text-xs text-muted-foreground">Personen</dt><dd>{message.persons ?? "–"}</dd></div></dl>
       {message.message && <p className="mt-4 whitespace-pre-wrap break-words border-t border-border pt-4 text-sm text-foreground">{message.message}</p>}
       <Button asChild variant="outline" size="sm" className="mt-4"><a href={`mailto:${message.email}?subject=${encodeURIComponent("Kereztour – deine Anfrage")}`}><Mail />E-Mail schreiben</a></Button>
     </article>)}</div>
