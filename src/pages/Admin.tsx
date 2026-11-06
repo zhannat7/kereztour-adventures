@@ -35,7 +35,7 @@ type BookingDocument = {
   mime_type: string | null; file_size: number | null; document_type: string; created_at: string;
 };
 
-const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE") : "–");
+const fmt = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }) : "–");
 const fmtRange = (start: string | null, end: string | null) => `${fmt(start)}–${fmt(end)}`;
 const input = "w-full rounded-sm border border-border bg-background px-3 py-2 text-sm";
 
