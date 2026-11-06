@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { DateField } from "@/components/DateField";
 import {
   Dialog,
   DialogContent,
@@ -51,8 +52,8 @@ const inquirySchema = (t: (text: string) => string) =>
     .email(t("Bitte gib eine gültige E-Mail-Adresse ein"))
     .max(255, t("Maximal 255 Zeichen")),
   tour: z.string().min(1, t("Bitte wähle eine Reise")),
-  dateFrom: z.string().min(1, t("Bitte gib den Reisebeginn an")),
-  dateTo: z.string().min(1, t("Bitte gib das Reiseende an")),
+  dateFrom: z.string().min(1, t("Bitte gib den Reisebeginn an")).regex(/^\d{4}-\d{2}-\d{2}$/, t("Bitte gib ein gültiges Datum ein (TT.MM.JJJJ)")),
+  dateTo: z.string().min(1, t("Bitte gib das Reiseende an")).regex(/^\d{4}-\d{2}-\d{2}$/, t("Bitte gib ein gültiges Datum ein (TT.MM.JJJJ)")),
   persons: z.number().min(1).max(20),
   message: z.string().trim().max(1000, t("Maximal 1000 Zeichen")).optional(),
 }).superRefine((data, ctx) => {
@@ -269,16 +270,14 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="inquiry-from">{t("Reisebeginn")} *</Label>
-                    <Input
+                    <DateField
                       id="inquiry-from"
-                      type="date"
                       min={today}
-                      max="2099-12-31"
-                      {...register("dateFrom")}
-                      onChange={(event) => {
-                        register("dateFrom").onChange(event);
-
-                        const newStartDate = event.target.value;
+                      lang={language}
+                      invalid={!!errors.dateFrom}
+                      value={watch("dateFrom")}
+                      onChange={(newStartDate) => {
+                        setValue("dateFrom", newStartDate, { shouldValidate: !!errors.dateFrom, shouldDirty: true });
                         const currentEndDate = watch("dateTo");
 
                         // A previously selected end date can no longer remain
@@ -296,15 +295,13 @@ const ContactDialog = ({ open, setOpen }: { open: boolean; setOpen: (open: boole
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="inquiry-to">{t("Reiseende")} *</Label>
-                    <Input
+                    <DateField
                       id="inquiry-to"
-                      type="date"
-                      min={dateFrom || today}
-                      max="2099-12-31"
-                      {...register("dateTo")}
-                      onChange={(event) => {
-                        register("dateTo").onChange(event);
-                      }}
+                      min={/^\d{4}-\d{2}-\d{2}$/.test(dateFrom) ? dateFrom : today}
+                      lang={language}
+                      invalid={!!errors.dateTo}
+                      value={watch("dateTo")}
+                      onChange={(v) => setValue("dateTo", v, { shouldValidate: !!errors.dateTo, shouldDirty: true })}
                     />
                     {errors.dateTo && <p className="text-sm text-destructive">{errors.dateTo.message}</p>}
                   </div>
