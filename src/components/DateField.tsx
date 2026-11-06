@@ -49,7 +49,7 @@ export function DateField({ id, value, onChange, min, lang = "de", invalid }: Pr
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (displayToIso(text) !== value) setText(toDisplay(value));
+    if (value !== "invalid" && displayToIso(text) !== value) setText(toDisplay(value));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
